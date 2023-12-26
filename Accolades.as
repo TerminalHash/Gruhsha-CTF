@@ -1,3 +1,4 @@
+#include "pathway.as"
 ///////////////////////////////////////////////////////////////////////////////
 //
 //  Accolades system
@@ -38,7 +39,7 @@ shared class Accolades
 	Accolades(ConfigFile@ cfg, string _username)
 	{
 		username = _username;
-		customHeadTexture = "../Mods/ctf_gruhsha/Characters/CustomHeads/" + username + ".png";
+		customHeadTexture = getPath() + "Custom/CustomHeads/" + username + ".png";
 		array<string> slices;
 		if(cfg.readIntoArray_string(slices, username))
 		{
@@ -126,8 +127,12 @@ shared class Accolades
 				customHeadExists = doesCustomHeadExists();
 			}
 		}
+		if(CFileMatcher(customHeadTexture).hasMatch()) 
+		{
+		customHeadExists = CFileImage(customHeadTexture).getWidth() == 64;
+		}
 	}
-
+	
 	bool doesCustomHeadExists()
 	{
 		return CFileMatcher(customHeadTexture).getFirst() == customHeadTexture;
