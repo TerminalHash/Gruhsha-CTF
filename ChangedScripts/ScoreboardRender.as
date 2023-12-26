@@ -254,15 +254,9 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		}
 
 		GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
-
-		// Mark captain in scoreboard
+		
 		if (getRules().get_string("team_"+p.getTeamNum()+"_leader")==p.getUsername())
-		{
-			if (g_locale == "ru")
-				GUI::DrawIcon("CaptainMark_ru.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
-			else
-				GUI::DrawIcon("CaptainMark_en.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
-		}
+			GUI::DrawIcon("CaptainMark.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
 
 
 		//have to calc this from ticks
