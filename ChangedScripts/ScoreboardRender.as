@@ -304,9 +304,10 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		}
 
 		// for kussaka: de texture
-		if (getRules().get_string("team_"+p.getTeamNum()+"_leader")==p.getUsername() || username == "kusaka79")
+		if (getRules().get_string("team_"+p.getTeamNum()+"_leader")==p.getUsername())
 		{
-			GUI::DrawIcon("CaptainMark_de.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
+			if (p.getUsername == "kusaka79")
+				GUI::DrawIcon("CaptainMark_de.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
 		}
 
 		//have to calc this from ticks
