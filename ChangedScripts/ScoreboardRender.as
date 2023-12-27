@@ -297,10 +297,17 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		{
 			if (g_locale == "ru")
 				GUI::DrawIcon("CaptainMark_ru.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
+			else if (g_locale == "de")
+				GUI::DrawIcon("CaptainMark_de.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
 			else
 				GUI::DrawIcon("CaptainMark_en.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
 		}
 
+		// for kussaka: de texture
+		if (getRules().get_string("team_"+p.getTeamNum()+"_leader")==p.getUsername() || username == "kusaka79")
+		{
+			GUI::DrawIcon("CaptainMark_de.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
+		}
 
 		//have to calc this from ticks
 		s32 ping_in_ms = s32(p.getPing() * 1000.0f / 30.0f);
