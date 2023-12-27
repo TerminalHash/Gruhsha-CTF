@@ -1,20 +1,19 @@
-
 bool canChangeTeamByRequest()
 {
 	CRules@ rules = getRules();
-	
+
 	for (u8 team_num = 0; team_num<2; ++team_num) {
 		if (!rules.get_string("team_"+team_num+"_leader").empty())
 			return false;
 	}
-	
+
 	return true;
 }
 
 void DemoteLeaders()
 {
 	CRules@ rules = getRules();
-	
+
 	for (u8 team_num = 0; team_num<2; ++team_num) {
 		rules.set_string("team_"+team_num+"_leader", "");
 	}
