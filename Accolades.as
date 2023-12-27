@@ -99,7 +99,7 @@ shared class Accolades
 					customHeadIndex = 0;
 					customHeadAwarded = parseInt(s2);
 					customHeadMonths = parseInt(s3);
-					
+
 					// Has this person been given a permanent special head?
 					if (customHeadAwarded == -1)
 					{
@@ -132,7 +132,7 @@ shared class Accolades
 		customHeadExists = CFileImage(customHeadTexture).getWidth() == 64;
 		}
 	}
-	
+
 	bool doesCustomHeadExists()
 	{
 		return CFileMatcher(customHeadTexture).getFirst() == customHeadTexture;
