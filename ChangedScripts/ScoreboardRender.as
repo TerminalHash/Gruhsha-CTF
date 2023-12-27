@@ -323,8 +323,16 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		//right align clantag
 		if (clantag != "")
 		{
+			string username = p.getUsername();
+
 			GUI::GetTextDimensions(clantag, clantag_actualsize);
 			GUI::DrawText(clantag, topleft + Vec2f(name_buffer, 0), SColor(0xff888888));
+
+			// recolor clantag for TerminalHash
+			if (username == "TerminalHash")
+				{
+				GUI::DrawText(clantag, topleft + Vec2f(name_buffer, 0), SColor(0xffad7fa8));
+				}
 			//draw name alongside
 			GUI::DrawText(playername, topleft + Vec2f(name_buffer + clantag_actualsize.x + 8, 0), namecolour);
 		}
