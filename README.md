@@ -1,4 +1,4 @@
-# Gruhsha-CTF ![grusha](grusha.png)
+# ![grusha](grusha.png) Gruhsha-CTF ![grusha](grusha.png)
 Исходный код русских Капитанов.
 
 Имеет следующий функционал:
