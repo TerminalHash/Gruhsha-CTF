@@ -230,7 +230,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 			// knight is 3 but should be 0 for this texture
 			// fyi it's pure coincidence builder and archer are already a match
 			classIndex %= 3;
-			
+
 			classIconSize = Vec2f(16, 16);
 
 			if (b is null && teamname != "Spectators") // player dead
@@ -921,12 +921,12 @@ void MakeScoreboardButton(Vec2f pos, const string&in text, const string username
 			if (!mouseWasPressed1) {
 				//Sound::Play("option");
 				//Sound::Play("achievement");
-				
+
 				CRules@ rules = getRules();
 				CBitStream params;
 				params.write_string(username);
 				rules.SendCommand(rules.getCommandID("put to spec"), params);
-				
+
 				mouseWasPressed1 = true;
 			}
 		} else {
