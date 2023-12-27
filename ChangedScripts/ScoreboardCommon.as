@@ -123,7 +123,8 @@ float drawServerInfo(float y)
 	// Waffle: Add extra tooltip for old stats
 	mid.y += 17;
 	GUI::DrawTextCentered(OLD_STATS_TOOLTIP, mid, OLD_STATS_COLOR);
-
+	GUI::DrawIcon("grusha.png", 0, Vec2f(64, 64), Vec2f(getScreenWidth()/2 - width/2 - 32, y - 32), 0.5f, 0);
+	GUI::DrawIcon("grusha_flip.png", 0, Vec2f(64, 64), Vec2f(getScreenWidth()/2 + width/2 - 64 + 32, y - 32), 0.5f, 0);
 	return bot.y;
 
 }
