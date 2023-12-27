@@ -20,6 +20,24 @@ float maxMenuWidth = 700;
 bool mouseWasPressed2 = false;
 bool mouseWasPressed1 = false;
 
+const string OLD_PLAYER_STATS_CORE = "player stats core";
+
+class OldPlayerStatsCore {
+	dictionary stats;
+}
+
+class OldPlayerStats {
+	s32 kills;
+	s32 deaths;
+	s32 assists;
+
+	OldPlayerStats() {
+		kills   = 0;
+		deaths  = 0;
+		assists = 0;
+	}
+}
+
 string[] age_description = {
 	"New Player - Welcome them to the game!",
 	//first month
@@ -114,14 +132,19 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 	}
 	const int tier_start = (draw_age ? age_start : accolades_start) + 70;
 
+	// Waffle: Change header color for old stats
+	CControls@ controls = getControls();
+	bool old_stats = controls.isKeyPressed(KEY_SHIFT) || controls.isKeyPressed(KEY_LSHIFT) || controls.isKeyPressed(KEY_RSHIFT);
+	SColor kdr_color = old_stats ? OLD_STATS_COLOR : SColor(0xffffffff);
+
 	//draw player table header
 	GUI::DrawText(getTranslatedString("Player"), Vec2f(topleft.x, topleft.y), SColor(0xffffffff));
 	GUI::DrawText(getTranslatedString("Username"), Vec2f(bottomright.x - 470, topleft.y), SColor(0xffffffff));
 	GUI::DrawText(getTranslatedString("Ping"), Vec2f(bottomright.x - 330, topleft.y), SColor(0xffffffff));
-	GUI::DrawText(getTranslatedString("Kills"), Vec2f(bottomright.x - 260, topleft.y), SColor(0xffffffff));
-	GUI::DrawText(getTranslatedString("Deaths"), Vec2f(bottomright.x - 190, topleft.y), SColor(0xffffffff));
-	GUI::DrawText(getTranslatedString("Assists"), Vec2f(bottomright.x - 120, topleft.y), SColor(0xffffffff));
-	GUI::DrawText(getTranslatedString("KDR"), Vec2f(bottomright.x - 50, topleft.y), SColor(0xffffffff));
+	GUI::DrawText(getTranslatedString("Kills"), Vec2f(bottomright.x - 260, topleft.y), kdr_color);      // Waffle: Change header color for old stats
+	GUI::DrawText(getTranslatedString("Deaths"), Vec2f(bottomright.x - 190, topleft.y), kdr_color);     // Waffle: --
+	GUI::DrawText(getTranslatedString("Assists"), Vec2f(bottomright.x - 120, topleft.y), kdr_color);    // Waffle: --
+	GUI::DrawText(getTranslatedString("KDR"), Vec2f(bottomright.x - 50, topleft.y), kdr_color);         // Waffle: --
 	GUI::DrawText(getTranslatedString("Accolades"), Vec2f(bottomright.x - accolades_start, topleft.y), SColor(0xffffffff));
 	if(draw_age)
 	{
@@ -134,7 +157,6 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 
 	topleft.y += stepheight * 0.5f;
 
-	CControls@ controls = getControls();
 	Vec2f mousePos = controls.getMouseScreenPos();
 
 	//draw players
@@ -542,13 +564,39 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 			}
 		}
 
+		// Waffle: Keep old stats
+		s32 kills   = p.getKills();
+		s32 deaths  = p.getDeaths();
+		s32 assists = p.getAssists();
+		
+		if (old_stats)
+		{
+			OldPlayerStatsCore@ old_player_stats_core;
+			rules.get(OLD_PLAYER_STATS_CORE, @old_player_stats_core);
+			if (old_player_stats_core !is null)
+			{
+				OldPlayerStats@ old_player_stats;
+				if (old_player_stats_core.stats.exists(username))
+				{
+					old_player_stats_core.stats.get(username, @old_player_stats);
+				}
+				else
+				{
+					@old_player_stats = OldPlayerStats();
+					old_player_stats_core.stats.set(username, @old_player_stats);
+				}
+				kills   = old_player_stats.kills;
+				deaths  = old_player_stats.deaths;
+				assists = old_player_stats.assists;
+			}
+		}
 
 		GUI::DrawText("" + username, Vec2f(bottomright.x - 470, topleft.y), namecolour);
 		GUI::DrawText("" + ping_in_ms, Vec2f(bottomright.x - 330, topleft.y), SColor(0xffffffff));
-		GUI::DrawText("" + p.getKills(), Vec2f(bottomright.x - 260, topleft.y), SColor(0xffffffff));
-		GUI::DrawText("" + p.getDeaths(), Vec2f(bottomright.x - 190, topleft.y), SColor(0xffffffff));
-		GUI::DrawText("" + p.getAssists(), Vec2f(bottomright.x - 120, topleft.y), SColor(0xffffffff));
-		GUI::DrawText("" + formatFloat(getKDR(p), "", 0, 2), Vec2f(bottomright.x - 50, topleft.y), SColor(0xffffffff));
+		GUI::DrawText("" + kills, Vec2f(bottomright.x - 260, topleft.y), kdr_color);
+		GUI::DrawText("" + deaths, Vec2f(bottomright.x - 190, topleft.y), kdr_color);
+		GUI::DrawText("" + assists, Vec2f(bottomright.x - 120, topleft.y), kdr_color);
+		GUI::DrawText("" + formatFloat(kills / Maths::Max(f32(deaths), 1.0f), "", 0, 2), Vec2f(bottomright.x - 50, topleft.y), kdr_color);
 		
 		bool local_is_captain = localplayer !is null && localplayer.getUsername()==rules.get_string("team_"+localplayer.getTeamNum()+"_leader");
 		bool player_is_our_guy = localplayer !is null && localplayer.getTeamNum()==p.getTeamNum();
@@ -660,20 +708,23 @@ void onRenderScoreboard(CRules@ this)
 	hovered_tier = -1;
 
 	//draw the scoreboards
+	topleft.y += 10;
 
 	if (localTeam == 0)
 		topleft.y = drawScoreboard(localPlayer, blueplayers, topleft, this.getTeam(0), Vec2f(0, 0));
 	else
 		topleft.y = drawScoreboard(localPlayer, redplayers, topleft, this.getTeam(1), Vec2f(32, 0));
 
-	topleft.y += 52;
+	if (blueplayers.length > 0 || redplayers.length > 0)
+		topleft.y += 52;
 
 	if (localTeam == 1)
 		topleft.y = drawScoreboard(localPlayer, blueplayers, topleft, this.getTeam(0), Vec2f(0, 0));
 	else
 		topleft.y = drawScoreboard(localPlayer, redplayers, topleft, this.getTeam(1), Vec2f(32, 0));
 
-	topleft.y += 52;
+	if (blueplayers.length > 0 && redplayers.length > 0)
+		topleft.y += 52;
 
 	topleft.y = drawScoreboard(localPlayer, spectators, topleft, this.getTeam(255), Vec2f(32, 0));
 
@@ -755,11 +806,51 @@ void onTick(CRules@ this)
 
 void onInit(CRules@ this)
 {
+	// Waffle: Keep old stats
+	OldPlayerStatsCore@ old_player_stats_core = OldPlayerStatsCore();
+	this.set(OLD_PLAYER_STATS_CORE, @old_player_stats_core);
 	onRestart(this);
 }
 
 void onRestart(CRules@ this)
 {
+	// Waffle: Reset scoreboard
+	OldPlayerStatsCore@ old_player_stats_core;
+	this.get(OLD_PLAYER_STATS_CORE, @old_player_stats_core);
+	for (u8 i = 0; i < getPlayerCount(); i++)
+	{
+		CPlayer@ player = getPlayer(i);
+		if (player is null)
+		{
+			continue;
+		}
+		
+		// Cache previous game
+		if (old_player_stats_core !is null)
+		{
+			string player_name = player.getUsername();
+			OldPlayerStats@ old_player_stats;
+			if (old_player_stats_core.stats.exists(player_name))
+			{
+				old_player_stats_core.stats.get(player_name, @old_player_stats);
+			}
+			else
+			{
+				@old_player_stats = OldPlayerStats();
+				old_player_stats_core.stats.set(player_name, @old_player_stats);
+			}
+
+			old_player_stats.kills    = player.getKills();
+			old_player_stats.deaths   = player.getDeaths();
+			old_player_stats.assists = player.getAssists();
+		}
+
+		// Reset for next game
+		player.setKills(0);
+		player.setDeaths(0);
+		player.setAssists(0);
+	}
+
 	if(isServer())
 	{
 		this.set_u32("match_time", 0);
