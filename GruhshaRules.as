@@ -17,6 +17,8 @@ void onInit(CRules@ this)
 {
 	Reset(this);
 	this.addCommandID("put to spec");
+	this.addCommandID("put to blue");
+	this.addCommandID("put to red");	
 	DemoteLeaders();
 	SyncLeaders();
 
@@ -43,6 +45,32 @@ void onCommand( CRules@ this, u8 cmd, CBitStream @params )
 		if (core is null) return;
 
 		core.ChangePlayerTeam(doomed, this.getSpectatorTeamNum());
+		//KickPlayer(doomed);
+	} else if(cmd == this.getCommandID("put to blue"))
+	{
+		string username; if (!params.saferead_string(username)) return;
+		CPlayer@ doomed = getPlayerByUsername(username);
+		if (doomed is null) return;
+
+		RulesCore@ core;
+		this.get("core", @core);
+
+		if (core is null) return;
+
+		core.ChangePlayerTeam(doomed, 0);
+		//KickPlayer(doomed);
+	} else if(cmd == this.getCommandID("put to red"))
+	{
+		string username; if (!params.saferead_string(username)) return;
+		CPlayer@ doomed = getPlayerByUsername(username);
+		if (doomed is null) return;
+
+		RulesCore@ core;
+		this.get("core", @core);
+
+		if (core is null) return;
+
+		core.ChangePlayerTeam(doomed, 1);
 		//KickPlayer(doomed);
 	}
 }

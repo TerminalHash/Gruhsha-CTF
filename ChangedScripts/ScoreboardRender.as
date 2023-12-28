@@ -2,6 +2,7 @@
 #include "Accolades.as";
 #include "ColoredNameToggleCommon.as";
 #include "ApprovedTeams.as";
+//#include "RulesCore"
 
 CPlayer@ hoveredPlayer;
 Vec2f hoveredPos;
@@ -91,6 +92,9 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 	}
 
 	CRules@ rules = getRules();
+//	RulesCore@ core;
+//	rules.get("core", @core);
+
 	Vec2f orig = topleft; //save for later
 
 	f32 lineheight = 16;
@@ -176,7 +180,6 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 			{
 				setSpectatePlayer(p.getUsername());
 			}
-
 			if (controls.mousePressed2 && !mouseWasPressed2)
 			{
 				// reason for this is because this is called multiple per click (since its onRender, and clicking is updated per tick)
@@ -615,10 +618,26 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		GUI::DrawText("" + formatFloat(kills / Maths::Max(f32(deaths), 1.0f), "", 0, 2), Vec2f(bottomright.x - 50, topleft.y), kdr_color);
 		
 		bool local_is_captain = localplayer !is null && localplayer.getUsername()==rules.get_string("team_"+localplayer.getTeamNum()+"_leader");
-		bool player_is_our_guy = localplayer !is null && localplayer.getTeamNum()==p.getTeamNum();
+		bool player_is_our_guy = localplayer !is null && localplayer.getTeamNum()==p.getTeamNum() || localplayer !is null && 200 == p.getTeamNum();
 		bool player_isnt_local = localplayer !is null && p !is localplayer;
-		if (local_is_captain && player_is_our_guy && player_isnt_local && !isPickingEnded())
-			MakeScoreboardButton(Vec2f(bottomright.x - 330, topleft.y-7), "back to spec", p.getUsername());
+
+		if (isAdmin(getLocalPlayer()))
+		{
+			MakeScoreboardButton(Vec2f(bottomright.x - 330, topleft.y-7), "spec", p.getUsername());
+			MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "red", p.getUsername());
+			MakeScoreboardButton(Vec2f(bottomright.x - 470, topleft.y-7), "blue", p.getUsername());
+		} 
+		else if (local_is_captain && player_is_our_guy && player_isnt_local)  //&& !isPickingEnded()
+		{
+			MakeScoreboardButton(Vec2f(bottomright.x - 330, topleft.y-7), "spec", p.getUsername());
+			if (localplayer.getTeamNum() == 0){
+				MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "blue", p.getUsername());
+			} 
+			else
+			{
+				MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "red", p.getUsername());
+			}
+		}
 	}
 
 	// username copied text, goes at bottom to overlay above everything else
@@ -934,7 +953,7 @@ void MakeScoreboardButton(Vec2f pos, const string&in text, const string username
 		if (controls.mousePressed1)
 		{
 			GUI::DrawButtonPressed(tl, br);
-			if (!mouseWasPressed1) {
+			if (!mouseWasPressed1 && text == "spec") {
 				//Sound::Play("option");
 				//Sound::Play("achievement");
 
@@ -942,6 +961,29 @@ void MakeScoreboardButton(Vec2f pos, const string&in text, const string username
 				CBitStream params;
 				params.write_string(username);
 				rules.SendCommand(rules.getCommandID("put to spec"), params);
+
+				mouseWasPressed1 = true;
+			}
+			else if (!mouseWasPressed1 && text == "blue")
+			{
+				//Sound::Play("option");
+				//Sound::Play("achievement");
+				CRules@ rules = getRules();
+				CBitStream params;
+				params.write_string(username);
+				rules.SendCommand(rules.getCommandID("put to blue"), params);
+
+				mouseWasPressed1 = true;
+			}
+			else if (!mouseWasPressed1 && text == "red")
+			{
+				//Sound::Play("option");
+				//Sound::Play("achievement");
+
+				CRules@ rules = getRules();
+				CBitStream params;
+				params.write_string(username);
+				rules.SendCommand(rules.getCommandID("put to red"), params);
 
 				mouseWasPressed1 = true;
 			}
