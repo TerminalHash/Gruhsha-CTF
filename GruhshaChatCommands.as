@@ -11,4 +11,5 @@ void RegisterGruhshaChatCommands(ChatCommandManager@ manager)
 	manager.RegisterCommand(DemoteCommand());
 	manager.RegisterCommand(PickPlayerCommand());
 	manager.RegisterCommand(ApproveTeamsCommand());
+	manager.RegisterCommand(SetLimitCommand());
 }
