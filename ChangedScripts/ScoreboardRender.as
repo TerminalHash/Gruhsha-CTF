@@ -587,7 +587,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		s32 kills   = p.getKills();
 		s32 deaths  = p.getDeaths();
 		s32 assists = p.getAssists();
-		
+
 		if (old_stats)
 		{
 			OldPlayerStatsCore@ old_player_stats_core;
@@ -616,7 +616,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		GUI::DrawText("" + deaths, Vec2f(bottomright.x - 190, topleft.y), kdr_color);
 		GUI::DrawText("" + assists, Vec2f(bottomright.x - 120, topleft.y), kdr_color);
 		GUI::DrawText("" + formatFloat(kills / Maths::Max(f32(deaths), 1.0f), "", 0, 2), Vec2f(bottomright.x - 50, topleft.y), kdr_color);
-		
+
 		bool local_is_captain = localplayer !is null && localplayer.getUsername()==rules.get_string("team_"+localplayer.getTeamNum()+"_leader");
 		bool player_is_our_guy = localplayer !is null && localplayer.getTeamNum()==p.getTeamNum() || localplayer !is null && 200 == p.getTeamNum();
 		bool player_isnt_local = localplayer !is null && p !is localplayer;
@@ -626,15 +626,17 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 			MakeScoreboardButton(Vec2f(bottomright.x - 330, topleft.y-7), "spec", p.getUsername());
 			MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "red", p.getUsername());
 			MakeScoreboardButton(Vec2f(bottomright.x - 470, topleft.y-7), "blue", p.getUsername());
-		} 
+		}
+
 		else if (local_is_captain && player_is_our_guy && player_isnt_local)  //&& !isPickingEnded()
 		{
-			MakeScoreboardButton(Vec2f(bottomright.x - 330, topleft.y-7), "spec", p.getUsername());
-			if (localplayer.getTeamNum() == 0){
+			if(p.getTeamNum() != 200) {
+				MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "spec", p.getUsername());
+			}
+			else if (localplayer.getTeamNum() == 0) {
 				MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "blue", p.getUsername());
-			} 
-			else
-			{
+			}
+			else if (localplayer.getTeamNum() == 1) {
 				MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "red", p.getUsername());
 			}
 		}
@@ -703,7 +705,7 @@ void onRenderScoreboard(CRules@ this)
 				redplayers.push_back(p);
 
 		} /*
-		else 
+		else
 		{
 			for (u32 j = 0; j < spectators.length; j++)
 			{
@@ -859,7 +861,7 @@ void onRestart(CRules@ this)
 		{
 			continue;
 		}
-		
+
 		// Cache previous game
 		if (old_player_stats_core !is null)
 		{

@@ -21,6 +21,8 @@ SColor getNameColour(CPlayer@ p)
 		c = SColor(0xffb400ff); //dev
 	} else if (username == "TerminalHash") {
 		c = SColor(0xff75507b);
+	} else if (username == "kusaka79") {
+		c = SColor(0xff000000);
 	} else if (p.isGuard() && showColor) {
 		c = SColor(0xffa0ffa0); //guard
 	} else if (isAdmin(p) && showColor) {
