@@ -195,3 +195,30 @@ class ApproveTeamsCommand : ChatCommand
 		rules.set("approved_teams", @approved_teams);
 	}
 }
+
+class SetLimitCommand : ChatCommand
+{
+	SetLimitCommand()
+	{
+		super("limit", "Limits count of builders for every team");
+		SetUsage("<limit>");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+		u8 caller_team = player.getTeamNum();
+		return (rules.get_string("team_"+caller_team+"_leader")==player.getUsername() && !isPickingEnded()); // if he is captain and picking is still going
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		if (args.size() < 1) return;
+
+		rules.set_u8("builders_limit", parseInt(args[0]));
+
+		if (isServer()) server_AddToChat("Максимум строителей теперь "+args[0], SColor(0xff474ac6));
+	}
+}
