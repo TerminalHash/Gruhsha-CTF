@@ -137,7 +137,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 			Vec2f velocity = Vec2f(0, -Trampoline::SCALAR);
 			velocity.RotateBy(angle);
 			
-			f32 force_modifier = 1.20f;
+			f32 force_modifier = 1.10f;
 			f32 force_value = Maths::Max(3, velocity_old.Length()*force_modifier);
 			blob.setVelocity(Vec2f(force_value,0).RotateBy(angle-90));
 
