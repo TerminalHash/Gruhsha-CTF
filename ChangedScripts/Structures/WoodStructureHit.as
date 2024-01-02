@@ -19,14 +19,16 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 		case Hitters::arrow:
 		case Hitters::stab:
 
-			if (dmg <= 1.0f)
+			// Waffle: Do half damage to wood with swords
+			/*if (dmg <= 1.0f)
 			{
 				dmg = 0.125f;
 			}
 			else
 			{
 				dmg *= 0.25f;
-			}
+			}*/
+			dmg *= 0.4375f;
 			break;
 
 		case Hitters::burn:
@@ -34,7 +36,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 			break;
 
 		case Hitters::bomb:
-			dmg *= 1.40f;
+			dmg *= 1.85f; // Mo' damage to wood doors
 			break;
 
 		case Hitters::explosion:
