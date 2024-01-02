@@ -958,11 +958,11 @@ void MakeScoreboardButton(Vec2f pos, const string&in text, const string username
 	const Vec2f mousePos = controls.getMouseScreenPos();
 	SColor button_color  = 0xffffffff;     // Цветная основа
 	if(text == "blue"){
-		button_color = SColor(255, 0, 0, 255);
+		button_color = SColor(0xff1A6F9E);
 	}
 	else if(text == "red")
 	{
-		button_color = SColor(255, 255, 0, 0);
+		button_color = SColor(0xffBA2721);
 	}
 	else // text == "spec"
 	{
