@@ -1,3 +1,4 @@
+#include "Hitters.as";
 #include "Help.as";
 
 namespace Trampoline
