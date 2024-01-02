@@ -1,3 +1,4 @@
+#include "Hitters.as";
 #include "Help.as";
 
 namespace Trampoline
@@ -148,6 +149,14 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 				sprite.SetAnimation("bounce");
 				sprite.PlaySound("TrampolineJump.ogg");
 			}
+
+			// Damaging trampoline after bounce
+			string name = blob.getName();
+			if (name == "knight" || name == "archer" || name == "builder" || name == "keg" || name == "mine")
+			{
+				f32 damage = 0.35f; // 15 bounces
+				this.server_Hit(this, this.getPosition(), Vec2f(), damage, Hitters::crush);
+			}
 		}
 	}
 }
@@ -177,4 +186,9 @@ bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
 bool canBePickedUp(CBlob@ this, CBlob@ byBlob)
 {
 	return !this.hasTag("no pickup");
+}
+
+f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData)
+{
+	return customData == Hitters::fire || customData == Hitters::burn ? damage * 2.0f : damage;
 }
