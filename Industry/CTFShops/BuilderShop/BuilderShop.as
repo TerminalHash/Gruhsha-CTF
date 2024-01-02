@@ -65,7 +65,8 @@ void onInit(CBlob@ this)
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Trampoline", getTeamIcon("trampoline", "Trampoline.png", team_num, Vec2f(32, 16), 3), "trampoline", Descriptions::trampoline, false);
-		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::trampoline_wood);
+		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::trampoline_coins);
+		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", CTFCosts::trampoline_wood);
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Saw", getTeamIcon("saw", "VehicleIcons.png", team_num, Vec2f(32, 32), 3), "saw", Descriptions::saw, false);
