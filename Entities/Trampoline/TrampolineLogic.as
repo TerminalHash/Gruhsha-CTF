@@ -4,7 +4,7 @@
 namespace Trampoline
 {
 	const string TIMER = "trampoline_timer";
-	const u16 COOLDOWN = 7;
+	const u16 COOLDOWN = 25;
 	const u8 SCALAR = 10;
 	const bool SAFETY = true;
 	const int COOLDOWN_LIMIT = 8;
