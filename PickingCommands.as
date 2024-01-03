@@ -186,10 +186,24 @@ class ApproveTeamsCommand : ChatCommand
 		approved_teams.ClearLists();
 		if (!was_locked) {
 			approved_teams.FormLists();
-			server_AddToChat("Команды сформированы", SColor(0xff474ac6));
+			if (g_locale == "ru")
+			{
+				server_AddToChat("Команды сформированы", SColor(0xff474ac6));
+			}
+			else
+			{
+				server_AddToChat("Teams locked", SColor(0xff474ac6));
+			}
 		}
 		else
-			server_AddToChat("Команды расформированы", SColor(0xff474ac6));
+			if (g_locale == "ru")
+			{
+				server_AddToChat("Команды расформированы", SColor(0xff474ac6));
+			}
+			else
+			{
+				server_AddToChat("Teams unlocked", SColor(0xff474ac6));
+			}
 
 		approved_teams.PrintMembers();
 		rules.set("approved_teams", @approved_teams);
