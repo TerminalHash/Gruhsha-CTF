@@ -97,7 +97,7 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 				CRules@ rules = getRules();
 
 				// Limit classes, if game started
-				if (classconfig == "archer" && P_Archers >= 1 || classconfig == "builder" && P_Builders >= 1 && !rules.isWarmup())
+				if (classconfig == "archer" && P_Archers >= archers_limit || classconfig == "builder" && P_Builders >= builders_limit && !rules.isWarmup())
 				{
 					if (g_locale == "ru")
 					{
