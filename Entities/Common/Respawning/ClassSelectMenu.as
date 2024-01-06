@@ -12,11 +12,17 @@ shared class PlayerClass
 	string configFilename;
 	string description;
 };
+
+// amount variables
 int P_Archers;
 int P_Builders;
 int P_Knights;
-int builder_max = 2;
-int archer_max = 2;
+
+// initialization limits
+int archers_limit;
+int builders_limit;
+
+
 const f32 CLASS_BUTTON_SIZE = 2;
 
 //adding a class to a blobs list of classes
@@ -44,6 +50,8 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 	P_Archers = 0;
 	P_Builders = 0;
 	P_Knights = 0;
+
+	// calculating amount of players in classes
 	for (u32 i = 0; i < getPlayersCount(); i++)
 	{
 		if (getPlayer(i).getScoreboardFrame() == 2 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Archers++;}
@@ -63,39 +71,42 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 			CRules@ rules = getRules();
 
 			// Limiting classes stuff
+			archers_limit = rules.get_u8("archers_limit");
+			builders_limit = rules.get_u8("builders_limit");
+
 			if(pclass.configFilename == "archer")
 			{
-				if (P_Archers < archer_max)
+				if (P_Archers < archers_limit)
 				{
-					button.SetHoverText( "    " + P_Archers + " / " + archer_max + "\n");
+					button.SetHoverText( "    " + P_Archers + " / " + archers_limit + "\n");
 				}
-				else if (P_Archers >= archer_max)
+				else if (P_Archers >= archers_limit)
 				{
 					if (g_locale == "ru")
 					{
-						button.SetHoverText( "    " + "Всего " + P_Archers + " / " + archer_max + "\n");
+						button.SetHoverText( "    " + "Всего " + P_Archers + " / " + archers_limit + "\n");
 					}
 					else
 					{
-						button.SetHoverText( "    " + "Total " + P_Archers + " / " + archer_max + "\n");
+						button.SetHoverText( "    " + "Total " + P_Archers + " / " + archers_limit + "\n");
 					}
 				}
 			}
 			else if (pclass.configFilename == "builder")
 			{
-				if (P_Builders < builder_max && !rules.isWarmup())
+				if (P_Builders < builders_limit && !rules.isWarmup())
 				{
-					button.SetHoverText( "    " + P_Builders + " / " + builder_max + "\n");
+					button.SetHoverText( "    " + P_Builders + " / " + builders_limit + "\n");
 				}
-				else if (P_Builders >= builder_max && !rules.isWarmup())
+				else if (P_Builders >= builders_limit && !rules.isWarmup())
 				{
 					if (g_locale == "ru")
 					{
-						button.SetHoverText( "    " + "Всего " + P_Builders + " / " + builder_max + "\n");
+						button.SetHoverText( "    " + "Всего " + P_Builders + " / " + builders_limit + "\n");
 					}
 					else
 					{
-						button.SetHoverText( "    " + "Total " + P_Builders + " / " + builder_max + "\n");
+						button.SetHoverText( "    " + "Total " + P_Builders + " / " + builders_limit + "\n");
 					}
 				}
 			}
