@@ -20,7 +20,6 @@ void InitRespawnCommand(CBlob@ this)
 bool canChangeClass(CBlob@ this, CBlob@ blob)
 {
     if (blob.hasTag("switch class")) return false;
-
 	Vec2f tl, br, _tl, _br;
 	this.getShape().getBoundingRect(tl, br);
 	blob.getShape().getBoundingRect(_tl, _br);
@@ -62,7 +61,6 @@ void buildSpawnMenu(CBlob@ this, CBlob@ caller)
 	AddIconToken("$archer_class_icon$", "GUI/MenuItems.png", Vec2f(32, 32), 16, caller.getTeamNum());
 	BuildRespawnMenuFor(this, caller);
 }
-
 void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
 
@@ -83,11 +81,26 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 			if (getNet().isServer())
 			{
 				// build menu for them
+				P_Archers = 0;
+				P_Builders = 0;
+				P_Knights = 0;
+				for (u32 i = 0; i < getPlayersCount(); i++)
+				{
+					if (getPlayer(i).getScoreboardFrame() == 2 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Archers++;}
+					if (getPlayer(i).getScoreboardFrame() == 1 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
+					if (getPlayer(i).getScoreboardFrame() == 3 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Knights++;}
+				}
 				CBlob@ caller = getBlobByNetworkID(params.read_u16());
+				string classconfig = params.read_string();
+				CRules@ rules = getRules();
 
+				// Limit classes, if game started
+				if (classconfig == "archer" && P_Archers >= 1 || classconfig == "builder" && P_Builders >= 1 && !rules.isWarmup())
+				{
+					break;
+				}
 				if (caller !is null && canChangeClass(this, caller))
 				{
-					string classconfig = params.read_string();
 					CBlob @newBlob = server_CreateBlob(classconfig, caller.getTeamNum(), this.getRespawnPosition());
 
 					if (newBlob !is null)
