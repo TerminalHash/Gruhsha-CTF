@@ -99,6 +99,14 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 				// Limit classes, if game started
 				if (classconfig == "archer" && P_Archers >= 1 || classconfig == "builder" && P_Builders >= 1 && !rules.isWarmup())
 				{
+					if (g_locale == "ru")
+					{
+						client_AddToChat("Ты не можешь поменять свой класс на этот! Лимит для класса: " + archers_limit, SColor(255, 180, 24, 94));
+					}
+					else
+					{
+						client_AddToChat("You can't change your class to this one! The class limit is: " + archers_limit, SColor(255, 180, 24, 94));
+					}
 					break;
 				}
 				if (caller !is null && canChangeClass(this, caller))
