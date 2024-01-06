@@ -220,9 +220,15 @@ class SetBuilderLimitCommand : ChatCommand
 
 	bool canPlayerExecute(CPlayer@ player)
 	{
+		/*
 		CRules@ rules = getRules();
 		u8 caller_team = player.getTeamNum();
-		return (rules.get_string("team_"+caller_team+"_leader")==player.getUsername() && !isPickingEnded()); // if he is captain and picking is still going
+		return (rules.get_string("team_"+caller_team+"_leader") == player.getUsername() && !isPickingEnded()); // if he is captain and picking is still going
+		*/
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
 	}
 
 	void Execute(string[] args, CPlayer@ player)
@@ -247,9 +253,15 @@ class SetArcherLimitCommand : ChatCommand
 
 	bool canPlayerExecute(CPlayer@ player)
 	{
+		/*
 		CRules@ rules = getRules();
 		u8 caller_team = player.getTeamNum();
-		return (rules.get_string("team_"+caller_team+"_leader")==player.getUsername() && !isPickingEnded()); // if he is captain and picking is still going
+		return (rules.get_string("team_"+caller_team+"_leader") == player.getUsername() && !isPickingEnded()); // if he is captain and picking is still going
+		*/
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
 	}
 
 	void Execute(string[] args, CPlayer@ player)
