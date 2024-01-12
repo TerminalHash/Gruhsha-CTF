@@ -81,32 +81,45 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 			if (getNet().isServer())
 			{
 				// build menu for them
+				CRules@ rules = getRules();
+				string username;
+
+				CPlayer@ player = null;
+
 				P_Archers = 0;
 				P_Builders = 0;
 				P_Knights = 0;
 
+				archers_limit = rules.get_u8("archers_limit");
+				builders_limit = rules.get_u8("builders_limit");
+
 				// calculating amount of players in classes
 				for (u32 i = 0; i < getPlayersCount(); i++)
 				{
-					if (getPlayer(i).getScoreboardFrame() == 2 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Archers++;}
-					if (getPlayer(i).getScoreboardFrame() == 1 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
-					if (getPlayer(i).getScoreboardFrame() == 3 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Knights++;}
+					if (rules.get_string("ROLE_" + username) == "archer" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Archers++;}
+					if (rules.get_string("ROLE_" + username) == "builder" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
+					if (rules.get_string("ROLE_" + username) == "knight" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Knights++;}
 				}
 				CBlob@ caller = getBlobByNetworkID(params.read_u16());
 				string classconfig = params.read_string();
-				CRules@ rules = getRules();
 
 				// Limit classes, if game started
-				if (classconfig == "archer" && P_Archers >= archers_limit || classconfig == "builder" && P_Builders >= builders_limit && !rules.isWarmup())
+				if (classconfig == "archer" && P_Archers >= archers_limit)
 				{
-					if (g_locale == "ru")
+					// It's shit just dont work
+					/* (player !is null && player.isMyPlayer())
 					{
-						client_AddToChat("Ты не можешь поменять свой класс на этот! Лимит для класса: " + archers_limit, SColor(255, 180, 24, 94));
-					}
-					else
+						client_AddToChat("You can't change your class to this one! Archers limit is: " + archers_limit, SColor(255, 180, 24, 94));
+					}*/
+					break;
+				}
+				if (classconfig == "builder" && P_Builders >= builders_limit && !rules.isWarmup())
+				{
+					// It's shit just dont work
+					/*if (player !is null && player.isMyPlayer())
 					{
-						client_AddToChat("You can't change your class to this one! The class limit is: " + archers_limit, SColor(255, 180, 24, 94));
-					}
+						client_AddToChat("You can't change your class to this one! Builders limit is: " + builders_limit, SColor(255, 180, 24, 94));
+					}*/
 					break;
 				}
 				if (caller !is null && canChangeClass(this, caller))
