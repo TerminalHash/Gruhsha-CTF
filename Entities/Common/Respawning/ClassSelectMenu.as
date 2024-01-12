@@ -90,6 +90,7 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 					{
 						button.SetHoverText( "    " + "Total " + P_Archers + " / " + archers_limit + "\n");
 					}
+					button.SetEnabled(false);
 				}
 			}
 			else if (pclass.configFilename == "builder")
@@ -108,6 +109,7 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 					{
 						button.SetHoverText( "    " + "Total " + P_Builders + " / " + builders_limit + "\n");
 					}
+					button.SetEnabled(false);
 				}
 			}
 //			button.SetHoverText( pclass.description + "\n");
