@@ -2,8 +2,6 @@
 #include "Accolades.as";
 #include "ColoredNameToggleCommon.as";
 #include "ApprovedTeams.as";
-#include "RunnerHead.as";
-#include "pathway.as";
 //#include "RulesCore"
 
 CPlayer@ hoveredPlayer;
@@ -285,10 +283,6 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		Vec2f headOffset = Vec2f(30, 0);
 		float headScale = 0.5f;
 
-		// head stuff
-		string customHeadTexture = getPath() + "Characters/CustomHeads/" + username + ".png";
-		//string customHeadTexture = ""; // comment out line above and uncomment this for debug
-
 		if (b !is null)
 		{
 			headIndex = b.get_s32("head index");
@@ -300,52 +294,6 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		if(teamname != "Spectators")
 		{
 			GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
-			//printf("We set " + headTexture + " for player " + username + " in " + teamIndex); // debug shit
-		}
-		if(teamname == "Spectators")
-		{
-			Accolades@ acc = getPlayerAccolades(p.getUsername());
-
-			// draw player head in spectator table
-			if (customHeadTexture != "") // if player has custom head
-			{
-				headIndex = p.get_s32("head index");
-				headTexture = customHeadTexture;
-				headOffset += Vec2f(-8, -12);
-				headScale = 1.0f;
-
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
-				//printf ("We set " + headTexture + " for player " + username + " from custom heads"); // debug shit
-			}
-			else if (acc.hasCustomHead()) // if player has head in accolade data
-			{
-				headIndex = acc.customHeadIndex;
-				headTexture = acc.customHeadTexture;
-				headOffset += Vec2f(-8, -12);
-				headScale = 1.0f;
-
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
-				printf ("We set " + headTexture + " for player " + username + " from accolade data"); // debug shit
-			}
-			/*else if  // if player don't have custom head, but has DLC packs
-			{
-				headTexture = "Characters/anonymous.png";
-				headOffset += Vec2f(-10, -6);
-				headScale = 1.0f;
-
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
-				//printf ("We set " + headTexture + " for player " + username + " from default pack"); // debug shit
-			}*/
-			else // if player don't have custom head or DLC packs
-			{
-				headTexture = "Characters/anonymous.png";
-				headOffset += Vec2f(-10, -6);
-				headScale = 1.0f;
-
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
-				//printf ("We set " + headTexture + " for player " + username + " from default pack"); // debug shit
-			}
-			//printf("We set " + headTexture + " for player " + username + " in " + teamIndex); // debug shit
 		}
 		// Mark captain in scoreboard
 		if (getRules().get_string("team_"+p.getTeamNum()+"_leader")==p.getUsername())
@@ -676,19 +624,26 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		{
 			if (isAdmin(getLocalPlayer()))
 			{
-				MakeScoreboardButton(Vec2f(bottomright.x - 330, topleft.y-7), "spec", p.getUsername());
-				MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "red", p.getUsername());
-				MakeScoreboardButton(Vec2f(bottomright.x - 470, topleft.y-7), "blue", p.getUsername());
+				if(p.getTeamNum() == 200) {
+					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "blue", p.getUsername());
+					MakeScoreboardButton(Vec2f(bottomright.x - 470, topleft.y-7), "red", p.getUsername());
+				} else if (p.getTeamNum() == 0) {
+					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "spec", p.getUsername());
+					MakeScoreboardButton(Vec2f(bottomright.x - 470, topleft.y-7), "red", p.getUsername());
+				} else if (p.getTeamNum() == 1) {
+					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "spec", p.getUsername());
+					MakeScoreboardButton(Vec2f(bottomright.x - 470, topleft.y-7), "blue", p.getUsername());
+				}
 			}
 			else if (local_is_captain && player_is_our_guy && player_isnt_local)  //&& !isPickingEnded()
 			{
 				if(p.getTeamNum() != 200) {
 					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "spec", p.getUsername());
 				}
-				else if (localplayer.getTeamNum() == 0) {
+				else if (p.getTeamNum() == 200 && localplayer.getTeamNum() == 0) {
 					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "blue", p.getUsername());
 				}
-				else if (localplayer.getTeamNum() == 1) {
+				else if (p.getTeamNum() == 200 && localplayer.getTeamNum() == 1) {
 					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "red", p.getUsername());
 				}
 			}
