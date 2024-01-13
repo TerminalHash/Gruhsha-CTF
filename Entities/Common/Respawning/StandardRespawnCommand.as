@@ -20,7 +20,6 @@ void InitRespawnCommand(CBlob@ this)
 bool canChangeClass(CBlob@ this, CBlob@ blob)
 {
     if (blob.hasTag("switch class")) return false;
-
 	Vec2f tl, br, _tl, _br;
 	this.getShape().getBoundingRect(tl, br);
 	blob.getShape().getBoundingRect(_tl, _br);
@@ -62,7 +61,6 @@ void buildSpawnMenu(CBlob@ this, CBlob@ caller)
 	AddIconToken("$archer_class_icon$", "GUI/MenuItems.png", Vec2f(32, 32), 16, caller.getTeamNum());
 	BuildRespawnMenuFor(this, caller);
 }
-
 void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
 
@@ -83,11 +81,49 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 			if (getNet().isServer())
 			{
 				// build menu for them
-				CBlob@ caller = getBlobByNetworkID(params.read_u16());
+				CRules@ rules = getRules();
+				string username;
 
+				CPlayer@ player = null;
+
+				P_Archers = 0;
+				P_Builders = 0;
+				P_Knights = 0;
+
+				archers_limit = rules.get_u8("archers_limit");
+				builders_limit = rules.get_u8("builders_limit");
+
+				// calculating amount of players in classes
+				for (u32 i = 0; i < getPlayersCount(); i++)
+				{
+					if (rules.get_string("ROLE_" + username) == "archer" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Archers++;}
+					if (rules.get_string("ROLE_" + username) == "builder" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
+					if (rules.get_string("ROLE_" + username) == "knight" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Knights++;}
+				}
+				CBlob@ caller = getBlobByNetworkID(params.read_u16());
+				string classconfig = params.read_string();
+
+				// Limit classes, if game started
+				if (classconfig == "archer" && P_Archers >= archers_limit)
+				{
+					// It's shit just dont work
+					/* (player !is null && player.isMyPlayer())
+					{
+						client_AddToChat("You can't change your class to this one! Archers limit is: " + archers_limit, SColor(255, 180, 24, 94));
+					}*/
+					break;
+				}
+				if (classconfig == "builder" && P_Builders >= builders_limit && !rules.isWarmup())
+				{
+					// It's shit just dont work
+					/*if (player !is null && player.isMyPlayer())
+					{
+						client_AddToChat("You can't change your class to this one! Builders limit is: " + builders_limit, SColor(255, 180, 24, 94));
+					}*/
+					break;
+				}
 				if (caller !is null && canChangeClass(this, caller))
 				{
-					string classconfig = params.read_string();
 					CBlob @newBlob = server_CreateBlob(classconfig, caller.getTeamNum(), this.getRespawnPosition());
 
 					if (newBlob !is null)

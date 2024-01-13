@@ -210,19 +210,25 @@ class ApproveTeamsCommand : ChatCommand
 	}
 }
 
-class SetLimitCommand : ChatCommand
+class SetBuilderLimitCommand : ChatCommand
 {
-	SetLimitCommand()
+	SetBuilderLimitCommand()
 	{
-		super("limit", "Limits count of builders for every team");
-		SetUsage("<limit>");
+		super("blim", "Limits count of builders for every team");
+		SetUsage("<builder limit>");
 	}
 
 	bool canPlayerExecute(CPlayer@ player)
 	{
+		/*
 		CRules@ rules = getRules();
 		u8 caller_team = player.getTeamNum();
-		return (rules.get_string("team_"+caller_team+"_leader")==player.getUsername() && !isPickingEnded()); // if he is captain and picking is still going
+		return (rules.get_string("team_"+caller_team+"_leader") == player.getUsername() && !isPickingEnded()); // if he is captain and picking is still going
+		*/
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
 	}
 
 	void Execute(string[] args, CPlayer@ player)
@@ -234,5 +240,38 @@ class SetLimitCommand : ChatCommand
 		rules.set_u8("builders_limit", parseInt(args[0]));
 
 		if (isServer()) server_AddToChat("Максимум строителей теперь "+args[0], SColor(0xff474ac6));
+	}
+}
+
+class SetArcherLimitCommand : ChatCommand
+{
+	SetArcherLimitCommand()
+	{
+		super("alim", "Limits count of archers for every team");
+		SetUsage("<archer limit>");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		/*
+		CRules@ rules = getRules();
+		u8 caller_team = player.getTeamNum();
+		return (rules.get_string("team_"+caller_team+"_leader") == player.getUsername() && !isPickingEnded()); // if he is captain and picking is still going
+		*/
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		if (args.size() < 1) return;
+
+		rules.set_u8("archers_limit", parseInt(args[0]));
+
+		if (isServer()) server_AddToChat("Максимум лучников теперь "+args[0], SColor(0xff474ac6));
 	}
 }

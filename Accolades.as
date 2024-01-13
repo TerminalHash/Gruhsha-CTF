@@ -39,7 +39,7 @@ shared class Accolades
 	Accolades(ConfigFile@ cfg, string _username)
 	{
 		username = _username;
-		customHeadTexture = getPath() + "Custom/CustomHeads/" + username + ".png";
+		customHeadTexture = getPath() + "Characters/CustomHeads/" + username + ".png";
 		array<string> slices;
 		if(cfg.readIntoArray_string(slices, username))
 		{

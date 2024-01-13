@@ -90,7 +90,7 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 {
 	if (!canSeeButtons(this, caller)) return;
 
-	if (caller.getConfig() == this.get_string("required class"))
+	if (caller.getConfig() == this.get_string("required class") || getRules().get_string("ROLE_" + caller.getPlayer().getUsername()) != "builder" || true)
 	{
 		this.set_Vec2f("shop offset", Vec2f_zero);
 	}

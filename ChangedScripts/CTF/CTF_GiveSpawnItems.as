@@ -64,9 +64,33 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 	{
 		if (gametime > getCTFTimer(this, p, "builder")) 
 		{
-			int wood_amount = 50;
-			int stone_amount = 15;
-			
+			int wood_amount = matchtime_wood_amount;
+			int stone_amount = matchtime_stone_amount;
+
+			// Dynamic matdrops shit
+			u32 player_amount = getPlayersCount(); // using this function because only it works :shrug:
+
+			if (player_amount >= 8 && player_amount < 10) // 4v4
+			{
+				wood_amount = 150;
+				stone_amount = 50;
+			}
+			if (player_amount >= 10 && player_amount < 14) // 5v5 and 6v6
+			{
+				wood_amount = matchtime_wood_amount;
+				stone_amount = matchtime_stone_amount;
+			}
+			else if (player_amount >= 14 && player_amount < 16) // 7v7
+			{
+				wood_amount = 75;
+				stone_amount = 20;
+			}
+			else if (player_amount >= 16) // 8v8 and more
+			{
+				wood_amount = 50;
+				stone_amount = 15;
+			}
+
 			if (this.isWarmup()) 
 			{
 				wood_amount = warmup_wood_amount;
