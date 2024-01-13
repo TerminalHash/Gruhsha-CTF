@@ -319,7 +319,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 			Accolades@ acc = getPlayerAccolades(p.getUsername());
 
 			// draw player head in spectator table
-			if (customHeadTexture != "") // if player has custom head
+			if (customHeadTexture != "" && !p.isBot()) // if player has custom head
 			{
 				headIndex = p.get_s32("head index");
 				headTexture = customHeadTexture;
@@ -329,7 +329,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
 				//printf ("We set " + headTexture + " for player " + username + " from custom heads"); // debug shit
 			}
-			else if (acc.hasCustomHead()) // if player has head in accolade data
+			else if (acc.hasCustomHead() && !p.isBot()) // if player has head in accolade data
 			{
 				headIndex = acc.customHeadIndex;
 				headTexture = acc.customHeadTexture;
@@ -339,7 +339,22 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
 				//printf ("We set " + headTexture + " for player " + username + " from accolade data"); // debug shit
 			}
-			else // if player don't have custom head or DLC packs
+
+			// Yet another attempt to get player's head index for DLC packs
+			/*else if (cl_head > 255) // if player don't have custom head, but has DLC pack
+			{
+				headIndex = ;
+				headTexture = getHeadsPackByIndex(getHeadsPackIndex(headIndex)).filename;
+				headOffset += Vec2f(-8, -12);
+				headScale = 1.0f;
+
+				printf("Index: " + headIndex + " Texture: " + headTexture + " Team: " + teamIndex);
+
+				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
+				//printf ("We set " + headTexture + " for player " + username + " from DLC"); // debug shit
+			}*/
+
+			else if (!p.isBot()) // if player don't have custom head or DLC packs and he is not a bot
 			{
 				headTexture = "Characters/anonymous.png";
 				headOffset += Vec2f(-10, -6);
@@ -347,6 +362,15 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 
 				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
 				//printf ("We set " + headTexture + " for player " + username + " from default pack"); // debug shit
+			}
+			else // if this a bot
+			{
+				headIndex = 120;
+				headTexture = getHeadsPackByIndex(getHeadsPackIndex(headIndex)).filename;
+				headOffset += Vec2f(-8, -12);
+				headScale = 1.0f;
+
+				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
 			}
 			//printf("We set " + headTexture + " for player " + username + " in " + teamIndex); // debug shit
 		}
