@@ -17,11 +17,12 @@ shared class PlayerClass
 int P_Archers;
 int P_Builders;
 int P_Knights;
+int P_Crushers;
 
 // initialization limits
 int archers_limit;
 int builders_limit;
-
+int crushers_limit;
 
 const f32 CLASS_BUTTON_SIZE = 2;
 
@@ -50,13 +51,18 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 	P_Archers = 0;
 	P_Builders = 0;
 	P_Knights = 0;
+	P_Crushers = 0;
 
 	// calculating amount of players in classes
 	for (u32 i = 0; i < getPlayersCount(); i++)
 	{
+		CRules@ rules = getRules();
+		string username;
+
 		if (getPlayer(i).getScoreboardFrame() == 2 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Archers++;}
 		if (getPlayer(i).getScoreboardFrame() == 1 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
 		if (getPlayer(i).getScoreboardFrame() == 3 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Knights++;}
+		if (rules.get_string("ROLE_" + username) == "crusher" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Crushers++;}
 	}
 	PlayerClass[]@ classes;
 //	for(uint i = 0 ; i < classes.length; i++)
@@ -73,6 +79,7 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 			// Limiting classes stuff
 			archers_limit = rules.get_u8("archers_limit");
 			builders_limit = rules.get_u8("builders_limit");
+			crushers_limit = 2;
 
 			if(pclass.configFilename == "archer")
 			{
@@ -108,6 +115,25 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 					else
 					{
 						button.SetHoverText( "    " + "Total " + P_Builders + " / " + builders_limit + "\n");
+					}
+					button.SetEnabled(false);
+				}
+			}
+			else if (pclass.configFilename == "crusher")
+			{
+				if (P_Crushers < crushers_limit)
+				{
+					button.SetHoverText("    " + P_Crushers + " / " + crushers_limit + "\n");
+				}
+				if (P_Crushers >= crushers_limit)
+				{
+					if (g_locale == "ru")
+					{
+						button.SetHoverText(" Может быть только: " + crushers_limit + " крушителей!" + "\n");
+					}
+					else
+					{
+						button.SetHoverText(" There can only be: " + crushers_limit + " hammermans!" + "\n");
 					}
 					button.SetEnabled(false);
 				}

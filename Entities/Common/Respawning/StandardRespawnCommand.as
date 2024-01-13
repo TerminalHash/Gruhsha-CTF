@@ -36,6 +36,7 @@ void InitClasses(CBlob@ this)
 	AddIconToken("$change_class$", "/GUI/InteractionIcons.png", Vec2f(32, 32), 12, 2);
 	addPlayerClass(this, "Builder", "$builder_class_icon$", "builder", "Build ALL the towers.");
 	addPlayerClass(this, "Knight", "$knight_class_icon$", "knight", "Hack and Slash.");
+	addPlayerClass(this, "Hammerman", "$crusher_class_icon$", "crusher", "Heavy hitting hammer weilder.");
 	addPlayerClass(this, "Archer", "$archer_class_icon$", "archer", "The Ranged Advantage.");
 }
 
@@ -58,6 +59,7 @@ void buildSpawnMenu(CBlob@ this, CBlob@ caller)
 {
 	AddIconToken("$builder_class_icon$", "GUI/MenuItems.png", Vec2f(32, 32), 8, caller.getTeamNum());
 	AddIconToken("$knight_class_icon$", "GUI/MenuItems.png", Vec2f(32, 32), 12, caller.getTeamNum());
+	AddIconToken("$crusher_class_icon$", "MenuItems_tavern.png", Vec2f(32, 32), 28);
 	AddIconToken("$archer_class_icon$", "GUI/MenuItems.png", Vec2f(32, 32), 16, caller.getTeamNum());
 	BuildRespawnMenuFor(this, caller);
 }
@@ -89,9 +91,11 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 				P_Archers = 0;
 				P_Builders = 0;
 				P_Knights = 0;
+				int P_Crushers = 0;
 
 				archers_limit = rules.get_u8("archers_limit");
 				builders_limit = rules.get_u8("builders_limit");
+				int crushers_limit = 2;
 
 				// calculating amount of players in classes
 				for (u32 i = 0; i < getPlayersCount(); i++)
@@ -99,6 +103,7 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 					if (rules.get_string("ROLE_" + username) == "archer" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Archers++;}
 					if (rules.get_string("ROLE_" + username) == "builder" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
 					if (rules.get_string("ROLE_" + username) == "knight" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Knights++;}
+					if (rules.get_string("ROLE_" + username) == "crusher" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Crushers++;}
 				}
 				CBlob@ caller = getBlobByNetworkID(params.read_u16());
 				string classconfig = params.read_string();
@@ -114,6 +119,15 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 					break;
 				}
 				if (classconfig == "builder" && P_Builders >= builders_limit && !rules.isWarmup())
+				{
+					// It's shit just dont work
+					/*if (player !is null && player.isMyPlayer())
+					{
+						client_AddToChat("You can't change your class to this one! Builders limit is: " + builders_limit, SColor(255, 180, 24, 94));
+					}*/
+					break;
+				}
+				if (classconfig == "crusher" && P_Crushers >= crushers_limit)
 				{
 					// It's shit just dont work
 					/*if (player !is null && player.isMyPlayer())
