@@ -286,6 +286,16 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		float headScale = 0.5f;
 
 		// head stuff
+/*
+	DEFAULT HEAD INDEXES
+	Index		Class		Sex
+	120			Builder		Male
+	124			Builder		Female
+	128			Knight		Male
+	132			Knight		Female
+	136			Archer		Male
+	140			Archer		Female
+*/
 		string customHeadTexture = getPath() + "Characters/CustomHeads/" + username + ".png";
 		//string customHeadTexture = ""; // comment out line above and uncomment this for debug
 
@@ -296,6 +306,8 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 			teamIndex = b.get_s32("head team");
 			headOffset += Vec2f(-8, -12);
 			headScale = 1.0f;
+
+			//printf("Index: " + headIndex + " Texture: " + headTexture + " Team: " + teamIndex);
 		}
 		if(teamname != "Spectators")
 		{
@@ -327,15 +339,6 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
 				//printf ("We set " + headTexture + " for player " + username + " from accolade data"); // debug shit
 			}
-			/*else if  // if player don't have custom head, but has DLC packs
-			{
-				headTexture = "Characters/anonymous.png";
-				headOffset += Vec2f(-10, -6);
-				headScale = 1.0f;
-
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
-				//printf ("We set " + headTexture + " for player " + username + " from default pack"); // debug shit
-			}*/
 			else // if player don't have custom head or DLC packs
 			{
 				headTexture = "Characters/anonymous.png";
