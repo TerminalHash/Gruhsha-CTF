@@ -385,11 +385,20 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				GUI::DrawIcon("CaptainMark_en.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
 		}
 
-		// for kussaka: de texture
+		// Mark some users with their nameplate
 		if (getRules().get_string("team_"+p.getTeamNum()+"_leader")==p.getUsername())
 		{
 			if (p.getUsername() == "kusaka79")
 				GUI::DrawIcon("CaptainMark_kusaka.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
+
+			if (p.getUsername() == "TerminalHash")
+				GUI::DrawIcon("CaptainMark_terminal.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
+
+			if (p.getUsername() == "Pnext")
+				GUI::DrawIcon("CaptainMark_pnext.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
+
+			if (p.getUsername() == "egor0928931")
+				GUI::DrawIcon("CaptainMark_egor.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
 		}
 
 		//have to calc this from ticks
