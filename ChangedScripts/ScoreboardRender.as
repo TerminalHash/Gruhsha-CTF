@@ -281,7 +281,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 
 		string headTexture = "playercardicons.png";
 		int headIndex = 3;
-		int teamIndex = p.getTeamNum();
+		int teamNum = p.getTeamNum();
 		Vec2f headOffset = Vec2f(30, 0);
 		float headScale = 0.5f;
 
@@ -303,16 +303,16 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		{
 			headIndex = b.get_s32("head index");
 			headTexture = b.get_string("head texture");
-			teamIndex = b.get_s32("head team");
+			teamNum = b.get_s32("head team");
 			headOffset += Vec2f(-8, -12);
 			headScale = 1.0f;
 
-			//printf("Index: " + headIndex + " Texture: " + headTexture + " Team: " + teamIndex);
+			//printf("Index: " + headIndex + " Texture: " + headTexture + " Team: " + teamNum);
 		}
 		if(teamname != "Spectators")
 		{
-			GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
-			//printf("We set " + headTexture + " for player " + username + " in " + teamIndex); // debug shit
+			GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamNum);
+			//printf("We set " + headTexture + " for player " + username + " in " + teamNum); // debug shit
 		}
 		if(teamname == "Spectators")
 		{
@@ -326,7 +326,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				headOffset += Vec2f(-8, -12);
 				headScale = 1.0f;
 
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
+				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamNum);
 				//printf ("We set " + headTexture + " for player " + username + " from custom heads"); // debug shit
 			}
 			else if (acc.hasCustomHead() && !p.isBot()) // if player has head in accolade data
@@ -336,7 +336,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				headOffset += Vec2f(-8, -12);
 				headScale = 1.0f;
 
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
+				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamNum);
 				//printf ("We set " + headTexture + " for player " + username + " from accolade data"); // debug shit
 			}
 
@@ -348,9 +348,9 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				headOffset += Vec2f(-8, -12);
 				headScale = 1.0f;
 
-				printf("Index: " + headIndex + " Texture: " + headTexture + " Team: " + teamIndex);
+				printf("Index: " + headIndex + " Texture: " + headTexture + " Team: " + teamNum);
 
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
+				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamNum);
 				//printf ("We set " + headTexture + " for player " + username + " from DLC"); // debug shit
 			}*/
 
@@ -360,7 +360,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				headOffset += Vec2f(-10, -6);
 				headScale = 1.0f;
 
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
+				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamNum);
 				//printf ("We set " + headTexture + " for player " + username + " from default pack"); // debug shit
 			}
 			else // if this a bot
@@ -370,35 +370,27 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				headOffset += Vec2f(-8, -12);
 				headScale = 1.0f;
 
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamIndex);
+				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamNum);
 			}
-			//printf("We set " + headTexture + " for player " + username + " in " + teamIndex); // debug shit
+			//printf("We set " + headTexture + " for player " + username + " in " + teamNum); // debug shit
 		}
 		// Mark captain in scoreboard
-		if (getRules().get_string("team_"+p.getTeamNum()+"_leader")==p.getUsername())
+		if (getRules().get_string("team_"+teamNum+"_leader")==username)
 		{
-			if (g_locale == "ru")
-				GUI::DrawIcon("CaptainMark_ru.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
+			if (username == "kusaka79")
+				GUI::DrawIcon("CaptainMark/Custom/kusaka.png", 0, Vec2f(33, 9), topleft + Vec2f(-74, 0), 1.0f, 0);
+			else if (username == "TerminalHash")
+				GUI::DrawIcon("CaptainMark/Custom/terminal.png", 0, Vec2f(33, 9), topleft + Vec2f(-72, 0), 1.0f, 0);
+			else if (username == "Pnext")
+				GUI::DrawIcon("CaptainMark/Custom/pnext.png", 0, Vec2f(35, 9), topleft + Vec2f(-76, 0), 1.0f, 0);
+			else if (username == "egor0928931")
+				GUI::DrawIcon("CaptainMark/Custom/egor.png", 0, Vec2f(35, 9), topleft + Vec2f(-76, 0), 1.0f, 0);
+			else if (g_locale == "ru")
+				GUI::DrawIcon("CaptainMark/ru.png", 0, Vec2f(38, 9), topleft + Vec2f(-84, 0), 1.0f, 0);
 			else if (g_locale == "de")
-				GUI::DrawIcon("CaptainMark_de.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
+				GUI::DrawIcon("CaptainMark/de.png", 0, Vec2f(38, 9), topleft + Vec2f(-82, 0), 1.0f, 0);
 			else
-				GUI::DrawIcon("CaptainMark_en.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
-		}
-
-		// Mark some users with their nameplate
-		if (getRules().get_string("team_"+p.getTeamNum()+"_leader")==p.getUsername())
-		{
-			if (p.getUsername() == "kusaka79")
-				GUI::DrawIcon("CaptainMark_kusaka.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
-
-			if (p.getUsername() == "TerminalHash")
-				GUI::DrawIcon("CaptainMark_terminal.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
-
-			if (p.getUsername() == "Pnext")
-				GUI::DrawIcon("CaptainMark_pnext.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
-
-			if (p.getUsername() == "egor0928931")
-				GUI::DrawIcon("CaptainMark_egor.png", 0, Vec2f(42, 16), topleft +Vec2f(-96, -4)*0.5f, 0.5f, 0);
+				GUI::DrawIcon("CaptainMark/en.png", 0, Vec2f(38, 9), topleft + Vec2f(-82, 0), 1.0f, 0);
 		}
 
 		//have to calc this from ticks
@@ -414,8 +406,6 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		//right align clantag
 		if (clantag != "")
 		{
-			string username = p.getUsername();
-
 			GUI::GetTextDimensions(clantag, clantag_actualsize);
 			GUI::DrawText(clantag, topleft + Vec2f(name_buffer, 0), SColor(0xff888888));
 
@@ -551,7 +541,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				}
 				else
 				{
-					GUI::DrawIcon("AccoladeBadges", age_icon_start + icon, Vec2f(16, 16), Vec2f(x, topleft.y), 0.5f, p.getTeamNum());
+					GUI::DrawIcon("AccoladeBadges", age_icon_start + icon, Vec2f(16, 16), Vec2f(x, topleft.y), 0.5f, teamNum);
 				}
 
 				if (playerHover && mousePos.x > x - extra && mousePos.x < x + 16 + extra)
@@ -572,7 +562,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				int tier_icon_start = 15;
 				float x = bottomright.x - tier_start + 8;
 				float extra = 8;
-				GUI::DrawIcon("AccoladeBadges", tier_icon_start + tier, Vec2f(16, 16), Vec2f(x, topleft.y), 0.5f, p.getTeamNum());
+				GUI::DrawIcon("AccoladeBadges", tier_icon_start + tier, Vec2f(16, 16), Vec2f(x, topleft.y), 0.5f, teamNum);
 
 				if (playerHover && mousePos.x > x - extra && mousePos.x < x + 16 + extra)
 				{
@@ -648,7 +638,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 
 				float x = bottomright.x - group_x;
 
-				GUI::DrawIcon("AccoladeBadges", icon, Vec2f(16, 16), Vec2f(x, topleft.y), 0.5f, p.getTeamNum());
+				GUI::DrawIcon("AccoladeBadges", icon, Vec2f(16, 16), Vec2f(x, topleft.y), 0.5f, teamNum);
 				if (show_text > 0)
 				{
 					string label_text = "" + amount;
@@ -706,33 +696,33 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		GUI::DrawText("" + formatFloat(kills / Maths::Max(f32(deaths), 1.0f), "", 0, 2), Vec2f(bottomright.x - 50, topleft.y), kdr_color);
 
 		bool local_is_captain = localplayer !is null && localplayer.getUsername()==rules.get_string("team_"+localplayer.getTeamNum()+"_leader");
-		bool player_is_our_guy = localplayer !is null && localplayer.getTeamNum()==p.getTeamNum() || localplayer !is null && 200 == p.getTeamNum();
+		bool player_is_our_guy = localplayer !is null && localplayer.getTeamNum()==teamNum || localplayer !is null && 200 == teamNum;
 		bool player_isnt_local = localplayer !is null && p !is localplayer;
 		if ((controls.isKeyPressed(KEY_SHIFT) || controls.isKeyPressed(KEY_LSHIFT) || controls.isKeyPressed(KEY_RSHIFT)) && (controls.isKeyPressed(KEY_CONTROL) || controls.isKeyPressed(KEY_RCONTROL) || controls.isKeyPressed(KEY_LCONTROL)))
 		{
-			if (isAdmin(getLocalPlayer()))
+			if (isAdmin(localplayer))
 			{
-				if(p.getTeamNum() == 200) {
-					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "blue", p.getUsername());
-					MakeScoreboardButton(Vec2f(bottomright.x - 470, topleft.y-7), "red", p.getUsername());
-				} else if (p.getTeamNum() == 0) {
-					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "spec", p.getUsername());
-					MakeScoreboardButton(Vec2f(bottomright.x - 470, topleft.y-7), "red", p.getUsername());
-				} else if (p.getTeamNum() == 1) {
-					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "spec", p.getUsername());
-					MakeScoreboardButton(Vec2f(bottomright.x - 470, topleft.y-7), "blue", p.getUsername());
+				if(teamname == "Spectators") {
+					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "blue", username);
+					MakeScoreboardButton(Vec2f(bottomright.x - 470, topleft.y-7), "red", username);
+				} else if (teamNum == 0) {
+					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "spec", username);
+					MakeScoreboardButton(Vec2f(bottomright.x - 470, topleft.y-7), "red", username);
+				} else if (teamNum == 1) {
+					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "spec", username);
+					MakeScoreboardButton(Vec2f(bottomright.x - 470, topleft.y-7), "blue", username);
 				}
 			}
 			else if (local_is_captain && player_is_our_guy && player_isnt_local)  //&& !isPickingEnded()
 			{
-				if(p.getTeamNum() != 200) {
-					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "spec", p.getUsername());
+				if (teamNum == 200 && localplayer.getTeamNum() == 0) {
+					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "blue", username);
 				}
-				else if (p.getTeamNum() == 200 && localplayer.getTeamNum() == 0) {
-					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "blue", p.getUsername());
+				else if (teamNum == 200 && localplayer.getTeamNum() == 1) {
+					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "red", username);
 				}
-				else if (p.getTeamNum() == 200 && localplayer.getTeamNum() == 1) {
-					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "red", p.getUsername());
+				else if (teamNum != 200) {
+					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "spec", username);
 				}
 			}
 
