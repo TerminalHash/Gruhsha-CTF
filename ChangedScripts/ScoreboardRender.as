@@ -356,8 +356,9 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 
 			else if (!p.isBot()) // if player don't have custom head or DLC packs and he is not a bot
 			{
-				headTexture = "Characters/anonymous.png";
-				headOffset += Vec2f(-10, -6);
+				headIndex = 120;
+				headTexture = getHeadsPackByIndex(getHeadsPackIndex(headIndex)).filename;
+				headOffset += Vec2f(-8, -12);
 				headScale = 1.0f;
 
 				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamNum);
@@ -365,9 +366,9 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 			}
 			else // if this a bot
 			{
-				headIndex = 120;
-				headTexture = getHeadsPackByIndex(getHeadsPackIndex(headIndex)).filename;
-				headOffset += Vec2f(-8, -12);
+				headIndex = 0;
+				headTexture = "Characters/anonymous.png";
+				headOffset += Vec2f(-10, -6);
 				headScale = 1.0f;
 
 				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamNum);
