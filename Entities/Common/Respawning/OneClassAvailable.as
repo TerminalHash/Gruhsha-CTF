@@ -28,6 +28,8 @@ void onInit(CBlob@ this)
 
 void GetButtonsFor(CBlob@ this, CBlob@ caller)
 {
+	CRules@ rules = getRules();
+
 	if (!canSeeButtons(this, caller) || !this.exists(req_class)) return;
 
 	string cfg = this.get_string(req_class);
@@ -35,7 +37,7 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 	{
 		if (caller.getPlayer() is null) return;
 
-		if (getRules().get_string("ROLE_" + caller.getPlayer().getUsername()) == "builder")
+		if (rules.isWarmup())
 		{
 			CBitStream params;
 			write_classchange(params, caller.getNetworkID(), cfg);
