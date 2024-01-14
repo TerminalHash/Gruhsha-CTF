@@ -378,13 +378,13 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		if (getRules().get_string("team_"+teamNum+"_leader")==username)
 		{
 			if (username == "kusaka79")
-				GUI::DrawIcon("CaptainMark/Custom/kusaka.png", 0, Vec2f(33, 9), topleft + Vec2f(-74, 0), 1.0f, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_kusaka.png", 0, Vec2f(33, 9), topleft + Vec2f(-74, 0), 1.0f, 0);
 			else if (username == "TerminalHash")
-				GUI::DrawIcon("CaptainMark/Custom/terminal.png", 0, Vec2f(33, 9), topleft + Vec2f(-72, 0), 1.0f, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_terminal.png", 0, Vec2f(33, 9), topleft + Vec2f(-72, 0), 1.0f, 0);
 			else if (username == "Pnext")
-				GUI::DrawIcon("CaptainMark/Custom/pnext.png", 0, Vec2f(35, 9), topleft + Vec2f(-76, 0), 1.0f, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_pnext.png", 0, Vec2f(35, 9), topleft + Vec2f(-76, 0), 1.0f, 0);
 			else if (username == "egor0928931")
-				GUI::DrawIcon("CaptainMark/Custom/egor.png", 0, Vec2f(35, 9), topleft + Vec2f(-76, 0), 1.0f, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_egor.png", 0, Vec2f(35, 9), topleft + Vec2f(-76, 0), 1.0f, 0);
 			else if (g_locale == "ru")
 				GUI::DrawIcon("CaptainMark/ru.png", 0, Vec2f(38, 9), topleft + Vec2f(-84, 0), 1.0f, 0);
 			else if (g_locale == "de")
