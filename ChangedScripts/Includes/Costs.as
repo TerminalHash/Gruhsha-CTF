@@ -35,7 +35,7 @@ namespace CTFCosts
 	s32 catapult, ballista, ballista_ammo, ballista_bomb_ammo, outpost_coins, outpost_gold;
 
 	//Quarters.as
-	s32 beer, meal, egg, burger;
+	s32 beer, meal, egg, burger, pear;
 
 	//CommonBuilderBlocks.as
 	s32 workshop_wood;
@@ -164,8 +164,9 @@ void InitCosts()
 	//Quarters.as
 	CTFCosts::beer =                        ReadCost(cfg, costs, "cost_beer"               , 5);
 	CTFCosts::meal =                        ReadCost(cfg, costs, "cost_meal"               , 10);
-	CTFCosts::egg =                         ReadCost(cfg, costs, "cost_egg"                , 30);
-	CTFCosts::burger =                      ReadCost(cfg, costs, "cost_burger"             , 20);
+	CTFCosts::egg =                         ReadCost(cfg, costs, "cost_egg"                , 40);
+	CTFCosts::burger =                      ReadCost(cfg, costs, "cost_burger"             , 25);
+	CTFCosts::pear =                        ReadCost(cfg, costs, "cost_pear"               , 15);
 
 	//CommonBuilderBlocks.as
 	CTFCosts::workshop_wood =               ReadCost(cfg, costs, "cost_workshop_wood"      , 150);
