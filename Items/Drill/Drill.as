@@ -549,9 +549,9 @@ void onRender(CSprite@ this)
 		f32 holder_x = holder.getBlob().getPosition().x;
 
 		// Change cursor and play sound, when you can't drill outside zone
-		if (holder.getBlob().getConfig() == "knight" && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0) ) && holder.getBlob().isKeyPressed(key_action1))
+		if (holder.getBlob().getConfig() == "knight" && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0) ) && holder.getBlob().wasKeyPressed(key_action1))
 		{
-			CBlob@ b;
+			if (!isClient()) return;
 
 			getHUD().SetCursorImage(getPath() + "Items/Drill/CantDrillCursor.png", Vec2f(32, 32));
 			getHUD().SetCursorOffset(Vec2f(-11, -11) * cl_mouse_scale);
