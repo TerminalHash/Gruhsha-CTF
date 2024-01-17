@@ -6,6 +6,7 @@
 #include "MaterialCommon.as";
 #include "ShieldCommon.as";
 #include "KnockedCommon.as";
+#include "pathway.as";
 
 const f32 speed_thresh = 2.4f;
 const f32 speed_hard_thresh = 2.6f;
@@ -98,6 +99,45 @@ bool canBePutInInventory( CBlob@ this, CBlob@ inventoryBlob )
 
 bool canBePickedUp(CBlob@ this, CBlob@ byBlob)
 {
+	if (byBlob !is null)
+	{
+		if (byBlob.isKeyPressed(key_action1)) return false;
+	}
+
+	if (byBlob !is null)
+	{
+		CInventory@ inventory = byBlob.getInventory();
+		int hasitem = 0;
+		CBlob@ myitem = null;
+
+		for(int i=0; i < inventory.getItemsCount(); ++i)
+		{
+			if (inventory.getItem(i) !is null)
+			{
+				if (inventory.getItem(i).getName() == "drill")
+				{
+					hasitem += 1;
+					@myitem = inventory.getItem(i);
+				}
+			}
+		}
+
+		CBlob@ carry = byBlob.getCarriedBlob();
+		if (carry !is null)
+		{
+			if (carry.getName() == "drill")
+			{
+				hasitem += 1;
+				@myitem = carry;
+			}
+		}
+
+		if(hasitem > 0 && myitem !is null && myitem !is this)
+		{
+			return false;
+		}
+	}
+
 	return (this.get_u8(heat_prop) < heat_drop);
 }
 
@@ -223,9 +263,22 @@ void onTick(CBlob@ this)
 
 		if (holder.getConfig() != "archer")
 		{
+			f32 left = getRules().get_u16("barrier_x1");
+			f32 right = getRules().get_u16("barrier_x2");
+
+			f32 holder_x = holder.getPosition().x;
+
 			if (!holder.isKeyPressed(key_action1) || (holder.isKeyPressed(key_action2) && holder.getConfig() == "knight") || isKnocked(holder))
 			{
 				this.set_bool(buzz_prop, false);
+				return;
+			}
+
+			// disallow to use drill, when knight out of drill zone
+			if (holder.getConfig() == "knight" && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0) ))
+			{
+				this.set_bool(buzz_prop, false);
+				//printf("Go away!");
 				return;
 			}
 
@@ -350,6 +403,11 @@ void onTick(CBlob@ this)
 										//tile destroyed last hit
 
 										if (!map.isTileSolid(map.getTile(hi.tileOffset))){ break; }
+
+										if (map.isTileGround(tile) && getRules().getCurrentState() != INTERMISSION && getRules().getCurrentState() != WARMUP) 
+										{
+											i++;
+										}
 
 										map.server_DestroyTile(hi.hitpos, 1.0f, this);
 
@@ -524,6 +582,28 @@ void onRender(CSprite@ this)
 	Vec2f localPos = localBlob.getPosition();
 
 	bool hover = (mousePos - blobPos).getLength() < blob.getRadius() * 1.80f;
+
+	if (blob.isInInventory()) return;
+
+	if (holder !is null && holder.isMyPlayer() && holder.getBlob() !is null)
+	{
+		f32 left = getRules().get_u16("barrier_x1");
+		f32 right = getRules().get_u16("barrier_x2");
+
+		f32 holder_x = holder.getBlob().getPosition().x;
+
+		// Change cursor and play sound, when you can't drill outside zone
+		if (holder.getBlob().getConfig() == "knight" && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0) ) && holder.getBlob().isKeyJustPressed(key_action1) && isClient())
+		{
+			Sound::Play("NoAmmo.ogg");
+		}
+
+		if (holder.getBlob().getConfig() == "knight" && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0) ) && holder.getBlob().wasKeyPressed(key_action1) && isClient())
+		{
+			getHUD().SetCursorImage(getPath() + "Items/Drill/Sprites/CantDrillCursor.png", Vec2f(32, 32));
+			getHUD().SetCursorOffset(Vec2f(-11, -11) * cl_mouse_scale);
+		}
+	}
 
 	if ((hover && holder is null) || (holder !is null && holder.isLocal()))
 	{
