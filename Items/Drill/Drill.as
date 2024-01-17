@@ -99,6 +99,45 @@ bool canBePutInInventory( CBlob@ this, CBlob@ inventoryBlob )
 
 bool canBePickedUp(CBlob@ this, CBlob@ byBlob)
 {
+	if (byBlob !is null)
+	{
+		if (byBlob.isKeyPressed(key_action1)) return false;
+	}
+
+	if (byBlob !is null)
+	{
+		CInventory@ inventory = byBlob.getInventory();
+		int hasitem = 0;
+		CBlob@ myitem = null;
+
+		for(int i=0; i < inventory.getItemsCount(); ++i)
+		{
+			if (inventory.getItem(i) !is null)
+			{
+				if (inventory.getItem(i).getName() == "drill")
+				{
+					hasitem += 1;
+					@myitem = inventory.getItem(i);
+				}
+			}
+		}
+
+		CBlob@ carry = byBlob.getCarriedBlob();
+		if (carry !is null)
+		{
+			if (carry.getName() == "drill")
+			{
+				hasitem += 1;
+				@myitem = carry;
+			}
+		}
+
+		if(hasitem > 0 && myitem !is null && myitem !is this)
+		{
+			return false;
+		}
+	}
+
 	return (this.get_u8(heat_prop) < heat_drop);
 }
 
@@ -364,6 +403,11 @@ void onTick(CBlob@ this)
 										//tile destroyed last hit
 
 										if (!map.isTileSolid(map.getTile(hi.tileOffset))){ break; }
+
+										if (map.isTileGround(tile) && getRules().getCurrentState() != INTERMISSION && getRules().getCurrentState() != WARMUP) 
+										{
+											i++;
+										}
 
 										map.server_DestroyTile(hi.hitpos, 1.0f, this);
 
