@@ -492,19 +492,17 @@ void BombermanExplosion(CBlob@ this, f32 radius, f32 damage, f32 map_damage_radi
 
 bool canExplosionDamage(CMap@ map, Vec2f tpos, TileType t)
 {
-	// Waffle: Explosions ignore no build sectors and blobs in front of backwall
-	// CBlob@ blob = map.getBlobAtPosition(tpos); // TODO: make platform get detected
-	// bool hasValidFrontBlob = false;
-	// bool isBackwall = (t == CMap::tile_castle_back || t == CMap::tile_castle_back_moss || t == CMap::tile_wood_back);
-	// if (blob !is null)
-	// {
-	// 	string name = blob.getName();
-	// 	hasValidFrontBlob = (name == "wooden_door" || name == "stone_door" || name == "trap_block" || name == "wooden_platform" || name == "bridge");
-	// }
-	// return map.getSectorAtPosition(tpos, "no build") is null &&
-	//        (t != CMap::tile_ground_d0 && t != CMap::tile_stone_d0) && //don't _destroy_ ground, hit until its almost dead tho
-	// 	   !(hasValidFrontBlob && isBackwall); // don't destroy backwall if there is a door or trap block
-	return t != CMap::tile_ground_d0 && t != CMap::tile_stone_d0 && !map.isTileGold(t); // Waffle: Prevent explosives from breaking gold; //don't _destroy_ ground, hit until its almost dead tho
+	CBlob@ blob = map.getBlobAtPosition(tpos); // TODO: make platform get detected
+	bool hasValidFrontBlob = false;
+	bool isBackwall = (t == CMap::tile_castle_back || t == CMap::tile_castle_back_moss || t == CMap::tile_wood_back);
+	if (blob !is null)
+	{
+		string name = blob.getName();
+		hasValidFrontBlob = (name == "wooden_door" || name == "stone_door" || name == "trap_block" || name == "wooden_platform" || name == "bridge");
+	}
+	return map.getSectorAtPosition(tpos, "no build") is null &&
+	       (t != CMap::tile_ground_d0 && t != CMap::tile_stone_d0) && //don't _destroy_ ground, hit until its almost dead tho
+		   !(hasValidFrontBlob && isBackwall); // don't destroy backwall if there is a door or trap block
 }
 
 bool canExplosionDestroy(CMap@ map, Vec2f tpos, TileType t)
