@@ -866,6 +866,7 @@ void onRenderScoreboard(CRules@ this)
 
 
 	float scoreboardHeight = topleft.y + scrollOffset;
+	float screenWidth = getScreenWidth();
 	float screenHeight = getScreenHeight();
 	CControls@ controls = getControls();
 
@@ -888,8 +889,17 @@ void onRenderScoreboard(CRules@ this)
 
 	drawHoverExplanation(hovered_accolade, hovered_age, hovered_tier, Vec2f(getScreenWidth() * 0.5, topleft.y));
 
-	ScoreboardField(Vec2f(topleft.x - 10, 116.0f-scrollOffset), "Current version: v2.10");
-	LinkButton(Vec2f(topleft.x + 170, 116.0f-scrollOffset), "Github ", "https://github.com/TerminalHash/Gruhsha-CTF");
+	ScoreboardField(
+		Vec2f(screenWidth - topleft.x - 200, 115 - scrollOffset),
+		Vec2f(screenWidth - topleft.x,       115 - scrollOffset + 40),
+		"Current version: v2.10"
+	);
+	LinkButton(
+		Vec2f(screenWidth - topleft.x - 275, 115 - scrollOffset),
+		Vec2f(screenWidth - topleft.x - 205, 115 - scrollOffset + 40),
+		"Github ",
+		"https://github.com/TerminalHash/Gruhsha-CTF"
+	);
 
 	mouseWasPressed2 = controls.mousePressed2;
 }
@@ -1053,7 +1063,7 @@ void MakeScoreboardButton(Vec2f pos, const string&in text, const string username
 	if(text == "blue"){
 		button_color = SColor(0xff1A6F9E);
 	}
-	else if(text == "red")
+	else if (text == "red")
 	{
 		button_color = SColor(0xffBA2721);
 	}
@@ -1061,8 +1071,8 @@ void MakeScoreboardButton(Vec2f pos, const string&in text, const string username
 	{
 		button_color = 0xffffffff;
 	}
-	const bool hover = (mousePos.x > tl.x && mousePos.x < br.x && mousePos.y > tl.y && mousePos.y < br.y); 
-	if (hover) 
+	const bool hover = (mousePos.x > tl.x && mousePos.x < br.x && mousePos.y > tl.y && mousePos.y < br.y);
+	if (hover)
 	{
 		if (controls.mousePressed1)
 		{
@@ -1122,15 +1132,10 @@ void MakeScoreboardButton(Vec2f pos, const string&in text, const string username
 }
 
 // website button
-void LinkButton(Vec2f pos, const string&in text, const string&in website)
+void LinkButton(Vec2f tl, Vec2f br, const string&in text, const string&in website)
 {
-	Vec2f dim;
-	GUI::GetTextDimensions(text, dim);
-
-	const f32 width = dim.x + 20;
-	const f32 height = 40;
-	const Vec2f tl = Vec2f(getScreenWidth() - 10 - width - pos.x, pos.y);
-	const Vec2f br = Vec2f(getScreenWidth() - 10 - pos.x, tl.y + height);
+	const f32 width = br.x - tl.x;
+	const f32 height = br.y - tl.y;
 
 	CControls@ controls = getControls();
 	const Vec2f mousePos = controls.getMouseScreenPos();
@@ -1140,35 +1145,32 @@ void LinkButton(Vec2f pos, const string&in text, const string&in website)
 	if (hover)
 	{
 		GUI::DrawButton(tl, br);
-
-		if (controls.mousePressed1 && !mouseWasPressed1)
+		if (controls.mousePressed1)
 		{
-			Sound::Play("option");
-			OpenWebsite(website);
+			if (!mouseWasPressed1)
+			{
+				Sound::Play("option");
+				OpenWebsite(website);
+				mouseWasPressed1 = true;
+			}
 		}
+		else
+		{
+			mouseWasPressed1 = false;
+		}
+
 	}
 	else
 	{
 		GUI::DrawPane(tl, br, 0xffcfcfcf);
 	}
 
-	GUI::DrawTextCentered(text, Vec2f(tl.x + (width * 0.50f), tl.y + (height * 0.50f)), 0xffffffff);
+	GUI::DrawTextCentered(text, Vec2f(tl.x + ((br.x - tl.x) * 0.50f), tl.y + ((br.y - tl.y) * 0.50f)), 0xffffffff);
 }
 
 // text field
-void ScoreboardField(Vec2f pos, const string&in text)
+void ScoreboardField(Vec2f tl, Vec2f br, const string&in text)
 {
-	Vec2f dim;
-	GUI::GetTextDimensions(text, dim);
-
-	const f32 width = dim.x + 20;
-	const f32 height = 40;
-	const Vec2f tl = Vec2f(getScreenWidth() - 10 - width - pos.x, pos.y);
-	const Vec2f br = Vec2f(getScreenWidth() - 10 - pos.x, tl.y + height);
-
-	CControls@ controls = getControls();
-	const Vec2f mousePos = controls.getMouseScreenPos();
-
 	GUI::DrawPane(tl, br, 0xffcfcfcf);
-	GUI::DrawTextCentered(text, Vec2f(tl.x + (width * 0.50f), tl.y + (height * 0.50f)), 0xffffffff);
+	GUI::DrawTextCentered(text, Vec2f(tl.x + ((br.x - tl.x) * 0.50f), tl.y + ((br.y - tl.y) * 0.50f)), 0xffffffff);
 }
