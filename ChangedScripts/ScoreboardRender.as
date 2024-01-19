@@ -888,10 +888,10 @@ void onRenderScoreboard(CRules@ this)
 
 	drawHoverExplanation(hovered_accolade, hovered_age, hovered_tier, Vec2f(getScreenWidth() * 0.5, topleft.y));
 
-	LinkButton(Vec2f(getScreenWidth()/2+200, 116.0f-scrollOffset), "Github ", "https://github.com/TerminalHash/Gruhsha-CTF");
-	ScoreboardField(Vec2f(getScreenWidth()/2-390, 116.0f-scrollOffset), "Current version: v2.10");
+	ScoreboardField(Vec2f(topleft.x, 116.0f-scrollOffset), "Current version: v2.10");
+	LinkButton(Vec2f(topleft.x + 190, 116.0f-scrollOffset), "Github ", "https://github.com/TerminalHash/Gruhsha-CTF");
 
-	mouseWasPressed2 = controls.mousePressed2; 
+	mouseWasPressed2 = controls.mousePressed2;
 }
 
 void drawHoverExplanation(int hovered_accolade, int hovered_age, int hovered_tier, Vec2f centre_top)
