@@ -2,6 +2,7 @@
 //		update emotes instantly
 
 #include "EmotesCommon.as";
+#include "pathway.as";
 
 const u8 MENU_WIDTH = 9;
 
@@ -42,9 +43,20 @@ void LoadIcons(CPlayer@ player)
 	{
 		Emote@ emote;
 		emotes.get(tokens[i], @emote);
+
 		// TODO: rewrite this shit in the best way xddd
- 		AddIconToken(getIconName(emote.token), emote.pack.filePath + "_smol.png", Vec2f(32, 32), emote.index, player.getTeamNum());
+		if (emote.pack.name == "Default")
+		{
+			AddIconToken(getIconName(emote.token), getPath() + "Emoticons" + "_smol.png", Vec2f(32, 32), emote.index, player.getTeamNum());
+		}
+		else
+		{
+			AddIconToken(getIconName(emote.token), getPath() + emote.pack.name + "Emoticons_smol.png", Vec2f(32, 32), emote.index, player.getTeamNum());
+		}
+
 		//AddIconToken(getIconName(emote.token), emote.pack.filePath, Vec2f(32, 32), emote.index, player.getTeamNum());
+
+		//printf("Token: " + emote.token + " File: " + emote.pack.filePath + " Index: " + emote.index);
 	}
 }
 
