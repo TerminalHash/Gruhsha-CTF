@@ -28,7 +28,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 			{
 				dmg *= 0.25f;
 			}*/
-			dmg *= 0.4375f;
+			dmg *= 0.25f;
 			break;
 
 		case Hitters::burn:
@@ -36,7 +36,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 			break;
 
 		case Hitters::bomb:
-			dmg *= 1.85f; // Mo' damage to wood doors
+			dmg *= 1.30f; // Mo' damage to wood doors
 			break;
 
 		case Hitters::explosion:
