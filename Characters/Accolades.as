@@ -35,6 +35,7 @@ shared class Accolades
 	bool community_contributor = false;     //long time mods/admins/hosts, tourney organisers
 	bool map_contributor = false;           //official mapcycle (at any point)
 	bool moderation_contributor = false;    //official forum/discord/ingame admin, (at any point, not "dishonourably discharged")
+	bool grusha_contributor = false;
 
 	Accolades(ConfigFile@ cfg, string _username)
 	{
@@ -63,6 +64,8 @@ shared class Accolades
 					map_contributor = true;
 				} else if (s1 == "moderation") {
 					moderation_contributor = true;
+				} else if (s1 == "grusha") {
+					grusha_contributor = true;
 				}
 
 				//2-part accolades
@@ -253,5 +256,6 @@ string[] accolade_description = {
 	"Github Contributor - for significantly contributing to an issue or pull request on the KAG GitHub",
 	"Map Contributor - for contributing to the official map cycle",
 	"Moderation Contributor - for contributing to moderating the game, forums, or discord",
-	"Gold Member - for enjoying the game with us since before the F2P launch"
+	"Gold Member - for enjoying the game with us since before the F2P launch",
+	"Контрибьютор Груши - за разработку мода Grusha CTF"
 };

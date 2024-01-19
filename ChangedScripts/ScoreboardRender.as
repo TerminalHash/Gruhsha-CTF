@@ -601,6 +601,8 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 					1 : 0),             7,     0,         0,
 				(p.getOldGold() ?
 					1 : 0),             8,     0,         0,
+				(acc.grusha_contributor ?
+					1 : 0),				9,     0,         0,
 
 				//tourney badges
 				acc.gold,               0,     1,         1,
@@ -886,6 +888,9 @@ void onRenderScoreboard(CRules@ this)
 
 	drawHoverExplanation(hovered_accolade, hovered_age, hovered_tier, Vec2f(getScreenWidth() * 0.5, topleft.y));
 
+	LinkButton(Vec2f(getScreenWidth()/2-530, 116.0f-scrollOffset), "Github ", "https://github.com/TerminalHash/Gruhsha-CTF");
+	ScoreboardField(Vec2f(getScreenWidth()/2-710, 116.0f-scrollOffset), "Current version: v2.10");
+
 	mouseWasPressed2 = controls.mousePressed2; 
 }
 
@@ -913,7 +918,7 @@ void drawHoverExplanation(int hovered_accolade, int hovered_age, int hovered_tie
 	Vec2f size(0, 0);
 	GUI::GetTextDimensions(desc, size);
 
-	Vec2f tl = centre_top - Vec2f(size.x / 2, 0);
+	Vec2f tl = centre_top - Vec2f(size.x / 2, -60);
 	Vec2f br = tl + size;
 
 	//margin
@@ -1114,4 +1119,56 @@ void MakeScoreboardButton(Vec2f pos, const string&in text, const string username
 
 		GUI::DrawTextCentered(text, Vec2f(tl.x + (width * 0.50f), tl.y + (height * 0.50f)), 0xffffffff); // пишет текст кнопки по центру
 // В общем кнопки надо чтобы были хоть какие-то. От них сдесь нужны именно чёрные уголки
+}
+
+// website button
+void LinkButton(Vec2f pos, const string&in text, const string&in website)
+{
+	Vec2f dim;
+	GUI::GetTextDimensions(text, dim);
+
+	const f32 width = dim.x + 20;
+	const f32 height = 40;
+	const Vec2f tl = Vec2f(getScreenWidth() - 10 - width - pos.x, pos.y);
+	const Vec2f br = Vec2f(getScreenWidth() - 10 - pos.x, tl.y + height);
+
+	CControls@ controls = getControls();
+	const Vec2f mousePos = controls.getMouseScreenPos();
+
+	const bool hover = (mousePos.x > tl.x && mousePos.x < br.x && mousePos.y > tl.y && mousePos.y < br.y);
+
+	if (hover)
+	{
+		GUI::DrawButton(tl, br);
+
+		if (controls.mousePressed1 && !mouseWasPressed1)
+		{
+			Sound::Play("option");
+			OpenWebsite(website);
+		}
+	}
+	else
+	{
+		GUI::DrawPane(tl, br, 0xffcfcfcf);
+	}
+
+	GUI::DrawTextCentered(text, Vec2f(tl.x + (width * 0.50f), tl.y + (height * 0.50f)), 0xffffffff);
+}
+
+// text field
+void ScoreboardField(Vec2f pos, const string&in text)
+{
+	Vec2f dim;
+	GUI::GetTextDimensions(text, dim);
+
+	const f32 width = dim.x + 20;
+	const f32 height = 40;
+	const Vec2f tl = Vec2f(getScreenWidth() - 10 - width - pos.x, pos.y);
+	const Vec2f br = Vec2f(getScreenWidth() - 10 - pos.x, tl.y + height);
+
+	CControls@ controls = getControls();
+	const Vec2f mousePos = controls.getMouseScreenPos();
+
+	GUI::DrawPane(tl, br, 0xffcfcfcf);
+	GUI::DrawTextCentered(text, Vec2f(tl.x + (width * 0.50f), tl.y + (height * 0.50f)), 0xffffffff);
 }
