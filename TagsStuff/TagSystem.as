@@ -209,39 +209,6 @@ void onInit(CRules@ rules)
 
 TagMenu tmenu;
 
-// TODO: Rewrite to ChatManager format
-bool onServerProcessChat(CRules@ this, const string &in textIn, string &out textOut, CPlayer@ player) {
-    // Handle !captains and !pick commands
-    string[]@ tokens = textIn.split(" ");
-    int tl = tokens.length;
-
-    if (tl > 0)
-    {
-        if ( player.isMod() && tokens[0] == "!tagmute" && tl >= 2)
-        {
-            CPlayer@ roleplayer = GetPlayerByIdent(tokens[1]);
-            if (roleplayer !is null && !roleplayer.isMod())
-            {
-                this.set_bool(roleplayer.getUsername() + "is_tag_muted", true);
-
-                string msg2 = "Muting tags from " + roleplayer.getUsername();
-            }
-        }
-        if ( player.isMod() && tokens[0] == "!tagunmute" && tl >= 2)
-        {
-            CPlayer@ roleplayer = GetPlayerByIdent(tokens[1]);
-            if (roleplayer !is null)
-            {
-                string msg2 = "Unmuting tags from " + roleplayer.getUsername();
-
-                this.set_bool(roleplayer.getUsername() + "is_tags_muted", false);
-            }
-        }
-    }
-
-    return true;
-}
-
 void onTick(CRules@ this)
 {
     CPlayer@ p = getLocalPlayer();
@@ -367,6 +334,8 @@ void onRender(CRules@ rules)
         if (!rules.exists(name + tag_duration)) continue;
         if (!rules.exists(name + tag_variable)) continue;
 
+        bool player_is_muted = rules.get_bool(player.getUsername() + "is_tag_muted");
+
         // tent swap class without pressing 'e'
         // moving more than 2 tunnels over doesn't clearmenus
 
@@ -451,64 +420,66 @@ void onRender(CRules@ rules)
         SColor tag_quote_color = tag_active_color.getInterpolated(tag_text_color, alpha);
         SColor name_color   = tag_active_color.getInterpolated(tag_text_color, alpha/* * .80f*/);
 
-        if (getLocalPlayer() !is null)
+        if (player_is_muted == false)
         {
-            if (getLocalPlayer().getBlob() !is null)
+            if (getLocalPlayer() !is null)
             {
-                if (time_elapsed <= 15)
+                if (getLocalPlayer().getBlob() !is null)
                 {
-                    f32 distance = (tag_world_pos - getLocalPlayer().getBlob().getPosition()).Length(); 
-                    if (distance < 400.0f)
+                    if (time_elapsed <= 15)
                     {
-                        Vec2f player_screen_pos = getDriver().getScreenPosFromWorldPos(getLocalPlayer().getBlob().getPosition());
+                        f32 distance = (tag_world_pos - getLocalPlayer().getBlob().getPosition()).Length();
+                        if (distance < 400.0f)
+                        {
+                            Vec2f player_screen_pos = getDriver().getScreenPosFromWorldPos(getLocalPlayer().getBlob().getPosition());
 
-                        GUI::DrawLine2D(tag_screen_pos, player_screen_pos, tag_quote_color);
+                            GUI::DrawLine2D(tag_screen_pos, player_screen_pos, tag_quote_color);
+                        }
                     }
                 }
             }
+
+            string tag_quote_font = get_font("AveriaSerif-Regular", s32(16.f * (screen_size_y / 720.f)));
+            string player_display_name_font = get_font("DejaVuSans-Bold", s32(12.f * (screen_size_y / 720.f)));
+
+            player_display_name = "<" + player_display_name + ">";
+
+            // draw tag text
+            GUI::SetFont(tag_quote_font);
+            Vec2f text_dimensions_0;
+            GUI::GetTextDimensions(tag_quote, text_dimensions_0);
+
+
+            GUI::DrawIcon("PingIcon.png", 0, Vec2f(64, 64), tag_screen_pos - Vec2f(64 * resolution_modifier_big, 64 * resolution_modifier_big) + Vec2f(0, Maths::Sin(getGameTime() / 3.0f) * 4), resolution_modifier_big, tag_quote_color);
+
+            // draw the indicator at the edge of the screen if it's off-screen
+            // the player_display_name can still go off the screen at the moment
+            if (tag_screen_pos.x < text_dimensions_0.x * .5f)
+            {
+                tag_screen_pos.x = text_dimensions_0.x * .5f;
+            }
+            if (tag_screen_pos.y < text_dimensions_0.y * .5f)
+            {
+                tag_screen_pos.y = text_dimensions_0.y * .5f;
+            }
+            if (tag_screen_pos.x >= screen_size_x - text_dimensions_0.x * .5f)
+            {
+                tag_screen_pos.x  = screen_size_x - text_dimensions_0.x * .5f;
+            }
+            if (tag_screen_pos.y >= screen_size_y - text_dimensions_0.y * .5f)
+            {
+                tag_screen_pos.y  = screen_size_y - text_dimensions_0.y * .5f;
+            }
+
+            GUI::SetFont(tag_quote_font);
+            GUI::DrawText(tag_quote, tag_screen_pos - text_dimensions_0 * .5f - Vec2f(0.f, text_dimensions_0.y - 2 * resolution_scale) + Vec2f(2, 2) + Vec2f(0, Maths::Sin(getGameTime() / 3.0f) * 4), SColor(255, 0, 0, 0));
+            GUI::DrawText(tag_quote, tag_screen_pos - text_dimensions_0 * .5f - Vec2f(0.f, text_dimensions_0.y - 2 * resolution_scale) + Vec2f(0, Maths::Sin(getGameTime() / 3.0f) * 4), tag_quote_color);
+
+            //draw player name
+            GUI::SetFont(player_display_name_font);
+            Vec2f text_dimensions_1;
+            GUI::GetTextDimensions(player_display_name, text_dimensions_1);
+            GUI::DrawText(player_display_name, tag_screen_pos - text_dimensions_1 * .5f + Vec2f(0.f, text_dimensions_0.y - 8 * resolution_scale) + Vec2f(0, Maths::Sin(getGameTime() / 3.0f) * 4), name_color);
         }
-
-        string tag_quote_font = get_font("AveriaSerif-Regular", s32(16.f * (screen_size_y / 720.f)));
-        string player_display_name_font = get_font("DejaVuSans-Bold", s32(12.f * (screen_size_y / 720.f)));
-
-        player_display_name = "<" + player_display_name + ">";
-
-        // draw tag text
-        GUI::SetFont(tag_quote_font);
-        Vec2f text_dimensions_0;
-        GUI::GetTextDimensions(tag_quote, text_dimensions_0);
-
-
-
-        GUI::DrawIcon("PingIcon.png", 0, Vec2f(64, 64), tag_screen_pos - Vec2f(64 * resolution_modifier_big, 64 * resolution_modifier_big) + Vec2f(0, Maths::Sin(getGameTime() / 3.0f) * 4), resolution_modifier_big, tag_quote_color);
-
-        // draw the indicator at the edge of the screen if it's off-screen
-        // the player_display_name can still go off the screen at the moment
-        if (tag_screen_pos.x < text_dimensions_0.x * .5f)
-        {
-            tag_screen_pos.x = text_dimensions_0.x * .5f;
-        }
-        if (tag_screen_pos.y < text_dimensions_0.y * .5f)
-        {
-            tag_screen_pos.y = text_dimensions_0.y * .5f;
-        }
-        if (tag_screen_pos.x >= screen_size_x - text_dimensions_0.x * .5f)
-        {
-            tag_screen_pos.x  = screen_size_x - text_dimensions_0.x * .5f;
-        }
-        if (tag_screen_pos.y >= screen_size_y - text_dimensions_0.y * .5f)
-        {
-            tag_screen_pos.y  = screen_size_y - text_dimensions_0.y * .5f;
-        }
-
-        GUI::SetFont(tag_quote_font);
-        GUI::DrawText(tag_quote, tag_screen_pos - text_dimensions_0 * .5f - Vec2f(0.f, text_dimensions_0.y - 2 * resolution_scale) + Vec2f(2, 2) + Vec2f(0, Maths::Sin(getGameTime() / 3.0f) * 4), SColor(255, 0, 0, 0));
-        GUI::DrawText(tag_quote, tag_screen_pos - text_dimensions_0 * .5f - Vec2f(0.f, text_dimensions_0.y - 2 * resolution_scale) + Vec2f(0, Maths::Sin(getGameTime() / 3.0f) * 4), tag_quote_color);
-
-        //draw player name
-        GUI::SetFont(player_display_name_font);
-        Vec2f text_dimensions_1;
-        GUI::GetTextDimensions(player_display_name, text_dimensions_1);
-        GUI::DrawText(player_display_name, tag_screen_pos - text_dimensions_1 * .5f + Vec2f(0.f, text_dimensions_0.y - 8 * resolution_scale) + Vec2f(0, Maths::Sin(getGameTime() / 3.0f) * 4), name_color);
     }
 }
