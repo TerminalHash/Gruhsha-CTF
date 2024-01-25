@@ -17,7 +17,7 @@
     5             RETREAT
     6             HELP
     7             KEG
-    8             ???
+    8             WiT SENCE
 
 */
 
@@ -244,41 +244,41 @@ void onTick(CRules@ this)
 
             TagMenuEntry@ entry = TagMenuEntry("1", controls.getMouseScreenPos());
             entry.visible_name = "GO HERE";
-            entry.t_color = SColor( 255, 255,  255,  255);
+            entry.t_color = SColor( 255, 122,  255,  104);
             menu.add_entry(entry);
 
             TagMenuEntry@ entry2 = TagMenuEntry("2", controls.getMouseScreenPos());
             entry2.visible_name = "DIG HERE";
-            entry2.t_color = SColor( 255, 255,  255,  255);
+            entry2.t_color = SColor( 255, 169,  113,  80);
             menu.add_entry(entry2);
 
             TagMenuEntry@ entry3 = TagMenuEntry("3", controls.getMouseScreenPos());
             entry3.visible_name = "ATTACK";
-            entry3.t_color = SColor( 255, 255,  255,  255);
+            entry3.t_color = SColor( 255, 238,  200,  0);
             menu.add_entry(entry3);
 
             TagMenuEntry@ entry4 = TagMenuEntry("4", controls.getMouseScreenPos());
             entry4.visible_name = "DANGER";
-            entry4.t_color = SColor( 255, 255,  255,  255);
+            entry4.t_color = SColor( 255, 235,  0,  0);
             menu.add_entry(entry4);
 
             TagMenuEntry@ entry5 = TagMenuEntry("5", controls.getMouseScreenPos());
             entry5.visible_name = "RETREAT";
-            entry5.t_color = SColor( 255, 255,  255,  255);
+            entry5.t_color = SColor( 255, 232,  124,  0);
             menu.add_entry(entry5);
 
             TagMenuEntry@ entry6 = TagMenuEntry("6", controls.getMouseScreenPos());
             entry6.visible_name = "HELP";
-            entry6.t_color = SColor( 255, 255,  255,  255);
+            entry6.t_color = SColor( 255, 169,  235,  255);
             menu.add_entry(entry6);
 
             TagMenuEntry@ entry7 = TagMenuEntry("7", controls.getMouseScreenPos());
             entry7.visible_name = "KEG";
-            entry7.t_color = SColor( 255, 255,  255,  255);
+            entry7.t_color = SColor( 255, 255,  131,  56);
             menu.add_entry(entry7);
 
             TagMenuEntry@ entry8 = TagMenuEntry("8", controls.getMouseScreenPos());
-            entry8.visible_name = "???";
+            entry8.visible_name = "WiT SENCE";
             entry8.t_color = SColor( 255,  255, 255, 255);
             menu.add_entry(entry8);
 
@@ -392,21 +392,21 @@ void onRender(CRules@ rules)
         /////////////////////////////////////////////////////////
         // tag list
         if (tag_unit == 1)
-        { tag_quote = "GO HERE"; tag_active_color = SColor( 255, 255,  255,  255); }
+        { tag_quote = "GO HERE"; tag_active_color = SColor( 255, 122,  255,  104); }
         if (tag_unit == 2)
-        { tag_quote = "DIG HERE"; tag_active_color = SColor( 255, 255,  255,  255); }
+        { tag_quote = "DIG HERE"; tag_active_color = SColor( 255, 169,  113,  80); }
         if (tag_unit == 3)
-        { tag_quote = "ATTACK"; tag_active_color = SColor( 255, 255,  255,  255); }
+        { tag_quote = "ATTACK"; tag_active_color = SColor( 255, 238,  200,  0); }
         if (tag_unit == 4)
-        { tag_quote = "DANGER"; tag_active_color = SColor( 255, 255,  255,  255); }
+        { tag_quote = "DANGER"; tag_active_color = SColor( 255, 235,  0,  0); }
         if (tag_unit == 5)
-        { tag_quote = "RETREAT!"; tag_active_color = SColor( 255, 255,  255,  255); }
+        { tag_quote = "RETREAT!"; tag_active_color = SColor( 255, 232,  124,  0); }
         if (tag_unit == 6)
-        { tag_quote = "HELP"; tag_active_color = SColor( 255, 255,  255,  255); }
+        { tag_quote = "HELP"; tag_active_color = SColor( 255, 169,  235,  255); }
         if (tag_unit == 7)
-        { tag_quote = "KEG"; tag_active_color = SColor( 255, 255,  255,  255); }
+        { tag_quote = "KEG"; tag_active_color = SColor( 255, 255,  131,  56); }
         if (tag_unit == 8)
-        { tag_quote = "???"; tag_active_color = SColor( 255, 255,  255,  255); }
+        { tag_quote = "WiT SENCE"; tag_active_color = SColor( 255, 255,  255,  255); }
         /////////////////////////////////////////////////////////
 
         if (getLocalPlayer() !is null)
