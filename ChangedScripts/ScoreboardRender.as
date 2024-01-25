@@ -378,6 +378,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		// Mark captain in scoreboard
 		if (getRules().get_string("team_"+teamNum+"_leader")==username)
 		{
+			// set custom plate first
 			if (username == "kusaka79")
 				GUI::DrawIcon("CaptainMark/Custom/cm_kusaka.png", 0, Vec2f(33, 9), topleft + Vec2f(-74, 0), 1.0f, 0);
 			else if (username == "TerminalHash")
@@ -390,6 +391,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				GUI::DrawIcon("CaptainMark/Custom/cm_think.png", 0, Vec2f(31, 9), topleft + Vec2f(-72, 0), 1.0f, 0);
 			else if (username == "Bohdanu")
 				GUI::DrawIcon("CaptainMark/Custom/cm_bohdanu.png", 0, Vec2f(34, 9), topleft + Vec2f(-72, 0), 1.0f, 0);
+			// if player doesn't have custom plate - set default
 			else if (g_locale == "ru")
 				GUI::DrawIcon("CaptainMark/ru.png", 0, Vec2f(38, 9), topleft + Vec2f(-84, 0), 1.0f, 0);
 			else if (g_locale == "de")
