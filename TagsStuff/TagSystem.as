@@ -274,7 +274,7 @@ void onTick(CRules@ this)
 
             TagMenuEntry@ entry7 = TagMenuEntry("7", controls.getMouseScreenPos());
             entry7.visible_name = "KEG";
-            entry7.t_color = SColor( 255, 255,  131,  56);
+            entry7.t_color = SColor( 255, 255,  126,  126);
             menu.add_entry(entry7);
 
             TagMenuEntry@ entry8 = TagMenuEntry("8", controls.getMouseScreenPos());
@@ -404,7 +404,7 @@ void onRender(CRules@ rules)
         if (tag_unit == 6)
         { tag_quote = "HELP"; tag_active_color = SColor( 255, 169,  235,  255); }
         if (tag_unit == 7)
-        { tag_quote = "KEG"; tag_active_color = SColor( 255, 255,  131,  56); }
+        { tag_quote = "KEG"; tag_active_color = SColor( 255, 255,  126,  126); }
         if (tag_unit == 8)
         { tag_quote = "WiT SENCE"; tag_active_color = SColor( 255, 255,  255,  255); }
         /////////////////////////////////////////////////////////
