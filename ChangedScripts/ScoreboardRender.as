@@ -388,6 +388,8 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				GUI::DrawIcon("CaptainMark/Custom/cm_egor.png", 0, Vec2f(35, 9), topleft + Vec2f(-76, 0), 1.0f, 0);
 			else if (username == "Think_About")
 				GUI::DrawIcon("CaptainMark/Custom/cm_think.png", 0, Vec2f(31, 9), topleft + Vec2f(-72, 0), 1.0f, 0);
+			else if (username == "Bohdanu")
+				GUI::DrawIcon("CaptainMark/Custom/cm_bohdanu.png", 0, Vec2f(34, 9), topleft + Vec2f(-72, 0), 1.0f, 0);
 			else if (g_locale == "ru")
 				GUI::DrawIcon("CaptainMark/ru.png", 0, Vec2f(38, 9), topleft + Vec2f(-84, 0), 1.0f, 0);
 			else if (g_locale == "de")
