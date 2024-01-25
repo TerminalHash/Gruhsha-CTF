@@ -17,19 +17,24 @@ SColor getNameColour(CPlayer@ p)
 
 	string username = p.getUsername();
 
+	// set custom color for rolas
 	if (p.isDev() && showColor) {
 		c = SColor(0xffb400ff); //dev
-	} else if (username == "TerminalHash") {
-		c = SColor(0xff75507b);
-	} else if (username == "kusaka79") {
-		c = SColor(0xff000000);
 	} else if (p.isGuard() && showColor) {
 		c = SColor(0xffa0ffa0); //guard
 	} else if (isAdmin(p) && showColor) {
 		c = SColor(0xfffa5a00); //admin
 	} else if (p.getOldGold() && !p.isBot()) {
 		c = SColor(0xffffEE44); //my player
-	} else {
+	}
+	// set custom color for some players
+	else if (username == "TerminalHash") {
+		c = SColor(0xff75507b);
+	} else if (username == "kusaka79") {
+		c = SColor(0xff000000);
+	} 
+	// set default color for other
+	else {
 		c = SColor(0xffffffff); //normal
 	}
 
@@ -125,6 +130,8 @@ float drawServerInfo(float y)
 	// Waffle: Add extra tooltip for old stats
 	mid.y += 17;
 	GUI::DrawTextCentered(OLD_STATS_TOOLTIP, mid, OLD_STATS_COLOR);
+
+	// Draw grusha icons
 	GUI::DrawIcon("grusha.png", 0, Vec2f(64, 64), Vec2f(getScreenWidth()/2 - width/2 - 32, y - 32), 0.5f, 0);
 	GUI::DrawIcon("grusha_flip.png", 0, Vec2f(64, 64), Vec2f(getScreenWidth()/2 + width/2 - 64 + 32, y - 32), 0.5f, 0);
 	return bot.y;
