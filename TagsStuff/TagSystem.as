@@ -449,8 +449,14 @@ void onRender(CRules@ rules)
             Vec2f text_dimensions_0;
             GUI::GetTextDimensions(tag_quote, text_dimensions_0);
 
-
-            GUI::DrawIcon("PingIcon.png", 0, Vec2f(64, 64), tag_screen_pos - Vec2f(64 * resolution_modifier_big, 64 * resolution_modifier_big) + Vec2f(0, Maths::Sin(getGameTime() / 3.0f) * 4), resolution_modifier_big, tag_quote_color);
+            if (tag_unit == 7)
+            {
+                GUI::DrawIcon("PingIcon_keg.png", 0, Vec2f(64, 64), tag_screen_pos - Vec2f(64 * resolution_modifier_big, 64 * resolution_modifier_big) + Vec2f(0, Maths::Sin(getGameTime() / 3.0f) * 4), resolution_modifier_big, tag_quote_color);
+            }
+            else
+            {
+                GUI::DrawIcon("PingIcon.png", 0, Vec2f(64, 64), tag_screen_pos - Vec2f(64 * resolution_modifier_big, 64 * resolution_modifier_big) + Vec2f(0, Maths::Sin(getGameTime() / 3.0f) * 4), resolution_modifier_big, tag_quote_color);
+            }
 
             // draw the indicator at the edge of the screen if it's off-screen
             // the player_display_name can still go off the screen at the moment
