@@ -411,19 +411,22 @@ void onTick(CBlob@ this)
 
 										map.server_DestroyTile(hi.hitpos, 1.0f, this);
 
-										if (map.isTileCastle(tile) || map.isTileWood(tile) || map.isTileGold(tile))
+										if (holder.getConfig() == "builder" )
 										{
-											Material::fromTile(holder, tile, 1.0f);
-										}
-										else
-										{
-											Material::fromTile(holder, tile, 0.75f);
-										}
+											if (map.isTileCastle(tile) || map.isTileWood(tile) || map.isTileGold(tile))
+											{
+												Material::fromTile(holder, tile, 1.0f);
+											}
+											else
+											{
+												Material::fromTile(holder, tile, 0.75f);
+											}
 										
-										if (map.isTileGround(tile) || map.isTileStone(tile) || map.isTileThickStone(tile)) 
-										{
-											this.set_bool("just hit dirt", true);
-											this.Sync("just hit dirt", true);
+											if (map.isTileGround(tile) || map.isTileStone(tile) || map.isTileThickStone(tile))
+											{
+												this.set_bool("just hit dirt", true);
+												this.Sync("just hit dirt", true);
+											}
 										}
 
 									}
