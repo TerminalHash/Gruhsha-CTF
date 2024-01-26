@@ -128,6 +128,9 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 
 void Reset(CRules@ this)
 {
+	// Waffle: Do build phase resupply
+	this.set_s32(RESUPPLY_TIME_STRING, 1);
+
 	//restart everyone's timers
 	for (uint i = 0; i < getPlayersCount(); ++i) {
 		SetCTFTimer(this, getPlayer(i), 0, "builder");
@@ -154,6 +157,13 @@ void onTick(CRules@ this)
 	
 	if ((gametime % 15) != 5)
 		return;
+
+	// Waffle: Drop periodic crates of materials
+	if (gametime > this.get_s32(RESUPPLY_TIME_STRING))
+	{
+		SpawnResupplies(this);
+		this.set_s32(RESUPPLY_TIME_STRING, 9999999999);
+	}
 	
 	if (this.isWarmup()) 
 	{
@@ -206,6 +216,54 @@ void onTick(CRules@ this)
 		}
 	}
 }
+
+/////////////////////////////////////////////////
+// Codeb block for crate on game start
+// By mehwaffle
+/////////////////////////////////////////////////
+void SpawnResupplies(CRules@ this)
+{
+    CMap@ map = getMap();
+    if (map is null)
+    {
+        print("Failed to spawn resupplies, map was null");
+        return;
+    }
+
+    f32 auto_distance_from_edge_tents = Maths::Min(map.tilemapwidth * 0.15f * 8.0f, 100.0f) * map.tilesize;
+    Vec2f blue_resupply_location, red_resupply_location;
+    if (!map.getMarker("blue main spawn", blue_resupply_location))
+    {
+        blue_resupply_location.x = auto_distance_from_edge_tents;
+    }
+    if (!map.getMarker("red main spawn", red_resupply_location))
+    {
+        red_resupply_location.x = map.tilemapwidth * map.tilesize - auto_distance_from_edge_tents;
+    }
+
+    SpawnResupply(this, blue_resupply_location, 0);
+    SpawnResupply(this, red_resupply_location,  1);
+
+}
+
+void SpawnResupply(CRules@ this, Vec2f pos, u8 team)
+{
+    if (isServer())
+    {
+        CBlob@ crate = server_CreateBlob("crate", team, pos);
+        if (crate !is null)
+        {
+            crate.SetFacingLeft(team == 1);
+            SetMaterials(crate, "mat_wood", crate_warmup_wood_amount);
+            SetMaterials(crate, "mat_stone", crate_warmup_stone_amount);
+        }
+    }
+    else
+    {
+        Sound::Play("spawn.ogg");
+    }
+}
+/////////////////////////////////////////////////
 
 // Reset timer in case player who joins has an outdated timer
 void onNewPlayerJoin(CRules@ this, CPlayer@ player)
