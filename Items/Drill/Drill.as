@@ -428,6 +428,23 @@ void onTick(CBlob@ this)
 												this.Sync("just hit dirt", true);
 											}
 										}
+										else
+										{
+											if (map.isTileCastle(tile) || map.isTileWood(tile) || map.isTileGold(tile))
+											{
+												Material::fromTile(this, tile, 1.0f);
+											}
+											else
+											{
+												Material::fromTile(this, tile, 0.75f);
+											}
+
+											if (map.isTileGround(tile) || map.isTileStone(tile) || map.isTileThickStone(tile))
+											{
+												this.set_bool("just hit dirt", true);
+												this.Sync("just hit dirt", true);
+											}
+										}
 
 									}
 
