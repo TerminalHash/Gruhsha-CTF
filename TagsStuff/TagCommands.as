@@ -21,7 +21,7 @@ class MuteTags : ChatCommand
 		CRules@ rules = getRules();
 		rules.set_bool(player.getUsername() + "is_tag_muted", true);
 
-		if (isServer()) client_AddToChat("Теперь ты больше не увидишь метки от своих сокомандников", SColor(0xff474ac6));
+		if (isServer()) client_AddToChat("Звуки меток выключены", SColor(0xff474ac6));
 	}
 }
 
@@ -45,6 +45,6 @@ class UnmuteTags : ChatCommand
 		CRules@ rules = getRules();
 		rules.set_bool(player.getUsername() + "is_tag_muted", false);
 
-		if (isServer()) client_AddToChat("Ты снова видишь метки от своих сокомандников", SColor(0xff474ac6));
+		if (isServer()) client_AddToChat("Звуки меток включены", SColor(0xff474ac6));
 	}
 }
