@@ -415,6 +415,39 @@ shared class CTFCore : RulesCore
 		s32 ticksToStart = gamestart + warmUpTime - getGameTime();
 		ctf_spawns.force = false;
 
+		if (ticksToStart == 5 * 30 && rules.getCurrentState() != GAME)
+		{
+			for (int l=0; l<getPlayersCount(); ++l)
+			{
+				CPlayer @p = getPlayer(l);
+				if (p !is null)
+				{
+					CBlob @b = p.getBlob();
+
+					if (b !is null)
+					{
+						string role = getRules().get_string("ROLE_" + p.getUsername());
+						int teamNum = p.getTeamNum();
+
+						if (b.getName() == "builder" && !(getRules().get_string("team_" + teamNum + "_leader") == p.getUsername()))
+						{
+							role = "knight";
+							CBlob@ test = server_CreateBlobNoInit(role);
+
+							if (test !is null)
+							{
+								test.setPosition(b.getPosition());
+								b.server_Die();
+								test.Init();
+								test.server_SetPlayer(p);
+								test.server_setTeamNum(p.getTeamNum());
+							}
+						}
+					}
+				}
+			}
+		}
+
 		if (ticksToStart <= 0 && (rules.isWarmup()))
 		{
 			rules.SetCurrentState(GAME);
