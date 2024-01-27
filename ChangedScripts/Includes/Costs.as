@@ -25,7 +25,7 @@ namespace CTFCosts
 
 	//BuilderShop.as
 	s32 lantern_wood, bucket_wood, filled_bucket, sponge, boulder_stone,
-		trampoline_wood, trampoline_coins, saw_wood, saw_stone, drill_stone, drill,
+		trampoline_wood, trampoline_coins, saw_wood, saw_stone, drill,
 		crate_wood, crate;
 
 	//BoatShop.as
@@ -47,7 +47,7 @@ namespace WARCosts
 {
 	//Workbench.as
 	s32 lantern_wood, bucket_wood, sponge_wood, trampoline_wood,
-		crate_wood, drill_stone, saw_wood, dinghy_wood, boulder_stone;
+		crate_wood, saw_wood, dinghy_wood, boulder_stone, drill_stone;
 
 	//Scrolls
 	s32 crappiest_scroll, crappy_scroll, medium_scroll,
@@ -140,8 +140,8 @@ void InitCosts()
 	CTFCosts::trampoline_coins =            ReadCost(cfg, costs, "cost_trampoline_coins"   , 50);
 	CTFCosts::saw_wood =                    ReadCost(cfg, costs, "cost_saw_wood"           , 150);
 	CTFCosts::saw_stone =                   ReadCost(cfg, costs, "cost_saw_stone"          , 100);
-	CTFCosts::drill_stone =                 ReadCost(cfg, costs, "cost_drill_stone"        , 100);
-	CTFCosts::drill =                       ReadCost(cfg, costs, "cost_drill"              , 25);
+	/*CTFCosts::drill_stone =                 ReadCost(cfg, costs, "cost_drill_stone"        , 100);*/
+	CTFCosts::drill =                       ReadCost(cfg, costs, "cost_drill"              , 30);
 	CTFCosts::crate_wood =                  ReadCost(cfg, costs, "cost_crate_wood"         , 150);
 	CTFCosts::crate =                       ReadCost(cfg, costs, "cost_crate"              , 20);
 
