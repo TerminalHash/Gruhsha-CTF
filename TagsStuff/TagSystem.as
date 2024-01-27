@@ -143,11 +143,11 @@ void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
             {
 
                 rules.set_u32(player.getUsername() + "last_tag", getGameTime());
-                int upd_cooldown = 30;
+                int upd_cooldown = 60;
 
                 if (player.isMod())
                 {
-                    upd_cooldown = 8;
+                    upd_cooldown = 30;
                 }
 
                 if      (kind == 1) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
