@@ -41,17 +41,17 @@ void onInit(CBlob@ this)
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::waterbomb);
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Drill", getTeamIcon("drill", "Drill.png", team_num, Vec2f(32, 16), 0), "drill", Descriptions::drill, false);
-		/*AddRequirement(s.requirements, "blob", "mat_stone", "Stone", CTFCosts::drill_stone);*/
-		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::drill);
-	}
-	{
 		ShopItem@ s = addShopItem(this, "Mine", getTeamIcon("mine", "Mine.png", team_num, Vec2f(16, 16), 1), "mine", Descriptions::mine, false);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::mine);
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Keg", getTeamIcon("keg", "Keg.png", team_num, Vec2f(16, 16), 0), "keg", Descriptions::keg, false);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::keg);
+	}
+	{
+		ShopItem@ s = addShopItem(this, "Drill", getTeamIcon("drill", "Drill.png", team_num, Vec2f(32, 16), 0), "drill", Descriptions::drill, false);
+		/*AddRequirement(s.requirements, "blob", "mat_stone", "Stone", CTFCosts::drill_stone);*/
+		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::drill);
 	}
 }
 
