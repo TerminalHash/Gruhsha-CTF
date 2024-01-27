@@ -368,7 +368,7 @@ void onRender(CRules@ rules)
         float screen_size_y = getDriver().getScreenHeight();
         float resolution_scale = camera.targetDistance * (screen_size_y / 720.f); // NOTE(hobey): scaling relative to 1280x720
 
-        float resolution_modifier_big = resolution_scale * 0.225f;
+        float resolution_modifier_big = resolution_scale * 0.155f;
 
         if (time_elapsed == 0) resolution_modifier_big *= 5.5;
         if (time_elapsed == 1) resolution_modifier_big *= 5;

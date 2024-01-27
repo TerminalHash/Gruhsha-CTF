@@ -227,7 +227,7 @@ class TagMenu
         float screen_size_y = getDriver().getScreenHeight();
         f32 resolution_scale = (screen_size_y / 720.f);
 
-        GUI::DrawIcon("TagWheel.png", frame, Vec2f(256, 256), origin - Vec2f(128 * resolution_scale, 128 * resolution_scale), 0.5 * resolution_scale, SColor(50, 255, 255, 255));
+        /*GUI::DrawIcon("TagWheel.png", frame, Vec2f(256, 256), origin - Vec2f(128 * resolution_scale, 128 * resolution_scale), 0.5 * resolution_scale, SColor(50, 255, 255, 255));*/
     }
 
     // Render the wheel menu, including its items.
