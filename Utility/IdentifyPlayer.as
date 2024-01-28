@@ -4,7 +4,6 @@ CPlayer@ GetPlayerByIdent(string ident)
 {
     // Takes an identifier, which is a prefix of the player's character name
     // or username. If there is 1 matching player then they are returned.
-    // If 0 or 2+ then a warning is logged.
     ident = ident.toLower();
     CPlayer@[] matches; // players matching ident
 
