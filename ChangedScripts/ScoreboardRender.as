@@ -708,43 +708,83 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		GUI::DrawText("" + assists, Vec2f(bottomright.x - 120, topleft.y), kdr_color);
 		GUI::DrawText("" + formatFloat(kills / Maths::Max(f32(deaths), 1.0f), "", 0, 2), Vec2f(bottomright.x - 50, topleft.y), kdr_color);
 
-		bool local_is_captain = localplayer !is null && localplayer.getUsername()==rules.get_string("team_"+localplayer.getTeamNum()+"_leader");
-		bool player_is_our_guy = localplayer !is null && localplayer.getTeamNum()==teamNum || localplayer !is null && 200 == teamNum;
-		bool player_isnt_local = localplayer !is null && p !is localplayer;
-		if ((controls.isKeyPressed(KEY_SHIFT) || controls.isKeyPressed(KEY_LSHIFT) || controls.isKeyPressed(KEY_RSHIFT)) && (controls.isKeyPressed(KEY_CONTROL) || controls.isKeyPressed(KEY_RCONTROL) || controls.isKeyPressed(KEY_LCONTROL)))
-		{
-			if (isAdmin(localplayer))
-			{
-				if(teamname == "Spectators") {
-					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "blue", username);
-					MakeScoreboardButton(Vec2f(bottomright.x - 470, topleft.y-7), "red", username);
-				} else if (teamNum == 0) {
-					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "spec", username);
-					MakeScoreboardButton(Vec2f(bottomright.x - 470, topleft.y-7), "red", username);
-				} else if (teamNum == 1) {
-					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "spec", username);
-					MakeScoreboardButton(Vec2f(bottomright.x - 470, topleft.y-7), "blue", username);
+		bool localIsCaptain = localplayer !is null && localplayer.getUsername()==rules.get_string("team_"+localplayer.getTeamNum()+"_leader");
+		bool playerIsOur = localplayer !is null && localplayer.getTeamNum()==teamNum || localplayer !is null && 200 == teamNum;
+		bool playerIsNotLocal = localplayer !is null && p !is localplayer;
+
+		int teamNumSpectators = 200;
+		int teamNumBlue = 0;
+		int teamNumRed = 1;
+
+		if (controls.isKeyPressed(KEY_LSHIFT) &&
+			controls.isKeyPressed(KEY_LCONTROL)) {
+			if (isAdmin(localplayer)) {
+				if(teamNum == teamNumSpectators) {
+					MakeScoreboardButton(
+						Vec2f(topleft.x + 400, bottomright.y - 24),
+						Vec2f(topleft.x + 448, bottomright.y),
+						"blue", "blue", username
+					);
+					MakeScoreboardButton(
+						Vec2f(topleft.x + 450, bottomright.y - 24),
+						Vec2f(topleft.x + 498, bottomright.y),
+						"red", "red", username
+					);
+				} else if (teamNum == teamNumBlue) {
+					MakeScoreboardButton(
+						Vec2f(topleft.x + 400, bottomright.y - 24),
+						Vec2f(topleft.x + 448, bottomright.y),
+						"spec", "spec", username
+					);
+					MakeScoreboardButton(
+						Vec2f(topleft.x + 450, bottomright.y - 24),
+						Vec2f(topleft.x + 498, bottomright.y),
+						"red", "red", username
+					);
+				} else if (teamNum == teamNumRed) {
+					MakeScoreboardButton(
+						Vec2f(topleft.x + 400, bottomright.y - 24),
+						Vec2f(topleft.x + 448, bottomright.y),
+						"spec", "spec", username
+					);
+					MakeScoreboardButton(
+						Vec2f(topleft.x + 450, bottomright.y - 24),
+						Vec2f(topleft.x + 498, bottomright.y),
+						"red", "red", username
+					);
 				}
 			}
-			else if (local_is_captain && player_is_our_guy && player_isnt_local)  //&& !isPickingEnded()
+			else if (localIsCaptain && playerIsOur && playerIsNotLocal)  //&& !isPickingEnded()
 			{
-				if (teamNum == 200 && localplayer.getTeamNum() == 0) {
-					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "blue", username);
-				}
-				else if (teamNum == 200 && localplayer.getTeamNum() == 1) {
-					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "red", username);
-				}
-				else if (teamNum != 200) {
-					MakeScoreboardButton(Vec2f(bottomright.x - 400, topleft.y-7), "spec", username);
+				if (teamNum == teamNumSpectators && localplayer.getTeamNum() == 0) {
+					if (localplayer.getTeamNum() == teamNumBlue) {
+						MakeScoreboardButton(
+							Vec2f(topleft.x + 400, bottomright.y - 24),
+							Vec2f(topleft.x + 448, bottomright.y),
+							"pick", "blue", username
+						);
+					} else if(localplayer.getTeamNum() == teamNumRed) {
+						MakeScoreboardButton(
+							Vec2f(topleft.x + 400, bottomright.y - 24),
+							Vec2f(topleft.x + 448, bottomright.y),
+							"pick", "red", username
+						);
+					}
+				} else if (teamNum != teamNumSpectators) {
+					MakeScoreboardButton(
+						Vec2f(topleft.x + 400, bottomright.y - 24),
+						Vec2f(topleft.x + 448, bottomright.y),
+						"spec", "spec", username
+					);
 				}
 			}
 
 		}
 		else
 		{
-			if((local_is_captain || isAdmin(getLocalPlayer())) && (localplayer !is null && p is localplayer))
+			if((localIsCaptain || isAdmin(getLocalPlayer())) && (localplayer !is null && p is localplayer))
 			{
-				GUI::DrawText("Press Shift + Ctrl", Vec2f((getScreenWidth() - bottomright.x + 300), topleft.y), SColor(0xffffffff));
+				GUI::DrawText("Shift + Ctrl", Vec2f(topleft.x + 400, topleft.y), SColor(0xffffffff));
 			}
 		}
 	}
@@ -1056,95 +1096,61 @@ void DrawFancyCopiedText(string username, Vec2f mousePos, uint duration)
 	GUI::DrawTextCentered(text, pos, SColor((255 - duration * 4), col, col, col));
 }
 
-void MakeScoreboardButton(Vec2f pos, const string&in text, const string username)
+void MakeScoreboardButton(Vec2f tl, Vec2f br, const string&in text, const string&in team, const string username)
 {
-	Vec2f dim;
-	GUI::GetTextDimensions(text, dim);
+	CRules@ rules = getRules();
+	CBitStream params;
+	params.write_string(username);
 
-	const f32 width = dim.x + 20;
-	const f32 height = dim.y*1.5f;
-	const Vec2f tl = Vec2f(getScreenWidth() - 10 - width - pos.x, pos.y);
-	const Vec2f br = Vec2f(getScreenWidth() - 10 - pos.x, tl.y + height);
+	const f32 w = br.x - tl.x;
+	const f32 h = br.y - tl.y;
 	CControls@ controls = getControls();
 	const Vec2f mousePos = controls.getMouseScreenPos();
-	SColor button_color  = 0xffffffff;     // Цветная основа
-	if(text == "blue"){
-		button_color = SColor(0xff1A6F9E);
+
+	SColor buttonColor = SColor(0xFFFFFFFF);
+	if(team == "blue") {
+		buttonColor = SColor(0xFF1A6F9E);
+	} else if (team == "red") {
+		buttonColor = SColor(0xFFBA2721);
 	}
-	else if (text == "red")
-	{
-		button_color = SColor(0xffBA2721);
-	}
-	else // text == "spec"
-	{
-		button_color = 0xffffffff;
-	}
-	const bool hover = (mousePos.x > tl.x && mousePos.x < br.x && mousePos.y > tl.y && mousePos.y < br.y);
+
+	const bool hover = mousePos.x > tl.x && mousePos.x < br.x && mousePos.y > tl.y && mousePos.y < br.y;
+
 	if (hover)
 	{
-		if (controls.mousePressed1)
-		{
-			GUI::DrawButtonPressed(tl, br); // Отличается выделением в центре (от обычной). Далее оно будет замазанно так, что отличий в нашем случае нету
-			GUI::DrawPane(tl, br, button_color); // Основа
-			GUI::DrawPane(tl, br, 0x5f000000); // Потемнение как от тупо наведения типо
-			GUI::DrawPane(Vec2f(getScreenWidth() - 10 - width - pos.x + 4, pos.y + 4), Vec2f(getScreenWidth() - 10 - pos.x -4, Vec2f(getScreenWidth() - 10 - width - pos.x, pos.y).y + height -4), 0x5f000000);  // Потемнение в центре кнопки при нажатии типа
-			if (!mouseWasPressed1 && text == "spec") {
-				//Sound::Play("option");
-				//Sound::Play("achievement");
+		if (controls.mousePressed1) { // press
+			GUI::DrawPane(tl, br, buttonColor);
+			GUI::DrawPane(tl, br, 0x5f000000);
+			GUI::DrawPane(tl + Vec2f(4, 4), br - Vec2f(4, 4), 0x5f000000);
 
-				CRules@ rules = getRules();
-				CBitStream params;
-				params.write_string(username);
+			if (!mouseWasPressed1 && team == "spec") {
 				rules.SendCommand(rules.getCommandID("put to spec"), params);
-
 				mouseWasPressed1 = true;
-			}
-			else if (!mouseWasPressed1 && text == "blue")
-			{
-				//Sound::Play("option");
-				//Sound::Play("achievement");
-				CRules@ rules = getRules();
-				CBitStream params;
-				params.write_string(username);
+			} else if (!mouseWasPressed1 && team == "blue") {
 				rules.SendCommand(rules.getCommandID("put to blue"), params);
-
 				mouseWasPressed1 = true;
-			}
-			else if (!mouseWasPressed1 && text == "red")
-			{
-				//Sound::Play("option");
-				//Sound::Play("achievement");
-
-				CRules@ rules = getRules();
-				CBitStream params;
-				params.write_string(username);
+			} else if (!mouseWasPressed1 && team == "red") {
 				rules.SendCommand(rules.getCommandID("put to red"), params);
-
 				mouseWasPressed1 = true;
 			}
-		} else {
-			GUI::DrawButtonHover(tl, br);
+		} else { // focus
+			GUI::DrawPane(tl, br, buttonColor);
+			GUI::DrawPane(tl, br, 0x5f000000);
+
 			mouseWasPressed1 = false;
-			GUI::DrawPane(tl, br, button_color);  // Основа
-			GUI::DrawPane(tl, br, 0x5f000000);    // Потемнение типо от наведения
 		}
-	}
-	else
-	{
-		GUI::DrawButton(tl, br);             // Обычная кнопка
-		GUI::DrawPane(tl, br, button_color); // Основа
+	} else { // empty
+		GUI::DrawPane(tl, br, buttonColor);
 	}
 
-		GUI::DrawTextCentered(text, Vec2f(tl.x + (width * 0.50f), tl.y + (height * 0.50f)), 0xffffffff); // пишет текст кнопки по центру
-// В общем кнопки надо чтобы были хоть какие-то. От них сдесь нужны именно чёрные уголки
+	// пишет текст кнопки по центру
+	// в общем кнопки надо чтобы были хоть какие-то. От них сдесь нужны именно чёрные уголки
+	GUI::DrawTextCentered(text, Vec2f(tl.x + (w * 0.47f), tl.y + (h * 0.48f)), 0xffffffff);
 }
 
 // website button
 void LinkButton(Vec2f tl, Vec2f br, const string&in text, const string&in website)
 {
-	const f32 width = br.x - tl.x;
-	const f32 height = br.y - tl.y;
-
 	CControls@ controls = getControls();
 	const Vec2f mousePos = controls.getMouseScreenPos();
 
@@ -1153,23 +1159,19 @@ void LinkButton(Vec2f tl, Vec2f br, const string&in text, const string&in websit
 	if (hover)
 	{
 		GUI::DrawButton(tl, br);
-		if (controls.mousePressed1)
-		{
-			if (!mouseWasPressed1)
-			{
+		if (controls.mousePressed1) {
+			if (!mouseWasPressed1) {
 				Sound::Play("option");
 				OpenWebsite(website);
 				mouseWasPressed1 = true;
 			}
 		}
-		else
-		{
+		else {
 			mouseWasPressed1 = false;
 		}
 
 	}
-	else
-	{
+	else {
 		GUI::DrawPane(tl, br, 0xffcfcfcf);
 	}
 
