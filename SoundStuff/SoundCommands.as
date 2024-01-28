@@ -41,14 +41,14 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 				Sound::Play(soundrandom + "Tuturu" + random + ".ogg", pos);
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
-				this.set_u32(player.getUsername() + "soundcooldown", 45);
+				this.set_u32(player.getUsername() + "soundcooldown", 60);
 			}
 			else if (textIn == "poggers" || textIn == "POGGERS" || textIn == "pog")
 			{
 				Sound::Play(soundrandom + "poggers.ogg", pos);
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
-				this.set_u32(player.getUsername() + "soundcooldown", 45);
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
 			}
 			else if (textIn.find("sus", 0) != -1)
 			{
@@ -69,7 +69,7 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 				Sound::Play(soundrandom + "oue.ogg", pos, 0.8f);
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
-				this.set_u32(player.getUsername() + "soundcooldown", 30);
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
 			}
 
 			// russian sounds
@@ -78,42 +78,42 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 				Sound::Play(soundrandom + "penek.ogg", pos, 1.0f);
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
-				this.set_u32(player.getUsername() + "soundcooldown", 45);
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
 			}
 			else if (textIn == "БЛЯЯЯЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯ" || textIn == "БЛЯЯЯЯ" || textIn == "БЛЯТЬ" || textIn == "блять")
 			{
 				Sound::Play(soundrandom + "blyat.ogg", pos, 1.2f);
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
-				this.set_u32(player.getUsername() + "soundcooldown", 45);
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
 			}
 			else if (textIn == ("курлык") || textIn == ("kurlik") || textIn == ("kurluk") || textIn == ("kurlyk") || textIn == ("курлык-курлык") || textIn.find("курлык", 0) != -1 && textIn.find("курлык", 0) != -1)
 			{
 				Sound::Play(soundrandom + "kurlik.ogg", pos, 1.0f);
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
-				this.set_u32(player.getUsername() + "soundcooldown", 30);
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
 			}
 			else if (textIn == ("ЗАСНАЙПИЛИ"))
 			{
 				Sound::Play(soundrandom + "snipe.ogg", pos, 0.7f);
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
-				this.set_u32(player.getUsername() + "soundcooldown", 30);
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
 			}
 			else if (textIn == ("трипл") || textIn == ("triple"))
 			{
 				Sound::Play(soundrandom + "triple.ogg", pos, 0.7f);
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
-				this.set_u32(player.getUsername() + "soundcooldown", 30);
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
 			}
 			else if (textIn.find("охуительная", 0) != -1 && textIn.find("история", 0) != -1 || textIn.find("охуительные", 0) != -1 && textIn.find("истории", 0) != -1)
 			{
 				Sound::Play(soundrandom + "history.ogg", pos, 1.0f);
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
-				this.set_u32(player.getUsername() + "soundcooldown", 30);
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
 			}
 		}
 	return true;
