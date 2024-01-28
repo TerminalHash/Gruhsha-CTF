@@ -720,34 +720,34 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 			controls.isKeyPressed(KEY_LCONTROL)) {
 			if (isAdmin(localplayer)) {
 				if(teamNum == teamNumSpectators) {
-					MakeScoreboardButton(
+					DrawPickButton(
 						Vec2f(topleft.x + 400, bottomright.y - 24),
 						Vec2f(topleft.x + 448, bottomright.y),
 						"blue", "blue", username
 					);
-					MakeScoreboardButton(
+					DrawPickButton(
 						Vec2f(topleft.x + 450, bottomright.y - 24),
 						Vec2f(topleft.x + 498, bottomright.y),
 						"red", "red", username
 					);
 				} else if (teamNum == teamNumBlue) {
-					MakeScoreboardButton(
+					DrawPickButton(
 						Vec2f(topleft.x + 400, bottomright.y - 24),
 						Vec2f(topleft.x + 448, bottomright.y),
 						"spec", "spec", username
 					);
-					MakeScoreboardButton(
+					DrawPickButton(
 						Vec2f(topleft.x + 450, bottomright.y - 24),
 						Vec2f(topleft.x + 498, bottomright.y),
 						"red", "red", username
 					);
 				} else if (teamNum == teamNumRed) {
-					MakeScoreboardButton(
+					DrawPickButton(
 						Vec2f(topleft.x + 400, bottomright.y - 24),
 						Vec2f(topleft.x + 448, bottomright.y),
 						"spec", "spec", username
 					);
-					MakeScoreboardButton(
+					DrawPickButton(
 						Vec2f(topleft.x + 450, bottomright.y - 24),
 						Vec2f(topleft.x + 498, bottomright.y),
 						"red", "red", username
@@ -758,20 +758,20 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 			{
 				if (teamNum == teamNumSpectators && localplayer.getTeamNum() == 0) {
 					if (localplayer.getTeamNum() == teamNumBlue) {
-						MakeScoreboardButton(
+						DrawPickButton(
 							Vec2f(topleft.x + 400, bottomright.y - 24),
 							Vec2f(topleft.x + 448, bottomright.y),
 							"pick", "blue", username
 						);
 					} else if(localplayer.getTeamNum() == teamNumRed) {
-						MakeScoreboardButton(
+						DrawPickButton(
 							Vec2f(topleft.x + 400, bottomright.y - 24),
 							Vec2f(topleft.x + 448, bottomright.y),
 							"pick", "red", username
 						);
 					}
 				} else if (teamNum != teamNumSpectators) {
-					MakeScoreboardButton(
+					DrawPickButton(
 						Vec2f(topleft.x + 400, bottomright.y - 24),
 						Vec2f(topleft.x + 448, bottomright.y),
 						"spec", "spec", username
@@ -1096,7 +1096,7 @@ void DrawFancyCopiedText(string username, Vec2f mousePos, uint duration)
 	GUI::DrawTextCentered(text, pos, SColor((255 - duration * 4), col, col, col));
 }
 
-void MakeScoreboardButton(Vec2f tl, Vec2f br, const string&in text, const string&in team, const string username)
+void DrawPickButton(Vec2f tl, Vec2f br, const string&in text, const string&in team, const string username)
 {
 	CRules@ rules = getRules();
 	CBitStream params;
