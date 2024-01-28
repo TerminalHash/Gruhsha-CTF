@@ -114,25 +114,28 @@ void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
 
             if (player_is_muted_tags == false)
             {
-
-                rules.set_u32(player.getUsername() + "last_tag", getGameTime());
-                int upd_cooldown = 60;
-
-                if (player.isMod())
+                if (time_since_last_tag >= tag_cooldown)
                 {
-                    upd_cooldown = 30;
+
+                    rules.set_u32(player.getUsername() + "last_tag", getGameTime());
+                    int upd_cooldown = 40;
+
+                    if (player.isMod())
+                    {
+                        upd_cooldown = 10;
+                    }
+
+                    if      (kind == 1) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
+                    else if (kind == 2) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
+                    else if (kind == 3) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
+                    else if (kind == 4) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
+                    else if (kind == 5) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
+                    else if (kind == 6) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
+                    else if (kind == 7) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
+                    else if (kind == 8) { Sound::Play(soundsdir + "placeholder_wtf", pos, 3.0f); }
+
+                    rules.set_u32(player.getUsername() + "tag_cooldown_time", upd_cooldown);
                 }
-
-                if      (kind == 1) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
-                else if (kind == 2) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
-                else if (kind == 3) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
-                else if (kind == 4) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
-                else if (kind == 5) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
-                else if (kind == 6) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
-                else if (kind == 7) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
-                else if (kind == 8) { Sound::Play(soundsdir + "placeholder_wtf", pos, 3.0f); }
-
-                rules.set_u32(player.getUsername() + "tag_cooldown_time", upd_cooldown);
             }
         }
     }
