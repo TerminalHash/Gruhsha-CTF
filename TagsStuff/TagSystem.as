@@ -23,7 +23,10 @@
 
 #include "pathway.as";
 #include "TagCommon.as";
-//#include "BindingsCommon.as";
+
+// Utility
+#include "IdentifyPlayer.as";
+#include "GetFont.as";
 
 string tag_pos = " tag_pos";
 string tag_duration = " tag_time";
@@ -34,35 +37,6 @@ string path_string = getPath();
 string soundsdir = path_string + "Sounds/Tags/";
 
 s32 time_without_fade = 30;
-
-CPlayer@ GetPlayerByIdent(string ident) {
-    // Takes an identifier, which is a prefix of the player's character name
-    // or username. If there is 1 matching player then they are returned.
-    // If 0 or 2+ then a warning is logged.
-    ident = ident.toLower();
-    CPlayer@[] matches; // players matching ident
-
-    for (int i=0; i < getPlayerCount(); i++) {
-        CPlayer@ p = getPlayer(i);
-        if (p is null) continue;
-
-        string username = p.getUsername().toLower();
-        string charname = p.getCharacterName().toLower();
-
-        if (username == ident || charname == ident) {
-            return p;
-        }
-        else if (username.find(ident) >= 0 || charname.find(ident) >= 0) {
-            matches.push_back(p);
-        }
-    }
-
-    if (matches.length == 1) {
-        return matches[0];
-    }
-
-    return null;
-}
 
 void SendTag(CRules@ rules, CControls@ controls, CPlayer@ player, s32 kind, Vec2f custom_pos = Vec2f_zero)
 {
@@ -134,12 +108,11 @@ void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
         {
 
             CPlayer@ localplayer = getLocalPlayer();
-            bool player_is_muted = rules.get_bool(player.getUsername() + "is_tag_muted");
-            bool localplayer_is_deaf = rules.get_bool(localplayer.getUsername() + "is_deaf");
+            bool player_is_muted_tags = rules.get_bool(player.getUsername() + "is_tag_muted");
             u32 time_since_last_tag = getGameTime() - rules.get_u32(player.getUsername() + "last_tag");
             u32 tag_cooldown = rules.get_u32(player.getUsername() + "tag_cooldown_time");
 
-            if (player_is_muted == false)
+            if (player_is_muted_tags == false)
             {
 
                 rules.set_u32(player.getUsername() + "last_tag", getGameTime());
@@ -191,16 +164,7 @@ void onNewPlayerJoin (CRules@ rules, CPlayer@ player)
     }
 }
 
-string get_font(string chosen_font, s32 size)
-{
-    string result = chosen_font + "_"+size;
-    if (!GUI::isFontLoaded(result))
-    {
-        string font_name = CFileMatcher(chosen_font + ".ttf").getFirst();
-        GUI::LoadFont(result, font_name, size, true);
-    }
-    return result;
-}
+
 
 void onInit(CRules@ rules)
 {
@@ -334,7 +298,7 @@ void onRender(CRules@ rules)
         if (!rules.exists(name + tag_duration)) continue;
         if (!rules.exists(name + tag_variable)) continue;
 
-        bool player_is_muted = rules.get_bool(player.getUsername() + "is_tag_muted");
+        bool player_is_muted_tags = rules.get_bool(player.getUsername() + "is_tag_muted");
 
         // tent swap class without pressing 'e'
         // moving more than 2 tunnels over doesn't clearmenus
