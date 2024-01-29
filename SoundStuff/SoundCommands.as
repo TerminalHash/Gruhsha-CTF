@@ -129,6 +129,13 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 				this.set_u32(player.getUsername() + "soundcooldown", 80);
 			}
+			else if (textIn.find("легендарная", 0) != -1 && textIn.find("битва", 0) != -1 || textIn.find("legend", 0) != -1 && textIn.find("battle", 0) != -1 )
+			{
+				Sound::Play(soundrandom + "legend.ogg", pos, 1.0f);
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
+			}
 		}
 	return true;
 }
