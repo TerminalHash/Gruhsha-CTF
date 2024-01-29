@@ -275,3 +275,49 @@ class SetArcherLimitCommand : ChatCommand
 		if (isServer()) server_AddToChat("Максимум лучников теперь "+args[0], SColor(0xff474ac6));
 	}
 }
+
+class DisallowClassChangingOnShops : ChatCommand
+{
+	DisallowClassChangingOnShops()
+	{
+		super("dccos", "Disallowing class changing on shops");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+		rules.set_bool("no_class_change_on_shop", true);
+		printf("Boolean no_class_change_on_shop is " + rules.get_bool("no_class_change_on_shop"));
+	}
+}
+
+class AllowClassChangingOnShops : ChatCommand
+{
+	AllowClassChangingOnShops()
+	{
+		super("accos", "Allowing class changing on shops");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+		rules.set_bool("no_class_change_on_shop", false);
+		printf("Boolean no_class_change_on_shop is " + rules.get_bool("no_class_change_on_shop"));
+	}
+}

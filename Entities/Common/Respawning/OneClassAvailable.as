@@ -30,6 +30,8 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 {
 	CRules@ rules = getRules();
 
+	bool disallow_class_change_on_shops = rules.get_bool("no_class_change_on_shop");
+
 	if (!canSeeButtons(this, caller) || !this.exists(req_class)) return;
 
 	string cfg = this.get_string(req_class);
@@ -37,7 +39,7 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 	{
 		if (caller.getPlayer() is null) return;
 
-		if (rules.isWarmup())
+		if (disallow_class_change_on_shops == false)
 		{
 			CBitStream params;
 			write_classchange(params, caller.getNetworkID(), cfg);
