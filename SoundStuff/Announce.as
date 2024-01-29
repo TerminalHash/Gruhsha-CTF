@@ -56,6 +56,12 @@ bool onClientProcessChat( CRules@ this, const string& in textIn, string& out tex
 		this.set_string("announce text", alert);
 		this.set_u32("announce time", getGameTime());
 	}
+	else if (textIn.find("*offi") == 0 && player.isMod())
+	{
+		Sound::Play(sound + "offi.ogg");
+		this.set_string("announce text", "OFFI");
+		this.set_u32("announce time", getGameTime());
+	}
 
 	return true;
 }
