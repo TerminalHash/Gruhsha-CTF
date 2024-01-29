@@ -115,6 +115,13 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 				this.set_u32(player.getUsername() + "soundcooldown", 80);
 			}
+			else if (textIn.find("аннигиляторная", 0) != -1 && textIn.find("пушка", 0) != -1 || textIn.find("анигиляторная", 0) != -1 && textIn.find("пушка", 0) != -1 || textIn == ("пушка"))
+			{
+				Sound::Play(soundrandom + "pushka.ogg", pos, 1.0f);
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
+			}
 		}
 	return true;
 }
