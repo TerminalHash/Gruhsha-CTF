@@ -413,47 +413,31 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 		SColor namecolour = getNameColour(p);
 
 		//right align clantag
-		if (clantag != "")
-		{
+		if (clantag != "") {
 			GUI::GetTextDimensions(clantag, clantag_actualsize);
 			GUI::DrawText(clantag, tl + Vec2f(name_buffer, 0), SColor(0xff888888));
 
-			// Clan icons just for lulz
-			if (clantag == "MineCult" || clantag == "Minecult" || clantag == "Minacult" || clantag == "MinaCult")
-			{
-				GUI::DrawIcon("Sprites/clan_badges.png", 0, Vec2f(16, 16), tl + Vec2f(br.x - 280, 0), 0.5f, teamNum);
-			}
-			else if (clantag == "TTOGAD")
-			{
-				GUI::DrawIcon("Sprites/clan_badges.png", 1, Vec2f(16, 16), tl + Vec2f(br.x - 280, 0), 0.5f, 0);
-			}
-			else if (clantag == "MAGMUS")
-			{
-				GUI::DrawIcon("Sprites/clan_badges.png", 2, Vec2f(16, 16), tl + Vec2f(br.x - 280, 0), 0.5f, teamNum);
-			}
-			else if (clantag == "Homek" || clantag == "HOMEK")
-			{
-				GUI::DrawIcon("Sprites/clan_badges.png", 3, Vec2f(16, 16), tl + Vec2f(br.x - 280, 0), 0.5f, 0);
-			}
-			else if (clantag == "butter" || clantag == "Butter" || clantag == "BUTTER")
-			{
-				GUI::DrawIcon("Sprites/clan_badges.png", 4, Vec2f(16, 16), tl + Vec2f(br.x - 280, 0), 0.5f, 0);
-			}
-			else if (clantag == "GRUSHA" || clantag == "Grusha" || clantag == "grusha" || clantag == "GRUHSHA" || clantag == "Gruhsha" || clantag == "gruhsha")
-			{
-				GUI::DrawIcon("Sprites/clan_badges.png", 5, Vec2f(16, 16), tl + Vec2f(br.x - 280, 0), 0.5f, 0);
+			if (clantag == "MineCult" || clantag == "Minecult" || clantag == "Minacult" || clantag == "MinaCult") {
+				GUI::DrawIcon("Sprites/clan_badges.png", 0, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, teamNum);
+			} else if (clantag == "TTOGAD") {
+				GUI::DrawIcon("Sprites/clan_badges.png", 1, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
+			} else if (clantag == "MAGMUS") {
+				GUI::DrawIcon("Sprites/clan_badges.png", 2, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, teamNum);
+			} else if (clantag == "Homek" || clantag == "HOMEK") {
+				GUI::DrawIcon("Sprites/clan_badges.png", 3, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
+			} else if (clantag == "butter" || clantag == "Butter" || clantag == "BUTTER") {
+				GUI::DrawIcon("Sprites/clan_badges.png", 4, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
+			} else if (clantag == "GRUSHA" || clantag == "Grusha" || clantag == "grusha" || clantag == "GRUHSHA" || clantag == "Gruhsha" || clantag == "gruhsha") {
+				GUI::DrawIcon("Sprites/clan_badges.png", 5, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
 			}
 
 			// recolor clantag for TerminalHash
-			if (username == "TerminalHash")
-				{
+			if (username == "TerminalHash") {
 				GUI::DrawText(clantag, tl + Vec2f(name_buffer, 0), SColor(0xffad7fa8));
-				}
+			}
 			//draw name alongside
 			GUI::DrawText(playername, tl + Vec2f(name_buffer + clantag_actualsize.x + 8, 0), namecolour);
-		}
-		else
-		{
+		} else {
 			//draw name alone
 			GUI::DrawText(playername, tl + Vec2f(name_buffer, 0), namecolour);
 		}
