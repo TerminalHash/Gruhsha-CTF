@@ -92,6 +92,8 @@ Emote@[] getWheelEmotes(CRules@ this, ConfigFile@ cfg)
 	return wheelEmotes;
 }
 
+// HACK
+// TODO: Rewrite this shit in future
 Emote@[] getWheelEmotesGrusha(CRules@ this, ConfigFile@ cfg)
 {
 	Emote@[] wheelEmotes;

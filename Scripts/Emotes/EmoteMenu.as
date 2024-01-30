@@ -27,6 +27,8 @@ void onInit(CRules@ rules)
 		menu.entries.push_back(@entry);
 	}
 
+// HACK
+// TODO: Rewrite this shit in future
 	Emote@[] wheelEmotesGrusha = getWheelEmotesGrusha(rules, cfg);
 	for (uint i = 0; i < wheelEmotesGrusha.size(); i++)
 	{
