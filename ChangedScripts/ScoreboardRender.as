@@ -750,13 +750,19 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 					DrawPickButton(
 						Vec2f(topleft.x + 450, bottomright.y - 24),
 						Vec2f(topleft.x + 498, bottomright.y),
-						"red", "red", username
+						"blue", "blue", username
+					);
+				} else {
+					DrawPickButton(
+						Vec2f(topleft.x + 400, bottomright.y - 24),
+						Vec2f(topleft.x + 448, bottomright.y),
+						"spec", "spec", username
 					);
 				}
 			}
 			else if (localIsCaptain && playerIsOur && playerIsNotLocal)  //&& !isPickingEnded()
 			{
-				if (teamNum == teamNumSpectators && localplayer.getTeamNum() == 0) {
+				if (teamNum == teamNumSpectators) {
 					if (localplayer.getTeamNum() == teamNumBlue) {
 						DrawPickButton(
 							Vec2f(topleft.x + 400, bottomright.y - 24),
