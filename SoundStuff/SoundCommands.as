@@ -80,7 +80,7 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 				this.set_u32(player.getUsername() + "soundcooldown", 80);
 			}
-			else if (textIn == "БЛЯЯЯЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯ" || textIn == "БЛЯЯЯЯ" || textIn == "БЛЯТЬ" || textIn == "блять")
+			else if (textIn == "БЛЯЯЯЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯ" || textIn == "БЛЯЯЯЯ")
 			{
 				Sound::Play(soundrandom + "blyat.ogg", pos, 1.2f);
 
@@ -132,6 +132,13 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 			else if (textIn.find("легендарная", 0) != -1 && textIn.find("битва", 0) != -1 || textIn.find("legend", 0) != -1 && textIn.find("battle", 0) != -1 )
 			{
 				Sound::Play(soundrandom + "legend.ogg", pos, 1.0f);
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
+			}
+			else if (textIn == "немогу" || textIn == "даблять" || textIn == "даблядь" || textIn.find("да", 0) != -1 && textIn.find("блядь", 0) != -1 || textIn.find("я", 0) != -1 && textIn.find("не", 0) != -1 && textIn.find("могу", 0) != -1 || textIn.find("да", 0) != -1 && textIn.find("блять", 0) != -1)
+			{
+				Sound::Play(soundrandom + "dablyat.ogg", pos, 1.0f);
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 				this.set_u32(player.getUsername() + "soundcooldown", 80);
