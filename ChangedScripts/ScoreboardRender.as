@@ -81,44 +81,43 @@ string[] tier_description = {
 };
 
 //returns the bottom
-float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CTeam@ team, Vec2f emblem)
+float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ team, Vec2f emblem)
 {
 	if (players.size() <= 0)
-		return topleft.y;
+		return tl.y;
 
-	SColor teamcolor = SColor(255, 200, 200, 200);
-	string teamname = "Spectators";
+	int localTeamNum = localPlayer.getTeamNum();
+	SColor teamColor = SColor(255, 200, 200, 200);
+	string teamName = "Spectators";
 
 	if (team !is null)
 	{
-		teamcolor = team.color;
-		teamname = team.getName();
+		teamColor = team.color;
+		teamName = team.getName();
 	}
 
 	CRules@ rules = getRules();
-//	RulesCore@ core;
-//	rules.get("core", @core);
 
-	Vec2f orig = topleft; //save for later
+	Vec2f orig = tl;
 
 	f32 lineheight = 16;
 	f32 padheight = 6;
 	f32 stepheight = lineheight + padheight;
-	Vec2f bottomright(Maths::Min(getScreenWidth() - 100, getScreenWidth()/2 + maxMenuWidth), topleft.y + (players.length + 5.5) * stepheight);
-	GUI::DrawPane(topleft, bottomright, teamcolor);
+	Vec2f br(Maths::Min(getScreenWidth() - 100, getScreenWidth()/2 + maxMenuWidth), tl.y + (players.length + 5.5) * stepheight);
+	GUI::DrawPane(tl, br, teamColor);
 
 	//offset border
-	topleft.x += stepheight;
-	bottomright.x -= stepheight;
-	topleft.y += stepheight;
+	tl.x += stepheight;
+	br.x -= stepheight;
+	tl.y += stepheight;
 
 	GUI::SetFont("menu");
 
 	//draw team info
-	GUI::DrawText(getTranslatedString(teamname), Vec2f(topleft.x, topleft.y), SColor(0xffffffff));
-	GUI::DrawText(getTranslatedString("Players: {PLAYERCOUNT}").replace("{PLAYERCOUNT}", "" + players.length), Vec2f(bottomright.x - 400, topleft.y), SColor(0xffffffff));
+	GUI::DrawText(getTranslatedString(teamName), Vec2f(tl.x, tl.y), SColor(0xffffffff));
+	GUI::DrawText(getTranslatedString("Players: {PLAYERCOUNT}").replace("{PLAYERCOUNT}", "" + players.length), Vec2f(br.x - 400, tl.y), SColor(0xffffffff));
 
-	topleft.y += stepheight * 2;
+	tl.y += stepheight * 2;
 
 	const int accolades_start = 770;
 	const int age_start = accolades_start + 80;
@@ -146,24 +145,24 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 	SColor kdr_color = old_stats ? OLD_STATS_COLOR : SColor(0xffffffff);
 
 	//draw player table header
-	GUI::DrawText(getTranslatedString("Player"), Vec2f(topleft.x, topleft.y), SColor(0xffffffff));
-	GUI::DrawText(getTranslatedString("Username"), Vec2f(bottomright.x - 470, topleft.y), SColor(0xffffffff));
-	GUI::DrawText(getTranslatedString("Ping"), Vec2f(bottomright.x - 330, topleft.y), SColor(0xffffffff));
-	GUI::DrawText(getTranslatedString("Kills"), Vec2f(bottomright.x - 260, topleft.y), kdr_color);      // Waffle: Change header color for old stats
-	GUI::DrawText(getTranslatedString("Deaths"), Vec2f(bottomright.x - 190, topleft.y), kdr_color);     // Waffle: --
-	GUI::DrawText(getTranslatedString("Assists"), Vec2f(bottomright.x - 120, topleft.y), kdr_color);    // Waffle: --
-	GUI::DrawText(getTranslatedString("KDR"), Vec2f(bottomright.x - 50, topleft.y), kdr_color);         // Waffle: --
-	GUI::DrawText(getTranslatedString("Accolades"), Vec2f(bottomright.x - accolades_start, topleft.y), SColor(0xffffffff));
+	GUI::DrawText(getTranslatedString("Player"), Vec2f(tl.x, tl.y), SColor(0xffffffff));
+	GUI::DrawText(getTranslatedString("Username"), Vec2f(br.x - 470, tl.y), SColor(0xffffffff));
+	GUI::DrawText(getTranslatedString("Ping"), Vec2f(br.x - 330, tl.y), SColor(0xffffffff));
+	GUI::DrawText(getTranslatedString("Kills"), Vec2f(br.x - 260, tl.y), kdr_color);      // Waffle: Change header color for old stats
+	GUI::DrawText(getTranslatedString("Deaths"), Vec2f(br.x - 190, tl.y), kdr_color);     // Waffle: --
+	GUI::DrawText(getTranslatedString("Assists"), Vec2f(br.x - 120, tl.y), kdr_color);    // Waffle: --
+	GUI::DrawText(getTranslatedString("KDR"), Vec2f(br.x - 50, tl.y), kdr_color);         // Waffle: --
+	GUI::DrawText(getTranslatedString("Accolades"), Vec2f(br.x - accolades_start, tl.y), SColor(0xffffffff));
 	if(draw_age)
 	{
-		GUI::DrawText(getTranslatedString("Age"), Vec2f(bottomright.x - age_start, topleft.y), SColor(0xffffffff));
+		GUI::DrawText(getTranslatedString("Age"), Vec2f(br.x - age_start, tl.y), SColor(0xffffffff));
 	}
 	if(draw_tier)
 	{
-		GUI::DrawText(getTranslatedString("Tier"), Vec2f(bottomright.x - tier_start, topleft.y), SColor(0xffffffff));
+		GUI::DrawText(getTranslatedString("Tier"), Vec2f(br.x - tier_start, tl.y), SColor(0xffffffff));
 	}
 
-	topleft.y += stepheight * 0.5f;
+	tl.y += stepheight * 0.5f;
 
 	Vec2f mousePos = controls.getMouseScreenPos();
 
@@ -173,10 +172,10 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		CPlayer@ p = players[i];
 		CBlob@ b = p.getBlob(); // REMINDER: this can be null if you're using this down below
 
-		topleft.y += stepheight;
-		bottomright.y = topleft.y + lineheight;
+		tl.y += stepheight;
+		br.y = tl.y + lineheight;
 
-		bool playerHover = mousePos.y > topleft.y && mousePos.y < topleft.y + 15;
+		bool playerHover = mousePos.y > tl.y && mousePos.y < tl.y + 15;
 
 		if (playerHover)
 		{
@@ -206,12 +205,12 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		{
 			playercolour = 0xffcccccc;
 			@hoveredPlayer = p;
-			hoveredPos = topleft;
-			hoveredPos.x = bottomright.x - 150;
+			hoveredPos = tl;
+			hoveredPos.x = br.x - 150;
 		}
 
-		GUI::DrawLine2D(Vec2f(topleft.x, bottomright.y + 1) + lineoffset, Vec2f(bottomright.x, bottomright.y + 1) + lineoffset, SColor(underlinecolor));
-		GUI::DrawLine2D(Vec2f(topleft.x, bottomright.y) + lineoffset, bottomright + lineoffset, SColor(playercolour));
+		GUI::DrawLine2D(Vec2f(tl.x, br.y + 1) + lineoffset, Vec2f(br.x, br.y + 1) + lineoffset, SColor(underlinecolor));
+		GUI::DrawLine2D(Vec2f(tl.x, br.y) + lineoffset, br + lineoffset, SColor(playercolour));
 
 		// class icon
 
@@ -240,13 +239,13 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 
 			classIconSize = Vec2f(16, 16);
 
-			if (b is null && teamname != "Spectators") // player dead
+			if (b is null && teamName != "Spectators") // player dead
 			{
 				classIndex += 16;
 				classIconSize = Vec2f(8, 8);
 				classIconOffset = Vec2f(4, 4);
 			}
-			else if (teamname == "Spectators")
+			else if (teamName == "Spectators")
 			{
 				classIndex += 20;
 				classIconSize = Vec2f(8, 8);
@@ -255,17 +254,16 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		}
 		if (classTexture != "")
 		{
-			GUI::DrawIcon(classTexture, classIndex, classIconSize, topleft + classIconOffset, 0.5f, p.getTeamNum());
+			GUI::DrawIcon(classTexture, classIndex, classIconSize, tl + classIconOffset, 0.5f, p.getTeamNum());
 		}
 
 		string username = p.getUsername();
-
 		string playername = p.getCharacterName();
 		string clantag = p.getClantag();
 
-		if(getSecurity().isPlayerNameHidden(p) && getLocalPlayer() !is p)
+		if(getSecurity().isPlayerNameHidden(p) && localPlayer !is p)
 		{
-			if(isAdmin(getLocalPlayer()))
+			if(isAdmin(localPlayer))
 			{
 				playername = username + "(hidden: " + clantag + " " + playername + ")";
 				clantag = "";
@@ -311,12 +309,12 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 
 			//printf("Index: " + headIndex + " Texture: " + headTexture + " Team: " + teamNum);
 		}
-		if(teamname != "Spectators")
+		if(teamName != "Spectators")
 		{
-			GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamNum);
+			GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), tl + headOffset, headScale, teamNum);
 			//printf("We set " + headTexture + " for player " + username + " in " + teamNum); // debug shit
 		}
-		if(teamname == "Spectators")
+		if(teamName == "Spectators")
 		{
 			Accolades@ acc = getPlayerAccolades(p.getUsername());
 
@@ -328,7 +326,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				headOffset += Vec2f(-8, -12);
 				headScale = 1.0f;
 
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamNum);
+				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), tl + headOffset, headScale, teamNum);
 				//printf ("We set " + headTexture + " for player " + username + " from custom heads"); // debug shit
 			}
 			else if (acc.hasCustomHead() != false && !p.isBot()) // if player has head in accolade data
@@ -340,7 +338,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				headOffset += Vec2f(-8, -12);
 				headScale = 1.0f;
 
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamNum);
+				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), tl + headOffset, headScale, teamNum);
 				//printf ("We set " + headTexture + " for player " + username + " from accolade data"); // debug shit
 			}
 
@@ -354,7 +352,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 
 				printf("Index: " + headIndex + " Texture: " + headTexture + " Team: " + teamNum);
 
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamNum);
+				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), tl + headOffset, headScale, teamNum);
 				//printf ("We set " + headTexture + " for player " + username + " from DLC"); // debug shit
 			}*/
 
@@ -365,7 +363,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				headOffset += Vec2f(-10, -6);
 				headScale = 1.0f;
 
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamNum);
+				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), tl + headOffset, headScale, teamNum);
 				//printf ("We set " + headTexture + " for player " + username + " from default pack"); // debug shit
 			}
 			else // if this a bot
@@ -375,7 +373,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				headOffset += Vec2f(-8, -12);
 				headScale = 1.0f;
 
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), topleft + headOffset, headScale, teamNum);
+				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), tl + headOffset, headScale, teamNum);
 			}
 			//printf("We set " + headTexture + " for player " + username + " in " + teamNum); // debug shit
 		}
@@ -384,24 +382,24 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		{
 			// set custom plate first
 			if (username == "kusaka79")
-				GUI::DrawIcon("CaptainMark/Custom/cm_kusaka.png", 0, Vec2f(33, 9), topleft + Vec2f(-74, 0), 1.0f, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_kusaka.png", 0, Vec2f(33, 9), tl + Vec2f(-74, 0), 1.0f, 0);
 			else if (username == "TerminalHash")
-				GUI::DrawIcon("CaptainMark/Custom/cm_terminal.png", 0, Vec2f(33, 9), topleft + Vec2f(-72, 0), 1.0f, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_terminal.png", 0, Vec2f(33, 9), tl + Vec2f(-72, 0), 1.0f, 0);
 			else if (username == "Pnext")
-				GUI::DrawIcon("CaptainMark/Custom/cm_pnext.png", 0, Vec2f(33, 9), topleft + Vec2f(-72, 0), 1.0f, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_pnext.png", 0, Vec2f(33, 9), tl + Vec2f(-72, 0), 1.0f, 0);
 			else if (username == "egor0928931")
-				GUI::DrawIcon("CaptainMark/Custom/cm_egor.png", 0, Vec2f(35, 9), topleft + Vec2f(-76, 0), 1.0f, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_egor.png", 0, Vec2f(35, 9), tl + Vec2f(-76, 0), 1.0f, 0);
 			else if (username == "Think_About")
-				GUI::DrawIcon("CaptainMark/Custom/cm_think.png", 0, Vec2f(31, 9), topleft + Vec2f(-72, 0), 1.0f, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_think.png", 0, Vec2f(31, 9), tl + Vec2f(-72, 0), 1.0f, 0);
 			else if (username == "Bohdanu")
-				GUI::DrawIcon("CaptainMark/Custom/cm_bohdanu.png", 0, Vec2f(34, 9), topleft + Vec2f(-72, 0), 1.0f, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_bohdanu.png", 0, Vec2f(34, 9), tl + Vec2f(-72, 0), 1.0f, 0);
 			// if player doesn't have custom plate - set default
 			else if (g_locale == "ru")
-				GUI::DrawIcon("CaptainMark/ru.png", 0, Vec2f(38, 9), topleft + Vec2f(-84, 0), 1.0f, 0);
+				GUI::DrawIcon("CaptainMark/ru.png", 0, Vec2f(38, 9), tl + Vec2f(-84, 0), 1.0f, 0);
 			else if (g_locale == "de")
-				GUI::DrawIcon("CaptainMark/de.png", 0, Vec2f(38, 9), topleft + Vec2f(-82, 0), 1.0f, 0);
+				GUI::DrawIcon("CaptainMark/de.png", 0, Vec2f(38, 9), tl + Vec2f(-82, 0), 1.0f, 0);
 			else
-				GUI::DrawIcon("CaptainMark/en.png", 0, Vec2f(38, 9), topleft + Vec2f(-82, 0), 1.0f, 0);
+				GUI::DrawIcon("CaptainMark/en.png", 0, Vec2f(38, 9), tl + Vec2f(-82, 0), 1.0f, 0);
 		}
 
 		//have to calc this from ticks
@@ -418,20 +416,20 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		if (clantag != "")
 		{
 			GUI::GetTextDimensions(clantag, clantag_actualsize);
-			GUI::DrawText(clantag, topleft + Vec2f(name_buffer, 0), SColor(0xff888888));
+			GUI::DrawText(clantag, tl + Vec2f(name_buffer, 0), SColor(0xff888888));
 
 			// recolor clantag for TerminalHash
 			if (username == "TerminalHash")
 				{
-				GUI::DrawText(clantag, topleft + Vec2f(name_buffer, 0), SColor(0xffad7fa8));
+				GUI::DrawText(clantag, tl + Vec2f(name_buffer, 0), SColor(0xffad7fa8));
 				}
 			//draw name alongside
-			GUI::DrawText(playername, topleft + Vec2f(name_buffer + clantag_actualsize.x + 8, 0), namecolour);
+			GUI::DrawText(playername, tl + Vec2f(name_buffer + clantag_actualsize.x + 8, 0), namecolour);
 		}
 		else
 		{
 			//draw name alone
-			GUI::DrawText(playername, topleft + Vec2f(name_buffer, 0), namecolour);
+			GUI::DrawText(playername, tl + Vec2f(name_buffer, 0), namecolour);
 		}
 
 		//draw account age indicator
@@ -543,16 +541,16 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 					}
 				}
 
-				float x = bottomright.x - age_start + 8;
+				float x = br.x - age_start + 8;
 				float extra = 8;
 
 				if(show_years)
 				{
-					drawAgeIcon(age, Vec2f(x, topleft.y));
+					drawAgeIcon(age, Vec2f(x, tl.y));
 				}
 				else
 				{
-					GUI::DrawIcon("AccoladeBadges", age_icon_start + icon, Vec2f(16, 16), Vec2f(x, topleft.y), 0.5f, teamNum);
+					GUI::DrawIcon("AccoladeBadges", age_icon_start + icon, Vec2f(16, 16), Vec2f(x, tl.y), 0.5f, teamNum);
 				}
 
 				if (playerHover && mousePos.x > x - extra && mousePos.x < x + 16 + extra)
@@ -571,9 +569,9 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 			if(tier > 0)
 			{
 				int tier_icon_start = 15;
-				float x = bottomright.x - tier_start + 8;
+				float x = br.x - tier_start + 8;
 				float extra = 8;
-				GUI::DrawIcon("AccoladeBadges", tier_icon_start + tier, Vec2f(16, 16), Vec2f(x, topleft.y), 0.5f, teamNum);
+				GUI::DrawIcon("AccoladeBadges", tier_icon_start + tier, Vec2f(16, 16), Vec2f(x, tl.y), 0.5f, teamNum);
 
 				if (playerHover && mousePos.x > x - extra && mousePos.x < x + 16 + extra)
 				{
@@ -600,7 +598,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 					1 : 0),             6,     0,         0,
 				(acc.moderation_contributor && (
 						//always show accolade of others if local player is special
-						(p !is localplayer && isSpecial(localplayer)) ||
+						(p !is localPlayer && isSpecial(localPlayer)) ||
 						//always show accolade for ex-admins
 						!isSpecial(p) ||
 						//show accolade only if colored name is visible
@@ -649,16 +647,16 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 				int group_x = group_encode[group_idx];
 				int group_step = group_encode[group_idx+1];
 
-				float x = bottomright.x - group_x;
+				float x = br.x - group_x;
 
-				GUI::DrawIcon("AccoladeBadges", icon, Vec2f(16, 16), Vec2f(x, topleft.y), 0.5f, teamNum);
+				GUI::DrawIcon("AccoladeBadges", icon, Vec2f(16, 16), Vec2f(x, tl.y), 0.5f, teamNum);
 				if (show_text > 0)
 				{
 					string label_text = "" + amount;
 					int label_center_offset = label_text.size() < 2 ? 4 : 0;
 					GUI::DrawText(
 						label_text,
-						Vec2f(x + 15 + label_center_offset, topleft.y),
+						Vec2f(x + 15 + label_center_offset, tl.y),
 						SColor(0xffffffff)
 					);
 				}
@@ -701,97 +699,99 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 			}
 		}
 
-		GUI::DrawText("" + username, Vec2f(bottomright.x - 470, topleft.y), namecolour);
-		GUI::DrawText("" + ping_in_ms, Vec2f(bottomright.x - 330, topleft.y), SColor(0xffffffff));
-		GUI::DrawText("" + kills, Vec2f(bottomright.x - 260, topleft.y), kdr_color);
-		GUI::DrawText("" + deaths, Vec2f(bottomright.x - 190, topleft.y), kdr_color);
-		GUI::DrawText("" + assists, Vec2f(bottomright.x - 120, topleft.y), kdr_color);
-		GUI::DrawText("" + formatFloat(kills / Maths::Max(f32(deaths), 1.0f), "", 0, 2), Vec2f(bottomright.x - 50, topleft.y), kdr_color);
-
-		bool localIsCaptain = localplayer !is null && localplayer.getUsername()==rules.get_string("team_"+localplayer.getTeamNum()+"_leader");
-		bool playerIsOur = localplayer !is null && localplayer.getTeamNum()==teamNum || localplayer !is null && 200 == teamNum;
-		bool playerIsNotLocal = localplayer !is null && p !is localplayer;
+		GUI::DrawText("" + username, Vec2f(br.x - 470, tl.y), namecolour);
+		GUI::DrawText("" + ping_in_ms, Vec2f(br.x - 330, tl.y), SColor(0xffffffff));
+		GUI::DrawText("" + kills, Vec2f(br.x - 260, tl.y), kdr_color);
+		GUI::DrawText("" + deaths, Vec2f(br.x - 190, tl.y), kdr_color);
+		GUI::DrawText("" + assists, Vec2f(br.x - 120, tl.y), kdr_color);
+		GUI::DrawText("" + formatFloat(kills / Maths::Max(f32(deaths), 1.0f), "", 0, 2), Vec2f(br.x - 50, tl.y), kdr_color);
 
 		int teamNumSpectators = 200;
 		int teamNumBlue = 0;
 		int teamNumRed = 1;
 
+		bool localIsCaptain = localPlayer !is null && localPlayer.getUsername() == rules.get_string("team_"+localTeamNum+"_leader");
+		bool playerIsOur = localPlayer !is null && teamNum == localTeamNum || localPlayer !is null && teamNum == teamNumSpectators;
+		bool playerIsNotLocal = localPlayer !is null && p !is localPlayer;
+
+
 		if (controls.isKeyPressed(KEY_LSHIFT) &&
 			controls.isKeyPressed(KEY_LCONTROL)) {
-			if (isAdmin(localplayer)) {
+			if (isAdmin(localPlayer)) {
 				if(teamNum == teamNumSpectators) {
 					DrawPickButton(
-						Vec2f(topleft.x + 400, bottomright.y - 24),
-						Vec2f(topleft.x + 448, bottomright.y),
-						"blue", "blue", username
+						Vec2f(tl.x + 400, br.y - 24),
+						Vec2f(tl.x + 450, br.y),
+						"BLUE", "blue", username
 					);
 					DrawPickButton(
-						Vec2f(topleft.x + 450, bottomright.y - 24),
-						Vec2f(topleft.x + 498, bottomright.y),
-						"red", "red", username
+						Vec2f(tl.x + 450, br.y - 24),
+						Vec2f(tl.x + 500, br.y),
+						"RED", "red", username
 					);
 				} else if (teamNum == teamNumBlue) {
 					DrawPickButton(
-						Vec2f(topleft.x + 400, bottomright.y - 24),
-						Vec2f(topleft.x + 448, bottomright.y),
-						"spec", "spec", username
+						Vec2f(tl.x + 400, br.y - 24),
+						Vec2f(tl.x + 450, br.y),
+						"SPEC", "spec", username
 					);
 					DrawPickButton(
-						Vec2f(topleft.x + 450, bottomright.y - 24),
-						Vec2f(topleft.x + 498, bottomright.y),
-						"red", "red", username
+						Vec2f(tl.x + 450, br.y - 24),
+						Vec2f(tl.x + 500, br.y),
+						"RED", "red", username
 					);
 				} else if (teamNum == teamNumRed) {
 					DrawPickButton(
-						Vec2f(topleft.x + 400, bottomright.y - 24),
-						Vec2f(topleft.x + 448, bottomright.y),
-						"spec", "spec", username
+						Vec2f(tl.x + 400, br.y - 24),
+						Vec2f(tl.x + 450, br.y),
+						"SPEC", "spec", username
 					);
 					DrawPickButton(
-						Vec2f(topleft.x + 450, bottomright.y - 24),
-						Vec2f(topleft.x + 498, bottomright.y),
-						"blue", "blue", username
+						Vec2f(tl.x + 450, br.y - 24),
+						Vec2f(tl.x + 500, br.y),
+						"BLUE", "blue", username
 					);
 				} else {
 					DrawPickButton(
-						Vec2f(topleft.x + 400, bottomright.y - 24),
-						Vec2f(topleft.x + 448, bottomright.y),
-						"spec", "spec", username
+						Vec2f(tl.x + 400, br.y - 24),
+						Vec2f(tl.x + 450, br.y),
+						"SPEC", "spec", username
 					);
 				}
-			}
-			else if (localIsCaptain && playerIsOur && playerIsNotLocal)  //&& !isPickingEnded()
-			{
+			} else if (localIsCaptain && playerIsOur && playerIsNotLocal) {
 				if (teamNum == teamNumSpectators) {
-					if (localplayer.getTeamNum() == teamNumBlue) {
+					if (localTeamNum == teamNumBlue) {
 						DrawPickButton(
-							Vec2f(topleft.x + 400, bottomright.y - 24),
-							Vec2f(topleft.x + 448, bottomright.y),
-							"pick", "blue", username
+							Vec2f(tl.x + 400, br.y - 24),
+							Vec2f(tl.x + 450, br.y),
+							"PICK", "blue", username
 						);
-					} else if(localplayer.getTeamNum() == teamNumRed) {
+					} else if(localTeamNum == teamNumRed) {
 						DrawPickButton(
-							Vec2f(topleft.x + 400, bottomright.y - 24),
-							Vec2f(topleft.x + 448, bottomright.y),
-							"pick", "red", username
+							Vec2f(tl.x + 400, br.y - 24),
+							Vec2f(tl.x + 450, br.y),
+							"PICK", "red", username
 						);
 					}
 				} else if (teamNum != teamNumSpectators) {
 					DrawPickButton(
-						Vec2f(topleft.x + 400, bottomright.y - 24),
-						Vec2f(topleft.x + 448, bottomright.y),
+						Vec2f(tl.x + 400, br.y - 24),
+						Vec2f(tl.x + 450, br.y),
 						"spec", "spec", username
 					);
 				}
 			}
-
-		}
-		else
-		{
-			if((localIsCaptain || isAdmin(getLocalPlayer())) && (localplayer !is null && p is localplayer))
-			{
-				GUI::DrawText("Shift + Ctrl", Vec2f(topleft.x + 400, topleft.y), SColor(0xffffffff));
-			}
+		} else if ((localIsCaptain || isAdmin(localPlayer)) && (p is localPlayer)) {
+			GUI::DrawPane(
+				Vec2f(tl.x + 400, br.y - 24),
+				Vec2f(tl.x + 500, br.y),
+				SColor(0xffffffff)
+			);
+			GUI::DrawTextCentered(
+				"SHIFT+CTRL",
+				Vec2f(tl.x + 400 + (100.0f * 0.47f), br.y - (24.0f * 0.53f)),
+				SColor(0xffffffff)
+			);
 		}
 	}
 
@@ -804,7 +804,7 @@ float drawScoreboard(CPlayer@ localplayer, CPlayer@[] players, Vec2f topleft, CT
 		DrawFancyCopiedText(rules.get_string("client_copy_name"), rules.get_Vec2f("client_copy_pos"), durationLeft);
 	}
 
-	return topleft.y;
+	return tl.y;
 
 }
 
@@ -880,17 +880,17 @@ void onRenderScoreboard(CRules@ this)
 	CPlayer@ localPlayer = getLocalPlayer();
 	if (localPlayer is null)
 		return;
-	int localTeam = localPlayer.getTeamNum();
-	if (localTeam != 0 && localTeam != 1)
-		localTeam = 0;
+	int localTeamNum = localPlayer.getTeamNum();
+	if (localTeamNum != 0 && localTeamNum != 1)
+		localTeamNum = 0;
 
 	@hoveredPlayer = null;
 
-	Vec2f topleft(Maths::Max( 100, getScreenWidth()/2 -maxMenuWidth), 150);
+	Vec2f tl(Maths::Max( 100, getScreenWidth()/2 -maxMenuWidth), 150);
 	drawServerInfo(40);
 
 	// start the scoreboard lower or higher.
-	topleft.y -= scrollOffset;
+	tl.y -= scrollOffset;
 
 	//(reset)
 	hovered_accolade = -1;
@@ -898,28 +898,28 @@ void onRenderScoreboard(CRules@ this)
 	hovered_tier = -1;
 
 	//draw the scoreboards
-	topleft.y += 10;
+	tl.y += 10;
 
-	if (localTeam == 0)
-		topleft.y = drawScoreboard(localPlayer, blueplayers, topleft, this.getTeam(0), Vec2f(0, 0));
+	if (localTeamNum == 0)
+		tl.y = drawScoreboard(localPlayer, blueplayers, tl, this.getTeam(0), Vec2f(0, 0));
 	else
-		topleft.y = drawScoreboard(localPlayer, redplayers, topleft, this.getTeam(1), Vec2f(32, 0));
+		tl.y = drawScoreboard(localPlayer, redplayers, tl, this.getTeam(1), Vec2f(32, 0));
 
 	if (blueplayers.length > 0)
-		topleft.y += 52;
+		tl.y += 52;
 
-	if (localTeam == 1)
-		topleft.y = drawScoreboard(localPlayer, blueplayers, topleft, this.getTeam(0), Vec2f(0, 0));
+	if (localTeamNum == 1)
+		tl.y = drawScoreboard(localPlayer, blueplayers, tl, this.getTeam(0), Vec2f(0, 0));
 	else
-		topleft.y = drawScoreboard(localPlayer, redplayers, topleft, this.getTeam(1), Vec2f(32, 0));
+		tl.y = drawScoreboard(localPlayer, redplayers, tl, this.getTeam(1), Vec2f(32, 0));
 
 	if (redplayers.length > 0)
-		topleft.y += 52;
+		tl.y += 52;
 
-	topleft.y = drawScoreboard(localPlayer, spectators, topleft, this.getTeam(255), Vec2f(32, 0));
+	tl.y = drawScoreboard(localPlayer, spectators, tl, this.getTeam(255), Vec2f(32, 0));
 
 
-	float scoreboardHeight = topleft.y + scrollOffset;
+	float scoreboardHeight = tl.y + scrollOffset;
 	float screenWidth = getScreenWidth();
 	float screenHeight = getScreenHeight();
 	CControls@ controls = getControls();
@@ -941,16 +941,16 @@ void onRenderScoreboard(CRules@ this)
 
 	drawPlayerCard(hoveredPlayer, hoveredPos);
 
-	drawHoverExplanation(hovered_accolade, hovered_age, hovered_tier, Vec2f(getScreenWidth() * 0.5, topleft.y));
+	drawHoverExplanation(hovered_accolade, hovered_age, hovered_tier, Vec2f(getScreenWidth() * 0.5, tl.y));
 
 	ScoreboardField(
-		Vec2f(screenWidth - topleft.x - 200, 115 - scrollOffset),
-		Vec2f(screenWidth - topleft.x,       115 - scrollOffset + 40),
+		Vec2f(screenWidth - tl.x - 200, 115 - scrollOffset),
+		Vec2f(screenWidth - tl.x,       115 - scrollOffset + 40),
 		"Current version: " + mod_version
 	);
 	LinkButton(
-		Vec2f(screenWidth - topleft.x - 275, 115 - scrollOffset),
-		Vec2f(screenWidth - topleft.x - 205, 115 - scrollOffset + 40),
+		Vec2f(screenWidth - tl.x - 275, 115 - scrollOffset),
+		Vec2f(screenWidth - tl.x - 205, 115 - scrollOffset + 40),
 		"Github ",
 		"https://github.com/TerminalHash/Gruhsha-CTF"
 	);
@@ -1078,19 +1078,19 @@ void getMapName(CRules@ this)
 
 void drawAgeIcon(int age, Vec2f position)
 {
-    int number_gap = 8;
+	int number_gap = 8;
 	int years_frame_start = 48;
-    if(age >= 10)
-    {
-        position.x -= number_gap - 4;
-        GUI::DrawIcon("AccoladeBadges", years_frame_start + (age / 10), Vec2f(16, 16), position, 0.5f, 0);
-        age = age % 10;
-        position.x += number_gap;
-    }
-    GUI::DrawIcon("AccoladeBadges", years_frame_start + age, Vec2f(16, 16), position, 0.5f, 0);
-    position.x += 4;
+	if(age >= 10)
+	{
+		position.x -= number_gap - 4;
+		GUI::DrawIcon("AccoladeBadges", years_frame_start + (age / 10), Vec2f(16, 16), position, 0.5f, 0);
+		age = age % 10;
+		position.x += number_gap;
+	}
+	GUI::DrawIcon("AccoladeBadges", years_frame_start + age, Vec2f(16, 16), position, 0.5f, 0);
+	position.x += 4;
 	if(age == 1) position.x -= 1; // fix y letter offset for number 1
-    GUI::DrawIcon("AccoladeBadges", 58, Vec2f(16, 16), position, 0.5f, 0); // y letter
+	GUI::DrawIcon("AccoladeBadges", 58, Vec2f(16, 16), position, 0.5f, 0); // y letter
 }
 
 void DrawFancyCopiedText(string username, Vec2f mousePos, uint duration)
@@ -1151,7 +1151,7 @@ void DrawPickButton(Vec2f tl, Vec2f br, const string&in text, const string&in te
 
 	// пишет текст кнопки по центру
 	// в общем кнопки надо чтобы были хоть какие-то. От них сдесь нужны именно чёрные уголки
-	GUI::DrawTextCentered(text, Vec2f(tl.x + (w * 0.47f), tl.y + (h * 0.48f)), 0xffffffff);
+	GUI::DrawTextCentered(text, Vec2f(tl.x + (w * 0.47f), tl.y + (h * 0.47f)), 0xffffffff);
 }
 
 // website button
