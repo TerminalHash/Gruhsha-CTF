@@ -429,6 +429,8 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 				GUI::DrawIcon("Sprites/clan_badges.png", 4, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
 			} else if (clantag == "GRUSHA" || clantag == "Grusha" || clantag == "grusha" || clantag == "GRUHSHA" || clantag == "Gruhsha" || clantag == "gruhsha") {
 				GUI::DrawIcon("Sprites/clan_badges.png", 5, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
+			} else if (clantag == "ButterMina") {
+				GUI::DrawIcon("Sprites/clan_badges.png", 6, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, teamNum);
 			}
 
 			// recolor clantag for TerminalHash
