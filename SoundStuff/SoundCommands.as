@@ -143,6 +143,13 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 				this.set_u32(player.getUsername() + "soundcooldown", 80);
 			}
+			else if (textIn.find("давай", 0) != -1 && textIn.find("по", 0) != -1 || textIn.find("новой", 0) != -1 || textIn.find("по", 0) != -1 && textIn.find("новой", 0) != -1 || textIn.find("новую", 0) != -1)
+			{
+				Sound::Play(soundrandom + "misha.ogg", pos, 1.0f);
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
+			}
 		}
 	return true;
 }
