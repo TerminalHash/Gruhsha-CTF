@@ -417,19 +417,19 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 			GUI::GetTextDimensions(clantag, clantag_actualsize);
 			GUI::DrawText(clantag, tl + Vec2f(name_buffer, 0), SColor(0xff888888));
 
-			if (clantag == "MineCult") {
+			if (clantag.toUpper() == "MINECULT") {
 				GUI::DrawIcon("Sprites/clan_badges.png", 0, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, teamNum);
-			} else if (clantag == "TTOGAD") {
+			} else if (clantag.toUpper() == "TTOGAD") {
 				GUI::DrawIcon("Sprites/clan_badges.png", 1, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
-			} else if (clantag == "MAGMUS") {
+			} else if (clantag.toUpper() == "MAGMUS") {
 				GUI::DrawIcon("Sprites/clan_badges.png", 2, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, teamNum);
-			} else if (clantag == "HOMEK") {
+			} else if (clantag.toUpper() == "HOMEK") {
 				GUI::DrawIcon("Sprites/clan_badges.png", 3, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
-			} else if (clantag == "butter") {
+			} else if (clantag.toUpper() == "BUTTER") {
 				GUI::DrawIcon("Sprites/clan_badges.png", 4, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
-			} else if (clantag == "GRUSHA") {
+			} else if (clantag.toUpper() == "GRUHSHA") {
 				GUI::DrawIcon("Sprites/clan_badges.png", 5, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
-			} else if (clantag == "ButterMina") {
+			} else if (clantag.toUpper() == "BUTTERMINA") {
 				GUI::DrawIcon("Sprites/clan_badges.png", 6, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, teamNum);
 			}
 
