@@ -80,7 +80,7 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 				this.set_u32(player.getUsername() + "soundcooldown", 80);
 			}
-			else if (textIn == "БЛЯЯЯЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯ" || textIn == "БЛЯЯЯЯ")
+			else if (textIn == "БЛЯЯЯЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯЯ" || textIn == "БЛЯЯЯЯЯ" || textIn == "БЛЯЯЯЯ" || textIn == "blya")
 			{
 				Sound::Play(soundrandom + "blyat.ogg", pos, 1.2f);
 
@@ -94,7 +94,7 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 				this.set_u32(player.getUsername() + "soundcooldown", 80);
 			}
-			else if (textIn == ("ЗАСНАЙПИЛИ"))
+			else if (textIn == ("ЗАСНАЙПИЛИ") || textIn == ("sniped")
 			{
 				Sound::Play(soundrandom + "snipe.ogg", pos, 0.7f);
 
