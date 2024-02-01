@@ -103,6 +103,10 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 				Sound::Play(soundrandom + "misha.ogg", pos, 1.0f);
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 				this.set_u32(player.getUsername() + "soundcooldown", 80);
+			} else if (textIn.findFirst("похлопаю") != -1) {
+				Sound::Play(soundrandom + "pohlopau.ogg", pos, 1.0f);
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
 			}
 		}
 	return true;

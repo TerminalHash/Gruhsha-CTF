@@ -1,6 +1,5 @@
 string BINDINGSDIR = "../Cache/";
 string BINDINGSFILE = "GRUHSHA_playerbindings";
-string SETTINGSFILE = "GRUHSHA_customizableplayersettings";
 
 string[] page_texts =
 {
@@ -12,15 +11,15 @@ string[] page_texts =
 string[][] button_texts =
 {
 	{
-		"Emote 1",
-		"Emote 2",
-		"Emote 3",
-		"Emote 4",
-		"Emote 5",
-		"Emote 6",
-		"Emote 7",
-		"Emote 8",
-		"Emote 9",
+		"Emote 1 (NOT USABLE)",
+		"Emote 2 (NOT USABLE)",
+		"Emote 3 (NOT USABLE)",
+		"Emote 4 (NOT USABLE)",
+		"Emote 5 (NOT USABLE)",
+		"Emote 6 (NOT USABLE)",
+		"Emote 7 (NOT USABLE)",
+		"Emote 8 (NOT USABLE)",
+		"Emote 9 (NOT USABLE)",
 		"Emote Wheel",
 		"Emote Wheel 2"
 	},
