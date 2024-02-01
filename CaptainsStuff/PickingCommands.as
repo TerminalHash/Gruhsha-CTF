@@ -276,11 +276,11 @@ class SetArcherLimitCommand : ChatCommand
 	}
 }
 
-class DisallowClassChangingOnShops : ChatCommand
+class ToggleClassChangingOnShops : ChatCommand
 {
-	DisallowClassChangingOnShops()
+	ToggleClassChangingOnShops()
 	{
-		super("dccos", "Disallowing class changing on shops");
+		super("togglechclass", "Disallowing class changing on shops");
 	}
 
 	bool canPlayerExecute(CPlayer@ player)
@@ -294,30 +294,13 @@ class DisallowClassChangingOnShops : ChatCommand
 	void Execute(string[] args, CPlayer@ player)
 	{
 		CRules@ rules = getRules();
-		rules.set_bool("no_class_change_on_shop", true);
-		printf("Boolean no_class_change_on_shop is " + rules.get_bool("no_class_change_on_shop"));
-	}
-}
-
-class AllowClassChangingOnShops : ChatCommand
-{
-	AllowClassChangingOnShops()
-	{
-		super("accos", "Allowing class changing on shops");
-	}
-
-	bool canPlayerExecute(CPlayer@ player)
-	{
-		return (
-			ChatCommand::canPlayerExecute(player) &&
-			!ChatCommands::getManager().whitelistedClasses.empty()
-		);
-	}
-
-	void Execute(string[] args, CPlayer@ player)
-	{
-		CRules@ rules = getRules();
-		rules.set_bool("no_class_change_on_shop", false);
-		printf("Boolean no_class_change_on_shop is " + rules.get_bool("no_class_change_on_shop"));
+		bool isEnable = rules.get_bool("no_class_change_on_shop");
+		rules.set_bool("no_class_change_on_shop", !isEnable);
+		//printf("Boolean no_class_change_on_shop is " + rules.get_bool("no_class_change_on_shop"));
+		string isEnableStr = "включена";
+		if(!isEnable) {
+			isEnableStr = "выключена";
+		}
+		if (isServer()) server_AddToChat("Смена классов теперь "+isEnableStr, SColor(0xff474ac6));
 	}
 }

@@ -13,7 +13,5 @@ void RegisterGruhshaChatCommands(ChatCommandManager@ manager)
 	manager.RegisterCommand(ApproveTeamsCommand());
 	manager.RegisterCommand(SetBuilderLimitCommand());
 	manager.RegisterCommand(SetArcherLimitCommand());
-	manager.RegisterCommand(DisallowClassChangingOnShops());
-	manager.RegisterCommand(AllowClassChangingOnShops());
-
+	manager.RegisterCommand(ToggleClassChangingOnShops());
 }
