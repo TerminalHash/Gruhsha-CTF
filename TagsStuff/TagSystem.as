@@ -23,6 +23,7 @@
 
 #include "pathway.as";
 #include "TagCommon.as";
+#include "BindingsCommon.as"
 
 // Utility
 #include "IdentifyPlayer.as";
@@ -187,25 +188,25 @@ void onTick(CRules@ this)
 
     CControls@ controls = getControls();
 
-    /*if (true)
+    if (true)
     {
          u32 time_since_last_tag = getGameTime() - getRules().get_u32(p.getUsername() + "last_tag");
          u32 tag_cooldown = getRules().get_u32(p.getUsername() + "tag_cooldown_time");
 
         if ( (time_since_last_tag >= tag_cooldown && !getRules().get_bool(p.getUsername() + "is_tag_muted")) || p.isMod())
         {
-                if (controls.isKeyPressed("tag1")) { SendTag(this, controls, p, 1); } // DANGER
-                if (controls.isKeyPressed("tag2")) { SendTag(this, controls, p, 2); } // GO
-                if (controls.isKeyPressed("tag3")) { SendTag(this, controls, p, 3); } // HOLD
-                if (controls.isKeyPressed("tag4")) { SendTag(this, controls, p, 4); } // KEG
-                if (controls.isKeyPressed("tag5")) { SendTag(this, controls, p, 5); } // CATCH
-                if (controls.isKeyPressed("tag6")) { SendTag(this, controls, p, 6); } // HELP
-                if (controls.isKeyPressed("tag7")) { SendTag(this, controls, p, 7); } // ATTACK
-                if (controls.isKeyPressed("tag8")) { SendTag(this, controls, p, 8); } // ?
+                if (b_KeyJustPressed("tag1")) { SendTag(this, controls, p, 1); } // DANGER
+                if (b_KeyJustPressed("tag2")) { SendTag(this, controls, p, 2); } // GO
+                if (b_KeyJustPressed("tag3")) { SendTag(this, controls, p, 3); } // HOLD
+                if (b_KeyJustPressed("tag4")) { SendTag(this, controls, p, 4); } // KEG
+                if (b_KeyJustPressed("tag5")) { SendTag(this, controls, p, 5); } // CATCH
+                if (b_KeyJustPressed("tag6")) { SendTag(this, controls, p, 6); } // HELP
+                if (b_KeyJustPressed("tag7")) { SendTag(this, controls, p, 7); } // ATTACK
+                if (b_KeyJustPressed("tag8")) { SendTag(this, controls, p, 8); } // ?
         }
-    }*/
+    }
 
-    if (controls.isKeyJustPressed(KEY_MBUTTON))
+    if (b_KeyJustPressed("tag_wheel"))
     {
             TagMenu@ menu = TagMenu(controls.getMouseScreenPos());
 
@@ -253,12 +254,12 @@ void onTick(CRules@ this)
 
     }
 
-    if (controls.isKeyPressed(KEY_MBUTTON))
+    if (b_KeyPressed("tag_wheel"))
     {
         tmenu.update();
     }
 
-    else if (controls.isKeyJustReleased(KEY_MBUTTON) && tmenu !is null)
+    else if (b_KeyJustReleased("tag_wheel") && tmenu !is null)
     {
         TagMenuEntry@ selected = tmenu.get_selected();
         if (selected !is null)
@@ -283,7 +284,7 @@ void onRender(CRules@ rules)
 
         if (controls !is null)
         {
-            if (controls.isKeyPressed(KEY_MBUTTON))
+            if (b_KeyPressed("tag_wheel"))
             {
                 GUI::SetFont("menu");
                 tmenu.render();

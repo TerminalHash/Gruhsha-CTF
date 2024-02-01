@@ -78,12 +78,6 @@ void onTick(CRules@ this)
 		LoadFileBindings();
 	} 
 
-	if (getGameTime() % 30 == 0 && !this.get_bool("loadedsettings"))
-	{
-		ResetRuleSettings();
-		LoadFileSettings();
-	} 
-
 	if (controls !is null)
 	{
 		if (controls.isKeyPressed(EKEY_CODE::KEY_LMENU))
@@ -181,9 +175,6 @@ bool onClientProcessChat( CRules@ this, const string &in textIn, string &out tex
 
 		ResetRuleBindings();
 		LoadFileBindings();
-
-		ResetRuleSettings();
-		LoadFileSettings();
 	}
 
 	return true;
@@ -242,34 +233,6 @@ void InitMenu()
 	}
 
 	u16 setting_index = 0;
-
-	for (int i=0; i<setting_texts.length; ++i)
-	{
-		ClickableButtonThree[] bts;
-
-		for (int g=0; g<setting_texts[i].length; ++g)
-		{
-			ClickableButtonThree button;
-			{
-				//button.m_clickable_origin = center + Vec2f(5, i * 40);
-				//button.m_clickable_size = Vec2f(200, 40);
-
-				button.cmd_id = getRules().getCommandID("s buttonclick");
-				button.cmd_subid = setting_index;
-
-				++setting_index;
-
-				button.m_text = setting_texts[i][g];
-				button.m_i = i;
-				button.m_g = g;
-				button.m_text_position = button.m_clickable_origin + Vec2f(4, 0);
-			}
-
-			bts.push_back(button);
-		}
-
-		GUI.settings.push_back(bts);
-	}
 
 	// Page Buttons
 

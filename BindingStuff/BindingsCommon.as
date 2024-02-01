@@ -5,11 +5,9 @@ string SETTINGSFILE = "GRUHSHA_customizableplayersettings";
 string[] page_texts =
 {
 	"Emotes",
-	"Blocks",
-	"Pings",
-	"Misc",
-	"Settings"
+	"Pings"
 };
+
 
 string[][] button_texts =
 {
@@ -27,19 +25,6 @@ string[][] button_texts =
 		"Emote Wheel 2"
 	},
 	{
-		"Stone Block",
-		"Stone Backwall",
-		"Stone Door",
-		"Wood Block",
-		"Wood Backwall",
-		"Wood Door",
-		"Team Platform",
-		"Ladder",
-		"Platform",
-		"Shop",
-		"Spikes"
-	},
-	{
 		"Don't go here",
 		"Go here",
 		"Hold here",
@@ -50,18 +35,6 @@ string[][] button_texts =
 		"?",
 		"Ping wheel"
 	},
-	{
-		"Select bomb",
-		"Select water bomb",
-		"Cycle bomb type",
-		"Select normal arrow",
-		"Select water arrow",
-		"Select fire arrow",
-		"Select bomb arrow",
-		"Cycle arrow type",
-		"Rotate block",
-		"Take out drill"
-	}
 };
 
 string[][] button_file_names =
@@ -80,83 +53,16 @@ string[][] button_file_names =
 		"emote_wheel_two"
 	},
 	{
-		"stone_block",
-		"stone_backwall",
-		"stone_door",
-		"wood_block",
-		"wood_backwall",
-		"wood_door",
-		"team_platform",
-		"ladder",
-		"platform",
-		"shop",
-		"spikes"
+		"tag1",
+		"tag2",
+		"tag3",
+		"tag4",
+		"tag5",
+		"tag6",
+		"tag7",
+		"tag8",
+		"tag_wheel"
 	},
-	{
-		"ping1",
-		"ping2",
-		"ping3",
-		"ping4",
-		"ping5",
-		"ping6",
-		"ping7",
-		"ping8",
-		"ping_wheel"
-	},
-	{
-		"select_bomb1",
-		"select_bomb2",
-		"switch_bomb",
-		"select_arrow1",
-		"select_arrow2",
-		"select_arrow3",
-		"select_arrow4",
-		"switch_arrow",
-		"rotate_block",
-		"take_out_drill"
-	}
-};
-
-// Settings
-
-string[][] setting_texts =
-{
-	{
-		"Build mode",
-		"Ping line style",
-		"Disable block/ping binds in menus",
-		"Show block bar above inventory"
-	}
-};
-
-string[][] setting_options =
-{
-	{
-		"Vanilla",
-		"Lag-friendly"
-	},
-	{
-		"Line",
-		"Arrow"
-	},
-	{
-		"Yes",
-		"No"
-	},
-	{
-		"Yes",
-		"No"
-	}
-};
-
-string [][] setting_file_names =
-{
-	{
-		"build_mode",
-		"ping_line",
-		"disable_binds_in_menus",
-		"show_blockbar_above_inv"
-	}
 };
 
 // bindings[i][g] = h
@@ -228,67 +134,6 @@ void ResetRuleBindings()
 		{
 			rules.set_s32(button_file_names[i][g] + "$1", -1);
 			rules.set_s32(button_file_names[i][g] + "$2", -1);
-		}
-	}
-}
-
-// settings
-
-void UpdateSetting(int i, int g, int h)
-{
-	ConfigFile file;
-
-	if (file.loadFile(BINDINGSDIR + SETTINGSFILE))
-	{
-		file.add_s32(button_file_names[i][g], h);
-		printf("Updating settings file");
-	}
-
-	if(!file.saveFile(SETTINGSFILE + ".cfg"))
-	{
-		print("Failed to save GRUHSHA_customizableplayersettings.cfg");
-	}
-	else
-	{
-		print("Successfully saved GRUHSHA_customizableplayersettings.cfg");
-	}
-
-	ResetRuleSettings();
-	LoadFileSettings();
-}
-
-void LoadFileSettings()
-{
-	getRules().set_bool("loadedsettings", true);
-
-	ConfigFile file;
-
-	if (file.loadFile(BINDINGSDIR + SETTINGSFILE))
-	{
-		for (int i=0; i<setting_texts.length; ++i)
-		{
-			for (int g=0; g<setting_texts[i].length; ++g)
-			{
-				string file_entry = setting_file_names[i][g];
-
-				if (file.exists(file_entry))
-				{
-					getRules().set_s32(file_entry, file.read_s32(file_entry));
-				}
-			}
-		}
-	}
-}
-
-void ResetRuleSettings()
-{
-	CRules@ rules = getRules();
-
-	for (int i=0; i<setting_texts.length; ++i)
-	{
-		for (int g=0; g<setting_texts[i].length; ++g)
-		{
-			rules.set_s32(setting_file_names[i][g], -1);
 		}
 	}
 }

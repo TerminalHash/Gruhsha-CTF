@@ -1,5 +1,6 @@
 #include "EmotesCommon.as"
 #include "WheelMenuCommon.as"
+#include "BindingsCommon.as"
 
 #define CLIENT_ONLY
 
@@ -72,11 +73,11 @@ void onTick(CRules@ rules)
 
 	WheelMenu@ rmenu = get_wheel_menu("emotes_grusha");
 
-	if (controls.isKeyJustPressed(KEY_KEY_R))
+	if (b_KeyJustPressed("emote_wheel_two"))
 	{
 		set_active_wheel_menu(@rmenu);
 	}
-	else if (controls.isKeyJustReleased(KEY_KEY_R) && get_active_wheel_menu() is rmenu)
+	else if (b_KeyJustReleased("emote_wheel_two") && get_active_wheel_menu() is rmenu)
 	{
 		WheelMenuEntry@ selected = rmenu.get_selected();
 		set_emote(blob, (selected !is null ? selected.name : ""));
