@@ -2,7 +2,7 @@
 #include "DefaultChatCommands.as"
 #include "GruhshaChatCommands.as"
 //#include "TagChatCommands.as"
-//#include "SoundsChatCommands.as"
+#include "SoundsChatCommands.as"
 
 ChatCommandManager@ manager;
 
@@ -13,7 +13,7 @@ void onInit(CRules@ this)
 	RegisterDefaultChatCommands(manager);
 	RegisterGruhshaChatCommands(manager);
 	//RegisterTagChatCommands(manager);
-	//RegisterSoundsChatCommands(manager);
+	RegisterSoundsChatCommands(manager);
 	manager.ProcessConfigCommands();
 }
 
