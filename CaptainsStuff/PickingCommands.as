@@ -2,6 +2,7 @@
 #include "RulesCore.as"
 #include "PickingCommon.as"
 #include "ApprovedTeams.as"
+#include "BindingsCommon.as"
 
 class SpecAllCommand : ChatCommand
 {
