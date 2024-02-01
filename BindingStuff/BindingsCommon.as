@@ -5,7 +5,7 @@ string SETTINGSFILE = "GRUHSHA_customizableplayersettings";
 string[] page_texts =
 {
 	"Emotes",
-	"Pings"
+	"Tags"
 };
 
 
@@ -25,15 +25,15 @@ string[][] button_texts =
 		"Emote Wheel 2"
 	},
 	{
-		"Don't go here",
-		"Go here",
-		"Hold here",
-		"Keg",
-		"Catch",
-		"Help",
-		"Attack",
-		"?",
-		"Ping wheel"
+		"GO HERE",
+		"DIG HERE",
+		"ATTACK",
+		"DANGER",
+		"RETREAT",
+		"HELP",
+		"KEG",
+		"WiT SENCE",
+		"Tag wheel"
 	},
 };
 

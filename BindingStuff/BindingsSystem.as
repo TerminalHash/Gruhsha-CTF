@@ -167,19 +167,6 @@ void onTick(CRules@ this)
 	}
 }
 
-bool onClientProcessChat( CRules@ this, const string &in textIn, string &out textOut, CPlayer@ player )
-{
-	if (textIn == "!bindings" && player.isMyPlayer())
-	{
-		this.set_bool("bindings_open", !this.get_bool("bindings_open"));
-
-		ResetRuleBindings();
-		LoadFileBindings();
-	}
-
-	return true;
-}
-
 ClickableButtonGUI@ BindingGUI;
 
 

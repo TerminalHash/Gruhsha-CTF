@@ -304,3 +304,34 @@ class ToggleClassChangingOnShops : ChatCommand
 		if (isServer()) server_AddToChat("Смена классов теперь "+isEnableStr, SColor(0xff474ac6));
 	}
 }
+
+class BindingsMenu : ChatCommand
+{
+	BindingsMenu()
+	{
+		super("bindings", "Show mod bindings menu");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		if (player.isMyPlayer())
+		{
+			rules.set_bool("bindings_open", !rules.get_bool("bindings_open"));
+
+			ResetRuleBindings();
+			LoadFileBindings();
+		}
+
+		//printf("Boolean no_class_change_on_shop is " + rules.get_bool("no_class_change_on_shop"));
+	}
+}
