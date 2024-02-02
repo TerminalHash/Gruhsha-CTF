@@ -7,6 +7,7 @@
 #include "CheckSpam.as"
 #include "StandardControlsCommon.as"
 #include "GenericButtonCommon.as"
+#include "TranslationsSystem.as"
 
 const f32 beer_amount = 1.0f;
 const f32 heal_amount = 0.25f;
@@ -93,13 +94,13 @@ void onInit(CBlob@ this)
 	this.set_u8("shop icon", 25);
 
 	{
-		ShopItem@ s = addShopItem(this, "Beer - 1 Heart", "$quarters_beer$", "beer", Descriptions::beer, false);
+		ShopItem@ s = addShopItem(this, Names::beeritem, "$quarters_beer$", "beer", Descriptions::beer, false);
 		s.spawnNothing = true;
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::beer);
 		AddHurtRequirement(s.requirements);
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Meal - Full Health", "$quarters_meal$", "meal", Descriptions::meal, false);
+		ShopItem@ s = addShopItem(this, Names::mealitem, "$quarters_meal$", "meal", Descriptions::meal, false);
 		s.spawnNothing = true;
 		s.customButton = true;
 		s.buttonwidth = 2;
@@ -108,15 +109,15 @@ void onInit(CBlob@ this)
 		AddHurtRequirement(s.requirements);
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Egg - Full Health", "$quarters_egg$", "egg", Descriptions::egg, false);
+		ShopItem@ s = addShopItem(this, Names::eggitem, "$quarters_egg$", "egg", Descriptions::egg, false);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::egg);
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Burger - Full Health", "$quarters_burger$", "food", Descriptions::burger, true);
+		ShopItem@ s = addShopItem(this, Names::burgeritem, "$quarters_burger$", "food", Descriptions::burger, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::burger);
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Pear - Semi-full Health", "$quarters_pear$", "pear", Descriptions::pear, true);
+		ShopItem@ s = addShopItem(this, Names::pearitem, "$quarters_pear$", "pear", Descriptions::pear, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::pear);
 	}
 }

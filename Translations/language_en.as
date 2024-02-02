@@ -31,6 +31,12 @@ namespace en
 	// SoundsCommands.as
 	d_togglesoundscomtext					= "Mute/unmute sound commangs",
 
+	// ClassSelectMenu.as
+	d_totaltext								= "Total ",
+
+	// Quarters.as
+	d_peartext								= "A juicy and sweet pear.",
+
 	//////////////////////////////////////////////////////////
 	// Names
 	//////////////////////////////////////////////////////////
@@ -40,6 +46,13 @@ namespace en
 	n_tagwheel								= "Tag Wheel",
 	n_emotewheelsecond						= "Mod Emote Wheel",
 	n_pressdelete							= "Choose a bind and press [DELETE] to remove key",
+
+	// Quarters.as
+	n_beeritem								= "Beer - 1 Heart",
+	n_mealitem								= "Meal - Full Health",
+	n_eggitem								= "Egg - Full Health",
+	n_burgeritem							= "Burger - Full Health",
+	n_pearitem								= "Pear - 2 Hearts",
 
 	empty 					= ""; // keep last
 }

@@ -1,6 +1,7 @@
 //stuff for building respawn menus
 
 #include "RespawnCommandCommon.as"
+#include "TranslationsSystem.as"
 
 //class for getting everything needed for swapping to a class at a building
 
@@ -82,14 +83,8 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 				}
 				else if (P_Archers >= archers_limit)
 				{
-					if (g_locale == "ru")
-					{
-						button.SetHoverText( "    " + "Всего " + P_Archers + " / " + archers_limit + "\n");
-					}
-					else
-					{
-						button.SetHoverText( "    " + "Total " + P_Archers + " / " + archers_limit + "\n");
-					}
+					button.SetHoverText( "    " + Descriptions::totaltext + P_Archers + " / " + archers_limit + "\n");
+
 					button.SetEnabled(false);
 				}
 			}
@@ -101,14 +96,8 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 				}
 				else if (P_Builders >= builders_limit && !rules.isWarmup())
 				{
-					if (g_locale == "ru")
-					{
-						button.SetHoverText( "    " + "Всего " + P_Builders + " / " + builders_limit + "\n");
-					}
-					else
-					{
-						button.SetHoverText( "    " + "Total " + P_Builders + " / " + builders_limit + "\n");
-					}
+					button.SetHoverText( "    " + Descriptions::totaltext + P_Builders + " / " + builders_limit + "\n");
+
 					button.SetEnabled(false);
 				}
 			}

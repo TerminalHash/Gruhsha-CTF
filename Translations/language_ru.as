@@ -34,6 +34,12 @@ namespace ru
 	// SoundsCommands.as
 	d_togglesoundscomtext					= "Включить\выключить звук вокалайзов для себя",
 
+	// ClassSelectMenu.as
+	d_totaltext								= "Всего ",
+
+	// Quarters.as
+	d_peartext								= "Сочная и сладкая груша.",
+
 	//////////////////////////////////////////////////////////
 	// Names
 	//////////////////////////////////////////////////////////
@@ -43,6 +49,13 @@ namespace ru
 	n_tagwheel								= "Колесо меток",
 	n_emotewheelsecond						= "Модовое колесо эмоций",
 	n_pressdelete							= "Выбери клавишу и нажми [DELETE] для очистки хоткея!",
+
+	// Quarters.as
+	n_beeritem								= "Пиво - 1 Сердце",
+	n_mealitem								= "Мясное блюдо - Полное здоровье",
+	n_eggitem								= "Яйцо - Полное здоровье",
+	n_burgeritem							= "Бургер - Полное здоровье",
+	n_pearitem								= "Груша - 2 Сердца",
 
 	empty 					= ""; // keep last
 }

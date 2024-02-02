@@ -49,6 +49,12 @@ namespace Descriptions
 	// SoundsCommands.as
 	togglesoundscomtext				= Translate(en::d_togglesoundscomtext+"\\"+ru::d_togglesoundscomtext),
 
+	// ClassSelectMenu.as
+	totaltext						= Translate(en::d_totaltext+"\\"+ru::d_totaltext),
+
+	// Quarters.as
+	peartext					= Translate(en::d_peartext+"\\"+ru::d_peartext),
+
 	// Example code: oooolmao		  	       	= Translate(en::d_oooolmao+"\\"+ru::d_oooolmao),
 
 	empty 					= "";
@@ -63,6 +69,14 @@ namespace Names
 	tagwheel		  	       			= Translate(en::n_tagwheel+"\\"+ru::n_tagwheel),
 	emotewheelsecond		  	       	= Translate(en::n_emotewheelsecond+"\\"+ru::n_emotewheelsecond),
 	pressdelete		  	       			= Translate(en::n_pressdelete+"\\"+ru::n_pressdelete),
+
+	// Quarters.as
+	beeritem		  	       			= Translate(en::n_beeritem+"\\"+ru::n_beeritem),
+	mealitem		  	       			= Translate(en::n_mealitem+"\\"+ru::n_mealitem),
+	eggitem		  	       				= Translate(en::n_eggitem+"\\"+ru::n_eggitem),
+	burgeritem		  	       			= Translate(en::n_burgeritem+"\\"+ru::n_burgeritem),
+	pearitem		  	       			= Translate(en::n_pearitem+"\\"+ru::n_pearitem),
+
 	// Example code: oooolmao		  	       	= Translate(en::n_oooolmao+"\\"+ru::n_oooolmao),
 
 	empty					= "";
