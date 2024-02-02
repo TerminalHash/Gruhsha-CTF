@@ -29,7 +29,7 @@ namespace en
 	d_specallcomtext						= "Puts everyone in Spectators",
 
 	// SoundsCommands.as
-	d_togglesoundscomtext					= "Mute/unmute sound commangs",
+	d_togglesoundscomtext					= "Mute or unmute sound commangs",
 
 	// ClassSelectMenu.as
 	d_totaltext								= "Total ",

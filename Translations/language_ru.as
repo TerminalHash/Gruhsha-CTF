@@ -32,7 +32,7 @@ namespace ru
 	d_specallcomtext						= "Сделать всех игроков наблюдателями",
 
 	// SoundsCommands.as
-	d_togglesoundscomtext					= "Включить\выключить звук вокалайзов для себя",
+	d_togglesoundscomtext					= "Включить или выключить звук вокалайзов для себя",
 
 	// ClassSelectMenu.as
 	d_totaltext								= "Всего ",
