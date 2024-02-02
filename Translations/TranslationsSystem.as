@@ -64,8 +64,6 @@ namespace Descriptions
 	// Quarters.as
 	peartext					= Translate(en::d_peartext+"\\"+ru::d_peartext),
 
-	// Example code: oooolmao		  	       	= Translate(en::d_oooolmao+"\\"+ru::d_oooolmao),
-
 	empty 					= "";
 }
 
@@ -85,8 +83,6 @@ namespace Names
 	eggitem		  	       				= Translate(en::n_eggitem+"\\"+ru::n_eggitem),
 	burgeritem		  	       			= Translate(en::n_burgeritem+"\\"+ru::n_burgeritem),
 	pearitem		  	       			= Translate(en::n_pearitem+"\\"+ru::n_pearitem),
-
-	// Example code: oooolmao		  	       	= Translate(en::n_oooolmao+"\\"+ru::n_oooolmao),
 
 	empty					= "";
 }
