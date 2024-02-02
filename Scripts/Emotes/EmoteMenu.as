@@ -59,12 +59,11 @@ void onTick(CRules@ rules)
 
 	WheelMenu@ menu = get_wheel_menu("emotes");
 
-
-	if (b_KeyJustPressed("emote_wheel"))
+	if (blob.isKeyJustPressed(key_bubbles))
 	{
 		set_active_wheel_menu(@menu);
 	}
-	else if (b_KeyJustReleased("emote_wheel") && get_active_wheel_menu() is menu)
+	else if (blob.isKeyJustReleased(key_bubbles) && get_active_wheel_menu() is menu)
 	{
 		WheelMenuEntry@ selected = menu.get_selected();
 		set_emote(blob, (selected !is null ? selected.name : ""));
