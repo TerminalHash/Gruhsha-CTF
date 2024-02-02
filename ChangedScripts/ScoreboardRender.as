@@ -4,6 +4,7 @@
 #include "ApprovedTeams.as";
 #include "RunnerHead.as";
 #include "pathway.as";
+#include "TranslationsSystem.as";
 //#include "RulesCore"
 
 CPlayer@ hoveredPlayer;
@@ -958,7 +959,7 @@ void onRenderScoreboard(CRules@ this)
 	ScoreboardField(
 		Vec2f(screenWidth - tl.x - 200, 115 - scrollOffset),
 		Vec2f(screenWidth - tl.x,       115 - scrollOffset + 40),
-		"Current version: " + mod_version
+		Descriptions::currentversiontext + mod_version
 	);
 	LinkButton(
 		Vec2f(screenWidth - tl.x - 275, 115 - scrollOffset),

@@ -1,6 +1,9 @@
 // language_en.as
 /*
     English translation for Grusha CTF.
+    -- -- -- -- -- -- -- -- --
+    Authors of localization:
+    TerminalHash
 */
 namespace en
 {
@@ -9,6 +12,12 @@ namespace en
 	//////////////////////////////////////////////////////////
 	// Descriptions
 	//////////////////////////////////////////////////////////
+
+	// Accolades.as
+	d_goldgrushatext						= "Gruhsha Contributor - for developing mod Gruhsha CTF",
+
+	// BindingsCommon.as
+	d_modbindplaceholder					= "placeholder",
 
 	// PickingCommands.as
 	d_bindingscom							= "Show mod bindings menu",
@@ -30,6 +39,9 @@ namespace en
 
 	// SoundsCommands.as
 	d_togglesoundscomtext					= "Mute or unmute sound commangs",
+
+	// ScoreboardRender.as
+	d_currentversiontext					= "Current version: ",
 
 	// ClassSelectMenu.as
 	d_totaltext								= "Total ",

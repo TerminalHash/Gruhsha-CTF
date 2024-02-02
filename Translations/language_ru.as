@@ -13,6 +13,12 @@ namespace ru
 	// Descriptions
 	//////////////////////////////////////////////////////////
 
+	// Accolades.as
+	d_goldgrushatext						= "Контрибьютор Груши - за разработку мода Gruhsha CTF",
+
+	// BindingsCommon.as
+	d_modbindplaceholder					= "пусто",
+
 	// PickingCommands.as
 	d_bindingscom							= "Открыть меню кастомных биндингов",
 	d_togglechcomtext						= "Переключить смену классов в магазинах",
@@ -33,6 +39,9 @@ namespace ru
 
 	// SoundsCommands.as
 	d_togglesoundscomtext					= "Включить или выключить звук вокалайзов для себя",
+
+	// ScoreboardRender.as
+	d_currentversiontext					= "Текущая версия: ",
 
 	// ClassSelectMenu.as
 	d_totaltext								= "Всего ",

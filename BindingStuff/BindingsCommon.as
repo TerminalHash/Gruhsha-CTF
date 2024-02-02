@@ -247,7 +247,7 @@ class ClickableButton
 		this.m_clickable = true;
 		this.m_selected = false;
 		this.deselect_instantly = false;
-		this.bindings.push_back("placeholder");
+		this.bindings.push_back(Descriptions::modbindplaceholder);
 		//printf("Init button");
 	}
 

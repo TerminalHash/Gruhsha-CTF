@@ -1,4 +1,5 @@
 #include "pathway.as"
+#include "TranslationsSystem.as"
 ///////////////////////////////////////////////////////////////////////////////
 //
 //  Accolades system
@@ -257,5 +258,5 @@ string[] accolade_description = {
 	"Map Contributor - for contributing to the official map cycle",
 	"Moderation Contributor - for contributing to moderating the game, forums, or discord",
 	"Gold Member - for enjoying the game with us since before the F2P launch",
-	"Контрибьютор Груши - за разработку мода Grusha CTF"
+	Descriptions::goldgrushatext
 };

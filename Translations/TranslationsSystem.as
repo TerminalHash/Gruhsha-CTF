@@ -28,6 +28,12 @@ namespace Descriptions
 {
 	const string
 
+	// Accolades.as
+	goldgrushatext		  	    = Translate(en::d_goldgrushatext+"\\"+ru::d_goldgrushatext),
+
+	// BindingsCommon.as
+	modbindplaceholder		  	    = Translate(en::d_modbindplaceholder+"\\"+ru::d_modbindplaceholder),
+
 	// PickingCommands.as
 	bindingscom		  	       		= Translate(en::d_bindingscom+"\\"+ru::d_bindingscom),
 	togglechcomtext		  	       	= Translate(en::d_togglechcomtext+"\\"+ru::d_togglechcomtext),
@@ -48,6 +54,9 @@ namespace Descriptions
 
 	// SoundsCommands.as
 	togglesoundscomtext				= Translate(en::d_togglesoundscomtext+"\\"+ru::d_togglesoundscomtext),
+
+	// ScoreboardRender.as
+	currentversiontext				= Translate(en::d_currentversiontext+"\\"+ru::d_currentversiontext),
 
 	// ClassSelectMenu.as
 	totaltext						= Translate(en::d_totaltext+"\\"+ru::d_totaltext),
