@@ -1,4 +1,4 @@
-#include "Grusha_Locales.as"
+#include "TranslationsSystem.as"
 
 string BINDINGSDIR = "../Cache/";
 string BINDINGSFILE = "GRUHSHA_playerbindings";
