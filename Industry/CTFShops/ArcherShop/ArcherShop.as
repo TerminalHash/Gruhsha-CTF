@@ -49,9 +49,12 @@ void onInit(CBlob@ this)
 
 void GetButtonsFor(CBlob@ this, CBlob@ caller)
 {
+	CRules@ rules = getRules();
+	bool disallow_class_change_on_shops = rules.get_bool("no_class_change_on_shop");
+
 	if (!canSeeButtons(this, caller)) return;
 
-	if (caller.getConfig() == this.get_string("required class") || getRules().get_string("ROLE_" + caller.getPlayer().getUsername()) != "archer" || true)
+	if (caller.getConfig() == this.get_string("required class") || disallow_class_change_on_shops == true)
 	{
 		this.set_Vec2f("shop offset", Vec2f_zero);
 	}

@@ -2,6 +2,7 @@
 #include "RulesCore.as"
 #include "PickingCommon.as"
 #include "ApprovedTeams.as"
+#include "BindingsCommon.as"
 
 class SpecAllCommand : ChatCommand
 {
@@ -273,5 +274,65 @@ class SetArcherLimitCommand : ChatCommand
 		rules.set_u8("archers_limit", parseInt(args[0]));
 
 		if (isServer()) server_AddToChat("Максимум лучников теперь "+args[0], SColor(0xff474ac6));
+	}
+}
+
+class ToggleClassChangingOnShops : ChatCommand
+{
+	ToggleClassChangingOnShops()
+	{
+		super("togglechclass", "Disallowing class changing on shops");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+		bool isEnable = rules.get_bool("no_class_change_on_shop");
+		rules.set_bool("no_class_change_on_shop", !isEnable);
+		//printf("Boolean no_class_change_on_shop is " + rules.get_bool("no_class_change_on_shop"));
+		string isEnableStr = "включена";
+		if(!isEnable) {
+			isEnableStr = "выключена";
+		}
+		if (isServer()) server_AddToChat("Смена классов теперь "+isEnableStr, SColor(0xff474ac6));
+	}
+}
+
+class BindingsMenu : ChatCommand
+{
+	BindingsMenu()
+	{
+		super("bindings", "Show mod bindings menu");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		if (player.isMyPlayer())
+		{
+			rules.set_bool("bindings_open", !rules.get_bool("bindings_open"));
+
+			ResetRuleBindings();
+			LoadFileBindings();
+		}
+
+		//printf("Boolean no_class_change_on_shop is " + rules.get_bool("no_class_change_on_shop"));
 	}
 }

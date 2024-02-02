@@ -6,7 +6,6 @@
 void RegisterSoundsChatCommands(ChatCommandManager@ manager)
 {
 	//sounds commands
-	manager.RegisterCommand(MuteSounds());
-	manager.RegisterCommand(UnmuteSounds());
+	manager.RegisterCommand(ToggleSounds());
 
 }

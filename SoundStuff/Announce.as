@@ -48,7 +48,7 @@ bool onClientProcessChat( CRules@ this, const string& in textIn, string& out tex
 	string[]@ tokens = textIn.split(" ");
 	u8 tlen = tokens.length;
 
-	if (textIn.find("!") == 0 && player.getTeamNum() == getLocalPlayer().getTeamNum() && player.isMod() || (getRules().get_string("team_" + teamNum + "_leader") == player.getUsername()))
+	if (textIn.find("!") == 0 && player.getTeamNum() == getLocalPlayer().getTeamNum() && player.isMod() || textIn.find("!") == 0 && player.getTeamNum() == getLocalPlayer().getTeamNum() && (getRules().get_string("team_" + teamNum + "_leader") == player.getUsername()))
 	{
 		Sound::Play(sound + "AnnounceSound.ogg");
 		string alert = textIn;
