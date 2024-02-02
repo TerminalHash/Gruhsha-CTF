@@ -1,28 +1,15 @@
+#include "Grusha_Locales.as"
+
 string BINDINGSDIR = "../Cache/";
 string BINDINGSFILE = "GRUHSHA_playerbindings";
 
 string[] page_texts =
 {
-	"Emotes",
-	"Tags"
+	Names::modbindsmenu
 };
-
 
 string[][] button_texts =
 {
-	{
-		"Emote 1 (NOT USABLE)",
-		"Emote 2 (NOT USABLE)",
-		"Emote 3 (NOT USABLE)",
-		"Emote 4 (NOT USABLE)",
-		"Emote 5 (NOT USABLE)",
-		"Emote 6 (NOT USABLE)",
-		"Emote 7 (NOT USABLE)",
-		"Emote 8 (NOT USABLE)",
-		"Emote 9 (NOT USABLE)",
-		"Emote Wheel",
-		"Emote Wheel 2"
-	},
 	{
 		"GO HERE",
 		"DIG HERE",
@@ -32,25 +19,13 @@ string[][] button_texts =
 		"HELP",
 		"KEG",
 		"WiT SENCE",
-		"Tag wheel"
+		Names::tagwheel,
+		Names::emotewheelsecond
 	},
 };
 
 string[][] button_file_names =
 {
-	{
-		"emote1",
-		"emote2",
-		"emote3",
-		"emote4",
-		"emote5",
-		"emote6",
-		"emote7",
-		"emote8",
-		"emote9",
-		"emote_wheel",
-		"emote_wheel_two"
-	},
 	{
 		"tag1",
 		"tag2",
@@ -60,7 +35,8 @@ string[][] button_file_names =
 		"tag6",
 		"tag7",
 		"tag8",
-		"tag_wheel"
+		"tag_wheel",
+		"emote_wheel_two"
 	},
 };
 
@@ -768,7 +744,7 @@ class ClickableButtonGUI
 				}
 			}
 
-			GUI::DrawTextCentered("Press [DELETE] to remove bind", m_clickable_origin + Vec2f(m_clickable_size.x * 0.5, m_clickable_size.y - 40), SColor(255, 255, 255, 255));
+			GUI::DrawTextCentered(Names::pressdelete, m_clickable_origin + Vec2f(m_clickable_size.x * 0.5, m_clickable_size.y - 40), SColor(255, 255, 255, 255));
 		}
 		else
 		{

@@ -37,6 +37,11 @@ namespace Names
 {
 	const string
 
+	// BindingsCommon.as
+	modbindsmenu		  	      	 	= Translate(en::n_modbindsmenu+"\\"+ru::n_modbindsmenu),
+	tagwheel		  	       			= Translate(en::n_tagwheel+"\\"+ru::n_tagwheel),
+	emotewheelsecond		  	       	= Translate(en::n_emotewheelsecond+"\\"+ru::n_emotewheelsecond),
+	pressdelete		  	       			= Translate(en::n_pressdelete+"\\"+ru::n_pressdelete),
 	// Example code: oooolmao		  	       	= Translate(en::n_oooolmao+"\\"+ru::n_oooolmao),
 
 	empty					= "";
