@@ -6,6 +6,8 @@
 //	cannot be changed after-the-fact.
 //	It's good for performance to just translate once though.
 
+#include "TranslationsSystem.as"
+
 namespace Descriptions
 {
 	const string
@@ -88,7 +90,7 @@ namespace Descriptions
 	meal                       = getTranslatedString("A hearty meal to get you back on your feet."),
 	egg                        = getTranslatedString("A suspiciously undercooked egg, maybe it will hatch."),
 	burger                     = getTranslatedString("A burger to go."),
-	pear                       = "A juicy and sweet pear.",
+	pear                       = Descriptions::peartext,
 
 	//Magic Scrolls
 	scroll_carnage             = getTranslatedString("This magic scroll when cast will turn all nearby enemies into a pile of bloody gibs."),
