@@ -163,7 +163,7 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 			} else if (textIn.findFirst("новой") != -1 || textIn.findFirst("всё хуйня") != -1 || textIn.findFirst("кусака блять") != -1) {
 				if (localplayer_is_deaf == false)
 				{
-					Sound::Play(soundrandom + "misha.ogg", pos, 1.0f);
+					Sound::Play(soundrandom + "misha.ogg", pos, 2.0f);
 				}
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
@@ -172,6 +172,31 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 				if (localplayer_is_deaf == false)
 				{
 					Sound::Play(soundrandom + "pohlopau.ogg", pos, 1.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
+			} else if (textIn.findFirst("ладно") != -1) {
+				if (localplayer_is_deaf == false)
+				{
+					Sound::Play(soundrandom + "nyladno.ogg", pos, 1.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
+			} else if (textIn.findFirst("бред") != -1 || textIn.findFirst("врёшь") != -1 || textIn.findFirst("врешь") != -1) {
+				if (localplayer_is_deaf == false)
+				{
+					Sound::Play(soundrandom + "bredish.ogg", pos, 1.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
+			} else if (textIn.findFirst("ёбаный") != -1 || textIn.findFirst("ебаный") != -1) {
+				if (localplayer_is_deaf == false)
+				{
+					int random = XORRandom(2) + 1;
+					Sound::Play(soundrandom + "ebanrot" + random + ".ogg", pos, 1.0f);
 				}
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
