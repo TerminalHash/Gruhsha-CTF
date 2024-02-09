@@ -99,7 +99,10 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 					if (rules.get_string("ROLE_" + username) == "archer" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Archers++;}
 					if (rules.get_string("ROLE_" + username) == "builder" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
 					if (rules.get_string("ROLE_" + username) == "knight" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Knights++;}
+
+					//printf("We have: " + P_Archers + " Archers, " + P_Builders + " Builders, " + P_Knights + " Knights");
 				}
+
 				CBlob@ caller = getBlobByNetworkID(params.read_u16());
 				string classconfig = params.read_string();
 
