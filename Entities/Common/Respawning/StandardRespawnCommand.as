@@ -82,6 +82,7 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 			{
 				// build menu for them
 				CRules@ rules = getRules();
+				string username;
 
 				CPlayer@ player = null;
 
@@ -92,35 +93,36 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 				archers_limit = rules.get_u8("archers_limit");
 				builders_limit = rules.get_u8("builders_limit");
 
-				CBlob@ caller = getBlobByNetworkID(params.read_u16());
-				string classconfig = params.read_string();
-
 				// calculating amount of players in classes
 				for (u32 i = 0; i < getPlayersCount(); i++)
 				{
-					CPlayer@ p = getPlayer(i);
+					if (rules.get_string("ROLE_" + username) == "archer" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Archers++;}
+					if (rules.get_string("ROLE_" + username) == "builder" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
+					if (rules.get_string("ROLE_" + username) == "knight" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Knights++;}
 
-					if (caller !is null)
-					{
-						printf("Player " + p.getUsername() + " has class " + classconfig + " in team " + p.getTeamNum());
-
-						if (classconfig == "archer" && caller.getTeamNum() == p.getTeamNum()) {P_Archers++;}
-						if (classconfig == "builder" && caller.getTeamNum() == p.getTeamNum()) {P_Builders++;}
-						if (classconfig == "knight" && caller.getTeamNum() == p.getTeamNum()) {P_Knights++;}
-					}
-
-					printf("We have: " + P_Archers + " Archers, " + P_Builders + " Builders, " + P_Knights + " Knights");
+					//printf("We have: " + P_Archers + " Archers, " + P_Builders + " Builders, " + P_Knights + " Knights");
 				}
+
+				CBlob@ caller = getBlobByNetworkID(params.read_u16());
+				string classconfig = params.read_string();
 
 				// Limit classes, if game started
 				if (classconfig == "archer" && P_Archers >= archers_limit)
 				{
-					printf ("Go away!");
+					// It's shit just dont work
+					/* (player !is null && player.isMyPlayer())
+					{
+						client_AddToChat("You can't change your class to this one! Archers limit is: " + archers_limit, SColor(255, 180, 24, 94));
+					}*/
 					break;
 				}
 				if (classconfig == "builder" && P_Builders >= builders_limit && !rules.isWarmup())
 				{
-					printf ("Go away!");
+					// It's shit just dont work
+					/*if (player !is null && player.isMyPlayer())
+					{
+						client_AddToChat("You can't change your class to this one! Builders limit is: " + builders_limit, SColor(255, 180, 24, 94));
+					}*/
 					break;
 				}
 				if (caller !is null && canChangeClass(this, caller))
