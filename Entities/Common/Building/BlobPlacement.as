@@ -292,6 +292,7 @@ void onInit(CBlob@ this)
 
 	this.addCommandID("placeBlob");
 	this.addCommandID("repairBlob");
+	this.addCommandID("settleLadder");
 	this.addCommandID("rotateBlob");
 
 	this.set_u16("build_angle", 0);
@@ -539,18 +540,12 @@ void onTick(CBlob@ this)
 				}
 			}
 			
-			bool keypress = this.isKeyJustPressed(key_action3);
-
-			if (getRules().get_s32("rotate_block$1") != -1)
+			if (this.isKeyJustPressed(key_action3))
 			{
-				keypress = b_KeyJustPressed("rotate_block");
-			}
+				s8 rotateDir = controls.ActionKeyPressed(AK_BUILD_MODIFIER) ? -1 : 1;
 
-			if (keypress)
-			{
 				CBitStream params;
-				params.write_u16((this.get_u16("build_angle") + 90) % 360);
-				this.set_u16("build_angle", ((this.get_u16("build_angle") + 90) % 360));
+				params.write_u16((360 + this.get_u16("build_angle") + 90 * rotateDir) % 360);
 				this.SendCommand(this.getCommandID("rotateBlob"), params);
 			}
 		}
@@ -925,56 +920,6 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 			}
 		}
 	}
-	/*else if (cmd == this.getCommandID("placeBlob2"))
-	{
-		string name = params.read_string();
-		u8 team = params.read_u8();
-		Vec2f pos = params.read_Vec2f();
-		u8 index = params.read_u8();
-		CBlob @carryBlob = server_CreateBlob(name, team, pos);
-
-		BuildBlock @block = getBlockByIndex(this, index);
-
-		//server_BuildBlob(his, blocks[0], uint index)
-
-		if (carryBlob !is null)
-		{
-			if (carryBlob.getName() == "wooden_platform" || carryBlob.getName() == "ladder")
-				carryBlob.setAngleDegrees(this.get_u16("build_angle"));
-
-			if (!serverBlobCheck(this, carryBlob, pos))
-			{
-				carryBlob.server_Die();
-				return;
-			}
-
-			if (PlaceBlob(this, carryBlob, pos, true))
-			{
-				server_TakeRequirements(this.getInventory(), block.reqs);
-				CPlayer@ p = this.getPlayer();
-				if (p !is null)
-				{
-					GE_BuildBlob(p.getNetworkID(), carryBlob.getName()); // gameplay event for coins
-				}
-			}
-		}
-	}
-	else if (cmd == this.getCommandID("healBlob2"))
-	{
-		Vec2f pos = params.read_Vec2f();
-
-		CBlob @healBlob = getMap().getBlobAtPosition(pos);
-
-		if (healBlob !is null)
-		{
-			//HealBlob2(this, healBlob, pos);
-			CPlayer@ p = this.getPlayer();
-			if (p !is null)
-			{
-				GE_BuildBlob(p.getNetworkID(), healBlob.getName()); // gameplay event for coins
-			}
-		}
-	}*/
 }
 
 void onDetach(CBlob@ this, CBlob@ detached, AttachmentPoint@ attachedPoint)
