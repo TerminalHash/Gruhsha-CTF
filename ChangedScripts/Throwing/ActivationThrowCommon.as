@@ -40,17 +40,28 @@ void server_Activate(CBlob@ blob, CBlob@ caller = null)
 {
 	if (blob !is null && isServer())
 	{
+		bool no_callback = blob.hasTag("no callback on activate");
+		
 		Activate@ onActivate;
-		if (blob.get("activate handle", @onActivate)) 
+		if (blob.get("activate handle", @onActivate) || no_callback)
 		{
+			printf("1");
 			CBitStream params;
 			params.write_u16(blob.getNetworkID());
 			if (caller !is null)
 			{
+				printf("2");
 				params.write_u16(caller.getNetworkID());
 			}
-			params.ResetBitIndex();
-			onActivate(params); // Callback implemented in the blob's main logic script
+			if (!no_callback)
+			{
+				params.ResetBitIndex();
+				onActivate(params); // Callback implemented in the blob's main logic script
+			}
+			else
+			{
+				blob.SendCommand(blob.getCommandID("activate"), params);
+			}
 		}
 		blob.Tag("activated");
 		blob.Sync("activated", true);

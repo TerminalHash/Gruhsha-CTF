@@ -138,13 +138,13 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 			}
 		}
 
-		if(hasitem > 0 && myitem !is null && myitem.get_f32("drill heat") > blob.get_f32("drill heat"))
+		if(hasitem > 0 && myitem !is null && myitem.get_u8("drill heat") > blob.get_u8("drill heat"))
 		{
-			f32 lower_drill_heat = blob.get_f32("drill heat");
-			f32 higher_drill_heat = myitem.get_f32("drill heat");
+			f32 lower_drill_heat = blob.get_u8("drill heat");
+			f32 higher_drill_heat = myitem.get_u8("drill heat");
 
-			myitem.set_f32("drill heat", lower_drill_heat);
-			blob.set_f32("drill heat", higher_drill_heat);
+			myitem.set_u8("drill heat", lower_drill_heat);
+			blob.set_u8("drill heat", higher_drill_heat);
 			myitem.Sync("drill heat", true);
 			blob.Sync("drill heat", true);
 			return;
@@ -157,13 +157,13 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 		{
 			if (carry.getName() == "drill")
 			{
-				if (carry.get_f32("drill heat") > blob.get_f32("drill heat"))
+				if (carry.get_u8("drill heat") > blob.get_u8("drill heat"))
 				{
-					f32 lower_drill_heat = blob.get_f32("drill heat");
-					f32 higher_drill_heat = carry.get_f32("drill heat");
+					f32 lower_drill_heat = blob.get_u8("drill heat");
+					f32 higher_drill_heat = carry.get_u8("drill heat");
 
-					carry.set_f32("drill heat", lower_drill_heat);
-					blob.set_f32("drill heat", higher_drill_heat);
+					carry.set_u8("drill heat", lower_drill_heat);
+					blob.set_u8("drill heat", higher_drill_heat);
 					carry.Sync("drill heat", true);
 					blob.Sync("drill heat", true);
 					return;
