@@ -313,10 +313,13 @@ void onTick(CSprite@ this)
 
 void DrawCursorAt(Vec2f position, string& in filename)
 {
+	SColor dc = color_white;
+
+	if (getRules().get_string("build_mode") == "lagfriendly") dc = SColor(255, 0, 150, 250);
 	position = getMap().getAlignedWorldPos(position);
 	if (position == Vec2f_zero) return;
 	position = getDriver().getScreenPosFromWorldPos(position - Vec2f(1, 1));
-	GUI::DrawIcon(filename, position, getCamera().targetDistance * getDriver().getResolutionScaleFactor());
+	GUI::DrawIcon(filename, 0, Vec2f(16, 16), position, getCamera().targetDistance * getDriver().getResolutionScaleFactor(), dc);
 }
 
 // render cursors
