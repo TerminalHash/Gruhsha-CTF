@@ -29,10 +29,17 @@ namespace Descriptions
 	const string
 
 	// Accolades.as
-	goldgrushatext		  	    = Translate(en::d_goldgrushatext+"\\"+ru::d_goldgrushatext),
+	goldgrushatext		  	    	= Translate(en::d_goldgrushatext+"\\"+ru::d_goldgrushatext),
 
 	// BindingsCommon.as
 	modbindplaceholder		  	    = Translate(en::d_modbindplaceholder+"\\"+ru::d_modbindplaceholder),
+	modbindnull		  	    		= Translate(en::d_modbindnull+"\\"+ru::d_modbindnull),
+
+			// Settings
+	bmoptlag						= Translate(en::d_bmoptlag+"\\"+ru::d_bmoptlag),
+	bmoptvan						= Translate(en::d_bmoptvan+"\\"+ru::d_bmoptvan),
+	blockbaron		  	  			= Translate(en::d_blockbaron+"\\"+ru::d_blockbaron),
+	blockbaroff		  	  			= Translate(en::d_blockbaroff+"\\"+ru::d_blockbaroff),
 
 	// PickingCommands.as
 	bindingscom		  	       		= Translate(en::d_bindingscom+"\\"+ru::d_bindingscom),
@@ -72,9 +79,32 @@ namespace Names
 	const string
 
 	// BindingsCommon.as
+		// Buttons
 	modbindsmenu		  	      	 	= Translate(en::n_modbindsmenu+"\\"+ru::n_modbindsmenu),
+	blocksmenu		  	      	 		= Translate(en::n_blocksmenu+"\\"+ru::n_blocksmenu),
+	settingsmenu		  	      	 	= Translate(en::n_settingsmenu+"\\"+ru::n_settingsmenu),
 	tagwheel		  	       			= Translate(en::n_tagwheel+"\\"+ru::n_tagwheel),
 	emotewheelsecond		  	       	= Translate(en::n_emotewheelsecond+"\\"+ru::n_emotewheelsecond),
+
+		// Blocks
+	stonebl		  	      	 			= Translate(en::n_stonebl+"\\"+ru::n_stonebl),
+	stoneback		  	      	 		= Translate(en::n_stoneback+"\\"+ru::n_stoneback),
+	stonedoor		  	      	 		= Translate(en::n_stonedoor+"\\"+ru::n_stonedoor),
+	woodbl		  	      	 			= Translate(en::n_woodbl+"\\"+ru::n_woodbl),
+	woodback		  	      		 	= Translate(en::n_woodback+"\\"+ru::n_woodback),
+	wooddoor		  	      		 	= Translate(en::n_wooddoor+"\\"+ru::n_wooddoor),
+	platformt		  	     	 	 	= Translate(en::n_platformt+"\\"+ru::n_platformt),
+	ladder		  	      	 			= Translate(en::n_ladder+"\\"+ru::n_ladder),
+	platform		  	     	 	 	= Translate(en::n_platform+"\\"+ru::n_platform),
+	shop		  	      	 			= Translate(en::n_shop+"\\"+ru::n_shop),
+	spikes		  	      			 	= Translate(en::n_spikes+"\\"+ru::n_spikes),
+
+		// Settings
+	buildmode		  	      			 = Translate(en::n_buildmode+"\\"+ru::n_buildmode),
+	blockbar		  	      			 = Translate(en::n_blockbar+"\\"+ru::n_blockbar),
+	camerasw		  	      			 = Translate(en::n_camerasw+"\\"+ru::n_camerasw),
+
+		// Other
 	pressdelete		  	       			= Translate(en::n_pressdelete+"\\"+ru::n_pressdelete),
 
 	// Quarters.as

@@ -18,6 +18,13 @@ namespace en
 
 	// BindingsCommon.as
 	d_modbindplaceholder					= "placeholder",
+	d_modbindnull							= "No binding",
+
+			// Settings
+	d_bmoptlag								= "Lag-Friendly",
+	d_bmoptvan								= "Vanilla",
+	d_blockbaron							= "Yes",
+	d_blockbaroff							= "No",
 
 	// PickingCommands.as
 	d_bindingscom							= "Show mod bindings menu",
@@ -54,9 +61,33 @@ namespace en
 	//////////////////////////////////////////////////////////
 
 	//BindingsCommon.as
-	n_modbindsmenu							= "Mod hotkeys",
+
+		// Buttons
+	n_modbindsmenu							= "Emotes/Tags",
+	n_blocksmenu							= "Blocks",
+	n_settingsmenu							= "Settings",
 	n_tagwheel								= "Tag Wheel",
 	n_emotewheelsecond						= "Mod Emote Wheel",
+
+		// Blocks
+	n_stonebl								= "Stone Block",
+	n_stoneback								= "Stone Backwall",
+	n_stonedoor								= "Stone Door",
+	n_woodbl								= "Wood Block",
+	n_woodback								= "Wood Backwall",
+	n_wooddoor								= "Wood Door",
+	n_platformt								= "Team Platform",
+	n_ladder								= "Ladder",
+	n_platform								= "Platform",
+	n_shop									= "Shop",
+	n_spikes								= "Spikes",
+
+		// Settings
+	n_buildmode								= "Build Mode",
+	n_blockbar								= "Show block bar HUD",
+	n_camerasw								= "Camera Sway (DEFAULT: 5)",
+
+		// Other
 	n_pressdelete							= "Choose a bind and press [DELETE] to remove key",
 
 	// Quarters.as

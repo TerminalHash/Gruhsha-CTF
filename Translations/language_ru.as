@@ -18,6 +18,13 @@ namespace ru
 
 	// BindingsCommon.as
 	d_modbindplaceholder					= "пусто",
+	d_modbindnull							= "Нет клавиши",
+
+			// Settings
+	d_bmoptlag								= "Дружелюбный к лагам",
+	d_bmoptvan								= "Ванильное",
+	d_blockbaron							= "Да",
+	d_blockbaroff							= "Нет",
 
 	// PickingCommands.as
 	d_bindingscom							= "Открыть меню кастомных биндингов",
@@ -54,9 +61,33 @@ namespace ru
 	//////////////////////////////////////////////////////////
 
 	//BindingsCommon.as
-	n_modbindsmenu							= "Клавиши мода",
+
+		// Buttons
+	n_modbindsmenu							= "Эмоции/Метки",
+	n_blocksmenu							= "Блоки",
+	n_settingsmenu							= "Настройки",
 	n_tagwheel								= "Колесо меток",
 	n_emotewheelsecond						= "Модовое колесо эмоций",
+
+		// Blocks
+	n_stonebl								= "Каменный блок",
+	n_stoneback								= "Каменная стена",
+	n_stonedoor								= "Каменная дверь",
+	n_woodbl								= "Деревянный блок",
+	n_woodback								= "Деревянная стена",
+	n_wooddoor								= "Деревянная дверь",
+	n_platformt								= "Командная платформа",
+	n_ladder								= "Лестница",
+	n_platform								= "Платформа",
+	n_shop									= "Магазин",
+	n_spikes								= "Шипы",
+
+		// Settings
+	n_buildmode								= "Режим строительства",
+	n_blockbar								= "Включить панель с блоками",
+	n_camerasw								= "Покачивание камеры (По-умол. 5)",
+
+		// Other
 	n_pressdelete							= "Выбери клавишу и нажми [DELETE] для очистки хоткея!",
 
 	// Quarters.as

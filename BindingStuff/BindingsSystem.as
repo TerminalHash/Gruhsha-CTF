@@ -14,7 +14,7 @@ void onInit(CRules@ this)
 	this.addCommandID("s buttonclick");
 
 	ResetRuleBindings();
-	InitMenu();
+	ResetRuleSettings();
 
 	if (isClient())
 	{
@@ -26,7 +26,7 @@ void onInit(CRules@ this)
 		}
 		else // default values
 		{
-			printf("Creating local bindings file for Captains.");
+			printf("Creating local bindings file for Gruhsha.");
 		}
 
 		if(!file.saveFile(BINDINGSFILE + ".cfg"))
@@ -37,10 +37,38 @@ void onInit(CRules@ this)
 		{
 			print("Successfully saved GRUHSHA_playerbindings.cfg");
 		}
+
+		// settings
+		ConfigFile sfile;
+		ConfigFile sfile2;
+
+		if (sfile.loadFile(BINDINGSDIR + SETTINGSFILE)) // file exists
+		{ 
+			printf("Settings file exists.");
+		}
+		else // default settings
+		{
+			sfile.add_string("blockbar_hud", "yes");
+			sfile.add_string("build_mode", "vanilla");
+			sfile.add_string("camera_sway", "5");
+
+			printf("Creating local settings file with default values for Gruhsha.");
+		}
+
+		if(!sfile.saveFile(SETTINGSFILE + ".cfg"))
+		{	
+			print("Failed to save GRUHSHA_customizableplayersettings.cfg");
+		}
+		else
+		{
+			print("Successfully saved GRUHSHA_customizableplayersettings.cfg");
+		}
 	}
 
 	LoadFileBindings();
+	LoadFileSettings();
 
+	InitMenu();
 }
 
 void onRender(CRules@ this)
@@ -76,6 +104,12 @@ void onTick(CRules@ this)
 	{
 		ResetRuleBindings();
 		LoadFileBindings();
+	} 
+
+	if (getGameTime() % 30 == 0 && !this.get_bool("loadedsettings"))
+	{
+		ResetRuleSettings();
+		LoadFileSettings();
 	} 
 
 	if (controls !is null)
@@ -167,12 +201,12 @@ void onTick(CRules@ this)
 	}
 }
 
-ClickableButtonGUI@ BindingGUI;
+//ClickableButtonGUI@ BindingGUI;
 
 
 Vec2f MENU_SIZE = Vec2f(1000, 700);
 Vec2f ENTRY_SIZE = Vec2f(900, 30);
-Vec2f PAGE_BUTTON_SIZE = Vec2f(150, 60);
+Vec2f PAGE_BUTTON_SIZE = Vec2f(200, 60);
 
 void InitMenu()
 {
@@ -189,6 +223,20 @@ void InitMenu()
 	GUI.current_page = 0;
 
 	u16 binding_index = 0;
+
+	// Close Button
+	ClickableButtonFour closebutton;
+	{
+		closebutton.cmd_id = 69540;
+		closebutton.cmd_subid = 6942;
+
+		closebutton.m_text = "X";
+		closebutton.m_i = 69;
+		closebutton.m_g = 69;
+		closebutton.m_text_position = closebutton.m_clickable_origin + Vec2f(4, 0);
+	}
+
+	GUI.closebutton = closebutton;
 
 	// Binding Buttons
 	for (int i=0; i<button_texts.length; ++i)
@@ -221,6 +269,54 @@ void InitMenu()
 
 	u16 setting_index = 0;
 
+	for (int i=0; i<setting_texts.length; ++i)
+	{
+		ClickableButtonThree[] bts;
+
+		for (int g=0; g<setting_texts[i].length; ++g)
+		{
+			ClickableButtonThree button;
+			{
+				//button.m_clickable_origin = center + Vec2f(5, i * 40);
+				//button.m_clickable_size = Vec2f(200, 40);
+
+				button.cmd_id = getRules().getCommandID("s buttonclick");
+				button.cmd_subid = setting_index;
+
+				++setting_index;
+
+				button.m_text = setting_texts[i][g];
+				button.m_i = i;
+				button.m_g = g;
+				button.m_text_position = button.m_clickable_origin + Vec2f(4, 0);
+
+				for (int h=0; h<setting_options[i][g].length; ++h)
+				{
+					button.m_hovereds.push_back(false);
+
+					//if (getRules().get_string(setting_file_names[i][g]) == setting_option_names[i][g][h]) 
+					if (false)
+					{
+						button.m_selecteds.push_back(true);
+						button.m_state.push_back(ClickableButtonStates::Selected);
+					}
+					else 
+					{
+						button.m_selecteds.push_back(false);
+						button.m_state.push_back(ClickableButtonStates::None);
+					}
+
+
+					button.possible_options.push_back(setting_options[i][g][h]);
+				}
+			}
+
+			bts.push_back(button);
+		}
+
+		GUI.settings.push_back(bts);
+	}
+
 	// Page Buttons
 
 	for (int i=0; i<page_texts.length; ++i)
@@ -240,58 +336,4 @@ void InitMenu()
 	}
 
 	@BindingGUI = GUI;
-}
-
-void onCommand( CRules@ this, u8 cmd, CBitStream @params )
-{
-	if (cmd == this.getCommandID("p buttonclick"))
-	{
-		bool selected = params.read_bool();
-		u16 id = params.read_u16();
-		string username = params.read_string();
-
-		if (getLocalPlayer().getUsername() != username) return;
-
-		for (int i=0; i<BindingGUI.page_buttons.length; ++i)
-		{
-			if (i != id)
-				BindingGUI.page_buttons[i].m_selected = false;
-		}
-
-		for (int i=0; i<BindingGUI.buttons.length; ++i)
-		{
-			for (int g=0; g<BindingGUI.buttons[i].length; ++g)
-			{
-				BindingGUI.buttons[i][g].m_selected = false;
-			}
-		}
-
-		BindingGUI.current_page = id;
-
-		//printf("hi, id: " + id);
-	}
-
-	if (cmd == this.getCommandID("b buttonclick"))
-	{
-		bool selected = params.read_bool();
-		u16 id = params.read_u16();
-		string username = params.read_string();
-
-		if (getLocalPlayer().getUsername() != username) return;
-
-		u16 binding_index = 0;
-
-		for (int i=0; i<BindingGUI.buttons.length; ++i)
-		{
-			for (int g=0; g<BindingGUI.buttons[i].length; ++g)
-			{
-				if (binding_index != id)
-					BindingGUI.buttons[i][g].m_selected = false;
-
-				binding_index++;
-			}
-		}
-
-		//printf("hi, id: " + id);
-	}
 }

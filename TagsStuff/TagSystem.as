@@ -123,7 +123,7 @@ void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
 
                     if (player.isMod())
                     {
-                        upd_cooldown = 10;
+                        upd_cooldown = 25;
                     }
 
                     if      (kind == 1) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }

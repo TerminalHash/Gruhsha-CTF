@@ -2,7 +2,7 @@
 
 #include "Hitters.as";
 #include "BuilderCommon.as";
-#include "ThrowCommon.as";
+#include "ActivationThrowCommon.as"
 #include "RunnerCommon.as";
 #include "Help.as";
 #include "Requirements.as"
@@ -101,7 +101,15 @@ void onTick(CBlob@ this)
 		HitData@ hitdata;
 		this.get("hitdata", @hitdata);
 		hitdata.blobID = 0;
-		hitdata.tilepos = bc.buildable ? bc.tileAimPos : Vec2f(-8, -8);
+
+		if (getRules().get_string("build_mode") == "lagfriendly")
+		{
+			hitdata.tilepos = (bc.buildable || bc.buildable_alt) ? bc.tileAimPos : Vec2f(-8, -8);
+		}
+		else
+		{
+			hitdata.tilepos = (bc.buildable) ? bc.tileAimPos : Vec2f(-8, -8);
+		}
 	}
 
 	// get rid of the built item

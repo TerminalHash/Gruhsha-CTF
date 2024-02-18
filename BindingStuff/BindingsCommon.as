@@ -2,10 +2,13 @@
 
 string BINDINGSDIR = "../Cache/";
 string BINDINGSFILE = "GRUHSHA_playerbindings";
+string SETTINGSFILE = "GRUHSHA_customizableplayersettings";
 
 string[] page_texts =
 {
-	Names::modbindsmenu
+	Names::modbindsmenu,
+	Names::blocksmenu,
+	Names::settingsmenu
 };
 
 string[][] button_texts =
@@ -22,6 +25,19 @@ string[][] button_texts =
 		Names::tagwheel,
 		Names::emotewheelsecond
 	},
+	{
+		Names::stonebl,
+		Names::stoneback,
+		Names::stonedoor,
+		Names::woodbl,
+		Names::woodback,
+		Names::wooddoor,
+		Names::platformt,
+		Names::ladder,
+		Names::platform,
+		Names::shop,
+		Names::spikes
+	}
 };
 
 string[][] button_file_names =
@@ -38,6 +54,80 @@ string[][] button_file_names =
 		"tag_wheel",
 		"emote_wheel_two"
 	},
+	{
+		"stone_block",
+		"stone_backwall",
+		"stone_door",
+		"wood_block",
+		"wood_backwall",
+		"wood_door",
+		"team_platform",
+		"ladder",
+		"platform",
+		"shop",
+		"spikes"
+	}
+};
+
+// Settings
+string[][] setting_texts =
+{
+	{
+		Names::buildmode,
+		Names::blockbar,
+		Names::camerasw
+	}
+};
+
+string[][] setting_file_names =
+{
+	{
+		"build_mode",
+		"blockbar_hud",
+		"camera_sway"
+	}
+};
+
+string[][][] setting_options =
+{
+	{
+		{
+			Descriptions::bmoptvan, // 10
+			Descriptions::bmoptlag // 20
+		},
+		{
+			Descriptions::blockbaron, // 10
+			Descriptions::blockbaroff // 20
+		},
+		{
+			"1", // 1
+			"2", // 2
+			"3", // 3
+			"4", // 4
+			"5" // 5
+		}
+	}
+};
+
+string[][][] setting_option_names =
+{
+	{
+		{
+			"vanilla", // 10
+			"lagfriendly" // 20
+		},
+		{
+			"yes", // 10
+			"no" // 20
+		},
+		{
+			"1", // 1
+			"2", // 2
+			"3", // 3
+			"4", // 4
+			"5" // 5
+		}
+	}
 };
 
 // bindings[i][g] = h
@@ -61,7 +151,6 @@ void UpdateFileBinding(int i, int g, int h, int j)
 	{
 		print("Failed to save GRUHSHA_playerbindings.cfg");
 	}
-
 	else
 	{
 		print("Successfully saved GRUHSHA_playerbindings.cfg");
@@ -109,6 +198,76 @@ void ResetRuleBindings()
 		{
 			rules.set_s32(button_file_names[i][g] + "$1", -1);
 			rules.set_s32(button_file_names[i][g] + "$2", -1);
+		}
+	}
+}
+
+// settings
+
+void UpdateSetting(int i, int g, string h)
+{
+	ConfigFile file;
+
+	if (file.loadFile(BINDINGSDIR + SETTINGSFILE)) 
+	{ 
+		file.add_string(setting_file_names[i][g], h);
+		printf("Updating settings file");
+	}
+
+	if(!file.saveFile(SETTINGSFILE + ".cfg"))
+	{	
+		print("Failed to save VNR_customizableplayersettings.cfg");
+	}
+	else
+	{
+		print("Successfully saved VNR_customizableplayersettings.cfg");
+	}
+
+	ResetRuleSettings();
+	LoadFileSettings();
+}
+
+void LoadFileSettings()
+{
+	getRules().set_bool("loadedsettings", true);
+	
+	ConfigFile file;
+
+	if (file.loadFile(BINDINGSDIR + SETTINGSFILE)) 
+	{ 
+		for (int i=0; i<setting_texts.length; ++i)
+		{
+			for (int g=0; g<setting_texts[i].length; ++g)
+			{
+				string file_entry = setting_file_names[i][g];
+
+				if (file.exists(file_entry))
+				{
+					if (file_entry == "camera_sway")
+					{
+						CCamera@ camera = getCamera();
+						if (camera !is null)
+						{
+							camera.posLag = Maths::Max(1.0, f32(parseInt(file.read_string(file_entry))));
+						}
+					}
+
+					getRules().set_string(file_entry, file.read_string(file_entry));
+				}
+			}
+		}
+	}
+}
+
+void ResetRuleSettings()
+{
+	CRules@ rules = getRules();
+
+	for (int i=0; i<setting_texts.length; ++i)
+	{
+		for (int g=0; g<setting_texts[i].length; ++g)
+		{
+			rules.set_string(setting_file_names[i][g], "null");
 		}
 	}
 }
@@ -366,7 +525,9 @@ class ClickableButton
 				params.write_bool(this.m_selected);
 				params.write_u16(cmd_subid);
 				params.write_string(getLocalPlayer().getUsername());
-				getRules().SendCommand(cmd_id, params);
+				params.ResetBitIndex();
+				//getRules().SendCommand(cmd_id, params);
+				fakeCommand(getRules(), cmd_id, @params);
 			}
 		}
 		else
@@ -377,7 +538,7 @@ class ClickableButton
 	}
 }
 
-class ClickableButtonThree
+class ClickableButtonFour
 {
 	bool use_own_pos;
 	SColor m_custom_color;
@@ -409,7 +570,7 @@ class ClickableButtonThree
 	bool deselect_instantly;
 	bool m_clickable;
 
-	ClickableButtonThree()
+	ClickableButtonFour()
 	{
 		this.use_own_pos = false;
 		this.m_custom_color = SColor(255, 255, 255, 255);
@@ -451,39 +612,20 @@ class ClickableButtonThree
 		f32 button_percentage = 0.3;
 		f32 anti_button_percentage = 1.0 - button_percentage;
 
-		Vec2f tl = clickable_origin;
-		Vec2f br = clickable_origin + Vec2f(clickable_size.x * anti_button_percentage, clickable_size.y);
+		Vec2f tl_2 = clickable_origin;
+		Vec2f br_2 = tl_2 + Vec2f(clickable_size.x, clickable_size.y);
 
-		Vec2f tl_2 = clickable_origin + Vec2f(clickable_size.x * button_percentage, 0);
-		Vec2f br_2 = tl_2 + Vec2f(clickable_size.x * anti_button_percentage, clickable_size.y);
+		bool is_hovered = this.isHovered(mouse_pos, tl_2, Vec2f(clickable_size.x, clickable_size.y));
 
-		bool is_hovered = this.isHovered(mouse_pos, tl_2, Vec2f(clickable_size.x * anti_button_percentage, clickable_size.y));
+		SColor color = SColor(255, 250, 0, 0);
+		if (is_hovered) color = SColor(255, 200, 0, 0);
 
-		SColor color = color_white;
-		if (m_custom_color != color_white) color = m_custom_color;
-
-		if (m_selected && !is_hovered) color = SColor(255, 100, 255, 100);
-		else if (!m_selected && is_hovered) color = SColor(255, 220, 220, 220);
-		else if (m_selected && is_hovered) color = SColor(255, 45, 200, 45);
-
-		GUI::DrawText(m_text, tl + Vec2f(10, 10), color_white);
+		//GUI::DrawText(m_text, tl + Vec2f(10, 10), color_white);
 		GUI::DrawPane(tl_2, br_2, color);
 
 		string binding = bindings[0];
 
-		if (getRules().get_s32(button_file_names[m_i][m_g] + "$1") != -1)
-		{
-			binding = getKeyName(getRules().get_s32(button_file_names[m_i][m_g] + "$1"));
-
-			if (getRules().get_s32(button_file_names[m_i][m_g] + "$2") != -1)
-			{
-				binding += ("+" + getKeyName(getRules().get_s32(button_file_names[m_i][m_g] + "$2")));
-			}
-		}
-
-		GUI::DrawTextCentered(binding, tl_2 + Vec2f(clickable_size.x * anti_button_percentage * 0.5, clickable_size.y * 0.5), color_white);
-
-		GUI::DrawLine2D(clickable_origin + Vec2f(-10, clickable_size.y + 3), clickable_origin + Vec2f(clickable_size.x + 10, clickable_size.y + 3), SColor(125, 100, 100, 100));
+		GUI::DrawTextCentered("X", tl_2 + Vec2f(clickable_size.x * 0.5, clickable_size.y * 0.5), color_white);
 
 		GUI::SetFont("hud");
 	}
@@ -499,8 +641,8 @@ class ClickableButtonThree
 		f32 button_percentage = 0.3;
 		f32 anti_button_percentage = 1.0 - button_percentage;
 
-		Vec2f tl = clickable_origin + Vec2f(clickable_size.x * button_percentage, 0);
-		Vec2f cs = Vec2f(clickable_size.x * anti_button_percentage, clickable_size.y);
+		Vec2f tl = clickable_origin;
+		Vec2f cs = Vec2f(clickable_size.x, clickable_size.y);
 
 		const bool mousePressed = controls.isKeyPressed(KEY_LBUTTON);
 		const bool mouseJustReleased = controls.isKeyJustReleased(KEY_LBUTTON);
@@ -527,23 +669,218 @@ class ClickableButtonThree
 				if (this.m_state == ClickableButtonStates::Hovered || this.m_state == ClickableButtonStates::None) this.m_state = ClickableButtonStates::SelectedHovered;
 
 				Sound::Play("buttonclick.ogg");
-				
-				if (!deselect_instantly)
-				{
-					this.m_selected = !this.m_selected;
-				}
 
-				CBitStream params;
-				params.write_bool(this.m_selected);
-				params.write_u16(cmd_subid);
-				params.write_string(getLocalPlayer().getUsername());
-				getRules().SendCommand(cmd_id, params);
+				getRules().set_bool("bindings_open", false);
+
+				ResetRuleBindings();
+				LoadFileBindings();
+
+				ResetRuleSettings();
+				LoadFileSettings();
 			}
 		}
 		else
 		{
 			m_hovered = false;
 			this.m_state = (m_selected ? ClickableButtonStates::Selected : ClickableButtonStates::None);
+		}
+	}
+}
+
+
+class ClickableButtonThree
+{
+	bool use_own_pos;
+	SColor m_custom_color;
+	// Draw text, if applies
+	bool m_center_text;
+	string m_text;
+	Vec2f m_text_position;
+	string m_font;
+
+	string[] bindings;
+
+	string[] possible_options;
+
+	// Clickable stuff
+	Vec2f m_clickable_origin, m_clickable_size;
+
+	// Bools for sounds and stuff
+	bool[] m_selecteds;
+	bool[] m_hovereds;
+
+	// State: none/hovered/selected/s&h
+	int[] m_state;
+
+	// Rules cmd_id
+	u16 cmd_id;
+	u16 cmd_subid;
+
+	// uhhh
+	s32 m_i;
+	s32 m_g;
+
+	bool deselect_instantly;
+	bool m_clickable;
+
+	ClickableButtonThree()
+	{
+		this.use_own_pos = false;
+		this.m_custom_color = SColor(255, 255, 255, 255);
+		this.m_center_text = false;
+		this.m_clickable = true;
+		this.deselect_instantly = false;
+		this.bindings.push_back(Descriptions::modbindnull);
+		//printf("Init button");
+	}
+
+	bool isHovered(Vec2f mouse_pos, Vec2f clickable_origin, Vec2f clickable_size)
+	{
+		Vec2f tl = clickable_origin;
+		Vec2f br = clickable_origin + clickable_size;
+
+		if (mouse_pos.x > tl.x && mouse_pos.y > tl.y &&
+			 mouse_pos.x < br.x && mouse_pos.y < br.y)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	void Render(Vec2f clickable_origin = Vec2f_zero, Vec2f clickable_size = Vec2f_zero)
+	{
+		CPlayer@ player = getLocalPlayer();
+		if (player is null) return;
+		CControls@ controls = player.getControls();
+		if (controls is null) return;
+		Vec2f mouse_pos = controls.getMouseScreenPos();
+
+		if (this.use_own_pos)
+		{
+			clickable_origin = this.m_clickable_origin;
+			clickable_size = this.m_clickable_size;
+		}
+
+		f32 button_percentage = 0.3;
+		f32 anti_button_percentage = 1.0 - button_percentage;
+
+		Vec2f tl = clickable_origin;
+		Vec2f br = clickable_origin + Vec2f(clickable_size.x * anti_button_percentage, clickable_size.y);
+
+		GUI::DrawText(m_text, tl + Vec2f(10, 10), color_white);
+
+		Vec2f tl_2 = clickable_origin + Vec2f(clickable_size.x * button_percentage, 0);
+		Vec2f br_2 = tl_2 + Vec2f(clickable_size.x * anti_button_percentage, clickable_size.y);
+
+		GUI::DrawLine2D(clickable_origin + Vec2f(-10, clickable_size.y + 3), clickable_origin + Vec2f(clickable_size.x + 10, clickable_size.y + 3), SColor(125, 100, 100, 100));
+
+		f32 allbuttonwidth = br_2.x - tl_2.x;
+
+		f32 onebuttonwidth = allbuttonwidth / possible_options.length;
+
+		Vec2f current_tl = tl_2;
+
+		for (int i=0; i<possible_options.length; ++i)
+		{
+			Vec2f itl = current_tl;
+			Vec2f ibr = itl + Vec2f(onebuttonwidth, br_2.y - tl_2.y);
+
+			bool is_hovered = this.isHovered(mouse_pos, itl, Vec2f(ibr - itl));
+
+			SColor color = color_white;
+			if (m_custom_color != color_white) color = m_custom_color;
+
+			if (this.m_selecteds[i] && !is_hovered) color = SColor(255, 100, 255, 100);
+			else if (!this.m_selecteds[i] && is_hovered) color = SColor(255, 220, 220, 220);
+			else if (this.m_selecteds[i] && is_hovered) color = SColor(255, 45, 200, 45);
+
+			GUI::DrawPane(itl, ibr, color);
+			GUI::DrawTextCentered(possible_options[i], itl + Vec2f((ibr.x - itl.x) * 0.5, (ibr.y - itl.y) * 0.5), color_white);
+
+			current_tl += Vec2f(onebuttonwidth, 0);
+		}
+	}
+
+	void Update(Vec2f clickable_origin = Vec2f_zero, Vec2f clickable_size = Vec2f_zero)
+	{
+		CPlayer@ player = getLocalPlayer();
+		if(player is null) return;
+		CControls@ controls = player.getControls();
+		if(controls is null) return;
+		Vec2f mouse_pos = controls.getMouseScreenPos();
+
+		f32 button_percentage = 0.3;
+		f32 anti_button_percentage = 1.0 - button_percentage;
+
+		Vec2f tl = clickable_origin + Vec2f(clickable_size.x * button_percentage, 0);
+		Vec2f cs = Vec2f(clickable_size.x * anti_button_percentage, clickable_size.y);
+
+		const bool mousePressed = controls.isKeyPressed(KEY_LBUTTON);
+		const bool mouseJustReleased = controls.isKeyJustReleased(KEY_LBUTTON);
+
+		Vec2f tl_2 = clickable_origin + Vec2f(clickable_size.x * button_percentage, 0);
+		Vec2f br_2 = tl_2 + Vec2f(clickable_size.x * anti_button_percentage, clickable_size.y);
+
+		f32 allbuttonwidth = br_2.x - tl_2.x;
+
+		f32 onebuttonwidth = allbuttonwidth / possible_options.length;
+
+		Vec2f current_tl = tl_2;
+
+		for (int i=0; i<possible_options.length; ++i)
+		{
+			if (getRules().get_string(setting_file_names[this.m_i][this.m_g]) == setting_option_names[this.m_i][this.m_g][i])
+			{
+				this.m_selecteds[i] = true;
+				this.m_state[i] == ClickableButtonStates::Selected;
+			}
+
+			Vec2f itl = current_tl;
+			Vec2f ibr = itl + Vec2f(onebuttonwidth, br_2.y - tl_2.y);
+
+			bool is_hovered = this.isHovered(mouse_pos, itl, Vec2f(ibr - itl));
+
+			m_hovereds[i] = is_hovered;
+
+			if (is_hovered)
+			{
+				if (this.m_state[i] == ClickableButtonStates::None)
+				{
+					this.m_state[i] = ClickableButtonStates::Hovered; 
+					Sound::Play("select.ogg");
+				}
+				else if (this.m_state[i] == ClickableButtonStates::Selected)
+				{
+					this.m_state[i] = ClickableButtonStates::SelectedHovered; 
+					Sound::Play("select.ogg");
+				}
+
+				// On click
+				if (mouseJustReleased)
+				{
+					if (this.m_state[i] == ClickableButtonStates::Selected || this.m_state[i] == ClickableButtonStates::SelectedHovered) this.m_state[i] = ClickableButtonStates::Hovered;
+					if (this.m_state[i] == ClickableButtonStates::Hovered || this.m_state[i] == ClickableButtonStates::None) this.m_state[i] = ClickableButtonStates::SelectedHovered;
+
+					Sound::Play("buttonclick.ogg");
+
+
+					this.m_selecteds[i] = true;
+
+					// deselect other buttons
+					for (int g=0; g<possible_options.length; ++g)
+					{
+						if (g != i) this.m_selecteds[g] = false;
+					}
+
+					UpdateSetting(this.m_i, this.m_g, setting_option_names[this.m_i][this.m_g][i]);
+				}
+			}
+			else
+			{
+				this.m_state[i] = (m_selecteds[i] ? ClickableButtonStates::Selected : ClickableButtonStates::None);
+			}
+
+			current_tl += Vec2f(onebuttonwidth, 0);
 		}
 	}
 }
@@ -676,7 +1013,9 @@ class ClickableButtonTwo
 				params.write_bool(this.m_selected);
 				params.write_u16(cmd_subid);
 				params.write_string(getLocalPlayer().getUsername());
-				getRules().SendCommand(cmd_id, params);
+				params.ResetBitIndex();
+				//getRules().SendCommand(cmd_id, params);
+				fakeCommand(getRules(), cmd_id, @params);
 			}
 		}
 		else
@@ -687,7 +1026,7 @@ class ClickableButtonTwo
 	}
 }
 
-u8 magic_number = 4;
+u8 magic_number = 2;
 
 class ClickableButtonGUI
 {
@@ -699,6 +1038,7 @@ class ClickableButtonGUI
 	Vec2f button_size;
 	Vec2f page_button_size;
 
+	ClickableButtonFour closebutton;
 	ClickableButton[][] buttons;
 	ClickableButtonThree[][] settings;
 	ClickableButtonTwo[] page_buttons;
@@ -719,6 +1059,8 @@ class ClickableButtonGUI
 		GUI::SetFont("menu");
 
 		Vec2f start_offset = Vec2f(50, 540);
+
+		closebutton.Render(m_clickable_origin + Vec2f(1000 - 40, 0), Vec2f(40, 40));
 
 		for (int i=0; i<page_buttons.length; ++i)
 		{
@@ -762,6 +1104,8 @@ class ClickableButtonGUI
 		u8 scale = screen_height / 720.0;
 
 		Vec2f start_offset = Vec2f(50, 540);
+
+		closebutton.Update(m_clickable_origin + Vec2f(1000 - 40, 0), Vec2f(40, 40));
 
 		for (int i=0; i<page_buttons.length; ++i)
 		{
@@ -914,3 +1258,61 @@ string getKeyName(u32 i, bool short=false)
 
 	return "UNKNOWN";
 }
+
+void fakeCommand(CRules@ this, u8 cmd, CBitStream@ params)
+{
+	if (isServer() && !isClient()) return;
+
+	if (cmd == this.getCommandID("p buttonclick"))
+	{
+		bool selected = params.read_bool();
+		u16 id = params.read_u16();
+		string username = params.read_string();
+
+		if (getLocalPlayer().getUsername() != username) return;
+
+		for (int i=0; i<BindingGUI.page_buttons.length; ++i)
+		{
+			if (i != id)
+				BindingGUI.page_buttons[i].m_selected = false;
+		}
+
+		for (int i=0; i<BindingGUI.buttons.length; ++i)
+		{
+			for (int g=0; g<BindingGUI.buttons[i].length; ++g)
+			{
+				BindingGUI.buttons[i][g].m_selected = false;
+			}
+		}
+
+		BindingGUI.current_page = id;
+
+		//printf("hi, id: " + id);
+	}
+
+	if (cmd == this.getCommandID("b buttonclick"))
+	{
+		bool selected = params.read_bool();
+		u16 id = params.read_u16();
+		string username = params.read_string();
+
+		if (getLocalPlayer().getUsername() != username) return;
+
+		u16 binding_index = 0;
+
+		for (int i=0; i<BindingGUI.buttons.length; ++i)
+		{
+			for (int g=0; g<BindingGUI.buttons[i].length; ++g)
+			{
+				if (binding_index != id)
+					BindingGUI.buttons[i][g].m_selected = false;
+
+				binding_index++;
+			}
+		}
+
+		//printf("hi, id: " + id);
+	}
+}
+
+ClickableButtonGUI@ BindingGUI;

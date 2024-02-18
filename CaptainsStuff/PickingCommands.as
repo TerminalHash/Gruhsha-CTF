@@ -318,6 +318,9 @@ class BindingsMenu : ChatCommand
 
 			ResetRuleBindings();
 			LoadFileBindings();
+
+			ResetRuleSettings();
+			LoadFileSettings();
 		}
 
 		//printf("Boolean no_class_change_on_shop is " + rules.get_bool("no_class_change_on_shop"));
