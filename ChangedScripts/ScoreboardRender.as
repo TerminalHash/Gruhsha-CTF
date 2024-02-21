@@ -26,7 +26,7 @@ bool mouseWasPressed1 = false;
 
 const string OLD_PLAYER_STATS_CORE = "player stats core";
 
-const string mod_version = "v2.14";
+const string mod_version = "v2.15";
 
 class OldPlayerStatsCore {
 	dictionary stats;
