@@ -140,24 +140,59 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 		return; //------------------------------------------------------ END WHEN BOMBERMAN
 	}
 
-	// Waffle: Increase keg explosion visuals
-	bool keg = this.getName() == "keg";
-	for (int i = 0; i < radius * (keg ? 0.5 : 0.16); i++)
-	{
-		Vec2f partpos = pos + Vec2f(XORRandom(r * 2) - r, XORRandom(r * 2) - r);
-		Vec2f endpos = partpos;
 
-		if (map !is null)
+
+	if (this.getName() != "keg")
+	{
+		for (int i = 0; i < radius * 0.16; i++)
 		{
-			if (!map.rayCastSolid(pos, partpos, endpos))
+			Vec2f partpos = pos + Vec2f(XORRandom(r * 2) - r, XORRandom(r * 2) - r);
+			Vec2f endpos = partpos;
+
+			if (map !is null)
 			{
-				if (keg)
+				if (!map.rayCastSolid(pos, partpos, endpos))
+					makeSmallExplosionParticle(endpos);
+			}
+		}
+	}
+	else
+	{
+		/*const int radius_test = radius * (2.0 / 3.0);
+
+		for (int i = 0; i <= 8; i++)
+		{
+			Vec2f offset;
+			if (i==0) offset = Vec2f(0, radius_test - 4);
+			if (i==1) offset = Vec2f(radius_test / 2, radius_test / 2);
+			if (i==3) offset = Vec2f(radius_test - 4, 0);
+			if (i==4) offset = Vec2f(-radius_test / 2, radius_test / 2);
+			if (i==5) offset = Vec2f(0, -(radius_test - 4));
+			if (i==6) offset = Vec2f(-radius_test / 2, -radius_test / 2);
+			if (i==7) offset = Vec2f(-(radius_test - 4), 0);
+			if (i==8) offset = Vec2f(radius_test / 2, -radius_test / 2);
+
+			Vec2f partpos = pos + offset;
+			Vec2f endpos = partpos;
+
+			if (map !is null)
+			{
+				if (!map.rayCastSolid(pos, partpos, endpos))
+					makeSmallExplosionParticle(endpos);
+			}
+		}*/
+
+		// Waffle: Increase keg explosion visuals
+		for (int i = 0; i < radius * 0.5; i++)
+		{
+			Vec2f partpos = pos + Vec2f(XORRandom(r * 2) - r, XORRandom(r * 2) - r);
+			Vec2f endpos = partpos;
+
+			if (map !is null)
+			{
+				if (!map.rayCastSolid(pos, partpos, endpos))
 				{
 					makeLargeExplosionParticle(endpos);
-				}
-				else
-				{
-					makeSmallExplosionParticle(endpos);
 				}
 			}
 		}
@@ -315,7 +350,11 @@ void onHitBlob(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@
 {
 	if (customData == Hitters::bomb || customData == Hitters::water)
 	{
-		hitBlob.AddForce(velocity);
+		if (!hitBlob.hasTag("player"))
+		{
+			//printf("onhitblob " + hitBlob.getName() + ", velocity: " + velocity + " , length: " + velocity.Length() + ", gt: " + getGameTime());
+			hitBlob.AddForce(velocity);
+		}
 	}
 }
 
@@ -453,7 +492,7 @@ void LinearExplosion(CBlob@ this, Vec2f _direction, f32 length, const f32 width,
 		//widthwise overlap
 		float q = Maths::Abs(v * normal) - rad - tilesize;
 
-		if (p >= 0.0f && p < length && q < halfwidth)
+		if (p > 0.0f && p < length && q < halfwidth)
 		{
 			HitBlob(this, m_pos, hit_blob, length, damage, hitter, false, should_teamkill);
 		}
@@ -492,17 +531,23 @@ void BombermanExplosion(CBlob@ this, f32 radius, f32 damage, f32 map_damage_radi
 
 bool canExplosionDamage(CMap@ map, Vec2f tpos, TileType t)
 {
-	CBlob@ blob = map.getBlobAtPosition(tpos); // TODO: make platform get detected
+	CBlob@[] blist;
+
 	bool hasValidFrontBlob = false;
 	bool isBackwall = (t == CMap::tile_castle_back || t == CMap::tile_castle_back_moss || t == CMap::tile_wood_back);
-	if (blob !is null)
+
+	if (map.getBlobsAtPosition(tpos, blist))
 	{
-		string name = blob.getName();
-		hasValidFrontBlob = (name == "wooden_door" || name == "stone_door" || name == "trap_block" || name == "wooden_platform" || name == "bridge");
+		for (int i=0; i<blist.length; ++i)
+		{
+			string name = blist[i].getName();
+			hasValidFrontBlob = (name == "wooden_door" || name == "stone_door" || name == "trap_block" || name == "wooden_platform" || name == "bridge");
+
+			if (hasValidFrontBlob) break;
+		}
 	}
-	return map.getSectorAtPosition(tpos, "no build") is null &&
-	       (t != CMap::tile_ground_d0 && t != CMap::tile_stone_d0) && //don't _destroy_ ground, hit until its almost dead tho
-		   !(hasValidFrontBlob && isBackwall); // don't destroy backwall if there is a door or trap block
+	//return (t != 29 && t != 30 && t != 31 && t != CMap::tile_ground && t != CMap::tile_stone_d0);
+	return (t != 29 && t != 30 && t != 31 && t != CMap::tile_ground && t != CMap::tile_stone_d0 && !(hasValidFrontBlob && isBackwall));
 }
 
 bool canExplosionDestroy(CMap@ map, Vec2f tpos, TileType t)
@@ -525,8 +570,7 @@ bool HitBlob(CBlob@ this, Vec2f mapPos, CBlob@ hit_blob, f32 radius, f32 damage,
 	Vec2f wall_hit;
 	Vec2f hitvec = hit_blob_pos - pos;
 
-    // Waffle: Kegs ignore this
-	if (this.getName() != "keg" && bother_raycasting) // have we already checked the rays?
+	if (bother_raycasting && this.getName() != "keg") // have we already checked the rays?
 	{
 		// no wall in front
 
