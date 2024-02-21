@@ -82,6 +82,7 @@ namespace Names
 		// Buttons
 	modbindsmenu		  	      	 	= Translate(en::n_modbindsmenu+"\\"+ru::n_modbindsmenu),
 	blocksmenu		  	      	 		= Translate(en::n_blocksmenu+"\\"+ru::n_blocksmenu),
+	actionsmenu		  	      	 		= Translate(en::n_actionsmenu+"\\"+ru::n_actionsmenu),
 	settingsmenu		  	      	 	= Translate(en::n_settingsmenu+"\\"+ru::n_settingsmenu),
 	tagwheel		  	       			= Translate(en::n_tagwheel+"\\"+ru::n_tagwheel),
 	emotewheelsecond		  	       	= Translate(en::n_emotewheelsecond+"\\"+ru::n_emotewheelsecond),
@@ -98,6 +99,9 @@ namespace Names
 	platform		  	     	 	 	= Translate(en::n_platform+"\\"+ru::n_platform),
 	shop		  	      	 			= Translate(en::n_shop+"\\"+ru::n_shop),
 	spikes		  	      			 	= Translate(en::n_spikes+"\\"+ru::n_spikes),
+
+		// Actions
+	drillcommand		  	      		= Translate(en::n_drillcommand+"\\"+ru::n_drillcommand),
 
 		// Settings
 	buildmode		  	      			 = Translate(en::n_buildmode+"\\"+ru::n_buildmode),

@@ -8,6 +8,7 @@ string[] page_texts =
 {
 	Names::modbindsmenu,
 	Names::blocksmenu,
+	Names::actionsmenu,
 	Names::settingsmenu
 };
 
@@ -37,6 +38,9 @@ string[][] button_texts =
 		Names::platform,
 		Names::shop,
 		Names::spikes
+	},
+	{
+		Names::drillcommand
 	}
 };
 
@@ -66,6 +70,9 @@ string[][] button_file_names =
 		"platform",
 		"shop",
 		"spikes"
+	},
+	{
+		"take_out_drill"
 	}
 };
 
@@ -1026,7 +1033,7 @@ class ClickableButtonTwo
 	}
 }
 
-u8 magic_number = 2;
+u8 magic_number = 3;
 
 class ClickableButtonGUI
 {

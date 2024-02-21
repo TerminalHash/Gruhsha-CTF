@@ -65,6 +65,7 @@ namespace ru
 		// Buttons
 	n_modbindsmenu							= "Эмоции/Метки",
 	n_blocksmenu							= "Блоки",
+	n_actionsmenu							= "Действия",
 	n_settingsmenu							= "Настройки",
 	n_tagwheel								= "Колесо меток",
 	n_emotewheelsecond						= "Модовое колесо эмоций",
@@ -81,6 +82,9 @@ namespace ru
 	n_platform								= "Платформа",
 	n_shop									= "Магазин",
 	n_spikes								= "Шипы",
+
+		// Actions
+	n_drillcommand							= "Достать/Убрать дрель",
 
 		// Settings
 	n_buildmode								= "Режим строительства",

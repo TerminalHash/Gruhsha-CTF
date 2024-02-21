@@ -65,6 +65,7 @@ namespace en
 		// Buttons
 	n_modbindsmenu							= "Emotes/Tags",
 	n_blocksmenu							= "Blocks",
+	n_actionsmenu							= "Actions",
 	n_settingsmenu							= "Settings",
 	n_tagwheel								= "Tag Wheel",
 	n_emotewheelsecond						= "Mod Emote Wheel",
@@ -81,6 +82,9 @@ namespace en
 	n_platform								= "Platform",
 	n_shop									= "Shop",
 	n_spikes								= "Spikes",
+
+		// Actions
+	n_drillcommand							= "Take out drill",
 
 		// Settings
 	n_buildmode								= "Build Mode",
