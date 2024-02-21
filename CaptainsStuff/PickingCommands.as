@@ -3,13 +3,12 @@
 #include "PickingCommon.as"
 #include "ApprovedTeams.as"
 #include "BindingsCommon.as"
-#include "TranslationsSystem.as"
 
 class SpecAllCommand : ChatCommand
 {
 	SpecAllCommand()
 	{
-		super("specall", Descriptions::specallcomtext);
+		super("specall", "Puts everyone in Spectators");
 	}
 
 	bool canPlayerExecute(CPlayer@ player)
@@ -34,7 +33,7 @@ class AppointCommand : ChatCommand
 {
 	AppointCommand()
 	{
-		super("appoint", Descriptions::appointcomtext);
+		super("appoint", "Appoints two Team Leaders (they pick players in their teams)");
 		AddAlias("caps");
 		SetUsage("<blue leader username> <red leader username>");
 	}
@@ -95,7 +94,7 @@ class DemoteCommand : ChatCommand
 {
 	DemoteCommand()
 	{
-		super("demote", Descriptions::demotecomtext);
+		super("demote", "Demotes the Team Leaders");
 	}
 
 	bool canPlayerExecute(CPlayer@ player)
@@ -116,7 +115,7 @@ class PickPlayerCommand : ChatCommand
 {
 	PickPlayerCommand()
 	{
-		super("pick", Descriptions::pickcomtext);
+		super("pick", "Picks one player FROM SPECTATORS to your team and passes an opportunity to pick to next Team Leader");
 		SetUsage("<username>");
 	}
 
@@ -165,7 +164,7 @@ class ApproveTeamsCommand : ChatCommand
 {
 	ApproveTeamsCommand()
 	{
-		super("lock", Descriptions::lockcomtext);
+		super("lock", "Ends picking process by approving team personnel");
 	}
 
 	bool canPlayerExecute(CPlayer@ player)
@@ -188,10 +187,24 @@ class ApproveTeamsCommand : ChatCommand
 		approved_teams.ClearLists();
 		if (!was_locked) {
 			approved_teams.FormLists();
-			server_AddToChat(Descriptions::lockcomchatloc, SColor(0xff474ac6));
+			if (g_locale == "ru")
+			{
+				server_AddToChat("Команды сформированы", SColor(0xff474ac6));
+			}
+			else
+			{
+				server_AddToChat("Teams locked", SColor(0xff474ac6));
+			}
 		}
 		else
-			server_AddToChat(Descriptions::lockcomchatunl, SColor(0xff474ac6));
+			if (g_locale == "ru")
+			{
+				server_AddToChat("Команды расформированы", SColor(0xff474ac6));
+			}
+			else
+			{
+				server_AddToChat("Teams unlocked", SColor(0xff474ac6));
+			}
 
 		approved_teams.PrintMembers();
 		rules.set("approved_teams", @approved_teams);
@@ -202,7 +215,7 @@ class SetBuilderLimitCommand : ChatCommand
 {
 	SetBuilderLimitCommand()
 	{
-		super("blim", Descriptions::builderlimtext);
+		super("blim", "Limits count of builders for every team");
 		SetUsage("<builder limit>");
 	}
 
@@ -227,7 +240,7 @@ class SetBuilderLimitCommand : ChatCommand
 
 		rules.set_u8("builders_limit", parseInt(args[0]));
 
-		if (isServer()) server_AddToChat(Descriptions::builderlimchat +args[0], SColor(0xff474ac6));
+		if (isServer()) server_AddToChat("Максимум строителей теперь "+args[0], SColor(0xff474ac6));
 	}
 }
 
@@ -235,7 +248,7 @@ class SetArcherLimitCommand : ChatCommand
 {
 	SetArcherLimitCommand()
 	{
-		super("alim", Descriptions::archerlimtext);
+		super("alim", "Limits count of archers for every team");
 		SetUsage("<archer limit>");
 	}
 
@@ -260,7 +273,7 @@ class SetArcherLimitCommand : ChatCommand
 
 		rules.set_u8("archers_limit", parseInt(args[0]));
 
-		if (isServer()) server_AddToChat(Descriptions::archerlimchat +args[0], SColor(0xff474ac6));
+		if (isServer()) server_AddToChat("Максимум лучников теперь "+args[0], SColor(0xff474ac6));
 	}
 }
 
@@ -268,7 +281,7 @@ class ToggleClassChangingOnShops : ChatCommand
 {
 	ToggleClassChangingOnShops()
 	{
-		super("togglechclass", Descriptions::togglechcomtext);
+		super("togglechclass", "Disallowing class changing on shops");
 	}
 
 	bool canPlayerExecute(CPlayer@ player)
@@ -285,11 +298,11 @@ class ToggleClassChangingOnShops : ChatCommand
 		bool isEnable = rules.get_bool("no_class_change_on_shop");
 		rules.set_bool("no_class_change_on_shop", !isEnable);
 		//printf("Boolean no_class_change_on_shop is " + rules.get_bool("no_class_change_on_shop"));
-		string isEnableStr = Descriptions::togglechcom2;
+		string isEnableStr = "включена";
 		if(!isEnable) {
-			isEnableStr = Descriptions::togglechcom3;
+			isEnableStr = "выключена";
 		}
-		if (isServer()) server_AddToChat(Descriptions::togglechcomchat +isEnableStr, SColor(0xff474ac6));
+		if (isServer()) server_AddToChat("Смена классов теперь "+isEnableStr, SColor(0xff474ac6));
 	}
 }
 
@@ -297,7 +310,7 @@ class BindingsMenu : ChatCommand
 {
 	BindingsMenu()
 	{
-		super("bindings", Descriptions::bindingscom);
+		super("bindings", "Show mod bindings menu");
 	}
 
 	bool canPlayerExecute(CPlayer@ player)

@@ -1,12 +1,11 @@
 #include "ChatCommand.as"
 #include "RulesCore.as"
-#include "TranslationsSystem.as"
 
 class ToggleSounds : ChatCommand
 {
 	ToggleSounds()
 	{
-		super("togglesounds", Descriptions::togglesoundscomtext);
+		super("togglesounds", "Mute/unmute sound commangs");
 	}
 
 	bool canPlayerExecute(CPlayer@ player)
