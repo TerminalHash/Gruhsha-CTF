@@ -1,4 +1,7 @@
 # ![grusha](Sprites/grusha.png) Gruhsha-CTF ![grusha](Sprites/grusha.png)
+![Static Badge](https://img.shields.io/badge/version-v2.15-%23ad7fa8?style=plastic)
+
+
 Исходный код русских Капитанов.
 
 Имеет следующий функционал:
