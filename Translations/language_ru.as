@@ -94,6 +94,9 @@ namespace ru
 		// Other
 	n_pressdelete							= "Выбери клавишу и нажми [DELETE] для очистки хоткея!",
 
+	// ScoreboardRender.as
+	n_modsettingsbutton						= "Настройки",
+
 	// Quarters.as
 	n_beeritem								= "Пиво - 1 Сердце",
 	n_mealitem								= "Мясное блюдо - Полное здоровье",

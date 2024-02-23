@@ -22,11 +22,10 @@ float scrollSpeed = 4.0f;
 float maxMenuWidth = 700;
 
 bool mouseWasPressed2 = false;
-bool mouseWasPressed1 = false;
 
 const string OLD_PLAYER_STATS_CORE = "player stats core";
 
-const string mod_version = "v2.15.1";
+const string mod_version = "v2.15.2";
 
 class OldPlayerStatsCore {
 	dictionary stats;
@@ -823,6 +822,8 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 
 void onRenderScoreboard(CRules@ this)
 {
+	if (this.get_bool("bindings_open")) return;
+
 	//sort players
 	CPlayer@[] blueplayers;
 	CPlayer@[] redplayers;
@@ -901,6 +902,8 @@ void onRenderScoreboard(CRules@ this)
 
 	Vec2f tl(Maths::Max( 100, getScreenWidth()/2 -maxMenuWidth), 150);
 	drawServerInfo(40);
+
+	drawSettingsButton();
 
 	// start the scoreboard lower or higher.
 	tl.y -= scrollOffset;

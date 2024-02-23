@@ -1,8 +1,12 @@
 #include "ColoredNameToggleCommon.as"
+#include "TranslationsSystem.as"
 
 // Waffle: Add support for seeing previous match's stats
 const SColor OLD_STATS_COLOR = SColor(0xffa0ffa0);
 const string OLD_STATS_TOOLTIP = "Hold \"shift\" to see stats from previous match";
+
+bool mouseWasPressed1 = false;
+bool hoveringSettings = false;
 
 f32 getKDR(CPlayer@ p)
 {
@@ -134,8 +138,54 @@ float drawServerInfo(float y)
 	// Draw grusha icons
 	GUI::DrawIcon("grusha.png", 0, Vec2f(64, 64), Vec2f(getScreenWidth()/2 - width/2 - 32, y - 32), 0.5f, 0);
 	GUI::DrawIcon("grusha_flip.png", 0, Vec2f(64, 64), Vec2f(getScreenWidth()/2 + width/2 - 64 + 32, y - 32), 0.5f, 0);
+
 	return bot.y;
 
+}
+
+void drawSettingsButton()
+{
+	GUI::SetFont("menu");
+
+	Vec2f startpos(getScreenWidth()/2 - 300, 120);
+
+	CControls@ controls = getControls();
+	if (controls is null) return;
+
+	Vec2f mpos = controls.getMouseScreenPos();
+	if (mpos.x > startpos.x && mpos.x < startpos.x + 110 &&
+		mpos.y > startpos.y && mpos.y < startpos.y + 32)
+	{
+		if (hoveringSettings == false)
+		{
+			Sound::Play("select.ogg");
+		}
+
+		hoveringSettings = true;
+
+		if (true)
+		{
+			if (controls.mousePressed1) {
+				if (!mouseWasPressed1) {
+					Sound::Play("ButtonClick.ogg");
+					getRules().set_bool("bindings_open", true);
+					mouseWasPressed1 = true;
+				}
+				else {
+					mouseWasPressed1 = false;
+				}
+			}
+		}
+		GUI::DrawPane(startpos, startpos + Vec2f(120, 32), SColor(255, 200, 200, 200));
+	}
+	else
+	{
+		hoveringSettings = false;
+		GUI::DrawPane(startpos, startpos + Vec2f(120, 32), SColor(255, 250, 250, 250));
+	}
+
+	GUI::DrawIcon("MenuItems.png", 26, Vec2f(32, 32), startpos, 0.5, 0);
+	GUI::DrawText(Names::modsettingsbutton, startpos + Vec2f(32, 8), color_white);
 }
 
 string timestamp(uint s)

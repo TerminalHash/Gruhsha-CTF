@@ -111,6 +111,9 @@ namespace Names
 		// Other
 	pressdelete		  	       			= Translate(en::n_pressdelete+"\\"+ru::n_pressdelete),
 
+	// ScoreboardCommon.as
+	modsettingsbutton	  	       		= Translate(en::n_modsettingsbutton+"\\"+ru::n_modsettingsbutton),
+
 	// Quarters.as
 	beeritem		  	       			= Translate(en::n_beeritem+"\\"+ru::n_beeritem),
 	mealitem		  	       			= Translate(en::n_mealitem+"\\"+ru::n_mealitem),

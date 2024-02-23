@@ -94,6 +94,9 @@ namespace en
 		// Other
 	n_pressdelete							= "Choose a bind and press [DELETE] to remove key",
 
+	// ScoreboardRender.as
+	n_modsettingsbutton						= " Settings",
+
 	// Quarters.as
 	n_beeritem								= "Beer - 1 Heart",
 	n_mealitem								= "Meal - Full Health",

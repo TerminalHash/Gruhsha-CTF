@@ -632,7 +632,9 @@ class ClickableButtonFour
 
 		string binding = bindings[0];
 
-		GUI::DrawTextCentered("X", tl_2 + Vec2f(clickable_size.x * 0.5, clickable_size.y * 0.5), color_white);
+		//GUI::DrawTextCentered("X", tl_2 + Vec2f(clickable_size.x * 0.5, clickable_size.y * 0.5), color_white);
+
+		GUI::DrawIcon("close_button.png", tl_2 + Vec2f(clickable_size.x * 0.3, clickable_size.y * 0.3), 0.25);
 
 		GUI::SetFont("hud");
 	}
