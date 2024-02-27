@@ -12,7 +12,7 @@ void onInit(CBlob@ this)
 	this.getShape().getConsts().net_threshold_multiplier = 2.0f;
 	if (this.getConfig() == "waterbomb")
 	{
-		SetupBomb(this, 60, 48.0f, 3.0f, 24.0f, 0.5f, true);
+		SetupBomb(this, bomb_fuse, 48.0f, 3.0f, 24.0f, 0.5f, true);
 	}
 	else
 	{
@@ -95,12 +95,12 @@ bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
 			return blob.getTeamNum() != this.getTeamNum();
 
 		//collide with shielded enemies
-		return (blob.getTeamNum() != this.getTeamNum() && blob.hasTag("shielded") && blockAttack(blob, blob.getPosition()-this.getPosition(), 0.0f));
+		return blob.getTeamNum() != this.getTeamNum() && blob.hasTag("shielded") && blockAttack(blob, blob.getPosition() - this.getPosition(), 0.0f);
 	}
 
 	string name = blob.getName();
 
-	if (name == "fishy" || name == "food" || name == "steak" || name == "grain" || name == "heart")
+	if (name == "fishy" || name == "food" || name == "steak" || name == "grain" || name == "heart" || name == "saw")
 	{
 		return false;
 	}
