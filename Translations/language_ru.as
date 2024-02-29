@@ -68,6 +68,7 @@ namespace ru
 	n_actionsmenu							= "Действия",
 	n_settingsmenu							= "Настройки",
 	n_tagwheel								= "Колесо меток",
+	n_emotewheelvanilla					= "Ванильное колесо эмоций",
 	n_emotewheelsecond						= "Модовое колесо эмоций",
 
 		// Blocks

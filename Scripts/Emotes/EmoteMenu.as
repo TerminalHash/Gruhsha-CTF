@@ -51,6 +51,8 @@ void onTick(CRules@ rules)
 	CBlob@ blob = getLocalPlayerBlob();
 	CControls@ controls = getControls();
 
+	ConfigFile file;
+
 	if (blob is null)
 	{
 		set_active_wheel_menu(null);
@@ -59,15 +61,37 @@ void onTick(CRules@ rules)
 
 	WheelMenu@ menu = get_wheel_menu("emotes");
 
-	if (blob.isKeyJustPressed(key_bubbles))
+	// Make two binds for vanilla emote wheel
+	if (file.loadFile(BINDINGSDIR + BINDINGSFILE))
 	{
-		set_active_wheel_menu(@menu);
-	}
-	else if (blob.isKeyJustReleased(key_bubbles) && get_active_wheel_menu() is menu)
-	{
-		WheelMenuEntry@ selected = menu.get_selected();
-		set_emote(blob, (selected !is null ? selected.name : ""));
-		set_active_wheel_menu(null);
+		string customemotebind = "emote_wheel_vanilla" + "$1";
+
+		if (file.exists(customemotebind) && file.read_s32(customemotebind) != -1) // Check custom bind first
+		{
+			if (b_KeyJustPressed("emote_wheel_vanilla"))
+			{
+				set_active_wheel_menu(@menu);
+			}
+			else if (b_KeyJustReleased("emote_wheel_vanilla") && get_active_wheel_menu() is menu)
+			{
+				WheelMenuEntry@ selected = menu.get_selected();
+				set_emote(blob, (selected !is null ? selected.name : ""));
+				set_active_wheel_menu(null);
+			}
+		}
+		else // if player dont have custom bind - use vanilla key
+		{
+			if (blob.isKeyJustPressed(key_bubbles))
+			{
+				set_active_wheel_menu(@menu);
+			}
+			else if (blob.isKeyJustReleased(key_bubbles) && get_active_wheel_menu() is menu)
+			{
+				WheelMenuEntry@ selected = menu.get_selected();
+				set_emote(blob, (selected !is null ? selected.name : ""));
+				set_active_wheel_menu(null);
+			}
+		}
 	}
 
 	WheelMenu@ rmenu = get_wheel_menu("emotes_grusha");

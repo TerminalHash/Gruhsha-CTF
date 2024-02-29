@@ -24,6 +24,7 @@ string[][] button_texts =
 		"KEG",
 		"WiT SENCE",
 		Names::tagwheel,
+		Names::emotewheelvanilla,
 		Names::emotewheelsecond
 	},
 	{
@@ -56,6 +57,7 @@ string[][] button_file_names =
 		"tag7",
 		"tag8",
 		"tag_wheel",
+		"emote_wheel_vanilla",
 		"emote_wheel_two"
 	},
 	{

@@ -68,6 +68,7 @@ namespace en
 	n_actionsmenu							= "Actions",
 	n_settingsmenu							= "Settings",
 	n_tagwheel								= "Tag Wheel",
+	n_emotewheelvanilla					= "Vanilla Emote Wheel",
 	n_emotewheelsecond						= "Mod Emote Wheel",
 
 		// Blocks
