@@ -93,6 +93,19 @@ void onTick(CRules@ rules)
 			}
 		}
 	}
+	else
+	{
+		if (blob.isKeyJustPressed(key_bubbles))
+		{
+			set_active_wheel_menu(@menu);
+		}
+		else if (blob.isKeyJustReleased(key_bubbles) && get_active_wheel_menu() is menu)
+		{
+			WheelMenuEntry@ selected = menu.get_selected();
+			set_emote(blob, (selected !is null ? selected.name : ""));
+			set_active_wheel_menu(null);
+		}
+	}
 
 	WheelMenu@ rmenu = get_wheel_menu("emotes_grusha");
 
