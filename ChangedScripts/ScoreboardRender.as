@@ -172,6 +172,8 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 		CPlayer@ p = players[i];
 		CBlob@ b = p.getBlob(); // REMINDER: this can be null if you're using this down below
 
+		bool dead = (b is null || b.hasTag("dead"));
+
 		tl.y += stepheight;
 		br.y = tl.y + lineheight;
 
@@ -239,20 +241,13 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 
 			classIconSize = Vec2f(16, 16);
 
-			if (b is null && teamName != "Spectators") // player dead
+			if (dead)
 			{
-				classIndex += 16;
-				classIconSize = Vec2f(8, 8);
-				classIconOffset = Vec2f(4, 4);
-			}
-			else if (teamName == "Spectators")
-			{
-				classIndex += 20;
-				classIconSize = Vec2f(8, 8);
-				classIconOffset = Vec2f(4, 4);
+				classIndex += 8;
 			}
 		}
-		if (classTexture != "")
+		// don't draw class for specs
+		if (team !is null && classTexture != "")
 		{
 			GUI::DrawIcon(classTexture, classIndex, classIconSize, tl + classIconOffset, 0.5f, p.getTeamNum());
 		}
@@ -279,106 +274,54 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 
 		// head icon
 
-		string headTexture = "playercardicons.png";
-		int headIndex = 3;
-		int teamNum = p.getTeamNum();
-		Vec2f headOffset = Vec2f(30, 0);
-		float headScale = 0.5f;
+		string headTexture = "Heads.png";
+		int headIndex = 32*4;
+		int teamIndex = p.getTeamNum();
+		Vec2f headOffset = Vec2f(22, -12);
+		float headScale = 1.0f;
+		SColor headColor(0xFFFFFFFF);
 
-		// head stuff
-/*
-	DEFAULT HEAD INDEXES
-	Index		Class		Sex
-	120			Builder		Male
-	124			Builder		Female
-	128			Knight		Male
-	132			Knight		Female
-	136			Archer		Male
-	140			Archer		Female
-*/
 		string customHeadTexture = getPath() + "Characters/CustomHeads/" + username + ".png";
 		//string customHeadTexture = ""; // comment out line above and uncomment this for debug
+
+		Accolades@ acchead = getPlayerAccolades(p.getUsername());
+
+		// show normally colored head for specs, they're never alive
+		if (team !is null && dead)
+		{
+			headColor = 0xFF808080;
+		}
 
 		if (b !is null)
 		{
 			headIndex = b.get_s32("head index");
 			headTexture = b.get_string("head texture");
-			teamNum = b.get_s32("head team");
-			headOffset += Vec2f(-8, -12);
-			headScale = 1.0f;
-
-			//printf("Index: " + headIndex + " Texture: " + headTexture + " Team: " + teamNum);
+			teamIndex = b.get_s32("head team");
 		}
-		if(teamName != "Spectators")
+		else if (p.exists("head index"))
 		{
-			GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), tl + headOffset, headScale, teamNum);
-			//printf("We set " + headTexture + " for player " + username + " in " + teamNum); // debug shit
+			// HACK: no better infrastructure to know a player's head when
+			// they're dead
+			headIndex = p.get_s32("head index");
+			headTexture = p.get_string("head texture");
 		}
-		if(teamName == "Spectators")
+// 		else if (customHeadTexture != "" && !p.isBot()) // if player has custom head
+// 		{
+// 			headIndex = p.get_s32("head index");
+// 			headTexture = customHeadTexture;
+// 			teamIndex = p.get_s32("head team");
+//
+ 			//printf ("We set " + headTexture + " for player " + username + " from custom heads"); // debug shit
+// 		}
+		else
 		{
-			Accolades@ acc = getPlayerAccolades(p.getUsername());
-
-			// draw player head in spectator table
-			if (customHeadTexture != "" && !p.isBot()) // if player has custom head
-			{
-				headIndex = p.get_s32("head index");
-				headTexture = customHeadTexture;
-				headOffset += Vec2f(-8, -12);
-				headScale = 1.0f;
-
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), tl + headOffset, headScale, teamNum);
-				//printf ("We set " + headTexture + " for player " + username + " from custom heads"); // debug shit
-			}
-			else if (acc.hasCustomHead() != false && !p.isBot()) // if player has head in accolade data
-			{
-				//printf("Player have custom head? " + acc.hasCustomHead());
-
-				headIndex = acc.customHeadIndex;
-				headTexture = acc.customHeadTexture;
-				headOffset += Vec2f(-8, -12);
-				headScale = 1.0f;
-
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), tl + headOffset, headScale, teamNum);
-				//printf ("We set " + headTexture + " for player " + username + " from accolade data"); // debug shit
-			}
-
-			// Yet another attempt to get player's head index for DLC packs
-			/*else if (cl_head > 255) // if player don't have custom head, but has DLC pack
-			{
-				headIndex = ;
-				headTexture = getHeadsPackByIndex(getHeadsPackIndex(headIndex)).filename;
-				headOffset += Vec2f(-8, -12);
-				headScale = 1.0f;
-
-				printf("Index: " + headIndex + " Texture: " + headTexture + " Team: " + teamNum);
-
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), tl + headOffset, headScale, teamNum);
-				//printf ("We set " + headTexture + " for player " + username + " from DLC"); // debug shit
-			}*/
-
-			else if (!p.isBot()) // if player don't have custom head or DLC packs and he is not a bot
-			{
-				headIndex = 0;
-				headTexture = "Characters/anonymous.png";
-				headOffset += Vec2f(-10, -6);
-				headScale = 1.0f;
-
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), tl + headOffset, headScale, teamNum);
-				//printf ("We set " + headTexture + " for player " + username + " from default pack"); // debug shit
-			}
-			else // if this a bot
-			{
-				headIndex = 120;
-				headTexture = getHeadsPackByIndex(getHeadsPackIndex(headIndex)).filename;
-				headOffset += Vec2f(-8, -12);
-				headScale = 1.0f;
-
-				GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), tl + headOffset, headScale, teamNum);
-			}
-			//printf("We set " + headTexture + " for player " + username + " in " + teamNum); // debug shit
+			headColor = 0x00000000;
 		}
+
+		GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), tl + headOffset, headScale, headScale, teamIndex, headColor);
+
 		// Mark captain in scoreboard
-		if (getRules().get_string("team_"+teamNum+"_leader")==username)
+		if (getRules().get_string("team_"+teamIndex+"_leader")==username)
 		{
 			// set custom plate first
 			if (username == "kusaka79")
@@ -418,11 +361,11 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 			GUI::DrawText(clantag, tl + Vec2f(name_buffer, 0), SColor(0xff888888));
 
 			if (clantag.toUpper() == "MINECULT") {
-				GUI::DrawIcon("Sprites/clan_badges.png", 0, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, teamNum);
+				GUI::DrawIcon("Sprites/clan_badges.png", 0, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, teamIndex);
 			} else if (clantag.toUpper() == "TTOGAD") {
 				GUI::DrawIcon("Sprites/clan_badges.png", 1, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
 			} else if (clantag.toUpper() == "MAGMUS") {
-				GUI::DrawIcon("Sprites/clan_badges.png", 2, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, teamNum);
+				GUI::DrawIcon("Sprites/clan_badges.png", 2, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, teamIndex);
 			} else if (clantag.toUpper() == "HOMEK") {
 				GUI::DrawIcon("Sprites/clan_badges.png", 3, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
 			} else if (clantag.toUpper() == "BUTTER") {
@@ -430,7 +373,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 			} else if (clantag.toUpper() == "GRUHSHA") {
 				GUI::DrawIcon("Sprites/clan_badges.png", 5, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
 			} else if (clantag.toUpper() == "BUTTERMINA") {
-				GUI::DrawIcon("Sprites/clan_badges.png", 6, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, teamNum);
+				GUI::DrawIcon("Sprites/clan_badges.png", 6, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, teamIndex);
 			}
 
 			// recolor clantag for TerminalHash
@@ -562,7 +505,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 				}
 				else
 				{
-					GUI::DrawIcon("AccoladeBadges", age_icon_start + icon, Vec2f(16, 16), Vec2f(x, tl.y), 0.5f, teamNum);
+					GUI::DrawIcon("AccoladeBadges", age_icon_start + icon, Vec2f(16, 16), Vec2f(x, tl.y), 0.5f, teamIndex);
 				}
 
 				if (playerHover && mousePos.x > x - extra && mousePos.x < x + 16 + extra)
@@ -583,7 +526,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 				int tier_icon_start = 15;
 				float x = br.x - tier_start + 8;
 				float extra = 8;
-				GUI::DrawIcon("AccoladeBadges", tier_icon_start + tier, Vec2f(16, 16), Vec2f(x, tl.y), 0.5f, teamNum);
+				GUI::DrawIcon("AccoladeBadges", tier_icon_start + tier, Vec2f(16, 16), Vec2f(x, tl.y), 0.5f, teamIndex);
 
 				if (playerHover && mousePos.x > x - extra && mousePos.x < x + 16 + extra)
 				{
@@ -661,7 +604,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 
 				float x = br.x - group_x;
 
-				GUI::DrawIcon("AccoladeBadges", icon, Vec2f(16, 16), Vec2f(x, tl.y), 0.5f, teamNum);
+				GUI::DrawIcon("AccoladeBadges", icon, Vec2f(16, 16), Vec2f(x, tl.y), 0.5f, teamIndex);
 				if (show_text > 0)
 				{
 					string label_text = "" + amount;
@@ -718,19 +661,19 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 		GUI::DrawText("" + assists, Vec2f(br.x - 120, tl.y), kdr_color);
 		GUI::DrawText("" + formatFloat(kills / Maths::Max(f32(deaths), 1.0f), "", 0, 2), Vec2f(br.x - 50, tl.y), kdr_color);
 
-		int teamNumSpectators = 200;
-		int teamNumBlue = 0;
-		int teamNumRed = 1;
+		int teamIndexSpectators = 200;
+		int teamIndexBlue = 0;
+		int teamIndexRed = 1;
 
 		bool localIsCaptain = localPlayer !is null && localPlayer.getUsername() == rules.get_string("team_"+localTeamNum+"_leader");
-		bool playerIsOur = localPlayer !is null && teamNum == localTeamNum || localPlayer !is null && teamNum == teamNumSpectators;
+		bool playerIsOur = localPlayer !is null && teamIndex == localTeamNum || localPlayer !is null && teamIndex == teamIndexSpectators;
 		bool playerIsNotLocal = localPlayer !is null && p !is localPlayer;
 
 
 		if (controls.isKeyPressed(KEY_LSHIFT) &&
 			controls.isKeyPressed(KEY_LCONTROL)) {
 			if (isAdmin(localPlayer)) {
-				if(teamNum == teamNumSpectators) {
+				if(teamIndex == teamIndexSpectators) {
 					DrawPickButton(
 						Vec2f(tl.x + 400, br.y - 24),
 						Vec2f(tl.x + 450, br.y),
@@ -741,7 +684,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 						Vec2f(tl.x + 500, br.y),
 						"RED", "red", username
 					);
-				} else if (teamNum == teamNumBlue) {
+				} else if (teamIndex == teamIndexBlue) {
 					DrawPickButton(
 						Vec2f(tl.x + 400, br.y - 24),
 						Vec2f(tl.x + 450, br.y),
@@ -752,7 +695,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 						Vec2f(tl.x + 500, br.y),
 						"RED", "red", username
 					);
-				} else if (teamNum == teamNumRed) {
+				} else if (teamIndex == teamIndexRed) {
 					DrawPickButton(
 						Vec2f(tl.x + 400, br.y - 24),
 						Vec2f(tl.x + 450, br.y),
@@ -771,21 +714,21 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 					);
 				}
 			} else if (localIsCaptain && playerIsOur && playerIsNotLocal) {
-				if (teamNum == teamNumSpectators) {
-					if (localTeamNum == teamNumBlue) {
+				if (teamIndex == teamIndexSpectators) {
+					if (localTeamNum == teamIndexBlue) {
 						DrawPickButton(
 							Vec2f(tl.x + 400, br.y - 24),
 							Vec2f(tl.x + 450, br.y),
 							"PICK", "blue", username
 						);
-					} else if(localTeamNum == teamNumRed) {
+					} else if(localTeamNum == teamIndexRed) {
 						DrawPickButton(
 							Vec2f(tl.x + 400, br.y - 24),
 							Vec2f(tl.x + 450, br.y),
 							"PICK", "red", username
 						);
 					}
-				} else if (teamNum != teamNumSpectators) {
+				} else if (teamIndex != teamIndexSpectators) {
 					DrawPickButton(
 						Vec2f(tl.x + 400, br.y - 24),
 						Vec2f(tl.x + 450, br.y),
@@ -839,8 +782,8 @@ void onRenderScoreboard(CRules@ this)
 			continue;
 		}
 
-		int teamNum = p.getTeamNum();
-		if (teamNum == 0) //blue team
+		int teamIndex = p.getTeamNum();
+		if (teamIndex == 0) //blue team
 		{
 			for (u32 j = 0; j < blueplayers.length; j++)
 			{
@@ -856,7 +799,7 @@ void onRenderScoreboard(CRules@ this)
 				blueplayers.push_back(p);
 
 		}
-		else //if (teamNum == 1)
+		else //if (teamIndex == 1)
 		{
 			for (u32 j = 0; j < redplayers.length; j++)
 			{
@@ -1020,6 +963,24 @@ void onTick(CRules@ this)
 		{
 			this.Sync("match_time", true);
 		}
+	}
+
+	// plain stupidity to track player heads even when dead
+	const int playerCount = getPlayersCount();
+	for (int i = 0; i < playerCount; ++i)
+	{
+		CPlayer@ p = getPlayer(i);
+		if (p is null) { continue; }
+
+		CBlob@ b = p.getBlob();
+		if (b is null) { continue; }
+
+		const int headIndex = b.get_s32("head index");
+		const string headTexture = b.get_string("head texture");
+		const int teamIndex = b.get_s32("head team");
+		p.set_s32("head index", headIndex);
+		p.set_string("head texture", headTexture);
+		p.set_s32("head team", teamIndex);
 	}
 }
 
