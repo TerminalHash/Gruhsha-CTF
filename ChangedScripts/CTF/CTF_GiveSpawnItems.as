@@ -78,16 +78,59 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 
 	if (name == "builder")
 	{
-		for (uint i = 0; i < getPlayersCount(); ++i)
+		if (gametime > getCTFTimer(this, p, "builder"))
 		{
-			CPlayer@ p = getPlayer(i);
-			if (p is null) continue;
+			for (uint i = 0; i < getPlayersCount(); ++i)
+			{
+				CPlayer@ p = getPlayer(i);
+				if (p is null) continue;
 
-			this.set_s32("personalwood_" + p.getUsername(), 1000);
-			this.Sync("personalwood_" + p.getUsername(), true);
+				int wood_amount = matchtime_wood_amount;
+				int stone_amount = matchtime_stone_amount;
 
-			this.set_s32("personalstone_" + p.getUsername(), 1000);
-			this.Sync("personalstone_" + p.getUsername(), true);
+				u32 player_amount = getPlayersCount_NotSpectator(); // using this function because only it works :shrug:
+
+				if (player_amount >= 8 && player_amount < 10) // 4v4
+				{
+					wood_amount = matchtime_wood_amount;
+					stone_amount = matchtime_stone_amount;
+				}
+				if (player_amount >= 10 && player_amount < 14) // 5v5 and 6v6
+				{
+					wood_amount = 250;
+					stone_amount = 100;
+				}
+				else if (player_amount >= 14 && player_amount < 16) // 7v7
+				{
+					wood_amount = 150;
+					stone_amount = 75;
+				}
+				else if (player_amount >= 16) // 8v8 and more
+				{
+					wood_amount = 100;
+					stone_amount = 50;
+				}
+
+				if (this.isWarmup())
+				{
+					wood_amount = warmup_wood_amount;
+					stone_amount = warmup_stone_amount;
+				}
+
+				if (this.get_s32("personalwood_" + p.getUsername()) < 2000)
+				{
+					this.add_s32("personalwood_" + p.getUsername(), wood_amount);
+					this.Sync("personalwood_" + p.getUsername(), true);
+				}
+
+				if (this.get_s32("personalstone_" + p.getUsername()) < 2000)
+				{
+					this.add_s32("personalstone_" + p.getUsername(), stone_amount);
+					this.Sync("personalstone_" + p.getUsername(), true);
+				}
+
+				SetCTFTimer(this, p, gametime + (this.isWarmup() ? materials_wait_warmup : materials_wait)*getTicksASecond(), "builder");
+			}
 		}
 	}
 }
@@ -97,6 +140,7 @@ void Reset(CRules@ this)
 	//restart everyone's timers
 	for (uint i = 0; i < getPlayersCount(); ++i) 
 	{
+		SetCTFTimer(this, getPlayer(i), 0, "builder");
 		SetCTFTimer(this, getPlayer(i), 0, "archer");
 	}
 
@@ -184,11 +228,11 @@ void GiveOutMats(CRules@ this, u8 team)
 		if (p is null) continue;
 		if (p.getTeamNum() != team) continue;
 		// didnt play builder for last 2 min && not tagged for alwaysgetmats?
-		if ((getGameTime() - this.get_s32("lastbuildertime_" + p.getUsername()) >= 120 * getTicksASecond()) && !this.hasTag("alwaysgetmats_" + p.getUsername())) continue; 
+		if ((getGameTime() - this.get_s32("lastbuildertime_" + p.getUsername()) >= 120 * getTicksASecond())) continue;
 
 		players_to_give.push_back(p);
-		if (this.get_s32("personalwood_" + p.getUsername()) < 3000) players_to_give_w.push_back(p);
-		if (this.get_s32("personalstone_" + p.getUsername()) < 1000) players_to_give_s.push_back(p);
+		if (this.get_s32("personalwood_" + p.getUsername()) < 2000) players_to_give_w.push_back(p);
+		if (this.get_s32("personalstone_" + p.getUsername()) < 2000) players_to_give_s.push_back(p);
 	}
 
 	if (players_to_give_w.length > 0)
@@ -202,9 +246,9 @@ void GiveOutMats(CRules@ this, u8 team)
 			s32 changenumber = wood_per_player;
 			u32 personalwood = this.get_s32("personalwood_" + p.getUsername());
 
-			if (personalwood + wood_per_player > 3000)
+			if (personalwood + wood_per_player > 2000)
 			{
-				changenumber = (3000 - personalwood);
+				changenumber = (2000 - personalwood);
 			}
 			this.add_s32("personalwood_" + p.getUsername(), changenumber);
 			this.sub_s32("woodpool" + team, changenumber);
@@ -224,9 +268,9 @@ void GiveOutMats(CRules@ this, u8 team)
 			s32 changenumber = stone_per_player;
 			u32 personalstone = this.get_s32("personalstone_" + p.getUsername());
 
-			if (personalstone + stone_per_player > 1000)
+			if (personalstone + stone_per_player > 2000)
 			{
-				changenumber = (1000 - personalstone);
+				changenumber = (2000 - personalstone);
 			}
 			this.add_s32("personalstone_" + p.getUsername(), changenumber);
 			this.sub_s32("stonepool" + team, changenumber);
@@ -251,16 +295,15 @@ void AddTeamMats(CRules@ this, u8 team, u32 stone, u32 wood)
 	this.Sync("stonepool" + team, true);
 }
 
-u32 resupply_time = 15 * getTicksASecond();
-
 void onTick(CRules@ this)
 {
 	if (!isServer())
 		return;
 
 	u32 mt = getRules().get_u32("match_time");
+	u32 restime = materials_wait * getTicksASecond();
 
-	if (mt % resupply_time == 1 && this.getCurrentState() == GAME)
+	if (mt % restime == 1 && this.getCurrentState() == GAME)
 	{
 		GiveOutMats(this, 0);
 		GiveOutMats(this, 1);
@@ -271,7 +314,7 @@ void onTick(CRules@ this)
 	// update last builder time
 	if (getGameTime() % 30 == 0)
 	{
-		for (int i = 0; i < getPlayerCount(); i++) 
+		for (int i = 0; i < getPlayerCount(); i++)
 		{
 			CPlayer@ player = getPlayer(i);
 			if (player is null) continue;
@@ -279,7 +322,7 @@ void onTick(CRules@ this)
 			if (player.getTeamNum() == this.getSpectatorTeamNum()) continue;
 
 			CBlob@ blob = player.getBlob();
-			if (blob !is null) 
+			if (blob !is null)
 			{
 				if (blob.getName() == "builder" || this.get_s32("lastbuildertime_" + player.getUsername()) > getGameTime())
 				{
@@ -294,14 +337,14 @@ void onTick(CRules@ this)
 				}
 			}
 
-			// if more than 2min since last being builder, no always tag, give away mats to team pool
-			if (getGameTime() - this.get_s32("lastbuildertime_" + player.getUsername()) >= 120 * getTicksASecond() && !this.hasTag("alwaysgetmats_" + player.getUsername()))
+			// if more than 2min since last being builder, give away mats to team pool
+			if (getGameTime() - this.get_s32("lastbuildertime_" + player.getUsername()) >= 120 * getTicksASecond())
 			{
 				ResetPlayerMats(this, player, player.getTeamNum());
 			}
 		}
 	}
-	
+
 	s32 gametime = getGameTime();
 	
 	if ((gametime % 15) != 5)
@@ -325,6 +368,8 @@ void onTick(CRules@ this)
 		CBlob@[] spots;
 		getBlobsByName(base_name(),   @spots);
 		getBlobsByName("outpost",	@spots);
+		getBlobsByName("warboat",	 @spots);
+		getBlobsByName("buildershop", @spots);
 		getBlobsByName("archershop",  @spots);
 		// getBlobsByName("knightshop",  @spots);
 		for (uint step = 0; step < spots.length; ++step) 

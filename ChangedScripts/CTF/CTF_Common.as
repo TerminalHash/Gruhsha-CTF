@@ -2,11 +2,11 @@
 const u32 materials_wait = 20; //seconds between free mats
 const u32 materials_wait_warmup = 40; //seconds between free mats
 
-const int warmup_wood_amount = 250;
-const int warmup_stone_amount = 80;
+const int warmup_wood_amount = 500;
+const int warmup_stone_amount = 500;
 
-const int matchtime_wood_amount = 100;
-const int matchtime_stone_amount = 30;
+const int matchtime_wood_amount = 350;
+const int matchtime_stone_amount = 150;
 
 // Waffle: Materials for the entire team. Drop once at the start of the game
 const int crate_warmup_wood_amount = 2500;

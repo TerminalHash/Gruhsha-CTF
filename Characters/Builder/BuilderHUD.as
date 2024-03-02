@@ -5,6 +5,7 @@
 #include "Requirements.as";
 #include "CommonBuilderBlocks.as";
 #include "/Entities/Common/GUI/ActorHUDStartPos.as";
+#include "MaterialTeamIndicatorHUD.as";
 #include "pathway.as";
 
 const string iconsFilename = "Entities/Characters/Builder/BuilderIcons.png";
@@ -77,13 +78,21 @@ void onRender(CSprite@ this)
 	Vec2f tl = getActorHUDStartPosition(blob, slotsSize);
 	DrawInventoryOnHUD(blob, tl);
 
-	// draw personal mats on hud
+	// draw mats ui
 	DrawPersonalMats();
+	DrawTeamMaterialsIndicator();
 
 	// draw coins
 
 	const int coins = player !is null ? player.getCoins() : 0;
 	DrawCoinsOnHUD(blob, coins, tl, slotsSize - 2);
+
+	// draw resupply icon
+
+	if (shouldRenderResupplyIndicator(blob))
+	{
+		DrawResupplyOnHUD(blob, tl + Vec2f(8 + (slotsSize) * 40, -4));
+	}
 
 	// draw class icon
 
@@ -173,13 +182,6 @@ void DrawPersonalMats()
 
 		Vec2f ul2 = ul + Vec2f(0, 40);
 
-		u32 mt = getRules().get_u32("match_time");
-
-		u32 to_sub = mt / (15 * getTicksASecond());
-
-		mt -= to_sub * (15 * getTicksASecond());
-		u32 secs = (((15 * getTicksASecond()) - mt) / getTicksASecond()) + 1;
-
 		string msg1 = getRules().get_s32("personalstone_" + p.getUsername());
 		string msg2 = getRules().get_s32("personalwood_" + p.getUsername());
 
@@ -213,8 +215,5 @@ void DrawPersonalMats()
 			1.0f,
 			0);
 		GUI::DrawText(msg2, ul2 + Vec2f(leftside_indent*1.5+32, material_display_height/3), color_white);
-
-		if (getRules().getCurrentState() == GAME)
-			GUI::DrawText(secs + "s", ul+Vec2f(100, 32), SColor(255, 255, 55, 55));
 	}
 }
