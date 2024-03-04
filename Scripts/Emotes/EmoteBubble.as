@@ -78,6 +78,11 @@ void onTick(CBlob@ blob)
 
 				layer.ResetTransform();
 
+				if (blob !is null && blob.getName() == "crate")
+				{
+					layer.ScaleBy(0.25, 0.25);
+				}
+
 				CCamera@ camera = getCamera();
 				if (camera !is null)
 				{
