@@ -115,6 +115,9 @@ namespace Names
 	// ScoreboardCommon.as
 	modsettingsbutton	  	       		= Translate(en::n_modsettingsbutton+"\\"+ru::n_modsettingsbutton),
 
+	// ScoreboardRender.as
+	matssection	  	   		    		= Translate(en::n_matssection+"\\"+ru::n_matssection),
+
 	// Quarters.as
 	beeritem		  	       			= Translate(en::n_beeritem+"\\"+ru::n_beeritem),
 	mealitem		  	       			= Translate(en::n_mealitem+"\\"+ru::n_mealitem),
