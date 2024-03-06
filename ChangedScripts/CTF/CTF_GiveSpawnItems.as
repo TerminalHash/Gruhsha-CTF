@@ -159,7 +159,7 @@ void Reset(CRules@ this)
 	AddTeamMats(this, 0, 800, 2000);
 	AddTeamMats(this, 1, 800, 2000);
 
-	for (uint i = 0; i < getPlayersCount(); ++i) 
+	for (uint i = 0; i < getPlayersCount(); ++i)
 	{
 		CPlayer@ p = getPlayer(i);
 		if (p is null) continue;
@@ -237,7 +237,10 @@ void GiveOutMats(CRules@ this, u8 team)
 
 	if (players_to_give_w.length > 0)
 	{
-		u32 wood_per_player = wood_pool / players_to_give_w.length;
+		//u32 wood_per_player = wood_pool / players_to_give_w.length;
+		u32 wood_per_player = matchtime_wood_amount;
+
+
 		for (int i=0; i<players_to_give_w.length; ++i)
 		{
 			CPlayer@ p = players_to_give_w[i];
@@ -250,6 +253,7 @@ void GiveOutMats(CRules@ this, u8 team)
 			{
 				changenumber = (2000 - personalwood);
 			}
+
 			this.add_s32("personalwood_" + p.getUsername(), changenumber);
 			this.sub_s32("woodpool" + team, changenumber);
 
@@ -258,7 +262,8 @@ void GiveOutMats(CRules@ this, u8 team)
 	}
 	if (players_to_give_s.length > 0)
 	{
-		u32 stone_per_player = stone_pool / players_to_give_s.length;
+		//u32 stone_per_player = stone_pool / players_to_give_s.length;
+		u32 stone_per_player = matchtime_stone_amount;
 
 		for (int i=0; i<players_to_give_s.length; ++i)
 		{
@@ -272,6 +277,7 @@ void GiveOutMats(CRules@ this, u8 team)
 			{
 				changenumber = (2000 - personalstone);
 			}
+
 			this.add_s32("personalstone_" + p.getUsername(), changenumber);
 			this.sub_s32("stonepool" + team, changenumber);
 
