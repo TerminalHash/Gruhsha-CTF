@@ -562,14 +562,16 @@ void doRopeUpdate(CSprite@ this, CBlob@ blob, ArcherInfo@ archer)
 
 	rope.TranslateBy(Vec2f(ropelen * 16.0f, 0.0f));
 
-	rope.RotateBy(-off.Angle() , Vec2f());
+	rope.RotateBy(-off.Angle() -blob.getAngleDegrees(), Vec2f());
 
 	hook.ResetTransform();
+
 	if (archer.grapple_id == 0xffff) //still in air
 	{
 		archer.cache_angle = -archer.grapple_vel.Angle();
 	}
-	hook.RotateBy(archer.cache_angle , Vec2f());
+
+	hook.RotateBy(archer.cache_angle, Vec2f());
 
 	hook.TranslateBy(off);
 	hook.SetIgnoreParentFacing(true);
