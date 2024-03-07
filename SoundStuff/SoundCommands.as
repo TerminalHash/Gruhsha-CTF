@@ -214,7 +214,8 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 				} else if (textIn == ("ой") || textIn == ("oi") || textIn == ("oh")) {
 				if (localplayer_is_deaf == false)
 				{
-					Sound::Play(soundrandom + "oi.ogg", pos, 1.0f);
+					int random = XORRandom(2) + 1;
+					Sound::Play(soundrandom + "oi" + random + ".ogg", pos, 1.0f);
 				}
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
@@ -231,6 +232,14 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 				if (localplayer_is_deaf == false)
 				{
 					Sound::Play(soundrandom + "hehe.ogg", pos, 1.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
+				} else if (textIn.findFirst("айяй") != -1 || textIn.findFirst("ahoh") != -1 || textIn.findFirst("aiyai") != -1) {
+				if (localplayer_is_deaf == false)
+				{
+					Sound::Play(soundrandom + "aiyai.ogg", pos, 1.0f);
 				}
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
