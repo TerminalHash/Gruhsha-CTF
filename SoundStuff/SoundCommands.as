@@ -115,7 +115,8 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 			} else if (textIn == ("трипл") || textIn == ("triple")) {
 				if (localplayer_is_deaf == false)
 				{
-					Sound::Play(soundrandom + "triple.ogg", pos, 0.7f);
+					int random = XORRandom(2) + 1;
+					Sound::Play(soundrandom + "triple" + random + ".ogg", pos);
 				}
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
@@ -201,7 +202,40 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 				this.set_u32(player.getUsername() + "soundcooldown", 80);
-			}
+			}  else if (textIn == ("ай") || textIn == ("ai") || textIn == ("ah")) {
+				if (localplayer_is_deaf == false)
+				{
+					int random = XORRandom(2) + 1;
+					Sound::Play(soundrandom + "ai" + random + ".ogg", pos, 1.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
+				} else if (textIn == ("ой") || textIn == ("oi") || textIn == ("oh")) {
+				if (localplayer_is_deaf == false)
+				{
+					Sound::Play(soundrandom + "oi.ogg", pos, 1.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
+				} else if (textIn.findFirst("афк") != -1 || textIn.findFirst("afk") != -1) {
+				if (localplayer_is_deaf == false)
+				{
+					Sound::Play(soundrandom + "afk.ogg", pos, 1.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
+				} else if (textIn.findFirst("хехе") != -1 || textIn.findFirst("hehe") != -1) {
+				if (localplayer_is_deaf == false)
+				{
+					Sound::Play(soundrandom + "hehe.ogg", pos, 1.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
+				}
 		}
 	return true;
 }
