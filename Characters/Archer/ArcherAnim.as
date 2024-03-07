@@ -573,7 +573,7 @@ void doRopeUpdate(CSprite@ this, CBlob@ blob, ArcherInfo@ archer)
 
 	hook.RotateBy(archer.cache_angle, Vec2f());
 
-	hook.TranslateBy(off);
+	hook.TranslateBy(off.RotateBy(-blob.getAngleDegrees()));
 	hook.SetIgnoreParentFacing(true);
 	hook.SetFacingLeft(false);
 
