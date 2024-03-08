@@ -1515,20 +1515,20 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 									//Material::fromTile(this, hi.tile, 1.f);
 									int quantity = 4;
 
-									if (isServer() && this.getPlayer() !is null)
+									/*if (isServer() && this.getPlayer() !is null)
 									{
 										getRules().add_s32("personalgold_" + this.getPlayer().getUsername(), quantity);
 										getRules().Sync("personalgold_" + this.getPlayer().getUsername(), true);
-									}
+									}*/
 
-									/*CBlob@ ore = server_CreateBlobNoInit("mat_gold");
+									CBlob@ ore = server_CreateBlobNoInit("mat_gold");
 									if (ore !is null)
 									{
 										ore.Tag('custom quantity');
 										ore.Init();
 										ore.setPosition(hi.hitpos);
 										ore.server_SetQuantity(4);
-									}*/
+									}
 								}
 								else if (dirt_stone)
 								{
