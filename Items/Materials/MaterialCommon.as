@@ -97,7 +97,7 @@ namespace Material
 		if (quantity == 0) return;
 
 		CInventory@ inventory = this.getInventory();
-		if (name == "mat_wood" || name == "mat_stone" || name == "mat_gold")
+		if (name == "mat_wood" || name == "mat_stone")
 		{
 			CPlayer@ player = this.getPlayer();
 			if (player is null) return;
@@ -112,11 +112,6 @@ namespace Material
 			{
 				getRules().add_s32("personalwood_" + player.getUsername(), quantity);
 				getRules().Sync("personalwood_" + player.getUsername(), true);
-			}
-			else if (name == "mat_gold")
-			{
-				getRules().add_s32("personalgold_" + player.getUsername(), quantity);
-				getRules().Sync("personalgold_" + player.getUsername(), true);
 			}
 
 			return;

@@ -24,14 +24,14 @@ void DrawPersonalMats()
 		CTeam@ blue = getRules().getTeam(0);
 		Vec2f dim = Vec2f(342, 64);
 		Vec2f ul(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12);
-		ul += Vec2f(480, -70);
+		ul += Vec2f(480, -28);
 
 		Vec2f ul2 = ul + Vec2f(0, 40);
 		Vec2f ul3 = ul2 + Vec2f(0, 40);
 
 		string msg1 = getRules().get_s32("personalstone_" + p.getUsername());
 		string msg2 = getRules().get_s32("personalwood_" + p.getUsername());
-		string msg3 = getRules().get_s32("personalgold_" + p.getUsername());
+		//string msg3 = getRules().get_s32("personalgold_" + p.getUsername());
 
 		SColor dcolor = blue.color;
 
@@ -44,7 +44,7 @@ void DrawPersonalMats()
 
 		GUI::DrawPane(ul2 + Vec2f(0, 4), ul2 + Vec2f(material_display_width+leftside_indent, material_display_height), SColor(255, 200, 200, 200));
 
-		GUI::DrawPane(ul3 + Vec2f(0, 4), ul3 + Vec2f(material_display_width+leftside_indent, material_display_height), SColor(255, 200, 200, 200));
+		//GUI::DrawPane(ul3 + Vec2f(0, 4), ul3 + Vec2f(material_display_width+leftside_indent, material_display_height), SColor(255, 200, 200, 200));
 
 		//wood
 		GUI::DrawIcon(
@@ -66,13 +66,13 @@ void DrawPersonalMats()
 			0);
 		GUI::DrawText(msg2, ul2 + Vec2f(leftside_indent*1.5+32, material_display_height/3), color_white);
 		//gold
-		GUI::DrawIcon(
+		/*GUI::DrawIcon(
 			icon,
 			26, //matgold icon
 			icon_dimensions,
 			ul3 + Vec2f(leftside_indent, 0),
 			1.0f,
 			0);
-		GUI::DrawText(msg3, ul3 + Vec2f(leftside_indent*1.5+32, material_display_height/3), color_white);
+		GUI::DrawText(msg3, ul3 + Vec2f(leftside_indent*1.5+32, material_display_height/3), color_white);*/
 	}
 }
