@@ -280,7 +280,7 @@ void onTick(CSprite@ this)
 			headoffset += Vec2f(0, 2);
 		head.SetOffset(headoffset);
 		head.ResetTransform();
-		f32 lower_clamp = Maths::Abs(blob.getVelocity().x)<1?-15:0;
+		f32 lower_clamp = Maths::Abs(blob.getVelocity().x)<1?-35:0;
 		f32	upper_clamp = 45;
 		f32 headangle = Maths::Clamp(getHeadAngle(blob, headoffset), FLIP?lower_clamp:-upper_clamp, FLIP?upper_clamp:-lower_clamp);
 		//printf("angle "+headangle);
