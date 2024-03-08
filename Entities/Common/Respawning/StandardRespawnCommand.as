@@ -128,14 +128,22 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 				// Limit classes, if game started
 				if (classconfig == "archer")
 				{
-					if(P_Archers_r.length >= archers_limit || P_Archers_b.length >= archers_limit)
+					if (P_Archers_r.length >= archers_limit)
+					{
+						break;
+					}
+					else if (P_Archers_b.length >= archers_limit)
 					{
 						break;
 					}
 				}
 				if (classconfig == "builder" && !rules.isWarmup())
 				{
-					if(P_Builders_r.length >= builders_limit || P_Builders_b.length >= builders_limit)
+					if (P_Builders_r.length >= builders_limit)
+					{
+						break;
+					}
+					else if (P_Builders_b.length >= builders_limit)
 					{
 						break;
 					}
