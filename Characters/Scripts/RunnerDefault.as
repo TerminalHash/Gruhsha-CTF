@@ -36,7 +36,7 @@ void onTick(CBlob@ this)
             this.setAngleDegrees(0+this.getVelocity().x*7.3f);
         } else
             this.setAngleDegrees(0);
-    } else {
+    } else if (false) {
         //print("ANGLE"+this.getAngleDegrees());
         f32 crit_angle = 30;
 
