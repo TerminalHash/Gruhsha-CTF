@@ -96,7 +96,7 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 				// calculating amount of players in classes
 				for (u32 i = 0; i < getPlayersCount(); i++)
 				{
-					if (getPlayer(i).getBlob() is null) continue;
+					if (getPlayer(i).getBlob() is null) return;
 
 					if (getPlayer(i).getBlob().getName() == "archer" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Archers++;}
 					if (getPlayer(i).getBlob().getName() == "builder" && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
