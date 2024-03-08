@@ -117,7 +117,7 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 					stone_amount = warmup_stone_amount;
 				}
 
-				if (this.get_s32("personalwood_" + p.getUsername()) < 2000)
+				if (this.get_s32("personalwood_" + p.getUsername()) < 3000)
 				{
 					this.add_s32("personalwood_" + p.getUsername(), wood_amount);
 					this.Sync("personalwood_" + p.getUsername(), true);
@@ -146,18 +146,22 @@ void Reset(CRules@ this)
 
 	if (!isServer()) return;
 
-	this.set_s32("woodpool" + 0, 0);
-	this.Sync("woodpool" + 0, true);
-	this.set_s32("stonepool" + 0, 0);
-	this.Sync("stonepool" + 0, true);
+/*
+	this.set_s32("teamwood" + 0, 0);
+	this.Sync("teamwood" + 0, true);
+	this.set_s32("teamstone_" + 0, 0);
+	this.Sync("teamstone_" + 0, true);
+	this.set_s32("teamgold" + 0, 0);
+	this.Sync("teamgold" + 0, true);
 
-	this.set_s32("woodpool" + 1, 0);
-	this.Sync("woodpool" + 1, true);
-	this.set_s32("stonepool" + 1, 0);
-	this.Sync("stonepool" + 1, true);
 
-	AddTeamMats(this, 0, 800, 2000);
-	AddTeamMats(this, 1, 800, 2000);
+	this.set_s32("teamwood" + 1, 0);
+	this.Sync("teamwood" + 1, true);
+	this.set_s32("teamstone" + 1, 0);
+	this.Sync("teamstone" + 1, true);
+	this.set_s32("teamgold" + 1, 0);
+	this.Sync("teamgold" + 1, true);
+*/
 
 	for (uint i = 0; i < getPlayersCount(); ++i)
 	{
@@ -169,6 +173,9 @@ void Reset(CRules@ this)
 
 		this.set_s32("personalstone_" + p.getUsername(), 0);
 		this.Sync("personalstone_" + p.getUsername(), true);
+
+		this.set_s32("personalgold_" + p.getUsername(), 0);
+		this.Sync("personalgold_" + p.getUsername(), true);
 	}
 }
 
@@ -201,155 +208,20 @@ void ResetPlayerMats(CRules@ this, CPlayer@ player, u8 team)
 	if (!isServer()) return;
 	if (player is null) return;
 
-	this.add_s32("woodpool" + team, this.get_s32("personalwood_" + player.getUsername()));
-	this.Sync("woodpool" + team, true);
 	this.set_s32("personalwood_" + player.getUsername(), 0);
 	this.Sync("personalwood_" + player.getUsername(), true);
 
-	this.add_s32("stonepool" + team, this.get_s32("personalstone_" + player.getUsername()));
-	this.Sync("stonepool" + team, true);
 	this.set_s32("personalstone_" + player.getUsername(), 0);
 	this.Sync("personalstone_" + player.getUsername(), true);
-}
 
-// Take mats from team pool and give them to builder-tagged players.
-void GiveOutMats(CRules@ this, u8 team)
-{
-	s32 wood_pool = this.get_s32("woodpool" + team);
-	s32 stone_pool = this.get_s32("stonepool" + team);
-
-	CPlayer@[] players_to_give;
-	CPlayer@[] players_to_give_w;
-	CPlayer@[] players_to_give_s;
-
-	for (int i=0; i<getPlayersCount(); ++i)
-	{
-		CPlayer@ p = getPlayer(i);
-		if (p is null) continue;
-		if (p.getTeamNum() != team) continue;
-		// didnt play builder for last 2 min && not tagged for alwaysgetmats?
-		if ((getGameTime() - this.get_s32("lastbuildertime_" + p.getUsername()) >= 120 * getTicksASecond())) continue;
-
-		players_to_give.push_back(p);
-		if (this.get_s32("personalwood_" + p.getUsername()) < 2000) players_to_give_w.push_back(p);
-		if (this.get_s32("personalstone_" + p.getUsername()) < 2000) players_to_give_s.push_back(p);
-	}
-
-	if (players_to_give_w.length > 0)
-	{
-		//u32 wood_per_player = wood_pool / players_to_give_w.length;
-		u32 wood_per_player = matchtime_wood_amount;
-
-
-		for (int i=0; i<players_to_give_w.length; ++i)
-		{
-			CPlayer@ p = players_to_give_w[i];
-			if (p is null) continue;
-
-			s32 changenumber = wood_per_player;
-			u32 personalwood = this.get_s32("personalwood_" + p.getUsername());
-
-			if (personalwood + wood_per_player > 2000)
-			{
-				changenumber = (2000 - personalwood);
-			}
-
-			this.add_s32("personalwood_" + p.getUsername(), changenumber);
-			this.sub_s32("woodpool" + team, changenumber);
-
-			this.Sync("personalwood_" + p.getUsername(), true);
-		}
-	}
-	if (players_to_give_s.length > 0)
-	{
-		//u32 stone_per_player = stone_pool / players_to_give_s.length;
-		u32 stone_per_player = matchtime_stone_amount;
-
-		for (int i=0; i<players_to_give_s.length; ++i)
-		{
-			CPlayer@ p = players_to_give_s[i];
-			if (p is null) continue;
-
-			s32 changenumber = stone_per_player;
-			u32 personalstone = this.get_s32("personalstone_" + p.getUsername());
-
-			if (personalstone + stone_per_player > 2000)
-			{
-				changenumber = (2000 - personalstone);
-			}
-
-			this.add_s32("personalstone_" + p.getUsername(), changenumber);
-			this.sub_s32("stonepool" + team, changenumber);
-
-			this.Sync("personalstone_" + p.getUsername(), true);
-		}
-	}
-
-	this.Sync("woodpool" + team, true);
-	this.Sync("stonepool" + team, true);
-}
-
-// Add mats to team pool.
-// TAG FOR MATS: getting_mats_username
-// PERSONAL MATS: personalwood_username, personalstone_username
-void AddTeamMats(CRules@ this, u8 team, u32 stone, u32 wood)
-{
-	this.add_s32("woodpool" + team, wood);
-	this.add_s32("stonepool" + team, stone);
-
-	this.Sync("woodpool" + team, true);
-	this.Sync("stonepool" + team, true);
+	this.set_s32("personalgold_" + player.getUsername(), 0);
+	this.Sync("personalgold_" + player.getUsername(), true);
 }
 
 void onTick(CRules@ this)
 {
 	if (!isServer())
 		return;
-
-	u32 mt = getRules().get_u32("match_time");
-	u32 restime = materials_wait * getTicksASecond();
-
-	if (mt % restime == 1 && this.getCurrentState() == GAME)
-	{
-		GiveOutMats(this, 0);
-		GiveOutMats(this, 1);
-		AddTeamMats(this, 0, 140, 375);
-		AddTeamMats(this, 1, 140, 375);
-	}
-
-	// update last builder time
-	if (getGameTime() % 30 == 0)
-	{
-		for (int i = 0; i < getPlayerCount(); i++)
-		{
-			CPlayer@ player = getPlayer(i);
-			if (player is null) continue;
-
-			if (player.getTeamNum() == this.getSpectatorTeamNum()) continue;
-
-			CBlob@ blob = player.getBlob();
-			if (blob !is null)
-			{
-				if (blob.getName() == "builder" || this.get_s32("lastbuildertime_" + player.getUsername()) > getGameTime())
-				{
-					this.set_s32("lastbuildertime_" + player.getUsername(), getGameTime());
-					this.Sync("lastbuildertime_" + player.getUsername(), true);
-				}
-
-				if (blob.getName() != "builder" && this.getCurrentState() != GAME)
-				{
-					this.set_s32("lastbuildertime_" + player.getUsername(), -3600);
-					this.Sync("lastbuildertime_" + player.getUsername(), true);
-				}
-			}
-
-			// if more than 2min since last being builder, give away mats to team pool
-			if (getGameTime() - this.get_s32("lastbuildertime_" + player.getUsername()) >= 120 * getTicksASecond())
-			{
-				ResetPlayerMats(this, player, player.getTeamNum());
-			}
-		}
-	}
 
 	s32 gametime = getGameTime();
 	
@@ -418,6 +290,9 @@ void onNewPlayerJoin(CRules@ this, CPlayer@ player)
 
 		this.set_s32("personalstone_" + player.getUsername(), 0);
 		this.Sync("personalstone_" + player.getUsername(), true);
+
+		this.set_s32("personalgold_" + player.getUsername(), 0);
+		this.Sync("personalgold_" + player.getUsername(), true);
 	}
 
 	s32 next_add_time = getGameTime() + (this.isWarmup() ? materials_wait_warmup : materials_wait) * getTicksASecond();

@@ -156,7 +156,7 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 
 		if (req == "blob")
 		{
-			if (blobName == "mat_wood" || blobName == "mat_stone")
+			if (blobName == "mat_wood" || blobName == "mat_stone" || blobName == "mat_gold")
 			{
 				CPlayer@ player1 = inv1 !is null ? inv1.getBlob().getPlayer() : null;
 
@@ -164,15 +164,17 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 				{
 					string needed = "personalwood_";
 					if (blobName == "mat_stone") needed = "personalstone_";
-					if (getRules().get_s32(needed + player1.getUsername()) >= quantity) 
+					else if (blobName == "mat_gold") needed = "personalgold_";
+
+					if (getRules().get_s32(needed + player1.getUsername()) >= quantity)
 					{
-						return true;
+						has = true;
 					}
-					else
+					else if (getRules().get_s32(needed + player1.getUsername()) < quantity)
 					{
 						AddRequirement(missingBs, req, blobName, friendlyName, quantity);
+						has = false;
 					}
-					return false;
 				}
 			}
 			else
@@ -268,7 +270,7 @@ void server_TakeRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &ino
 
 		if (req == "blob")
 		{
-			if (blobName == "mat_wood" || blobName == "mat_stone")
+			if (blobName == "mat_wood" || blobName == "mat_stone" || blobName == "mat_gold")
 			{
 				CPlayer@ player1 = inv1 !is null ? inv1.getBlob().getPlayer() : null;
 
@@ -276,6 +278,8 @@ void server_TakeRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &ino
 				{
 					string needed = "personalwood_";
 					if (blobName == "mat_stone") needed = "personalstone_";
+					else if (blobName == "mat_gold") needed = "personalgold_";
+
 					getRules().sub_s32(needed + player1.getUsername(), quantity);
 					getRules().Sync(needed + player1.getUsername(), true);
 				}
