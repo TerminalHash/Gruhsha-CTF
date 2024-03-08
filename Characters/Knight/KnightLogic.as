@@ -1403,7 +1403,20 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 						{
 							temp_damage /= 3;
 							dontHitMoreLogs = true; // set this here to prevent from hitting more logs on the same tick
-							CBlob@ wood = server_CreateBlobNoInit("mat_wood");
+							int quantity = Maths::Ceil(float(temp_damage) * 20.0f);
+							int max_quantity = rayb.getHealth() / 0.024f; // initial log health / max mats
+
+							quantity = Maths::Max(
+									Maths::Min(quantity, max_quantity),
+									0
+								);
+
+							if (isServer() && this.getPlayer() !is null)
+							{
+								getRules().add_s32("personalwood_" + this.getPlayer().getUsername(), quantity);
+								getRules().Sync("personalwood_" + this.getPlayer().getUsername(), true);
+							}
+							/*CBlob@ wood = server_CreateBlobNoInit("mat_wood");
 							if (wood !is null)
 							{
 								int quantity = Maths::Ceil(float(temp_damage) * 20.0f);
@@ -1418,7 +1431,7 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 								wood.Init();
 								wood.setPosition(rayInfos[j].hitpos);
 								wood.server_SetQuantity(quantity);
-							}
+							}*/
 						}
 						else 
 						{
@@ -1500,14 +1513,22 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 									// Note: 0.1f damage doesn't harvest anything I guess
 									// This puts it in inventory - include MaterialCommon
 									//Material::fromTile(this, hi.tile, 1.f);
-									CBlob@ ore = server_CreateBlobNoInit("mat_gold");
+									int quantity = 4;
+
+									if (isServer() && this.getPlayer() !is null)
+									{
+										getRules().add_s32("personalgold_" + this.getPlayer().getUsername(), quantity);
+										getRules().Sync("personalgold_" + this.getPlayer().getUsername(), true);
+									}
+
+									/*CBlob@ ore = server_CreateBlobNoInit("mat_gold");
 									if (ore !is null)
 									{
 										ore.Tag('custom quantity');
 										ore.Init();
 										ore.setPosition(hi.hitpos);
 										ore.server_SetQuantity(4);
-									}
+									}*/
 								}
 								else if (dirt_stone)
 								{
@@ -1516,14 +1537,21 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 									{
 										quantity = 6;
 									}
-									CBlob@ ore = server_CreateBlobNoInit("mat_stone");
+
+									if (isServer() && this.getPlayer() !is null)
+									{
+										getRules().add_s32("personalstone_" + this.getPlayer().getUsername(), quantity);
+										getRules().Sync("personalstone_" + this.getPlayer().getUsername(), true);
+									}
+
+									/*CBlob@ ore = server_CreateBlobNoInit("mat_stone");
 									if (ore !is null)
 									{
 										ore.Tag('custom quantity');
 										ore.Init();
 										ore.setPosition(hi.hitpos);
 										ore.server_SetQuantity(quantity);
-									}
+									}*/
 								}
 							}
 						}
