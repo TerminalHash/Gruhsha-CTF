@@ -236,10 +236,26 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 				this.set_u32(player.getUsername() + "soundcooldown", 80);
-				} else if (textIn.findFirst("айяй") != -1 || textIn.findFirst("ahoh") != -1 || textIn.findFirst("aiyai") != -1) {
+				} else if (textIn.find("айяй") != -1 || textIn.find("ahoh") != -1 || textIn.find("aiyai") != -1) {
 				if (localplayer_is_deaf == false)
 				{
 					Sound::Play(soundrandom + "aiyai.ogg", pos, 1.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
+				} else if (textIn.toUpper().find("auf") != -1 || textIn.find("ауф") != -1 || textIn.find("АУФ") != -1) {
+				if (localplayer_is_deaf == false)
+				{
+					Sound::Play(soundrandom + "auf.ogg", pos, 1.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
+				} else if (textIn == "ЛОШАДИНЫЙ ХУЙ ЖАРА ИЮЛЬ") {
+				if (localplayer_is_deaf == false)
+				{
+					Sound::Play(soundrandom + "loshadinyuhui.ogg", pos, 1.0f);
 				}
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
