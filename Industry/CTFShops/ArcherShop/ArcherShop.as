@@ -58,8 +58,8 @@ void onInit(CBlob@ this)
 	}
 	else if (player_amount >= 19)
 	{
-		dynamic_fire_arrow_cost = 45;
-		dynamic_bomb_arrow_cost = 80;
+		dynamic_fire_arrow_cost = 50;
+		dynamic_bomb_arrow_cost = 85;
 	}
 
 	{
