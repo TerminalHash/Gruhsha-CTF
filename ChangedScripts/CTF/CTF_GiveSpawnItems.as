@@ -97,18 +97,18 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 				}
 				if (player_amount >= 10 && player_amount < 14) // 5v5 and 6v6
 				{
-					wood_amount = 250;
-					stone_amount = 100;
+					wood_amount = 300;
+					stone_amount = 125;
 				}
 				else if (player_amount >= 14 && player_amount < 16) // 7v7
 				{
-					wood_amount = 150;
-					stone_amount = 75;
+					wood_amount = 250;
+					stone_amount = 100;
 				}
 				else if (player_amount >= 16) // 8v8 and more
 				{
-					wood_amount = 100;
-					stone_amount = 50;
+					wood_amount = 200;
+					stone_amount = 75;
 				}
 
 				if (this.isWarmup())
@@ -227,7 +227,7 @@ void onTick(CRules@ this)
 	
 	if ((gametime % 15) != 5)
 		return;
-	
+
 	if (this.isWarmup()) 
 	{
 		// during building time, give everyone resupplies no matter where they are
@@ -241,7 +241,20 @@ void onTick(CRules@ this)
 			}
 		}
 	}
-	else 
+	else // automatic resupplies for builders
+	{
+		for (int i = 0; i < getPlayerCount(); i++)
+		{
+			CPlayer@ player = getPlayer(i);
+			CBlob@ blob = player.getBlob();
+			if (blob !is null && blob.getName() == "builder")
+			{
+				doGiveSpawnMats(this, player, blob);
+			}
+		}
+	}
+
+	// vanilla resupply behaviour, works for both sides
 	{
 		CBlob@[] spots;
 		getBlobsByName(base_name(),   @spots);
@@ -250,7 +263,7 @@ void onTick(CRules@ this)
 		getBlobsByName("buildershop", @spots);
 		getBlobsByName("archershop",  @spots);
 		// getBlobsByName("knightshop",  @spots);
-		for (uint step = 0; step < spots.length; ++step) 
+		for (uint step = 0; step < spots.length; ++step)
 		{
 			CBlob@ spot = spots[step];
 			if (spot is null) continue;
@@ -261,7 +274,7 @@ void onTick(CRules@ this)
 			string name = spot.getName();
 			bool isShop = (name.find("shop") != -1);
 
-			for (uint o_step = 0; o_step < overlapping.length; ++o_step) 
+			for (uint o_step = 0; o_step < overlapping.length; ++o_step)
 			{
 				CBlob@ overlapped = overlapping[o_step];
 				if (overlapped is null) continue;
