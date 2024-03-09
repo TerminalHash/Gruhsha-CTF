@@ -86,9 +86,12 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 
 				CPlayer@ player = null;
 
-				string[] P_Archers;
-				string[] P_Builders;
-				string[] P_Knights;
+				string[] P_Archers_b;
+				string[] P_Archers_r;
+				string[] P_Builders_b;
+				string[] P_Builders_r;
+				string[] P_Knights_b;
+				string[] P_Knights_r;
 
 				archers_limit = rules.get_u8("archers_limit");
 				builders_limit = rules.get_u8("builders_limit");
@@ -100,22 +103,23 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 
 					if (getPlayer(i).getBlob().getName() == "archer")
 					{
-						if (getPlayer(i).getTeamNum() == 0) P_Archers.push_back(getPlayer(i).getUsername());
-						else if (getPlayer(i).getTeamNum() == 1) P_Archers.push_back(getPlayer(i).getUsername());
+						if (getPlayer(i).getTeamNum() == 0) P_Archers_b.push_back(getPlayer(i).getUsername());
+						else if (getPlayer(i).getTeamNum() == 1) P_Archers_r.push_back(getPlayer(i).getUsername());
 					}
 					if (getPlayer(i).getBlob().getName() == "builder")
 					{
-						if (getPlayer(i).getTeamNum() == 0) P_Builders.push_back(getPlayer(i).getUsername());
-						else if (getPlayer(i).getTeamNum() == 1) P_Builders.push_back(getPlayer(i).getUsername());
+						if (getPlayer(i).getTeamNum() == 0) P_Builders_b.push_back(getPlayer(i).getUsername());
+						else if (getPlayer(i).getTeamNum() == 1) P_Builders_r.push_back(getPlayer(i).getUsername());
 					}
 					if (getPlayer(i).getBlob().getName() == "knight")
 					{
-						if (getPlayer(i).getTeamNum() == 0) P_Knights.push_back(getPlayer(i).getUsername());
-						else if (getPlayer(i).getTeamNum() == 1) P_Knights.push_back(getPlayer(i).getUsername());
+						if (getPlayer(i).getTeamNum() == 0) P_Knights_b.push_back(getPlayer(i).getUsername());
+						else if (getPlayer(i).getTeamNum() == 1) P_Knights_r.push_back(getPlayer(i).getUsername());
 					}
 
 
-					printf("We have: " + P_Archers.length + " Archers, " + P_Builders.length + " Builders, " + P_Knights.length + " Knights");
+					//printf("We have: " + P_Archers_r.length + " Archers, " + P_Builders_r.length + " Builders, " + P_Knights_r.length + " Knights in red team");
+					//printf("We have: " + P_Archers_b.length + " Archers, " + P_Builders_b.length + " Builders, " + P_Knights_b.length + " Knights in blue team");
 				}
 
 				CBlob@ caller = getBlobByNetworkID(params.read_u16());
@@ -124,17 +128,28 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 				// Limit classes, if game started
 				if (classconfig == "archer")
 				{
-					if(P_Archers.length >= archers_limit)
+					if (caller.getTeamNum() == 0 && P_Archers_b.length >= archers_limit)
+					{
+						break;
+					}
+
+					if (caller.getTeamNum() == 1 && P_Archers_r.length >= archers_limit)
 					{
 						break;
 					}
 				}
 				if (classconfig == "builder" && !rules.isWarmup())
 				{
-					if(P_Builders.length >= builders_limit)
+					if (caller.getTeamNum() == 0 && P_Builders_b.length >= builders_limit)
 					{
 						break;
 					}
+
+					if (caller.getTeamNum() == 1 && P_Builders_r.length >= builders_limit)
+					{
+						break;
+					}
+
 				}
 				if (caller !is null && canChangeClass(this, caller))
 				{
