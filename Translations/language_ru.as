@@ -25,6 +25,8 @@ namespace ru
 	d_bmoptvan								= "Ванильное",
 	d_blockbaron							= "Да",
 	d_blockbaroff							= "Нет",
+	d_bodytilton							= "Включено",
+	d_bodytiltoff							= "Выключено",
 
 	// PickingCommands.as
 	d_bindingscom							= "Открыть меню кастомных биндингов",
@@ -91,6 +93,7 @@ namespace ru
 	n_buildmode								= "Режим строительства",
 	n_blockbar								= "Включить панель с блоками",
 	n_camerasw								= "Покачивание камеры (По-умол. 5)",
+	n_bodytilt								= "Наклон тела при движении",
 
 		// Other
 	n_pressdelete							= "Выбери клавишу и нажми [DELETE] для очистки хоткея!",

@@ -40,6 +40,8 @@ namespace Descriptions
 	bmoptvan						= Translate(en::d_bmoptvan+"\\"+ru::d_bmoptvan),
 	blockbaron		  	  			= Translate(en::d_blockbaron+"\\"+ru::d_blockbaron),
 	blockbaroff		  	  			= Translate(en::d_blockbaroff+"\\"+ru::d_blockbaroff),
+	bodytilton		  	  			= Translate(en::d_bodytilton+"\\"+ru::d_bodytilton),
+	bodytiltoff		  	  			= Translate(en::d_bodytiltoff+"\\"+ru::d_bodytiltoff),
 
 	// PickingCommands.as
 	bindingscom		  	       		= Translate(en::d_bindingscom+"\\"+ru::d_bindingscom),
@@ -108,6 +110,7 @@ namespace Names
 	buildmode		  	      			 = Translate(en::n_buildmode+"\\"+ru::n_buildmode),
 	blockbar		  	      			 = Translate(en::n_blockbar+"\\"+ru::n_blockbar),
 	camerasw		  	      			 = Translate(en::n_camerasw+"\\"+ru::n_camerasw),
+	bodytilt		  	      			 = Translate(en::n_bodytilt+"\\"+ru::n_bodytilt),
 
 		// Other
 	pressdelete		  	       			= Translate(en::n_pressdelete+"\\"+ru::n_pressdelete),

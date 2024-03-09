@@ -84,7 +84,8 @@ string[][] setting_texts =
 	{
 		Names::buildmode,
 		Names::blockbar,
-		Names::camerasw
+		Names::camerasw,
+		Names::bodytilt
 	}
 };
 
@@ -93,7 +94,8 @@ string[][] setting_file_names =
 	{
 		"build_mode",
 		"blockbar_hud",
-		"camera_sway"
+		"camera_sway",
+		"body_tilting"
 	}
 };
 
@@ -114,6 +116,10 @@ string[][][] setting_options =
 			"3", // 3
 			"4", // 4
 			"5" // 5
+		},
+		{
+			Descriptions::bodytiltoff,
+			Descriptions::bodytilton
 		}
 	}
 };
@@ -135,6 +141,10 @@ string[][][] setting_option_names =
 			"3", // 3
 			"4", // 4
 			"5" // 5
+		},
+		{
+			"off",
+			"on"
 		}
 	}
 };

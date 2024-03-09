@@ -25,6 +25,8 @@ namespace en
 	d_bmoptvan								= "Vanilla",
 	d_blockbaron							= "Yes",
 	d_blockbaroff							= "No",
+	d_bodytilton							= "On",
+	d_bodytiltoff							= "Off",
 
 	// PickingCommands.as
 	d_bindingscom							= "Show mod bindings menu",
@@ -91,6 +93,7 @@ namespace en
 	n_buildmode								= "Build Mode",
 	n_blockbar								= "Show block bar HUD",
 	n_camerasw								= "Camera Sway (DEFAULT: 5)",
+	n_bodytilt								= "Body tilting on moving",
 
 		// Other
 	n_pressdelete							= "Choose a bind and press [DELETE] to remove key",
