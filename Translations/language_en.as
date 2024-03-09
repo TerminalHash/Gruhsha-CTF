@@ -93,7 +93,7 @@ namespace en
 	n_buildmode								= "Build Mode",
 	n_blockbar								= "Show block bar HUD",
 	n_camerasw								= "Camera Sway (DEFAULT: 5)",
-	n_bodytilt								= "Body tilting on moving",
+	n_bodytilt								= "Immersive body behaviour",
 
 		// Other
 	n_pressdelete							= "Choose a bind and press [DELETE] to remove key",
