@@ -10,6 +10,9 @@
 
 void onInit(CBlob@ this)
 {
+	this.addCommandID("reset menu");
+	this.Tag("can reset menu");
+
 	this.set_TileType("background tile", CMap::tile_wood_back);
 
 	this.getSprite().SetZ(-50); //background
@@ -30,15 +33,46 @@ void onInit(CBlob@ this)
 	this.set_Vec2f("class offset", Vec2f(-6, 0));
 	this.set_string("required class", "knight");
 
+	// Dynamic prices
+	u32 dynamic_bomb_cost = 25;
+	u32 dynamic_water_bomb_cost = 35;
+	u32 player_amount = getRules().get_s32("amount_in_team");
+
+	if (player_amount >= 12 && player_amount < 14)
+	{
+		dynamic_bomb_cost = 30;
+		dynamic_water_bomb_cost = 40;
+	}
+	else if (player_amount >= 14 && player_amount < 16)
+	{
+		dynamic_bomb_cost = 35;
+		dynamic_water_bomb_cost = 45;
+	}
+	else if (player_amount >= 16 && player_amount < 17)
+	{
+		dynamic_bomb_cost = 40;
+		dynamic_water_bomb_cost = 50;
+	}
+	else if (player_amount >= 18 && player_amount < 19)
+	{
+		dynamic_bomb_cost = 40;
+		dynamic_water_bomb_cost = 50;
+	}
+	else if (player_amount >= 19)
+	{
+		dynamic_bomb_cost = 45;
+		dynamic_water_bomb_cost = 55;
+	}
+
 	int team_num = this.getTeamNum();
 
 	{
 		ShopItem@ s = addShopItem(this, "Bomb", "$bomb$", "mat_bombs", Descriptions::bomb, true);
-		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::bomb);
+		AddRequirement(s.requirements, "coin", "", "Coins", dynamic_bomb_cost /*CTFCosts::bomb*/);
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Water Bomb", "$waterbomb$", "mat_waterbombs", Descriptions::waterbomb, true);
-		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::waterbomb);
+		AddRequirement(s.requirements, "coin", "", "Coins", dynamic_water_bomb_cost /*CTFCosts::waterbomb*/);
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Mine", getTeamIcon("mine", "Mine.png", team_num, Vec2f(16, 16), 1), "mine", Descriptions::mine, false);
@@ -78,5 +112,17 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 	if (cmd == this.getCommandID("shop made item"))
 	{
 		this.getSprite().PlaySound("/ChaChing.ogg");
+	}
+	if (cmd == this.getCommandID("reset menu"))
+	{
+		if (this.exists("shop array"))
+		{
+			ShopItem[] @items;
+			this.get("shop array", @items);
+
+			items.clear();
+			this.set("shop array", @items);
+		}
+		onInit(this);
 	}
 }

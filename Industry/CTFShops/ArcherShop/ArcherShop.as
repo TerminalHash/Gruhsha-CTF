@@ -9,6 +9,8 @@
 
 void onInit(CBlob@ this)
 {
+	this.addCommandID("reset menu");
+	this.Tag("can reset menu");
 	this.set_TileType("background tile", CMap::tile_wood_back);
 
 	this.getSprite().SetZ(-50); //background
@@ -29,6 +31,37 @@ void onInit(CBlob@ this)
 	this.set_Vec2f("class offset", Vec2f(-6, 0));
 	this.set_string("required class", "archer");
 
+	// Dynamic prices
+	u32 dynamic_fire_arrow_cost = 30;
+	u32 dynamic_bomb_arrow_cost = 65;
+	u32 player_amount = getRules().get_s32("amount_in_team");
+
+	if (player_amount >= 12 && player_amount < 14)
+	{
+		dynamic_fire_arrow_cost = 35;
+		dynamic_bomb_arrow_cost = 70;
+	}
+	else if (player_amount >= 14 && player_amount < 16)
+	{
+		dynamic_fire_arrow_cost = 40;
+		dynamic_bomb_arrow_cost = 75;
+	}
+	else if (player_amount >= 16 && player_amount < 17)
+	{
+		dynamic_fire_arrow_cost = 45;
+		dynamic_bomb_arrow_cost = 80;
+	}
+	else if (player_amount >= 18 && player_amount < 19)
+	{
+		dynamic_fire_arrow_cost = 50;
+		dynamic_bomb_arrow_cost = 85;
+	}
+	else if (player_amount >= 19)
+	{
+		dynamic_fire_arrow_cost = 55;
+		dynamic_bomb_arrow_cost = 90;
+	}
+
 	{
 		ShopItem@ s = addShopItem(this, "Arrows", "$mat_arrows$", "mat_arrows", Descriptions::arrows, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::arrows);
@@ -39,11 +72,11 @@ void onInit(CBlob@ this)
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Fire Arrows", "$mat_firearrows$", "mat_firearrows", Descriptions::firearrows, true);
-		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::firearrows);
+		AddRequirement(s.requirements, "coin", "", "Coins", dynamic_fire_arrow_cost /*CTFCosts::firearrows*/);
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Bomb Arrows", "$mat_bombarrows$", "mat_bombarrows", Descriptions::bombarrows, true);
-		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::bombarrows);
+		AddRequirement(s.requirements, "coin", "", "Coins", dynamic_bomb_arrow_cost /*CTFCosts::bombarrows*/);
 	}
 }
 
@@ -70,5 +103,17 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 	if (cmd == this.getCommandID("shop made item"))
 	{
 		this.getSprite().PlaySound("/ChaChing.ogg");
+	}
+	if (cmd == this.getCommandID("reset menu"))
+	{
+		if (this.exists("shop array"))
+		{
+			ShopItem[] @items;
+			this.get("shop array", @items);
+
+			items.clear();
+			this.set("shop array", @items);
+		}
+		onInit(this);
 	}
 }

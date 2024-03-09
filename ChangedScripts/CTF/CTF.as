@@ -824,6 +824,22 @@ void onInit(CRules@ this)
 	this.set_s32("restart_rules_after_game_time", restart_after);
 }
 
+void onStateChange(CRules@ this, const u8 oldState)
+{
+	if (this.getCurrentState() == GAME)
+	{
+		CBlob@[] list;
+
+		getBlobsByName("building", @list);
+
+		for (int i=0; i<list.length; ++i)
+		{
+			//printf("test");
+			list[i].SendCommand(list[i].getCommandID("reset menu"));
+		}
+	}
+}
+
 // had to add it here for tutorial cause something didnt work in the tutorial script
 void onBlobDie(CRules@ this, CBlob@ blob)
 {
