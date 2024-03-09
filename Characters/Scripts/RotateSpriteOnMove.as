@@ -42,8 +42,7 @@ void onTick(CSprite@ this)
 		s_layer.RotateBy(body_angle, rotoff);
 	}
 
-	if (getRules().get_string("body_tilting") == "on")
-	{
-		this.RotateBy(body_angle, Vec2f_zero);
-	}
+	if (getRules().get_string("body_tilting") == "off") return;
+
+	this.RotateBy(body_angle, Vec2f_zero);
 }
