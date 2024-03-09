@@ -23,7 +23,11 @@ void onInit(CBlob@ blob)
 		CSpriteLayer@ layer = sprite.addSpriteLayer("bubble" + pack.token, pack.filePath, 128, 128, blob.getTeamNum(), 0);
 		layer.SetIgnoreParentFacing(true);
 		layer.SetFacingLeft(false);
-		layer.ScaleBy(Vec2f(0.25, 0.25));
+
+		if (blob !is null && blob.getName() != "crate")
+		{
+			layer.ScaleBy(Vec2f(0.25, 0.25));
+		}
 
 		if (layer !is null)
 		{
