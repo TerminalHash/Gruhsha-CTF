@@ -25,7 +25,7 @@ void onInit(CBlob@ this)
 
 	// SHOP
 	this.set_Vec2f("shop offset", Vec2f_zero);
-	this.set_Vec2f("shop menu size", Vec2f(6, 1));
+	this.set_Vec2f("shop menu size", Vec2f(7, 1));
 	this.set_string("shop description", "Buy");
 	this.set_u8("shop icon", 25);
 
@@ -86,6 +86,10 @@ void onInit(CBlob@ this)
 		ShopItem@ s = addShopItem(this, "Drill", getTeamIcon("drill", "Drill.png", team_num, Vec2f(32, 16), 0), "drill", Descriptions::drill, false);
 		/*AddRequirement(s.requirements, "blob", "mat_stone", "Stone", CTFCosts::drill_stone);*/
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::drill);
+	}
+	{
+		ShopItem@ s = addShopItem(this, "Satchel", getTeamIcon("satchel", "Satchel.png", team_num, Vec2f(16, 16), 0), "satchel", Descriptions::satchel, false);
+		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::satchel);
 	}
 }
 

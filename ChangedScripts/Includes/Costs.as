@@ -21,7 +21,7 @@ namespace CTFCosts
 	s32 arrows, waterarrows, firearrows, bombarrows;
 
 	//KnightShop.as
-	s32 bomb, waterbomb, mine, keg;
+	s32 bomb, waterbomb, mine, keg, satchel;
 
 	//BuilderShop.as
 	s32 lantern_wood, bucket_wood, filled_bucket, sponge, boulder_stone,
@@ -129,6 +129,7 @@ void InitCosts()
 	CTFCosts::waterbomb =                   ReadCost(cfg, costs, "cost_waterbomb"          , 30);
 	CTFCosts::mine =                        ReadCost(cfg, costs, "cost_mine"               , 60);
 	CTFCosts::keg =                         ReadCost(cfg, costs, "cost_keg"                , 120);
+	CTFCosts::satchel =                     ReadCost(cfg, costs, "cost_satchel"            , 35);
 
 	//BuilderShop.as
 	CTFCosts::lantern_wood =                ReadCost(cfg, costs, "cost_lantern_wood"       , 10);

@@ -40,9 +40,8 @@ void onInit(CBlob@ this)
 	this.getCurrentScript().runFlags |= Script::tick_not_attached;
 	this.getCurrentScript().removeIfTag = "dead";
 
-	// [modded] for ability to lit kegs
-
 	this.push("names to activate", "keg"); 
+	this.push("names to activate", "satchel");
 	
 }
 

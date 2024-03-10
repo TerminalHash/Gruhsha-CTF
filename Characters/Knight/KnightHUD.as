@@ -1,5 +1,6 @@
 //knight HUD
 #include "/Entities/Common/GUI/ActorHUDStartPos.as";
+#include "MaterialIndicatorHUD.as";
 #include "pathway.as";
 
 const string iconsFilename = "Entities/Characters/Knight/KnightIcons.png";
@@ -70,6 +71,9 @@ void onRender(CSprite@ this)
 
 	const int coins = player !is null ? player.getCoins() : 0;
 	DrawCoinsOnHUD(blob, coins, tl, slotsSize - 2);
+
+	// draw mats ui
+	DrawPersonalMats();
 
 	// draw class icon
 

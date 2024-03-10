@@ -15,7 +15,7 @@ namespace Descriptions
 	waterbomb                  = getTranslatedString("Water bomb for Knight. Can extinguish fires and stun enemies."),
 	mine                       = getTranslatedString("An explosive mine. Triggered by contact with an enemy."),
 	keg                        = getTranslatedString("Highly explosive powder keg for Knight only."),
-	satchel                    = getTranslatedString("Fire satchel for Knight only."), //OLD
+	satchel                    = Descriptions::satcheldesc,
 
 	arrows                     = getTranslatedString("Arrows for Archer and mounted bow."),
 	waterarrows                = getTranslatedString("Water arrows for Archer. Can extinguish fires and stun enemies."),

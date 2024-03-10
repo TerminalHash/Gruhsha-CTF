@@ -46,6 +46,9 @@ namespace en
 	d_appointcomtext						= "Appoints two Team Leaders (they pick players in their teams)",
 	d_specallcomtext						= "Puts everyone in Spectators",
 
+	// Satchel.as
+	d_satcheldesc							= "Ignites flammable blocks, activated by throw key",
+
 	// SoundsCommands.as
 	d_togglesoundscomtext					= "Mute or unmute sound commangs",
 
