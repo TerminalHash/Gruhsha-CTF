@@ -58,7 +58,7 @@ void onRender(CSprite@ this)
 	DrawCoinsOnHUD(blob, coins, tl, slotsSize - 2);
 
 	// draw resupply
-	DrawArchResupplyOnHUD(blob, tl + Vec2f(8 + (slotsSize) * 26, -4));
+	DrawArchResupplyOnHUD(blob, tl + Vec2f(8 + (slotsSize) * 44, -18));
 
 	// draw mats ui
 	DrawPersonalMats();

@@ -44,8 +44,12 @@ void DrawArchResupplyOnHUD(CBlob@ this, Vec2f tl)
 	Vec2f icon_pos = tl;
 	Vec2f icon_size = Vec2f(16, 16);
 
+	u16 material_display_width = 32;
+	u16 material_display_height = 46;
+
 	bool hover = hoverOnResupplyIcon(icon_pos, icon_size);
 
+	GUI::DrawPane(tl + Vec2f(0, 0), tl + Vec2f(material_display_width, material_display_height), SColor(255, 200, 200, 200));
 	if (next_items > getGameTime())
 	{
 		GUI::DrawIcon("ArcherResupplyIcon.png", 0, icon_size, icon_pos, 1.0f, team);
