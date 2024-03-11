@@ -83,7 +83,7 @@ void onTick(CRules@ this)
 		}
 
 		// Waffle: Lighten the sky above the map a bit if not a cave map
-		map.SetBorderColourTop(SColor(has_solid_tiles ? 0xff000000 : 0x30000000));
+		map.SetBorderColourTop(SColor(has_solid_tiles ? 0xff000000 : 0x50102040));
 	}
 }
 
