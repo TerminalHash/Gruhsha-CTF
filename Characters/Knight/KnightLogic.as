@@ -1,6 +1,6 @@
 // Knight logic
 
-#include "ThrowCommon.as"
+#include "ActivationThrowCommon.as"
 #include "KnightCommon.as";
 #include "RunnerCommon.as";
 #include "Hitters.as";
@@ -8,7 +8,6 @@
 #include "KnockedCommon.as"
 #include "Help.as";
 #include "Requirements.as"
-
 
 //attacks limited to the one time per-actor before reset.
 
@@ -232,6 +231,7 @@ void onTick(CBlob@ this)
 		knight.doubleslash = false;
 		hud.SetCursorFrame(0);
 		this.set_s32("currentKnightState", 0);
+		this.set_s32("serverKnightState", -1);
 		return;
 	}
 
