@@ -719,7 +719,7 @@ void DrawDrillHeat(CBlob@ this, Vec2f tl)
 
 	f32 percentage = Maths::Min(1.0, f32(heat) / f32(150));
 
-	printf("Gay Drill has " + heat + " heat_prop and his percentage is " + percentage);
+	//printf("Gay Drill has " + heat + " heat_prop and his percentage is " + percentage);
 
 	Vec2f pos = tl;
 
