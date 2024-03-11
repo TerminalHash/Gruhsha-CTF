@@ -6,6 +6,7 @@
 #include "MaterialCommon.as";
 #include "ShieldCommon.as";
 #include "KnockedCommon.as";
+#include "ActorHUDStartPos.as";
 #include "pathway.as";
 
 const f32 speed_thresh = 2.4f;
@@ -236,30 +237,22 @@ void onTick(CBlob@ this)
 		this.Sync(heat_prop, true);
 	}
 	sprite.SetEmitSoundPaused(true);
-	if (this.isAttached())
+	if (this.isAttachedToPoint("PICKUP"))
 	{
 		AttachmentPoint@ point = this.getAttachments().getAttachmentPointByName("PICKUP");
 		CBlob@ holder = point.getOccupied();
 
-		if (holder is null) return;
+		if (holder is null || holder.isAttached()) return;
 
 		AimAtMouse(this, holder); // aim at our mouse pos
 
-		// cool faster if holder is moving
-		if (heat > 0 && holder.getShape().vellen > 0.01f && getGameTime() % 4 == 0)
-		{
-			heat--;
-		}
-
-		if (int(heat) >= heat_max - (heat_add))
+		if (int(heat) >= heat_drop)
 		{
 			makeSteamPuff(this, 1.5f, 3, false);
 			this.server_Hit(holder, holder.getPosition(), Vec2f(), 0.25f, Hitters::burn, true);
 			this.server_DetachFrom(holder);
 			sprite.PlaySound("DrillOverheat.ogg");
 		}
-
-
 
 		if (holder.getConfig() != "archer")
 		{
@@ -605,13 +598,17 @@ void onRender(CSprite@ this)
 	u16 holderID = blob.get_u16("showHeatTo");
 
 	CPlayer@ holder = holderID == 0 ? null : getPlayerByNetworkId(holderID);
-	//if (holder is null){return;}
+	if (holder is null){return;}
+
+	CBlob@ holderBlob = holder.getBlob();
+	if (holderBlob is null){return;}
 
 	Vec2f mousePos = getControls().getMouseWorldPos();
 	Vec2f blobPos = blob.getPosition();
 	Vec2f localPos = localBlob.getPosition();
 
-	bool hover = (mousePos - blobPos).getLength() < blob.getRadius() * 1.80f;
+	bool inRange = (blobPos - localPos).getLength() < max_heatbar_view_range;
+	bool hover = (mousePos - blobPos).getLength() < blob.getRadius() * 1.50f;
 
 	if (blob.isInInventory()) return;
 
@@ -629,7 +626,16 @@ void onRender(CSprite@ this)
 		}
 	}
 
-	if ((hover && holder is null) || (holder !is null && holder.isLocal()))
+	Vec2f dim = Vec2f(402, 64);
+	Vec2f ul(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12);
+	Vec2f new_ul = ul + Vec2f(-10, -15);
+
+	if (holder !is null && holder.isLocal() && holder.getBlob().getConfig() != "archer")
+	{
+		DrawDrillHeat(blob, new_ul);
+	}
+
+	/*if ((hover && inRange) || (holder !is null && holder.isLocal()))
 	{
 		int transparency = 255;
 		u8 heat = blob.get_u8(heat_prop);
@@ -637,17 +643,7 @@ void onRender(CSprite@ this)
 
 		//Vec2f pos = blob.getScreenPos() + Vec2f(-22, 16);
 
-		Vec2f pos = blob.getInterpolatedScreenPos() + Vec2f(-22, 16);
-
-		if (holder !is null)
-		{
-			CBlob@ holderBlob = holder.getBlob();
-			if (holderBlob !is null)
-			{
-				pos = holderBlob.getInterpolatedScreenPos() + (blob.getScreenPos() - holderBlob.getScreenPos()) + Vec2f(-22, 16);
-			}
-		}
-
+		Vec2f pos = holderBlob.getInterpolatedScreenPos() + (blob.getScreenPos() - holderBlob.getScreenPos()) + Vec2f(-22, 16);
 		Vec2f dimension = Vec2f(42, 4);
 		Vec2f bar = Vec2f(pos.x + (dimension.x * percentage), pos.y + dimension.y);
 
@@ -664,7 +660,7 @@ void onRender(CSprite@ this)
 		GUI::DrawRectangle(pos + Vec2f(4, 4), bar + Vec2f(4, 4), SColor(transparency, 59, 20, 6));
 		GUI::DrawRectangle(pos + Vec2f(6, 6), bar + Vec2f(2, 4), SColor(transparency, 148, 27, 27));
 		GUI::DrawRectangle(pos + Vec2f(6, 6), bar + Vec2f(2, 2), SColor(transparency, 183, 51, 51));
-	}
+	}*/
 }
 
 
@@ -706,4 +702,31 @@ void AimAtMouse(CBlob@ this, CBlob@ holder)
 	if (!this.isFacingLeft()) mouseAngle += 180;
 
 	this.setAngleDegrees(-mouseAngle); // set aim pos
+}
+
+void DrawDrillHeat(CBlob@ this, Vec2f tl)
+{
+	f32 length = 462;
+	//if (this.getConfig() == "builder") length = 502;
+
+	GUI::DrawIcon("DrillIcon.png", 0, Vec2f(16, 16), tl - Vec2f(32, 4), 1.0, this.getTeamNum());
+	GUI::DrawPane(tl, tl + Vec2f(length, 20), color_white);
+	GUI::DrawPane(tl + Vec2f(4, 4), tl + Vec2f(4, 4) + Vec2f(length - 8, 12), SColor(255, 150, 150, 150));
+
+	u8 heat = this.get_u8("drill heat");
+
+	Vec2f heat_tl = tl + Vec2f(3, 2);
+
+	f32 percentage = Maths::Min(1.0, f32(heat) / f32(150));
+
+	printf("Gay Drill has " + heat + " heat_prop and his percentage is " + percentage);
+
+	Vec2f pos = tl;
+
+	Vec2f dimension = Vec2f(length - 8, 12);
+	Vec2f bar = Vec2f(pos.x + (dimension.x * percentage), pos.y + dimension.y);
+
+	GUI::DrawRectangle(tl + Vec2f(4, 4), bar + Vec2f(4, 4), SColor(255, 59, 20, 6));
+	GUI::DrawRectangle(tl + Vec2f(6, 6), bar + Vec2f(2, 4), SColor(255, 183, 51, 51));
+	GUI::DrawRectangle(tl + Vec2f(6, 6), bar + Vec2f(2, 2), SColor(255, 183, 51, 51));
 }
