@@ -25,8 +25,8 @@ namespace en
 	d_bmoptvan								= "Vanilla",
 	d_blockbaron							= "Yes",
 	d_blockbaroff							= "No",
-	d_bodytilton							= "On",
-	d_bodytiltoff							= "Off",
+	d_universalon							= "On",
+	d_universaloff							= "Off",
 
 	// PickingCommands.as
 	d_bindingscom							= "Show mod bindings menu",
@@ -73,7 +73,7 @@ namespace en
 	n_actionsmenu							= "Actions",
 	n_settingsmenu							= "Settings",
 	n_tagwheel								= "Tag Wheel",
-	n_emotewheelvanilla					= "Vanilla Emote Wheel",
+	n_emotewheelvanilla						= "Vanilla Emote Wheel",
 	n_emotewheelsecond						= "Mod Emote Wheel",
 
 		// Blocks
@@ -97,6 +97,7 @@ namespace en
 	n_blockbar								= "Show block bar HUD",
 	n_camerasw								= "Camera Sway (DEFAULT: 5)",
 	n_bodytilt								= "Immersive body behaviour",
+	n_drillzoneborders						= "Drill Zone Borders",
 
 		// Other
 	n_pressdelete							= "Choose a bind and press [DELETE] to remove key",

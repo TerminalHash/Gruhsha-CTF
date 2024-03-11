@@ -39,6 +39,8 @@ void onRender(CRules@ rules)
 	const u16 left = rules.get_u16("barrier_x1");
 	const u16 right = rules.get_u16("barrier_x2");
 
+	if (getRules().get_string("drillzone_borders") == "off") return;
+
     Vec2f leftzone_u = driver.getScreenPosFromWorldPos(Vec2f(left - 1, 0));
     Vec2f leftzone_l = driver.getScreenPosFromWorldPos(Vec2f(left + 1, driver.getScreenHeight()));
 	GUI::DrawRectangle(leftzone_u, leftzone_l, white);

@@ -25,8 +25,8 @@ namespace ru
 	d_bmoptvan								= "Ванильное",
 	d_blockbaron							= "Да",
 	d_blockbaroff							= "Нет",
-	d_bodytilton							= "Включено",
-	d_bodytiltoff							= "Выключено",
+	d_universalon							= "Включено",
+	d_universaloff							= "Выключено",
 
 	// PickingCommands.as
 	d_bindingscom							= "Открыть меню кастомных биндингов",
@@ -97,6 +97,7 @@ namespace ru
 	n_blockbar								= "Включить панель с блоками",
 	n_camerasw								= "Покачивание камеры (По-умол. 5)",
 	n_bodytilt								= "Иммерсивное поведение тела",
+	n_drillzoneborders						= "Границы зоны дриллинга",
 
 		// Other
 	n_pressdelete							= "Выбери клавишу и нажми [DELETE] для очистки хоткея!",

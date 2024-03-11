@@ -28,10 +28,29 @@ void ManageCursors(CBlob@ this)
 			getHUD().SetCursorImage("Entities/Characters/Archer/ArcherCursor.png", Vec2f(32, 32));
 			getHUD().SetCursorOffset(Vec2f(-16, -16) * cl_mouse_scale);
 		}
-		if (carried !is null && carried.getName() == "drill")
+		else if (carried !is null && carried.getName() == "drill")
 		{
+			/////////////////////////////////////////////////////
+			// drill shit
+			f32 left = getRules().get_u16("barrier_x1");
+			f32 right = getRules().get_u16("barrier_x2");
+
+			AttachmentPoint@ point = this.getAttachments().getAttachmentPointByName("PICKUP");
+
+			CBlob@ holder = point.getOccupied();
+			if (holder is null) return;
+
+			f32 holder_x = holder.getPosition().x;
+			/////////////////////////////////////////////////////
+
 			getHUD().SetCursorImage(getPath() + "Items/Drill/Sprites/DrillCursor.png", Vec2f(32, 32));
 			getHUD().SetCursorOffset(Vec2f(-11, -11) * cl_mouse_scale);
+
+			if ((holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0))
+			{
+				getHUD().SetCursorImage(getPath() + "Items/Drill/Sprites/CantDrillCursor.png", Vec2f(32, 32));
+				getHUD().SetCursorOffset(Vec2f(-11, -11) * cl_mouse_scale);
+			}
 		}
 		else
 		{

@@ -85,7 +85,8 @@ string[][] setting_texts =
 		Names::buildmode,
 		Names::blockbar,
 		Names::camerasw,
-		Names::bodytilt
+		Names::bodytilt,
+		Names::drillzoneborders
 	}
 };
 
@@ -95,7 +96,8 @@ string[][] setting_file_names =
 		"build_mode",
 		"blockbar_hud",
 		"camera_sway",
-		"body_tilting"
+		"body_tilting",
+		"drillzone_borders"
 	}
 };
 
@@ -118,8 +120,12 @@ string[][][] setting_options =
 			"5" // 5
 		},
 		{
-			Descriptions::bodytiltoff,
-			Descriptions::bodytilton
+			Descriptions::universaloff,
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,
+			Descriptions::universalon
 		}
 	}
 };
@@ -141,6 +147,10 @@ string[][][] setting_option_names =
 			"3", // 3
 			"4", // 4
 			"5" // 5
+		},
+		{
+			"off",
+			"on"
 		},
 		{
 			"off",

@@ -627,12 +627,6 @@ void onRender(CSprite@ this)
 		{
 			Sound::Play("NoAmmo.ogg");
 		}
-
-		if (holder.getBlob().getConfig() == "knight" && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0) ) && holder.getBlob().wasKeyPressed(key_action1) && isClient())
-		{
-			getHUD().SetCursorImage(getPath() + "Items/Drill/Sprites/CantDrillCursor.png", Vec2f(32, 32));
-			getHUD().SetCursorOffset(Vec2f(-11, -11) * cl_mouse_scale);
-		}
 	}
 
 	if ((hover && holder is null) || (holder !is null && holder.isLocal()))
