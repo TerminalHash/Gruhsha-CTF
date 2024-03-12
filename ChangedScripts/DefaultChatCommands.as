@@ -31,6 +31,7 @@ void RegisterDefaultChatCommands(ChatCommandManager@ manager)
 	manager.RegisterCommand(StoneCommand());
 	manager.RegisterCommand(GoldCommand());
 	manager.RegisterCommand(AllMatsCommand());
+	manager.RegisterCommand(ConvertStoneToReal());
 
 	//utilities
 	manager.RegisterCommand(BombsCommand());

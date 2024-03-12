@@ -85,3 +85,37 @@ class GoldCommand : BlobCommand
 		gold.server_SetQuantity(100);
 	}
 }
+
+class ConvertStoneToReal : ChatCommand
+{
+	ConvertStoneToReal()
+	{
+		super("realstone", "Convert virtual stone to real world");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		u8 team = player.getBlob().getTeamNum();
+		Vec2f pos = player.getBlob().getPosition();
+
+		if (player.isMyPlayer())
+		{
+			rules.sub_s32("personalstone_" + player.getUsername(), 250);
+			rules.Sync("personalwood_" + player.getUsername(), true);
+
+			server_CreateBlob("mat_stone", team, pos + Vec2f(0, -5));
+		}
+
+		//printf("Boolean no_class_change_on_shop is " + rules.get_bool("no_class_change_on_shop"));
+	}
+}
