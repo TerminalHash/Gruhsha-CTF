@@ -44,14 +44,16 @@ class BotCommand : ChatCommand
 	BotCommand()
 	{
 		super("bot", "Spawn a bot");
-		AddAlias("henry");
+		AddAlias("addbot");
+		AddAlias("botadd");
 	}
 
 	void Execute(string[] args, CPlayer@ player)
 	{
 		if (isServer())
 		{
-			AddBot("Henry");
+			string name = args.size() > 0 ? join(args, " ") : "Henry";
+			AddBot(name);
 		}
 	}
 }
