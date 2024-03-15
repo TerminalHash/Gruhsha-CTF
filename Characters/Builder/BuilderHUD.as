@@ -74,6 +74,8 @@ void onRender(CSprite@ this)
 
 	CPlayer@ player = blob.getPlayer();
 
+	CBlob@ carried = blob.getCarriedBlob();
+
 	// draw inventory
 
 	Vec2f tl = getActorHUDStartPosition(blob, slotsSize);
@@ -105,6 +107,12 @@ void onRender(CSprite@ this)
     Vec2f offset = Vec2f(0, 0);
 
 	Vec2f dim = Vec2f(375, 96);
+
+	if (carried !is null && carried.getName() == "drill")
+	{
+		dim = Vec2f(375, 119);
+	}
+
 	if (getRules().get_string("blockbar_hud") == "no") return;
 	tl = Vec2f(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12) + Vec2f(0, -2);
 
