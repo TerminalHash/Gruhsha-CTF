@@ -58,26 +58,61 @@ bool PlaceBlob(CBlob@ this, CBlob@ blob, Vec2f cursorPos, bool repairing = false
 			blob.SetDamageOwnerPlayer(this.getPlayer());
 		}
 
-		if (true)
+		// EPIC DIRTY HACK: change the condition for setting the blob depending on whether we are holding a seed or not.
+		CBlob@ carryBlob = this.getCarriedBlob();
+
+		if (carryBlob !is null)
 		{
-			if (repairing && repairBlob !is null)
+			if (carryBlob.getConfig() != "seed")
 			{
-				repairBlob.server_SetHealth(repairBlob.getInitialHealth());
-				getMap().server_SetTile(repairBlob.getPosition(), blob.get_TileType("background tile"));
-				blob.server_Die();
+				if (true) // for bunnie blob/block code
+				{
+					if (repairing && repairBlob !is null)
+					{
+						repairBlob.server_SetHealth(repairBlob.getInitialHealth());
+						getMap().server_SetTile(repairBlob.getPosition(), blob.get_TileType("background tile"));
+						blob.server_Die();
+					}
+					else
+					{
+						blob.setPosition(cursorPos);
+						shape.SetStatic(true);
+						DestroyScenary(cursorPos, cursorPos);
+					}
+					return true;
+				}
 			}
-			else
+
+			//////////////////////////////////////////////////////
+			//////////////////////////////////////////////////////
+			else // for seed
 			{
-				blob.setPosition(cursorPos);
-				shape.SetStatic(true);
+				if (this.server_DetachFrom(blob))
+				{
+					if (repairing && repairBlob !is null)
+					{
+						repairBlob.server_SetHealth(repairBlob.getInitialHealth());
+						getMap().server_SetTile(repairBlob.getPosition(), blob.get_TileType("background tile"));
+						blob.server_Die();
+					}
+					else
+					{
+						blob.setPosition(cursorPos);
+						if (blob.isSnapToGrid())
+						{
+							shape.SetStatic(true);
+						}
+					}
+				}
+
 				DestroyScenary(cursorPos, cursorPos);
+
+				return true;
 			}
-			return true;
+			//////////////////////////////////////////////////////
+			//////////////////////////////////////////////////////
+
 		}
-
-		DestroyScenary(cursorPos, cursorPos);
-
-		return true;
 	}
 
 	return false;
@@ -291,6 +326,7 @@ void onInit(CBlob@ this)
 	SetupBuildDelay(this);
 
 	this.addCommandID("placeBlob");
+	this.addCommandID("placeSeed");
 	this.addCommandID("repairBlob");
 	this.addCommandID("settleLadder");
 	this.addCommandID("rotateBlob");
@@ -381,175 +417,317 @@ void onTick(CBlob@ this)
 	bc.buildable = false;
 	bc.supported = false;
 	bc.hasReqs = true;
-	
+
+	////////////////////////////////////////////////////
+	// 		Bunnie code block for blob placing		 //
+	//////////////////////////////////////////////////
 	// CODE ATHEONFISH: clientside block selection
-	u8 blockIndex = this.get_u8("bunnie_tile");
 
-	string blobtile = "null";
-	switch (blockIndex)
+	if (carryBlob !is null && carryBlob.getConfig() != "seed")
 	{
-		case 2: blobtile = "stone_door"; break;
-		case 5: blobtile = "wooden_door"; break;
-		case 6: blobtile = "bridge"; break;
-		case 7: blobtile = "ladder"; break;
-		case 8: blobtile = "wooden_platform"; break;
-		case 10: blobtile = "spikes"; break;
+		u8 blockIndex = this.get_u8("bunnie_tile");
 
-		case 0: blobtile = "null";
-	}
-
-	/*if (carryBlob !is null)
-	{
-		this.set_u8("bunnie_tile", 255);
-	}*/
-
-	BuildBlock @block = getBlockByIndex(this, blockIndex);
-	if (block !is null && block.name == blobtile)
-	{
-		bc.hasReqs = hasRequirements(this.getInventory(), block.reqs, bc.missing, not block.buildOnGround);
-	}
-
-	if (blobtile != "null")
-	{
-		CMap@ map = this.getMap();
-		bool snap = true;
-		
-		bool onetile = false;
-		if (blobtile == "ladder")
+		string blobtile = "null";
+		switch (blockIndex)
 		{
-			onetile = true;
+			case 2: blobtile = "stone_door"; break;
+			case 5: blobtile = "wooden_door"; break;
+			case 6: blobtile = "bridge"; break;
+			case 7: blobtile = "ladder"; break;
+			case 8: blobtile = "wooden_platform"; break;
+			case 10: blobtile = "spikes"; break;
+
+			case 0: blobtile = "null";
 		}
-		
-		if (snap) // activate help line
+
+		/*if (carryBlob !is null)
 		{
-			bc.blobActive = true;
-			bc.blockActive = false;
+			this.set_u8("bunnie_tile", 255);
+		}*/
+
+		BuildBlock @block = getBlockByIndex(this, blockIndex);
+		if (block !is null && block.name == blobtile)
+		{
+			bc.hasReqs = hasRequirements(this.getInventory(), block.reqs, bc.missing, not block.buildOnGround);
 		}
-		
-		if (bc.cursorClose)
+
+		if (blobtile != "null")
 		{
-			if (snap) // if snaps to grid make cursor
+			CMap@ map = this.getMap();
+			bool snap = true;
+		
+			bool onetile = false;
+			if (blobtile == "ladder")
 			{
-				Vec2f halftileoffset(map.tilesize * 0.5f, map.tilesize * 0.5f);
-				
-				CMap@ map = this.getMap();
-				TileType buildtile = 256;   // something else than a tile
-				Vec2f bottomPos = getBottomOfCursor(bc.tileAimPos);
-				
-				bool overlapped;
-				
-				if (true)
-				{
-					Vec2f ontilepos = halftileoffset + bc.tileAimPos;
-					
-					overlapped = false;
-					CBlob@[] b;
-					
-					f32 tsqr = halftileoffset.LengthSquared() - 1.0f;
-					
-					if (map.getBlobsInRadius(ontilepos, 0.5f, @b))
-					{
-						for (uint nearblob_step = 0; nearblob_step < b.length && !overlapped; ++nearblob_step)
-						{
-							CBlob@ blob = b[nearblob_step];
-							
-							string bname = blob.getName();
-							if (blob.hasTag("player") || bname == "bush" || bname == "flowers" || bname == "log" 
-								|| !isBlocking(blob) || !blob.getShape().isStatic() || (blobtile == bname && (blob.getTeamNum() == this.getTeamNum() || blob.getTeamNum() == 255) && blob.getHealth() != blob.getInitialHealth())) continue;
-
-							overlapped = (blob.getPosition() - ontilepos).LengthSquared() < tsqr;
-						}
-					}
-				}
-				else
-				{
-					overlapped = false;
-				}
-
-				u8 support = 0;
-
-				switch (blockIndex)
-				{
-					case 2: support = 3; break;
-					case 5: support = 3; break;
-					case 6: support = 1; break;
-					case 7: support = 5; break;
-					case 8: support = 1; break;
-					case 10: support = 0; break;
-
-					case 0: support = 0;
-				}
-
-				
-				bc.buildableAtPos = isBuildableAtPos(this, bottomPos, buildtile, null, bc.sameTileOnBack, blobtile) && !overlapped;
-				//printf("hello " + isBuildableAtPos(this, bottomPos, buildtile, null, bc.sameTileOnBack, blobtile));
-				bc.rayBlocked = isBuildRayBlocked(this.getPosition(), bc.tileAimPos + halftileoffset, bc.rayBlockedPos);
-				bc.buildable = bc.buildableAtPos && !bc.rayBlocked;
-				bc.buildable_alt = isBuildableAtPosAlt(this, bc.tileAimPos + halftileoffset, buildtile, null, bc.sameTileOnBack, blobtile) && !bc.rayBlocked && !overlapped;
-				bc.supported = support > 0 ? map.hasSupportAtPos(bc.tileAimPos) : true;
-
-				//printf("buildable: " + bc.buildable);
+				onetile = true;
 			}
-		}
 		
-		// place blob with action1 key
-		if (!getHUD().hasButtons())
-		{
-			if (this.isKeyPressed(key_action1))
+			if (snap) // activate help line
 			{
-				bool check = (bc.cursorClose && bc.buildable && bc.supported && bc.hasReqs);
-
-				string build_mode = "vanilla";
-
-				if (getRules().exists("build_mode"))
+				bc.blobActive = true;
+				bc.blockActive = false;
+			}
+		
+			if (bc.cursorClose)
+			{
+				if (snap) // if snaps to grid make cursor
 				{
-					build_mode = getRules().get_string("build_mode");
-				}
+					Vec2f halftileoffset(map.tilesize * 0.5f, map.tilesize * 0.5f);
+				
+					CMap@ map = this.getMap();
+					TileType buildtile = 256;   // something else than a tile
+					Vec2f bottomPos = getBottomOfCursor(bc.tileAimPos);
 
-				if (build_mode == "lagfriendly") check = (bc.cursorClose && bc.hasReqs && bc.buildable_alt);
+					bool overlapped;
 
-				if (snap && check)
-				{
-					CMap@ map = getMap();
-					CBlob@ blobAtPos = map.getBlobAtPosition(getBottomOfCursor(bc.tileAimPos));
-					if (blobAtPos !is null && blobtile == blobAtPos.getConfig() && blobAtPos.getHealth() < blobAtPos.getInitialHealth() && blobAtPos.getName() != "ladder")
+					if (true)
 					{
-						CBitStream params;
-						params.write_string(blobtile);
-						params.write_Vec2f(getBottomOfCursor(bc.tileAimPos, null));
-						params.write_u8(blockIndex);
-						params.write_u16(blobAtPos.getNetworkID());
-						this.SendCommand(this.getCommandID("repairBlob"), params);
+						Vec2f ontilepos = halftileoffset + bc.tileAimPos;
+
+						overlapped = false;
+						CBlob@[] b;
+
+						f32 tsqr = halftileoffset.LengthSquared() - 1.0f;
+					
+						if (map.getBlobsInRadius(ontilepos, 0.5f, @b))
+						{
+							for (uint nearblob_step = 0; nearblob_step < b.length && !overlapped; ++nearblob_step)
+							{
+								CBlob@ blob = b[nearblob_step];
+
+								string bname = blob.getName();
+								if (blob.hasTag("player") || bname == "bush" || bname == "flowers" || bname == "log"
+									|| !isBlocking(blob) || !blob.getShape().isStatic() || (blobtile == bname && (blob.getTeamNum() == this.getTeamNum() || blob.getTeamNum() == 255) && blob.getHealth() != blob.getInitialHealth())) continue;
+
+								overlapped = (blob.getPosition() - ontilepos).LengthSquared() < tsqr;
+							}
+						}
 					}
 					else
 					{
-						CBitStream params;
-						params.write_string(blobtile);
-						params.write_Vec2f(getBottomOfCursor(bc.tileAimPos, null));
-						params.write_u8(blockIndex);
-						this.SendCommand(this.getCommandID("placeBlob"), params);
+						overlapped = false;
 					}
 
-					u32 delay = 2 * getCurrentBuildDelay(this);
-					SetBuildDelay(this, delay);
-					bc.blobActive = false;
-				}
-				else if (snap && this.isKeyJustPressed(key_action1))
-				{
-					this.getSprite().PlaySound("NoAmmo.ogg", 0.5);
+					u8 support = 0;
+
+					switch (blockIndex)
+					{
+						case 2: support = 3; break;
+						case 5: support = 3; break;
+						case 6: support = 1; break;
+						case 7: support = 5; break;
+						case 8: support = 1; break;
+						case 10: support = 0; break;
+
+						case 0: support = 0;
+					}
+
+				
+					bc.buildableAtPos = isBuildableAtPos(this, bottomPos, buildtile, null, bc.sameTileOnBack, blobtile) && !overlapped;
+					//printf("hello " + isBuildableAtPos(this, bottomPos, buildtile, null, bc.sameTileOnBack, blobtile));
+					bc.rayBlocked = isBuildRayBlocked(this.getPosition(), bc.tileAimPos + halftileoffset, bc.rayBlockedPos);
+					bc.buildable = bc.buildableAtPos && !bc.rayBlocked;
+					bc.buildable_alt = isBuildableAtPosAlt(this, bc.tileAimPos + halftileoffset, buildtile, null, bc.sameTileOnBack, blobtile) && !bc.rayBlocked && !overlapped;
+					bc.supported = support > 0 ? map.hasSupportAtPos(bc.tileAimPos) : true;
+
+					//printf("buildable: " + bc.buildable);
 				}
 			}
-			
-			if (this.isKeyJustPressed(key_action3))
+		
+			// place blob with action1 key
+			if (!getHUD().hasButtons())
 			{
-				CBitStream params;
-				params.write_u16((this.get_u16("build_angle") + 90) % 360);
-				this.set_u16("build_angle", ((this.get_u16("build_angle") + 90) % 360));
-				this.SendCommand(this.getCommandID("rotateBlob"), params);
+				if (this.isKeyPressed(key_action1))
+				{
+					bool check = (bc.cursorClose && bc.buildable && bc.supported && bc.hasReqs);
+
+					string build_mode = "vanilla";
+
+					if (getRules().exists("build_mode"))
+					{
+						build_mode = getRules().get_string("build_mode");
+					}
+
+					if (build_mode == "lagfriendly") check = (bc.cursorClose && bc.hasReqs && bc.buildable_alt);
+
+					if (snap && check)
+					{
+						CMap@ map = getMap();
+						CBlob@ blobAtPos = map.getBlobAtPosition(getBottomOfCursor(bc.tileAimPos));
+						if (blobAtPos !is null && blobtile == blobAtPos.getConfig() && blobAtPos.getHealth() < blobAtPos.getInitialHealth() && blobAtPos.getName() != "ladder")
+						{
+							CBitStream params;
+							params.write_string(blobtile);
+							params.write_Vec2f(getBottomOfCursor(bc.tileAimPos, null));
+							params.write_u8(blockIndex);
+							params.write_u16(blobAtPos.getNetworkID());
+							this.SendCommand(this.getCommandID("repairBlob"), params);
+						}
+						else
+						{
+							CBitStream params;
+							params.write_string(blobtile);
+							params.write_Vec2f(getBottomOfCursor(bc.tileAimPos, null));
+							params.write_u8(blockIndex);
+							this.SendCommand(this.getCommandID("placeBlob"), params);
+						}
+
+						u32 delay = 2 * getCurrentBuildDelay(this);
+						SetBuildDelay(this, delay);
+						bc.blobActive = false;
+					}
+					else if (snap && this.isKeyJustPressed(key_action1))
+					{
+						this.getSprite().PlaySound("NoAmmo.ogg", 0.5);
+					}
+				}
+			
+				if (this.isKeyJustPressed(key_action3))
+				{
+					CBitStream params;
+					params.write_u16((this.get_u16("build_angle") + 90) % 360);
+					this.set_u16("build_angle", ((this.get_u16("build_angle") + 90) % 360));
+					this.SendCommand(this.getCommandID("rotateBlob"), params);
+				}
 			}
 		}
 	}
 
+	////////////////////////////////////////////////////
+	////////////////////////////////////////////////////
+	////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////////////////////////
+	// EPIC DIRTY HACK: we set separate, correct conditions for placing seed
+	else if (carryBlob !is null && carryBlob.getConfig() == "seed")
+	{
+		u8 blockIndex = this.get_u8("buildblob");
+		BuildBlock @block = getBlockByIndex(this, blockIndex);
+		if (block !is null && block.name == carryBlob.getName()) {
+			bc.hasReqs = hasRequirements(this.getInventory(), block.reqs, bc.missing, not block.buildOnGround);
+		}
+
+		if (carryBlob !is null)
+		{
+			CMap@ map = this.getMap();
+			bool snap = carryBlob.isSnapToGrid();
+
+			carryBlob.SetVisible(!carryBlob.hasTag("temp blob"));
+
+			bool isLadder = false;
+			if (carryBlob.getName() == "ladder")
+			{
+				isLadder = true;
+			}
+
+			if (snap) // activate help line
+			{
+				bc.blobActive = true;
+				bc.blockActive = false;
+			}
+
+			if (bc.cursorClose)
+			{
+				if (snap) // if snaps to grid make cursor
+				{
+					Vec2f halftileoffset(map.tilesize * 0.5f, map.tilesize * 0.5f);
+
+					CMap@ map = this.getMap();
+					TileType buildtile = 256;   // something else than a tile
+					Vec2f bottomPos = getBottomOfCursor(bc.tileAimPos, carryBlob);
+
+					bool overlapped;
+
+					if (isLadder)
+					{
+						Vec2f ontilepos = halftileoffset + bc.tileAimPos;
+
+						overlapped = false;
+						CBlob@[] b;
+
+						f32 tsqr = halftileoffset.LengthSquared() - 1.0f;
+
+						if (map.getBlobsInRadius(ontilepos, 0.5f, @b))
+						{
+							for (uint nearblob_step = 0; nearblob_step < b.length && !overlapped; ++nearblob_step)
+							{
+								CBlob@ blob = b[nearblob_step];
+
+								string bname = blob.getName();
+								if (blob is carryBlob || blob.hasTag("player") || !isBlocking(blob) || !blob.getShape().isStatic())
+								{
+									continue;
+								}
+
+								overlapped = (blob.getPosition() - ontilepos).LengthSquared() < tsqr;
+							}
+						}
+					}
+					else
+					{
+						overlapped = carryBlob.isOverlappedAtPosition(bottomPos, carryBlob.getAngleDegrees());
+					}
+
+					bc.buildableAtPos = isBuildableAtPos(this, bottomPos, buildtile, carryBlob, bc.sameTileOnBack) && !overlapped;
+					bc.rayBlocked = isBuildRayBlocked(this.getPosition(), bc.tileAimPos + halftileoffset, bc.rayBlockedPos);
+					bc.buildable = bc.buildableAtPos && !bc.rayBlocked;
+					bc.supported = carryBlob.getShape().getConsts().support > 0 ? map.hasSupportAtPos(bc.tileAimPos) : true;
+					//printf("bc.buildableAtPos " + bc.buildableAtPos + " bc.supported " + bc.supported );
+				}
+			}
+
+			// place blob with action1 key
+			if (!getHUD().hasButtons() && !carryBlob.hasTag("custom drop"))
+			{
+				if (this.isKeyPressed(key_action1))
+				{
+					if (snap && bc.cursorClose && bc.hasReqs && bc.buildable && bc.supported)
+					{
+						CMap@ map = getMap();
+
+						CBlob@ currentBlobAtPos = null;
+
+						CBlob@[] blobsAtPos;
+						map.getBlobsAtPosition(getBottomOfCursor(bc.tileAimPos, carryBlob), blobsAtPos);
+
+						for (int i = 0; i < blobsAtPos.size(); i++)
+						{
+							CBlob@ blobAtPos = blobsAtPos[i];
+
+							if (isRepairable(blobAtPos))
+							{
+								@currentBlobAtPos = getBlobByNetworkID(blobAtPos.getNetworkID());
+							}
+						}
+
+						CBitStream params;
+						params.write_u16(carryBlob.getNetworkID());
+						params.write_Vec2f(getBottomOfCursor(bc.tileAimPos, carryBlob));
+
+						if (currentBlobAtPos !is null && carryBlob.getName() == currentBlobAtPos.getName() && currentBlobAtPos.getHealth() < currentBlobAtPos.getInitialHealth() && 	currentBlobAtPos.getName() != "ladder")
+						{
+							params.write_u16(currentBlobAtPos.getNetworkID());
+							this.SendCommand(this.getCommandID("repairBlob"), params);
+						}
+						else
+						{
+								this.SendCommand(this.getCommandID("placeSeed"), params);
+						}
+
+						u32 delay = 2 * getCurrentBuildDelay(this);
+						SetBuildDelay(this, delay);
+						bc.blobActive = false;
+					}
+					else if (snap && this.isKeyJustPressed(key_action1))
+					{
+						this.getSprite().PlaySound("NoAmmo.ogg", 0.5);
+					}
+				}
+			}
+		}
+	}
+	////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////
 }
 
 void onInit(CSprite@ this)
@@ -870,6 +1048,29 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 			}
 		}
 	}
+
+	/////////////////////////////////////////////////////////////////
+	// EPIC DIRTY HACK: use semi-vanilla code to place seed correctly
+	else if (cmd == this.getCommandID("placeSeed"))
+	{
+		CBlob @carryBlob = getBlobByNetworkID(params.read_u16());
+		if (carryBlob !is null)
+		{
+			Vec2f pos = params.read_Vec2f();
+
+			if (PlaceBlob(this, carryBlob, pos))
+			{
+				CPlayer@ p = this.getPlayer();
+				if (p !is null)
+				{
+					GE_BuildBlob(p.getNetworkID(), carryBlob.getName()); // gameplay event for coins
+				}
+			}
+		}
+	}
+	/////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////
+
 	else if (cmd == this.getCommandID("repairBlob"))
 	{
 		string name;
