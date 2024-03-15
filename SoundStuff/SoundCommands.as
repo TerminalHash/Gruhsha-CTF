@@ -77,10 +77,18 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 				this.set_u32(player.getUsername() + "soundcooldown", 80);
-			}
+			} else if (textIn.toUpper() == "KURWA" || textIn == "курва") {
+				if (localplayer_is_deaf == false)
+				{
+					int random = XORRandom(8) + 1;
+					Sound::Play(soundrandom + "kurwa" + random + ".ogg", pos, 2.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 60);
 
 			// russian sounds
-			else if (textIn == "пенек" || textIn == "пенёк" || textIn == "косарь" || textIn == "penek" || textIn.find("на", 0) != -1 && textIn.find("пенек", 0) != -1 || textIn.find("на", 0) != -1 && textIn.find("пенёк", 0) != -1) {
+			} else if (textIn == "пенек" || textIn == "пенёк" || textIn == "косарь" || textIn == "penek" || textIn.find("на", 0) != -1 && textIn.find("пенек", 0) != -1 || textIn.find("на", 0) != -1 && textIn.find("пенёк", 0) != -1) {
 				if (localplayer_is_deaf == false)
 				{
 					Sound::Play(soundrandom + "penek.ogg", pos, 1.0f);
