@@ -163,17 +163,16 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 				if (player1 !is null)
 				{
 					string needed = "personalwood_" + player1.getTeamNum(); 
-					if (blobName == "mat_stone" + player1.getTeamNum()) needed = "personalstone_" + player1.getTeamNum();
-
+					if (blobName == "mat_stone") needed = "personalstone_" + player1.getTeamNum();
 					if (getRules().get_s32(needed) >= quantity)
 					{
-						has = true;
+						return true;
 					}
-					else if (getRules().get_s32(needed) < quantity)
+					else
 					{
 						AddRequirement(missingBs, req, blobName, friendlyName, quantity);
-						has = false;
 					}
+					return false;
 				}
 			}
 			else
