@@ -4,7 +4,7 @@
 #include "BuilderCommon.as";
 #include "Requirements.as";
 #include "CommonBuilderBlocks.as";
-#include "/Entities/Common/GUI/ActorHUDStartPos.as";
+//#include "/Entities/Common/GUI/ActorHUDStartPos.as";
 //#include "MaterialTeamIndicatorHUD.as";
 #include "MaterialIndicatorHUD.as";
 #include "pathway.as";
