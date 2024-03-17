@@ -3,6 +3,9 @@
 void onTick(CSprite@ this)
 {
 	if (!isClient()) return;
+
+	if (getRules().get_string("body_tilting") == "off") return;
+
 	CBlob@ blob = this.getBlob();
 	
 	const bool FLIP = blob.isFacingLeft();
@@ -41,8 +44,6 @@ void onTick(CSprite@ this)
 		Vec2f rotoff = -Vec2f(offset.x*FLIP_FACTOR, offset.y);
 		s_layer.RotateBy(body_angle, rotoff);
 	}
-
-	if (getRules().get_string("body_tilting") == "off") return;
 
 	this.RotateBy(body_angle, Vec2f_zero);
 }
