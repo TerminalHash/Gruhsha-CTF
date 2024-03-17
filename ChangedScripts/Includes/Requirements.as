@@ -162,14 +162,14 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 
 				if (player1 !is null)
 				{
-					string needed = "personalwood_";
-					if (blobName == "mat_stone") needed = "personalstone_";
+					string needed = "personalwood_" + player1.getTeamNum(); 
+					if (blobName == "mat_stone" + player1.getTeamNum()) needed = "personalstone_" + player1.getTeamNum();
 
-					if (getRules().get_s32(needed + player1.getUsername()) >= quantity)
+					if (getRules().get_s32(needed) >= quantity)
 					{
 						has = true;
 					}
-					else if (getRules().get_s32(needed + player1.getUsername()) < quantity)
+					else if (getRules().get_s32(needed) < quantity)
 					{
 						AddRequirement(missingBs, req, blobName, friendlyName, quantity);
 						has = false;
@@ -275,11 +275,11 @@ void server_TakeRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &ino
 
 				if (player1 !is null && isServer())
 				{
-					string needed = "personalwood_";
-					if (blobName == "mat_stone") needed = "personalstone_";
+					string needed = "personalwood_" + player1.getTeamNum();
+					if (blobName == "mat_stone") needed = "personalstone_" + player1.getTeamNum();
 
-					getRules().sub_s32(needed + player1.getUsername(), quantity);
-					getRules().Sync(needed + player1.getUsername(), true);
+					getRules().sub_s32(needed, quantity);
+					getRules().Sync(needed, true);
 				}
 			}
 			else

@@ -110,16 +110,16 @@ void Blend(CBlob@ this, CBlob@ tobeblended)
 	const string blobname = tobeblended.getName();
 	if (blobname == "log")
 	{
-		if (isServer())
-		{
-			CPlayer@ p = getPlayerByUsername(tobeblended.get_string("lastdamageplayer"));
-
-			if (p !is null && getGameTime() - tobeblended.get_u32("lastdamagetime") <= 30 * getTicksASecond())
-			{
-				getRules().add_s32("personalwood_" + p.getUsername(), 50);
-				getRules().Sync("personalwood_" + p.getUsername(), true);
-			}
-		}
+//		if (isServer())
+//		{
+//			CPlayer@ p = getPlayerByUsername(tobeblended.get_string("lastdamageplayer"));
+//
+//			if (p !is null && getGameTime() - tobeblended.get_u32("lastdamagetime") <= 30 * getTicksASecond())
+//			{
+				getRules().add_s32("personalwood_" + this.getTeamNum(), 50);
+				getRules().Sync("personalwood_" + this.getTeamNum(), true);
+//			}
+//		}
 
 		this.getSprite().PlaySound("SawLog.ogg");
 	}

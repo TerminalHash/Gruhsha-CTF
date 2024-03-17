@@ -117,16 +117,16 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 					stone_amount = warmup_stone_amount;
 				}
 
-				if (this.get_s32("personalwood_" + p.getUsername()) < 2000)
+				if (this.get_s32("personalwood_" + p.getTeamNum()) < 2000)
 				{
-					this.add_s32("personalwood_" + p.getUsername(), wood_amount);
-					this.Sync("personalwood_" + p.getUsername(), true);
+					this.add_s32("personalwood_" + p.getTeamNum(), wood_amount);
+					this.Sync("personalwood_" + + p.getTeamNum(), true);
 				}
 
-				if (this.get_s32("personalstone_" + p.getUsername()) < 2000)
+				if (this.get_s32("personalstone_" + p.getTeamNum()) < 2000)
 				{
-					this.add_s32("personalstone_" + p.getUsername(), stone_amount);
-					this.Sync("personalstone_" + p.getUsername(), true);
+					this.add_s32("personalstone_" + p.getTeamNum(), stone_amount);
+					this.Sync("personalstone_" + p.getTeamNum(), true);
 				}
 
 				SetCTFTimer(this, p, gametime + (this.isWarmup() ? materials_wait_warmup : materials_wait)*getTicksASecond(), "builder");
@@ -168,14 +168,14 @@ void Reset(CRules@ this)
 		CPlayer@ p = getPlayer(i);
 		if (p is null) continue;
 
-		this.set_s32("personalwood_" + p.getUsername(), 0);
-		this.Sync("personalwood_" + p.getUsername(), true);
+		this.set_s32("personalwood_" + p.getTeamNum(), 0);
+		this.Sync("personalwood_" + p.getTeamNum(), true);
 
-		this.set_s32("personalstone_" + p.getUsername(), 0);
-		this.Sync("personalstone_" + p.getUsername(), true);
+		this.set_s32("personalstone_" + p.getTeamNum(), 0);
+		this.Sync("personalstone_" + p.getTeamNum(), true);
 
-		//this.set_s32("personalgold_" + p.getUsername(), 0);
-		//this.Sync("personalgold_" + p.getUsername(), true);
+		//this.set_s32("personalgold_" + p.getTeamNum(), 0);
+		//this.Sync("personalgold_" + p.getTeamNum(), true);
 	}
 }
 
@@ -183,7 +183,7 @@ void onPlayerLeave( CRules@ this, CPlayer@ player )
 {
 	if (!isServer()) return;
 
-	ResetPlayerMats(this, player, player.getTeamNum());
+	//ResetPlayerMats(this, player, player.getTeamNum());
 }
 
 void onRestart(CRules@ this)
@@ -208,14 +208,14 @@ void ResetPlayerMats(CRules@ this, CPlayer@ player, u8 team)
 	if (!isServer()) return;
 	if (player is null) return;
 
-	this.set_s32("personalwood_" + player.getUsername(), 0);
-	this.Sync("personalwood_" + player.getUsername(), true);
+	this.set_s32("personalwood_" + player.getTeamNum(), 0);
+	this.Sync("personalwood_" + player.getTeamNum(), true);
 
-	this.set_s32("personalstone_" + player.getUsername(), 0);
-	this.Sync("personalstone_" + player.getUsername(), true);
+	this.set_s32("personalstone_" + player.getTeamNum(), 0);
+	this.Sync("personalstone_" + player.getTeamNum(), true);
 
-	//this.set_s32("personalgold_" + player.getUsername(), 0);
-	//this.Sync("personalgold_" + player.getUsername(), true);
+	//this.set_s32("personalgold_" + player.getTeamNum(), 0);
+	//this.Sync("personalgold_" + player.getTeamNum(), true);
 }
 
 void onTick(CRules@ this)
@@ -298,14 +298,14 @@ void onNewPlayerJoin(CRules@ this, CPlayer@ player)
 {
 	if (isServer())
 	{
-		this.set_s32("personalwood_" + player.getUsername(), 0);
-		this.Sync("personalwood_" + player.getUsername(), true);
+		this.set_s32("personalwood_" + player.getTeamNum(), 0);
+		this.Sync("personalwood_" + player.getTeamNum(), true);
 
-		this.set_s32("personalstone_" + player.getUsername(), 0);
-		this.Sync("personalstone_" + player.getUsername(), true);
+		this.set_s32("personalstone_" + player.getTeamNum(), 0);
+		this.Sync("personalstone_" + player.getTeamNum(), true);
 
-		//this.set_s32("personalgold_" + player.getUsername(), 0);
-		//this.Sync("personalgold_" + player.getUsername(), true);
+		//this.set_s32("personalgold_" + player.getTeamNum(), 0);
+		//this.Sync("personalgold_" + player.getTeamNum(), true);
 	}
 
 	s32 next_add_time = getGameTime() + (this.isWarmup() ? materials_wait_warmup : materials_wait) * getTicksASecond();
