@@ -2,6 +2,7 @@
 #include "TrampolineCommon.as";
 #include "GenericButtonCommon.as";
 #include "StandardControlsCommon.as";
+#include "HandleButtonClickForTramp.as";
 #include "Hitters.as";
 
 class TrampolineCooldown{

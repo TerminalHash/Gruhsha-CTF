@@ -39,29 +39,6 @@ bool isTapPickup(CBlob@ this, int ticks = 15)
 	return (getGameTime() - this.get_s32("tap_pickup_time") < ticks);
 }
 
-void HandleButtonClickKey(CBlob@ this, AttachmentPoint@ point = null)
-{
-	if (getHUD().hasButtons())
-	{
-		if (point !is null)
-		{
-			if ((point.isKeyJustPressed(key_action1)) && !point.isKeyPressed(key_pickup))
-			{
-				ButtonOrMenuClick(this, this.getAimPos(), false, true);
-				this.set_bool("release click", false);
-			}
-		}
-		else
-		{
-			if ((this.isKeyJustPressed(key_action1)) && !this.isKeyPressed(key_pickup))
-			{
-				ButtonOrMenuClick(this, this.getAimPos(), false, true);
-				this.set_bool("release click", false);
-			}
-		}
-	}
-}
-
 bool ClickGridMenu(CBlob@ this, int button)
 {
 	CGridMenu @gmenu;
