@@ -97,18 +97,18 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 				}
 				if (player_amount >= 10 && player_amount < 14) // 5v5 and 6v6
 				{
-					wood_amount = 300;
-					stone_amount = 125;
+					wood_amount = 275;
+					stone_amount = 100;
 				}
 				else if (player_amount >= 14 && player_amount < 16) // 7v7
 				{
 					wood_amount = 250;
-					stone_amount = 100;
+					stone_amount = 75;
 				}
 				else if (player_amount >= 16) // 8v8 and more
 				{
 					wood_amount = 200;
-					stone_amount = 75;
+					stone_amount = 50;
 				}
 
 				if (this.isWarmup())
@@ -117,7 +117,7 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 					stone_amount = warmup_stone_amount;
 				}
 
-				if (this.get_s32("personalwood_" + p.getUsername()) < 3000)
+				if (this.get_s32("personalwood_" + p.getUsername()) < 2000)
 				{
 					this.add_s32("personalwood_" + p.getUsername(), wood_amount);
 					this.Sync("personalwood_" + p.getUsername(), true);
@@ -174,8 +174,8 @@ void Reset(CRules@ this)
 		this.set_s32("personalstone_" + p.getUsername(), 0);
 		this.Sync("personalstone_" + p.getUsername(), true);
 
-		this.set_s32("personalgold_" + p.getUsername(), 0);
-		this.Sync("personalgold_" + p.getUsername(), true);
+		//this.set_s32("personalgold_" + p.getUsername(), 0);
+		//this.Sync("personalgold_" + p.getUsername(), true);
 	}
 }
 
@@ -214,8 +214,8 @@ void ResetPlayerMats(CRules@ this, CPlayer@ player, u8 team)
 	this.set_s32("personalstone_" + player.getUsername(), 0);
 	this.Sync("personalstone_" + player.getUsername(), true);
 
-	this.set_s32("personalgold_" + player.getUsername(), 0);
-	this.Sync("personalgold_" + player.getUsername(), true);
+	//this.set_s32("personalgold_" + player.getUsername(), 0);
+	//this.Sync("personalgold_" + player.getUsername(), true);
 }
 
 void onTick(CRules@ this)
@@ -304,8 +304,8 @@ void onNewPlayerJoin(CRules@ this, CPlayer@ player)
 		this.set_s32("personalstone_" + player.getUsername(), 0);
 		this.Sync("personalstone_" + player.getUsername(), true);
 
-		this.set_s32("personalgold_" + player.getUsername(), 0);
-		this.Sync("personalgold_" + player.getUsername(), true);
+		//this.set_s32("personalgold_" + player.getUsername(), 0);
+		//this.Sync("personalgold_" + player.getUsername(), true);
 	}
 
 	s32 next_add_time = getGameTime() + (this.isWarmup() ? materials_wait_warmup : materials_wait) * getTicksASecond();

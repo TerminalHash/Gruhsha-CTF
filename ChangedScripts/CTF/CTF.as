@@ -415,9 +415,10 @@ shared class CTFCore : RulesCore
 		s32 ticksToStart = gamestart + warmUpTime - getGameTime();
 		ctf_spawns.force = false;
 
-		if (ticksToStart == 5 * 30 && rules.getCurrentState() != GAME)
+		// Change player classes to knight explicity
+		if (ticksToStart == 10 * 30 && rules.getCurrentState() != GAME)
 		{
-			for (int l=0; l<getPlayersCount(); ++l)
+			for (int l = 0; l < getPlayersCount(); ++l)
 			{
 				CPlayer @p = getPlayer(l);
 				if (p !is null)
@@ -443,6 +444,36 @@ shared class CTFCore : RulesCore
 								test.server_setTeamNum(p.getTeamNum());
 							}
 						}
+					}
+				}
+			}
+		}
+
+		// Change mats in personal pools
+		if (ticksToStart == 3 * 30 && rules.getCurrentState() != GAME)
+		{
+			for (int l = 0; l < getPlayersCount(); ++l)
+			{
+				CPlayer @p = getPlayer(l);
+				if (p !is null)
+				{
+					CBlob @b = p.getBlob();
+
+					if (b !is null && b.getConfig() != "builder")
+					{
+						rules.set_s32("personalwood_" + p.getUsername(), 0);
+						rules.Sync("personalwood_" + p.getUsername(), true);
+
+						rules.set_s32("personalstone_" + p.getUsername(), 0);
+						rules.Sync("personalstone_" + p.getUsername(), true);
+					}
+					else if (b !is null && b.getConfig() == "builder")
+					{
+						rules.set_s32("personalwood_" + p.getUsername(), 1000);
+						rules.Sync("personalwood_" + p.getUsername(), true);
+
+						rules.set_s32("personalstone_" + p.getUsername(), 400);
+						rules.Sync("personalstone_" + p.getUsername(), true);
 					}
 				}
 			}
