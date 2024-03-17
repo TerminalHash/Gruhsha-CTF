@@ -95,7 +95,7 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 					wood_amount = matchtime_wood_amount;
 					stone_amount = matchtime_stone_amount;
 				}
-				if (player_amount >= 10 && player_amount < 14) // 5v5 and 6v6
+				else if (player_amount >= 10 && player_amount < 14) // 5v5 and 6v6
 				{
 					wood_amount = 275;
 					stone_amount = 100;
