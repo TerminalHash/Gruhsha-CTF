@@ -154,7 +154,18 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 	{
 		ReadRequirement(bs, req, blobName, friendlyName, quantity);
 
-		if (req == "blob")
+		if (req == "coin")
+		{
+			CPlayer@ player1 = inv1 !is null ? inv1.getBlob().getPlayer() : null;
+			CPlayer@ player2 = inv2 !is null ? inv2.getBlob().getPlayer() : null;
+			u16 sum = (player1 !is null ? player1.getCoins() : 0) + (player2 !is null ? player2.getCoins() : 0);
+			if (sum < quantity)
+			{
+				AddRequirement(missingBs, req, blobName, friendlyName, quantity);
+				has = false;
+			}
+		}
+		else if (req == "blob")
 		{
 			if (blobName == "mat_wood" || blobName == "mat_stone")
 			{
@@ -162,17 +173,13 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 
 				if (player1 !is null)
 				{
-					string needed = "personalwood_" + player1.getTeamNum(); 
+					string needed = "personalwood_" + player1.getTeamNum();
 					if (blobName == "mat_stone") needed = "personalstone_" + player1.getTeamNum();
-					if (getRules().get_s32(needed) >= quantity)
-					{
-						return true;
-					}
-					else
+					if (getRules().get_s32(needed) < quantity)
 					{
 						AddRequirement(missingBs, req, blobName, friendlyName, quantity);
+						return false;
 					}
-					return false;
 				}
 			}
 			else
@@ -197,17 +204,6 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 			}
 		}
 		//else if (req == "tech") in  Requirements_Tech
-		else if (req == "coin")
-		{
-			CPlayer@ player1 = inv1 !is null ? inv1.getBlob().getPlayer() : null;
-			CPlayer@ player2 = inv2 !is null ? inv2.getBlob().getPlayer() : null;
-			u16 sum = (player1 !is null ? player1.getCoins() : 0) + (player2 !is null ? player2.getCoins() : 0);
-			if (sum < quantity)
-			{
-				AddRequirement(missingBs, req, blobName, friendlyName, quantity);
-				has = false;
-			}
-		}
 		else if (req == "hurt")
 		{
 			CBlob@ blob = inv1 !is null ? inv1.getBlob() : null;
