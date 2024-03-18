@@ -1,5 +1,4 @@
 // spawn resources
-
 #include "RulesCore.as";
 #include "CTF_Structs.as";
 #include "CTF_Common.as"; // resupply stuff
@@ -76,7 +75,85 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 		}
 	}
 
-	if (name == "builder")
+	if (gametime > epictimer)
+	{
+//		set<int> teams{};
+//		for (uint i = 0; i < getPlayersCount(); ++i)
+//		{
+//			if (p is null) continue;
+//			teams.insert(p.getTeamNum())
+//		}
+
+		int wood_amount = matchtime_wood_amount;
+		int stone_amount = matchtime_stone_amount;
+		u32 player_amount = getPlayersCount_NotSpectator(); // using this function because only it works :shrug:
+
+		if (this.isWarmup())
+		{
+			wood_amount = warmup_wood_amount;
+			stone_amount = warmup_stone_amount;
+		}
+		else if (player_amount < 10) // 4v4
+		{
+			wood_amount = matchtime_wood_amount;
+			stone_amount = matchtime_stone_amount;
+		}
+		else if (player_amount < 14) // 5v5 and 6v6
+		{
+			wood_amount = 275;
+			stone_amount = 100;
+		}
+		else if (player_amount < 16) // 7v7
+		{
+			wood_amount = 250;
+			stone_amount = 75;
+		}
+		else // 8v8 and more
+		{
+			wood_amount = 200;
+			stone_amount = 50;
+		}
+
+		if (this.get_s32("personalwood_" + "0") < 3000)
+		{
+			this.add_s32("personalwood_" + "0", wood_amount);
+			this.Sync("personalwood_" + "0", true);
+		}
+		if (this.get_s32("personalstone_" + "0") < 2000)
+		{
+			this.add_s32("personalstone_" + "0", stone_amount);
+			this.Sync("personalstone_" + "0", true);
+		}
+
+		if (this.get_s32("personalwood_" + "1") < 3000)
+		{
+			this.add_s32("personalwood_" + "1", wood_amount);
+			this.Sync("personalwood_" + "1", true);
+		}
+		if (this.get_s32("personalstone_" + "1") < 2000)
+		{
+			this.add_s32("personalstone_" + "1", stone_amount);
+			this.Sync("personalstone_" + "1", true);
+		}
+		epictimer = epictimer + getTicksASecond() * (this.isWarmup() ? materials_wait_warmup : materials_wait);
+		//		set<int> teams{};
+
+	}
+	for (uint i = 0; i < getPlayersCount(); ++i)
+	{
+		CPlayer@ p = getPlayer(i);
+		if (p is null) continue;
+		//SetCTFTimer(this, p, gametime + (gametime - epictimer) / getTicksASecond() / 2);
+		if (getCTFTimer(this, p, "builder") != gametime + ((gametime - epictimer) / getTicksASecond()) / 2)
+		{
+//			SetCTFTimer(this, p, epictimer - gametime + getTicksASecond() * (this.isWarmup() ? materials_wait_warmup : materials_wait), "builder");
+//			SetCTFTimer(this, p, epictimer - gametime + epictimer + getTicksASecond() * (this.isWarmup() ? materials_wait_warmup : materials_wait), "builder");
+			SetCTFTimer(this, p, epictimer - gametime + gametime, "builder");
+
+		}
+	}
+
+/*	if (name == "builder")
 	{
 		if (gametime > getCTFTimer(this, p, "builder"))
 		{
@@ -132,7 +209,7 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 				SetCTFTimer(this, p, gametime + (this.isWarmup() ? materials_wait_warmup : materials_wait)*getTicksASecond(), "builder");
 			}
 		}
-	}
+	} */
 }
 
 void Reset(CRules@ this)
@@ -142,6 +219,7 @@ void Reset(CRules@ this)
 	{
 		SetCTFTimer(this, getPlayer(i), 0, "builder");
 		SetCTFTimer(this, getPlayer(i), 0, "archer");
+		epictimer = 0;
 	}
 
 	if (!isServer()) return;
@@ -198,7 +276,7 @@ void onInit(CRules@ this)
 
 void onPlayerChangedTeam(CRules@ this, CPlayer@ player, u8 oldteam, u8 newteam)
 {
-	ResetPlayerMats(this, player, oldteam);
+	//ResetPlayerMats(this, player, oldteam);
 }
 
 // and give to team
@@ -253,7 +331,6 @@ void onTick(CRules@ this)
 			}
 		}
 	}
-
 	// vanilla resupply behaviour, works for both sides
 	{
 		CBlob@[] spots;
@@ -298,11 +375,11 @@ void onNewPlayerJoin(CRules@ this, CPlayer@ player)
 {
 	if (isServer())
 	{
-		this.set_s32("personalwood_" + player.getTeamNum(), 0);
-		this.Sync("personalwood_" + player.getTeamNum(), true);
+		//this.set_s32("personalwood_" + player.getTeamNum(), 0);
+		//this.Sync("personalwood_" + player.getTeamNum(), true);
 
-		this.set_s32("personalstone_" + player.getTeamNum(), 0);
-		this.Sync("personalstone_" + player.getTeamNum(), true);
+		//this.set_s32("personalstone_" + player.getTeamNum(), 0);
+		//this.Sync("personalstone_" + player.getTeamNum(), true);
 
 		//this.set_s32("personalgold_" + player.getTeamNum(), 0);
 		//this.Sync("personalgold_" + player.getTeamNum(), true);
