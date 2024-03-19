@@ -165,11 +165,7 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 					string needed = "personalwood_";
 					if (blobName == "mat_stone") needed = "personalstone_";
 
-					if (getRules().get_s32(needed + player1.getUsername()) >= quantity)
-					{
-						has = true;
-					}
-					else if (getRules().get_s32(needed + player1.getUsername()) < quantity)
+					if (getRules().get_s32(needed + player1.getUsername()) < quantity)
 					{
 						AddRequirement(missingBs, req, blobName, friendlyName, quantity);
 						has = false;
