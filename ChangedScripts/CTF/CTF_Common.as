@@ -1,7 +1,7 @@
 // spawn resources
 const u32 materials_wait = 30; //seconds between free mats
 const u32 materials_wait_warmup = 40; //seconds between free mats
-int epictimer = 0;
+int mat_give_time = 0;
 const int warmup_wood_amount = 500;
 const int warmup_stone_amount = 500;
 
