@@ -51,6 +51,8 @@ namespace ru
 
 	// SoundsCommands.as
 	d_togglesoundscomtext					= "Включить или выключить звук вокалайзов для себя",
+	d_togglesoundschattexton				= "Надоедливые звуки войслайнов выключены, ",
+	d_togglesoundschattextoff				= "Надоедливые звуки войслайнов включены, ",
 
 	// ScoreboardRender.as
 	d_currentversiontext					= "Текущая версия: ",
