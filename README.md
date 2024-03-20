@@ -1,4 +1,4 @@
-# ![grusha](Sprites/grusha.png) Gruhsha-CTF ![grusha](Sprites/grusha.png)
+# ![grusha](Base/Sprites/Common/grusha.png) Gruhsha-CTF ![grusha](Base/Sprites/Common/grusha.png)
 ![Static Badge](https://img.shields.io/badge/version-v2.16b4-%23ad7fa8?style=plastic)
 
 Мод для KAG, аналог европейских и американских Captains-модов, представляющий собой добавление капитанской системы и аккуратный ребаланс ванильного CTF-режима в сторону сплочённой игры командами, без использования каких-либо устоявшихся имбалансных мет.
