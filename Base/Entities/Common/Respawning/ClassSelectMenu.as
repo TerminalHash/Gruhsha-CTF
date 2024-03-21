@@ -18,7 +18,6 @@ shared class PlayerClass
 int P_Archers;
 int P_Builders;
 int P_Knights;
-
 // initialization limits
 int archers_limit;
 int builders_limit;
@@ -74,7 +73,7 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 			// Limiting classes stuff
 			archers_limit = rules.get_u8("archers_limit");
 			builders_limit = rules.get_u8("builders_limit");
-
+			//warmap_true = rules.get_bool("warmap_true");
 			if(pclass.configFilename == "archer")
 			{
 				if (P_Archers < archers_limit)
@@ -90,11 +89,12 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 			}
 			else if (pclass.configFilename == "builder")
 			{
-				if (P_Builders < builders_limit && !rules.isWarmup())
+				if (rules.get_bool("warmap_true") == true) {continue;}
+				if (P_Builders < builders_limit && !rules.get_bool("warmap_true"))
 				{
 					button.SetHoverText( "    " + P_Builders + " / " + builders_limit + "\n");
 				}
-				else if (P_Builders >= builders_limit && !rules.isWarmup())
+				else if (P_Builders >= builders_limit && !rules.get_bool("warmap_true"))
 				{
 					button.SetHoverText( "    " + Descriptions::totaltext + P_Builders + " / " + builders_limit + "\n");
 

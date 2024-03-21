@@ -3,7 +3,7 @@
 #include "RulesCore.as";
 #include "CTF_Structs.as";
 #include "CTF_Common.as"; // resupply stuff
-
+bool warmap_true = true;
 bool SetMaterials(CBlob@ blob,  const string &in name, const int quantity, bool drop = false)
 {
 	CInventory@ inv = blob.getInventory();
@@ -222,9 +222,10 @@ void onTick(CRules@ this)
 {
 	if (!isServer())
 		return;
-
+	this.set_bool("warmap_true", this.isWarmup());
+	this.Sync("warmap_true", true);
 	s32 gametime = getGameTime();
-	
+
 	if ((gametime % 15) != 5)
 		return;
 
