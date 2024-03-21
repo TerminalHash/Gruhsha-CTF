@@ -88,7 +88,7 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 				int wood_amount = matchtime_wood_amount;
 				int stone_amount = matchtime_stone_amount;
 
-				u32 player_amount = getPlayersCount_NotSpectator(); // using this function because only it works :shrug:
+				/*u32 player_amount = getPlayersCount_NotSpectator(); // using this function because only it works :shrug:
 
 				if (player_amount >= 8 && player_amount < 10) // 4v4
 				{
@@ -109,7 +109,7 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 				{
 					wood_amount = 200;
 					stone_amount = 50;
-				}
+				}*/
 
 				if (this.isWarmup())
 				{
@@ -247,7 +247,7 @@ void onTick(CRules@ this)
 		{
 			CPlayer@ player = getPlayer(i);
 			CBlob@ blob = player.getBlob();
-			if (blob !is null && blob.getName() == "builder")
+			if (blob !is null && blob.getConfig() == "builder")
 			{
 				doGiveSpawnMats(this, player, blob);
 			}
