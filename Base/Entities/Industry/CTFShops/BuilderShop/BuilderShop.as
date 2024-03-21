@@ -97,9 +97,11 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 
 	CRules@ rules = getRules();
 	bool disallow_class_change_on_shops = rules.get_bool("no_class_change_on_shop");
+	bool is_warmup = rules.get_bool("is_warmup");
 
 	if (!canSeeButtons(this, caller)) return;
-	if (caller.getConfig() == this.get_string("required class") || disallow_class_change_on_shops || P_Builders >= rules.get_u8("builders_limit") && !rules.get_bool("warmap_true"))
+
+	if (caller.getConfig() == this.get_string("required class") || disallow_class_change_on_shops || P_Builders >= rules.get_u8("builders_limit") && is_warmup)
 	{
 		this.set_Vec2f("shop offset", Vec2f_zero);
 	}

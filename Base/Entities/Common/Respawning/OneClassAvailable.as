@@ -40,16 +40,28 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 		if (getPlayer(i).getScoreboardFrame() == 1 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
 		if (getPlayer(i).getScoreboardFrame() == 3 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Knights++;}
 	}
+
 	bool disallow_class_change_on_shops = rules.get_bool("no_class_change_on_shop");
+
+	// HACK: since we need to lock class changing on shops, we do a new boolean vars
+	bool is_no_button_for_buildersh = false;
+	bool is_no_button_for_archersh = false;
+
+	bool is_warmup = rules.get_bool("is_warmup");
+
 	if (!canSeeButtons(this, caller) || !this.exists(req_class)) return;
 
 	string cfg = this.get_string(req_class);
-	if(cfg == "archer" && P_Archers >= rules.get_u8("archers_limit")) {disallow_class_change_on_shops = true;}
-	if(cfg == "builder" && P_Builders >= rules.get_u8("builders_limit" ) && !rules.get_bool("warmap_true")) {disallow_class_change_on_shops = true;}
+	if(cfg == "archer" && P_Archers >= rules.get_u8("archers_limit")) {is_no_button_for_archersh = true;}
+	if(cfg == "builder" && P_Builders >= rules.get_u8("builders_limit" ) && !is_warmup) {is_no_button_for_buildersh = true;}
 //	if(cfg == "knight" && P_Knights >= rules.get_u8("knight_limit")) {disallow_class_change_on_shops = true;}
+
 	if (canChangeClass(this, caller) && caller.getName() != cfg)
 	{
 		if (caller.getPlayer() is null) return;
+
+		if (is_no_button_for_archersh == true) return;
+		if (is_no_button_for_buildersh == true) return;
 
 		if (disallow_class_change_on_shops == false)
 		{

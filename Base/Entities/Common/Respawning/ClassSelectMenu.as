@@ -58,6 +58,7 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 		if (getPlayer(i).getScoreboardFrame() == 1 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
 		if (getPlayer(i).getScoreboardFrame() == 3 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Knights++;}
 	}
+
 	PlayerClass[]@ classes;
 //	for(uint i = 0 ; i < classes.length; i++)
 	if (this.get("playerclasses", @classes))
@@ -73,7 +74,9 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 			// Limiting classes stuff
 			archers_limit = rules.get_u8("archers_limit");
 			builders_limit = rules.get_u8("builders_limit");
-			//warmap_true = rules.get_bool("warmap_true");
+
+			bool is_warmup = rules.get_bool("is_warmup");
+	
 			if(pclass.configFilename == "archer")
 			{
 				if (P_Archers < archers_limit)
@@ -89,12 +92,11 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 			}
 			else if (pclass.configFilename == "builder")
 			{
-				if (rules.get_bool("warmap_true") == true) {continue;}
-				if (P_Builders < builders_limit && !rules.get_bool("warmap_true"))
+				if (P_Builders < builders_limit && !is_warmup)
 				{
 					button.SetHoverText( "    " + P_Builders + " / " + builders_limit + "\n");
 				}
-				else if (P_Builders >= builders_limit && !rules.get_bool("warmap_true"))
+				else if (P_Builders >= builders_limit && !is_warmup)
 				{
 					button.SetHoverText( "    " + Descriptions::totaltext + P_Builders + " / " + builders_limit + "\n");
 
