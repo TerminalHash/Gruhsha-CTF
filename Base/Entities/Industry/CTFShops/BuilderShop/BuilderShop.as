@@ -101,7 +101,7 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 
 	if (!canSeeButtons(this, caller)) return;
 
-	if (caller.getConfig() == this.get_string("required class") || disallow_class_change_on_shops || P_Builders >= rules.get_u8("builders_limit") && is_warmup)
+	if (caller.getConfig() == this.get_string("required class") || disallow_class_change_on_shops || P_Builders >= rules.get_u8("builders_limit") && !is_warmup)
 	{
 		this.set_Vec2f("shop offset", Vec2f_zero);
 	}
