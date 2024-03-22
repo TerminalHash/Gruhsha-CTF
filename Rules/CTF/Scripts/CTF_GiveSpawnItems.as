@@ -241,13 +241,19 @@ void onTick(CRules@ this)
 			}
 		}
 	}
-	else // automatic resupplies for builders
+
+	if (this.getCurrentState() == GAME) // automatic resupplies for builders
 	{
 		for (int i = 0; i < getPlayerCount(); i++)
 		{
 			CPlayer@ player = getPlayer(i);
 			CBlob@ blob = player.getBlob();
-			if (blob !is null && blob.getConfig() == "builder")
+
+			//HACK: degenerate code
+			if (blob.getConfig() == "knight") return;
+			if (blob.getConfig() == "archer") return;
+
+			if (blob !is null)
 			{
 				doGiveSpawnMats(this, player, blob);
 			}
