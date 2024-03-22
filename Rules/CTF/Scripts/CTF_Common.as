@@ -1,5 +1,5 @@
 // spawn resources
-const u32 materials_wait = 30; //seconds between free mats
+const u32 materials_wait = 25; //seconds between free mats
 const u32 materials_wait_warmup = 40; //seconds between free mats
 
 const int warmup_wood_amount = 500;
