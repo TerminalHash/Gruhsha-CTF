@@ -50,7 +50,9 @@ namespace en
 	d_satcheldesc							= "Ignites flammable blocks, activated by throw key",
 
 	// SoundsCommands.as
-	d_togglesoundscomtext					= "Mute or unmute sound commangs",
+	d_togglesoundscomtext					= "Mute or unmute sound commands",
+	d_togglesoundschattexton				= "Annoying sounds is muted for you, ",
+	d_togglesoundschattextoff				= "Annoying sounds is unmuted for you, ",
 
 	// ScoreboardRender.as
 	d_currentversiontext					= "Current version: ",

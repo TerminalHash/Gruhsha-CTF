@@ -66,6 +66,8 @@ namespace Descriptions
 
 	// SoundsCommands.as
 	togglesoundscomtext				= Translate(en::d_togglesoundscomtext+"\\"+ru::d_togglesoundscomtext),
+	togglesoundschattexton			= Translate(en::d_togglesoundschattexton+"\\"+ru::d_togglesoundschattexton),
+	togglesoundschattextoff			= Translate(en::d_togglesoundschattextoff+"\\"+ru::d_togglesoundschattextoff),
 
 	// ScoreboardRender.as
 	currentversiontext				= Translate(en::d_currentversiontext+"\\"+ru::d_currentversiontext),
@@ -74,7 +76,7 @@ namespace Descriptions
 	totaltext						= Translate(en::d_totaltext+"\\"+ru::d_totaltext),
 
 	// Quarters.as
-	peartext					= Translate(en::d_peartext+"\\"+ru::d_peartext),
+	peartext						= Translate(en::d_peartext+"\\"+ru::d_peartext),
 
 	empty 					= "";
 }
