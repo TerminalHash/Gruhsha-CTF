@@ -398,7 +398,7 @@ void onRender(CSprite@ this)
 	bool mouseOnBlob = (mouseWorld - center).getLength() < renderRadius;
 
 	CPlayer@ player = getPlayerByUsername(blob.get_string("owner"));
-	if (player.getBlob() !is null)
+	if (player !is null && player.getBlob() !is null)
 	{
 		CControls@ controls = player.getBlob().getControls();
 		string ownership = "Owner: " + ( player !is null ? player.getUsername() : "No owner" );
