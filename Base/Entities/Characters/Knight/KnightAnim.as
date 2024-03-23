@@ -51,10 +51,10 @@ void LoadSprites(CSprite@ this)
 		{
 			ensureCorrectRunnerTexture(this, "knight_plmoknijbuhvygcmarmo", "Knightplmoknijbuhvygcmarmo");
 		}
-	else if (username == "tigorsun")
+	/*else if (username == "tigorsun")
 		{
 			ensureCorrectRunnerTexture(this, "knight_tigorsun", "Knighttigorsun");
-		}
+		}*/
 	/*else if (username == "TheCustomerMan")
 		{
 			ensureCorrectRunnerTexture(this, "knight_thecustomerman", "KnightTheCustomerMan");
