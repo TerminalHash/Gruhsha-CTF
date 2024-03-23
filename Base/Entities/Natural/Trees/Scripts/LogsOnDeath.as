@@ -32,11 +32,11 @@ void onDie(CBlob@ this)
 			{
 				log.setAngleDegrees(fall_angle);
 
-				if (p !is null)
+				/*if (p !is null)
 				{
 					log.set_string("lastdamageplayer", p.getUsername());
 					log.set_u32("lastdamagetime", getGameTime());
-				}
+				}*/
 			}
 		}
 	}

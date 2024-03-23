@@ -112,12 +112,14 @@ void Blend(CBlob@ this, CBlob@ tobeblended)
 	{
 		if (isServer())
 		{
-			CPlayer@ p = getPlayerByUsername(tobeblended.get_string("lastdamageplayer"));
+			CPlayer@ p = getPlayerByUsername(this.get_string("owner"));
+			//printf("Saw blob has owner " + this.get_string("owner"));
 
-			if (p !is null && getGameTime() - tobeblended.get_u32("lastdamagetime") <= 30 * getTicksASecond())
+			if (p !is null)
 			{
 				getRules().add_s32("personalwood_" + p.getUsername(), 50);
 				getRules().Sync("personalwood_" + p.getUsername(), true);
+				//printf("Hui " + p.getUsername());
 			}
 		}
 
@@ -384,5 +386,24 @@ void onTick(CSprite@ this)
 
 		Vec2f around(0.5f, -0.5f);
 		chop.RotateBy(30.0f, around);
+	}
+}
+
+void onRender(CSprite@ this)
+{
+	CBlob@ blob = this.getBlob();
+	Vec2f center = blob.getInterpolatedPosition();
+	Vec2f mouseWorld = getControls().getMouseWorldPos();
+	const f32 renderRadius = (blob.getRadius()) * 0.95f;
+	bool mouseOnBlob = (mouseWorld - center).getLength() < renderRadius;
+
+	CPlayer@ player = getPlayerByUsername(blob.get_string("owner"));
+	CControls@ controls = player.getBlob().getControls();
+	string ownership = "Owner: " + ( player !is null ? player.getUsername() : "No owner" );
+
+	if (controls.isKeyPressed(KEY_LCONTROL) && mouseOnBlob && getLocalPlayerBlob() !is null && blob.getTeamNum() == getLocalPlayerBlob().getTeamNum() && !blob.isInInventory())
+	{
+		GUI::SetFont("menu");
+		GUI::DrawTextCentered(ownership, blob.getScreenPos() + Vec2f(0, -30), color_white);
 	}
 }
