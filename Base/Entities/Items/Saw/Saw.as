@@ -398,12 +398,15 @@ void onRender(CSprite@ this)
 	bool mouseOnBlob = (mouseWorld - center).getLength() < renderRadius;
 
 	CPlayer@ player = getPlayerByUsername(blob.get_string("owner"));
-	CControls@ controls = player.getBlob().getControls();
-	string ownership = "Owner: " + ( player !is null ? player.getUsername() : "No owner" );
-
-	if (controls.isKeyPressed(KEY_LCONTROL) && mouseOnBlob && getLocalPlayerBlob() !is null && blob.getTeamNum() == getLocalPlayerBlob().getTeamNum() && !blob.isInInventory())
+	if (player.getBlob() !is null)
 	{
-		GUI::SetFont("menu");
-		GUI::DrawTextCentered(ownership, blob.getScreenPos() + Vec2f(0, -30), color_white);
+		CControls@ controls = player.getBlob().getControls();
+		string ownership = "Owner: " + ( player !is null ? player.getUsername() : "No owner" );
+
+		if (controls.isKeyPressed(KEY_LCONTROL) && mouseOnBlob && getLocalPlayerBlob() !is null && blob.getTeamNum() == getLocalPlayerBlob().getTeamNum() && !blob.isInInventory())
+		{
+			GUI::SetFont("menu");
+			GUI::DrawTextCentered(ownership, blob.getScreenPos() + Vec2f(0, -30), color_white);
+		}
 	}
 }
