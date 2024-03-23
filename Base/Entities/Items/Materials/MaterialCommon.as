@@ -105,13 +105,13 @@ namespace Material
 
 			if (name == "mat_stone")
 			{
-				getRules().add_s32("personalstone_" + player.getUsername(), quantity);
-				getRules().Sync("personalstone_" + player.getUsername(), true);
+				getRules().add_s32("personalstone_" + player.getTeamNum(), quantity);
+				getRules().Sync("personalstone_" + player.getTeamNum(), true);
 			}
 			else if (name == "mat_wood")
 			{
-				getRules().add_s32("personalwood_" + player.getUsername(), quantity);
-				getRules().Sync("personalwood_" + player.getUsername(), true);
+				getRules().add_s32("personalwood_" + player.getTeamNum(), quantity);
+				getRules().Sync("personalwood_" + player.getTeamNum(), true);
 			}
 
 			return;

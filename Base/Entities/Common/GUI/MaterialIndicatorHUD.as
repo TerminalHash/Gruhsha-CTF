@@ -29,8 +29,8 @@ void DrawPersonalMats()
 		Vec2f ul2 = ul + Vec2f(0, 40);
 		Vec2f ul3 = ul2 + Vec2f(0, 40);
 
-		string msg1 = getRules().get_s32("personalstone_" + p.getUsername());
-		string msg2 = getRules().get_s32("personalwood_" + p.getUsername());
+		string msg1 = getRules().get_s32("personalstone_" + p.getTeamNum());
+		string msg2 = getRules().get_s32("personalwood_" + p.getTeamNum());
 		//string msg3 = getRules().get_s32("personalgold_" + p.getUsername());
 
 		SColor dcolor = blue.color;

@@ -12,11 +12,11 @@ class AllMatsCommand : BlobCommand
 
 	void SpawnBlobAt(Vec2f pos, string[] args, CPlayer@ player)
 	{
-		getRules().add_s32("personalwood_" + player.getUsername(), 500);
-		getRules().Sync("personalwood_" + player.getUsername(), true);
+		getRules().add_s32("personalwood_" + player.getTeamNum(), 500);
+		getRules().Sync("personalwood_" + player.getTeamNum(), true);
 
-		getRules().add_s32("personalstone_" + player.getUsername(), 500);
-		getRules().Sync("personalstone_" + player.getUsername(), true);
+		getRules().add_s32("personalstone_" + player.getTeamNum(), 500);
+		getRules().Sync("personalstone_" + player.getTeamNum(), true);
 
 		/*CBlob@ wood = server_CreateBlob("mat_wood", -1, pos);
 		wood.server_SetQuantity(500);
@@ -38,8 +38,8 @@ class WoodCommand : BlobCommand
 	{
 		//Sound::Play("achievement");
 
-		getRules().add_s32("personalwood_" + player.getUsername(), 500);
-		getRules().Sync("personalwood_" + player.getUsername(), true);
+		getRules().add_s32("personalwood_" + player.getTeamNum(), 500);
+		getRules().Sync("personalwood_" + player.getTeamNum(), true);
 	}
 
 	/*void SpawnBlobAt(Vec2f pos, string[] args, CPlayer@ player)
@@ -61,8 +61,8 @@ class StoneCommand : BlobCommand
 	{
 		//Sound::Play("achievement");
 
-		getRules().add_s32("personalstone_" + player.getUsername(), 500);
-		getRules().Sync("personalstone_" + player.getUsername(), true);
+		getRules().add_s32("personalstone_" + player.getTeamNum(), 500);
+		getRules().Sync("personalstone_" + player.getTeamNum(), true);
 	}
 
 	/*void SpawnBlobAt(Vec2f pos, string[] args, CPlayer@ player)
@@ -86,7 +86,7 @@ class GoldCommand : BlobCommand
 	}
 }
 
-class ConvertStoneToReal : BlobCommand
+class ConvertStoneToReal : ChatCommand
 {
 	ConvertStoneToReal()
 	{
@@ -101,13 +101,21 @@ class ConvertStoneToReal : BlobCommand
 		);
 	}
 
-	void SpawnBlobAt(Vec2f pos, string[] args, CPlayer@ player)
+	void Execute(string[] args, CPlayer@ player)
 	{
-		getRules().sub_s32("personalstone_" + player.getUsername(), 50);
-		getRules().Sync("personalstone_" + player.getUsername(), true);
+		CRules@ rules = getRules();
 
-		CBlob@ stone = server_CreateBlob("mat_stone", -1, pos);
-		stone.server_SetQuantity(50);
+		u8 team = player.getBlob().getTeamNum();
+		Vec2f pos = player.getBlob().getPosition();
+
+		if (player.isMyPlayer())
+		{
+			rules.sub_s32("personalstone_" + player.getTeamNum(), 250);
+			rules.Sync("personalwood_" + player.getTeamNum(), true);
+
+			server_CreateBlob("mat_stone" + player.getTeamNum(), team, pos + Vec2f(0, -5));
+		}
+
+		//printf("Boolean no_class_change_on_shop is " + rules.get_bool("no_class_change_on_shop"));
 	}
-
 }
