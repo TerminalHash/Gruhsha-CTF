@@ -23,7 +23,7 @@ class ToggleSounds : ChatCommand
 		rules.set_bool(player.getUsername() + "is_deaf", !rules.get_bool(player.getUsername() + "is_deaf"));
 
 		// Client chat
-		if (isClient())
+		if (player is getLocalPlayer())
 		{
 			if (rules.get_bool(player.getUsername() + "is_deaf") == true)
 			{
