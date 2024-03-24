@@ -185,62 +185,62 @@ void DrawCommandsHelp ()
 
             if (p.isMod())
             {
-            // Category
-			//string line_captain = "Капитанская система:";
-			GUI::DrawText(Descriptions::pageonelinecaptain, topleft_text, colorura);
-			GUI::GetTextDimensions(Descriptions::pageonelinecaptain, dim);
-			topleft_text += Vec2f(0, dim.y + 2);
+				// Category
+				//string line_captain = "Капитанская система:";
+				GUI::DrawText(Descriptions::pageonelinecaptain, topleft_text, colorura);
+				GUI::GetTextDimensions(Descriptions::pageonelinecaptain, dim);
+				topleft_text += Vec2f(0, dim.y + 2);
 
-			GUI::DrawLine2D(Vec2f(topleft_text.x, topleft_text.y), Vec2f(topleft_text.x + 874, topleft_text.y), colorura);
-			topleft_text += Vec2f(0, 5);
+				GUI::DrawLine2D(Vec2f(topleft_text.x, topleft_text.y), Vec2f(topleft_text.x + 874, topleft_text.y), colorura);
+				topleft_text += Vec2f(0, 5);
 
-			// line 1
-			//string line_one = "/specall - сделать всех игроков наблюдателями";
-			GUI::DrawText(Descriptions::pageonelineone, topleft_text, colorura);
-			GUI::GetTextDimensions(Descriptions::pageonelineone, dim);
-			topleft_text += Vec2f(0, dim.y + 2);
+				// line 1
+				//string line_one = "/specall - сделать всех игроков наблюдателями";
+				GUI::DrawText(Descriptions::pageonelineone, topleft_text, colorura);
+				GUI::GetTextDimensions(Descriptions::pageonelineone, dim);
+				topleft_text += Vec2f(0, dim.y + 2);
 
-			// line 2
-			//string line_two = "/appoint - повысить двух игроков до Капитанов";
-			GUI::DrawText(Descriptions::pageonelinetwo, topleft_text, colorura);
-			GUI::GetTextDimensions(Descriptions::pageonelinetwo, dim);
-			topleft_text += Vec2f(0, dim.y + 2);
+				// line 2
+				//string line_two = "/appoint - повысить двух игроков до Капитанов";
+				GUI::DrawText(Descriptions::pageonelinetwo, topleft_text, colorura);
+				GUI::GetTextDimensions(Descriptions::pageonelinetwo, dim);
+				topleft_text += Vec2f(0, dim.y + 2);
 
-			// line 3
-			//string line_third = "/demote - понизить Капитанов до обычных игроков";
-			GUI::DrawText(Descriptions::pageonelinethree, topleft_text, colorura);
-			GUI::GetTextDimensions(Descriptions::pageonelinethree, dim);
-			topleft_text += Vec2f(0, dim.y + 2);
+				// line 3
+				//string line_third = "/demote - понизить Капитанов до обычных игроков";
+				GUI::DrawText(Descriptions::pageonelinethree, topleft_text, colorura);
+				GUI::GetTextDimensions(Descriptions::pageonelinethree, dim);
+				topleft_text += Vec2f(0, dim.y + 2);
 
-			// line 4
-			//string line_four = "/pick - берёт указанного игрока из наблюдателей в твою команду и передаёт право выбора другому Капитану";
-			GUI::DrawText(Descriptions::pageonelinefour, topleft_text, colorura);
-			GUI::GetTextDimensions(Descriptions::pageonelinefour, dim);
-			topleft_text += Vec2f(0, dim.y + 2);
+				// line 4
+				//string line_four = "/pick - берёт указанного игрока из наблюдателей в твою команду и передаёт право выбора другому Капитану";
+				GUI::DrawText(Descriptions::pageonelinefour, topleft_text, colorura);
+				GUI::GetTextDimensions(Descriptions::pageonelinefour, dim);
+				topleft_text += Vec2f(0, dim.y + 2);
 
-			// line 5
-			//string line_five = "/lock - запрещает набирать людей в команды, запоминая состав и останавливая процесс набора игроков";
-			GUI::DrawText(Descriptions::pageonelinefive, topleft_text, colorura);
-			GUI::GetTextDimensions(Descriptions::pageonelinefive, dim);
-			topleft_text += Vec2f(0, dim.y + 2);
+				// line 5
+				//string line_five = "/lock - запрещает набирать людей в команды, запоминая состав и останавливая процесс набора игроков";
+				GUI::DrawText(Descriptions::pageonelinefive, topleft_text, colorura);
+				GUI::GetTextDimensions(Descriptions::pageonelinefive, dim);
+				topleft_text += Vec2f(0, dim.y + 2);
 
-			// line 6
-			//string line_six = "/blim - устанавливает лимит на строителей в командах";
-			GUI::DrawText(Descriptions::pageonelinesix, topleft_text, colorura);
-			GUI::GetTextDimensions(Descriptions::pageonelinesix, dim);
-			topleft_text += Vec2f(0, dim.y + 2);
+				// line 6
+				//string line_six = "/blim - устанавливает лимит на строителей в командах";
+				GUI::DrawText(Descriptions::pageonelinesix, topleft_text, colorura);
+				GUI::GetTextDimensions(Descriptions::pageonelinesix, dim);
+				topleft_text += Vec2f(0, dim.y + 2);
 
-			// line 7
-			//string line_seven = "/alim - устанавливает лимит на лучников в командах";
-			GUI::DrawText(Descriptions::pageonelineseven, topleft_text, colorura);
-			GUI::GetTextDimensions(Descriptions::pageonelineseven, dim);
-			topleft_text += Vec2f(0, dim.y + 2);
+				// line 7
+				//string line_seven = "/alim - устанавливает лимит на лучников в командах";
+				GUI::DrawText(Descriptions::pageonelineseven, topleft_text, colorura);
+				GUI::GetTextDimensions(Descriptions::pageonelineseven, dim);
+				topleft_text += Vec2f(0, dim.y + 2);
 
-			// line 8
-			//string line_eight = "/togglechclass - переключить смену классов в магазинах";
-			GUI::DrawText(Descriptions::pageonelineeight, topleft_text, colorura);
-			GUI::GetTextDimensions(Descriptions::pageonelineeight, dim);
-			topleft_text += Vec2f(0, dim.y + 12);
+				// line 8
+				//string line_eight = "/togglechclass - переключить смену классов в магазинах";
+				GUI::DrawText(Descriptions::pageonelineeight, topleft_text, colorura);
+				GUI::GetTextDimensions(Descriptions::pageonelineeight, dim);
+				topleft_text += Vec2f(0, dim.y + 12);
             }
 
             // Category
