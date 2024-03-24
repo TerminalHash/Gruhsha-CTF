@@ -390,7 +390,6 @@ void onTick(CSprite@ this)
 }
 void onRender(CSprite@ this)
 {
-	if(getLocalPlayer() is null) return;
 	CBlob@ blob = this.getBlob();
 	Vec2f center = blob.getInterpolatedPosition();
 	Vec2f mouseWorld = getControls().getMouseWorldPos();
