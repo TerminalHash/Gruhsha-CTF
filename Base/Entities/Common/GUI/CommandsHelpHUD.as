@@ -14,7 +14,7 @@ void DrawCommandsHelp ()
 
     CControls@ controls = p.getControls();
 
-	Vec2f tl = Vec2f(8, 920);
+	Vec2f tl = Vec2f(12, 140);
 
 	const Vec2f mousePos = controls.getMouseScreenPos();
 	const bool hover = (mousePos.x > tl.x && mousePos.x < tl.x + 60 && mousePos.y > tl.y && mousePos.y < tl.y + 60);
@@ -55,20 +55,20 @@ void DrawCommandsHelp ()
 		SColor colorura = SColor(255, 255, 255, 255);
 		SColor colorbubu = SColor(255, 255, 221, 156);
 
-		Vec2f top_left_info_pane = Vec2f(0, 0) + Vec2f(getScreenWidth() / 2, getScreenHeight() / 2) + Vec2f(-450, -120);
+		Vec2f top_left_info_pane = Vec2f(0, 0) + Vec2f(getScreenWidth() / 2, getScreenHeight() / 2) + Vec2f(-450, -220);
 
 		// Page buttons with arrows
 		//Vec2f left_page_button = Vec2f(0, 0) + Vec2f(getScreenWidth() / 2.15, getScreenHeight() / 2) + Vec2f(-430, -120);
 		//Vec2f right_page_button = Vec2f(0, 0) + Vec2f(getScreenWidth() / 2.15, getScreenHeight() / 2) + Vec2f(530, -120);
 
 		// Page buttons with numbers
-		Vec2f first_page_button = Vec2f(0, 0) + Vec2f(getScreenWidth() / 2.15, getScreenHeight() / 2) + Vec2f(-430, -120);
+		Vec2f first_page_button = Vec2f(0, 0) + Vec2f(getScreenWidth() / 2.15, getScreenHeight() / 2) + Vec2f(-430, -220);
 		bool hover_first_page_button = (mousePos.x > first_page_button.x && mousePos.x < first_page_button.x + 30 && mousePos.y > first_page_button.y && mousePos.y < first_page_button.y + 40);
 
-		Vec2f second_page_button = Vec2f(0, 0) + Vec2f(getScreenWidth() / 2.15, getScreenHeight() / 2) + Vec2f(-430, -70);
+		Vec2f second_page_button = Vec2f(0, 0) + Vec2f(getScreenWidth() / 2.15, getScreenHeight() / 2) + Vec2f(-430, -170);
 		bool hover_second_page_button = (mousePos.x > second_page_button.x && mousePos.x < second_page_button.x + 30 && mousePos.y > second_page_button.y && mousePos.y < second_page_button.y + 40);
 
-		Vec2f third_page_button = Vec2f(0, 0) + Vec2f(getScreenWidth() / 2.15, getScreenHeight() / 2) + Vec2f(-430, -20);
+		Vec2f third_page_button = Vec2f(0, 0) + Vec2f(getScreenWidth() / 2.15, getScreenHeight() / 2) + Vec2f(-430, -120);
 		bool hover_third_page_button = (mousePos.x > third_page_button.x && mousePos.x < third_page_button.x + 30 && mousePos.y > third_page_button.y && mousePos.y < third_page_button.y + 40);
 
 
@@ -131,7 +131,7 @@ void DrawCommandsHelp ()
 		{
 			if (!mouseWasPressed2)
 			{
-				Sound::Play("option");
+				Sound::Play("buttonclick");
 				getRules().set_bool("show help page 1", true);
 				getRules().set_bool("show help page 2", false);
 				getRules().set_bool("show help page 3", false);
@@ -162,7 +162,7 @@ void DrawCommandsHelp ()
 		{
 			if (!mouseWasPressed3)
 			{
-				Sound::Play("option");
+				Sound::Play("buttonclick");
 				getRules().set_bool("show help page 1", false);
 				getRules().set_bool("show help page 2", true);
 				getRules().set_bool("show help page 3", false);
@@ -192,7 +192,7 @@ void DrawCommandsHelp ()
 		{
 			if (!mouseWasPressed4)
 			{
-				Sound::Play("option");
+				Sound::Play("buttonclick");
 				getRules().set_bool("show help page 1", false);
 				getRules().set_bool("show help page 2", false);
 				getRules().set_bool("show help page 3", true);
