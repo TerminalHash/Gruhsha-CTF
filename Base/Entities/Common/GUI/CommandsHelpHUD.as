@@ -1,3 +1,5 @@
+#include "TranslationsSystem.as"
+
 bool mouseWasPressed1 = false;
 bool mouseWasPressed2 = false;
 bool mouseWasPressed3 = false;
@@ -57,10 +59,6 @@ void DrawCommandsHelp ()
 
 		Vec2f top_left_info_pane = Vec2f(0, 0) + Vec2f(getScreenWidth() / 2, getScreenHeight() / 2) + Vec2f(-450, -220);
 
-		// Page buttons with arrows
-		//Vec2f left_page_button = Vec2f(0, 0) + Vec2f(getScreenWidth() / 2.15, getScreenHeight() / 2) + Vec2f(-430, -120);
-		//Vec2f right_page_button = Vec2f(0, 0) + Vec2f(getScreenWidth() / 2.15, getScreenHeight() / 2) + Vec2f(530, -120);
-
 		// Page buttons with numbers
 		Vec2f first_page_button = Vec2f(0, 0) + Vec2f(getScreenWidth() / 2.15, getScreenHeight() / 2) + Vec2f(-430, -220);
 		bool hover_first_page_button = (mousePos.x > first_page_button.x && mousePos.x < first_page_button.x + 30 && mousePos.y > first_page_button.y && mousePos.y < first_page_button.y + 40);
@@ -77,42 +75,6 @@ void DrawCommandsHelp ()
 		Vec2f footer = top_left_info_pane + Vec2f(450, 355);
 		Vec2f topleft_text = top_left_info_pane + Vec2f(12, 24);
 		Vec2f dim = Vec2f_zero;
-
-		/*GUI::DrawPane(left_page_button, left_page_button + Vec2f(30, 40), SColor(255, 150, 150, 150));
-		GUI::DrawIcon("arrow_left.png", 0, Vec2f(10, 23), left_page_button + Vec2f(10, 8), 0.5f, 0);
-
-		GUI::DrawPane(right_page_button, right_page_button + Vec2f(30, 40), SColor(255, 150, 150, 150));
-		GUI::DrawIcon("arrow_right.png", 0, Vec2f(10, 23), right_page_button + Vec2f(10, 8), 0.5f, 0);
-
-		if (mousePos.x > left_page_button.x && mousePos.x < left_page_button.x + 30 && mousePos.y > left_page_button.y && mousePos.y < left_page_button.y +60 && controls.mousePressed1)
-		{
-			if (!mouseWasPressed1)
-			{
-				//Sound::Play("option");
-				getRules().set_bool("show help page 2", false);
-				getRules().set_bool("show help page 1", true);
-				mouseWasPressed1 = true;
-			}
-			else
-			{
-				mouseWasPressed1 = false;
-			}
-		}
-
-		if (mousePos.x > right_page_button.x && mousePos.x < right_page_button.x + 30 && mousePos.y > right_page_button.y && mousePos.y < right_page_button.y +60 && controls.mousePressed1)
-		{
-			if (!mouseWasPressed1)
-			{
-				//Sound::Play("option");
-				getRules().set_bool("show help page 1", false);
-				getRules().set_bool("show help page 2", true);
-				mouseWasPressed1 = true;
-			}
-			else
-			{
-				mouseWasPressed1 = false;
-			}
-		}*/
 
 		////////////////////////////////////////////////////
 		/////////           First Page            /////////
@@ -216,102 +178,102 @@ void DrawCommandsHelp ()
 			GUI::SetFont("menu");
 
 			// Title
-			string line_main = "Список команд мода:";
-			GUI::DrawTextCentered(line_main, title, colorura);
-			GUI::GetTextDimensions(line_main, dim);
+			//string line_main = "Список команд мода:";
+			GUI::DrawTextCentered(Descriptions::pageonelinemain, title, colorura);
+			GUI::GetTextDimensions(Descriptions::pageonelinemain, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
             if (p.isMod())
             {
             // Category
-			string line_captain = "Капитанская система:";
-			GUI::DrawText(line_captain, topleft_text, colorura);
-			GUI::GetTextDimensions(line_captain, dim);
+			//string line_captain = "Капитанская система:";
+			GUI::DrawText(Descriptions::pageonelinecaptain, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pageonelinecaptain, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
 			GUI::DrawLine2D(Vec2f(topleft_text.x, topleft_text.y), Vec2f(topleft_text.x + 874, topleft_text.y), colorura);
 			topleft_text += Vec2f(0, 5);
 
 			// line 1
-			string line_one = "/specall - сделать всех игроков наблюдателями";
-			GUI::DrawText(line_one, topleft_text, colorura);
-			GUI::GetTextDimensions(line_one, dim);
+			//string line_one = "/specall - сделать всех игроков наблюдателями";
+			GUI::DrawText(Descriptions::pageonelineone, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pageonelineone, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
 			// line 2
-			string line_two = "/appoint - повысить двух игроков до Капитанов";
-			GUI::DrawText(line_two, topleft_text, colorura);
-			GUI::GetTextDimensions(line_two, dim);
+			//string line_two = "/appoint - повысить двух игроков до Капитанов";
+			GUI::DrawText(Descriptions::pageonelinetwo, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pageonelinetwo, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
 			// line 3
-			string line_third = "/demote - понизить Капитанов до обычных игроков";
-			GUI::DrawText(line_third, topleft_text, colorura);
-			GUI::GetTextDimensions(line_third, dim);
+			//string line_third = "/demote - понизить Капитанов до обычных игроков";
+			GUI::DrawText(Descriptions::pageonelinethree, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pageonelinethree, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
 			// line 4
-			string line_four = "/pick - берёт указанного игрока из наблюдателей в твою команду и передаёт право выбора другому Капитану";
-			GUI::DrawText(line_four, topleft_text, colorura);
-			GUI::GetTextDimensions(line_four, dim);
+			//string line_four = "/pick - берёт указанного игрока из наблюдателей в твою команду и передаёт право выбора другому Капитану";
+			GUI::DrawText(Descriptions::pageonelinefour, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pageonelinefour, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
 			// line 5
-			string line_five = "/lock - запрещает набирать людей в команды, запоминая состав и останавливая процесс набора игроков";
-			GUI::DrawText(line_five, topleft_text, colorura);
-			GUI::GetTextDimensions(line_five, dim);
+			//string line_five = "/lock - запрещает набирать людей в команды, запоминая состав и останавливая процесс набора игроков";
+			GUI::DrawText(Descriptions::pageonelinefive, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pageonelinefive, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
 			// line 6
-			string line_six = "/blim - устанавливает лимит на строителей в командах";
-			GUI::DrawText(line_six, topleft_text, colorura);
-			GUI::GetTextDimensions(line_six, dim);
+			//string line_six = "/blim - устанавливает лимит на строителей в командах";
+			GUI::DrawText(Descriptions::pageonelinesix, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pageonelinesix, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
 			// line 7
-			string line_seven = "/alim - устанавливает лимит на лучников в командах";
-			GUI::DrawText(line_seven, topleft_text, colorura);
-			GUI::GetTextDimensions(line_seven, dim);
+			//string line_seven = "/alim - устанавливает лимит на лучников в командах";
+			GUI::DrawText(Descriptions::pageonelineseven, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pageonelineseven, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
 			// line 8
-			string line_eight = "/togglechclass - переключить смену классов в магазинах";
-			GUI::DrawText(line_eight, topleft_text, colorura);
-			GUI::GetTextDimensions(line_eight, dim);
+			//string line_eight = "/togglechclass - переключить смену классов в магазинах";
+			GUI::DrawText(Descriptions::pageonelineeight, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pageonelineeight, dim);
 			topleft_text += Vec2f(0, dim.y + 12);
             }
 
             // Category
-			string line_player = "Личные:";
-			GUI::DrawText(line_player, topleft_text, colorura);
-			GUI::GetTextDimensions(line_player, dim);
+			//string line_player = "Личные:";
+			GUI::DrawText(Descriptions::pageonelineplayer, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pageonelineplayer, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
 			GUI::DrawLine2D(Vec2f(topleft_text.x, topleft_text.y), Vec2f(topleft_text.x + 874, topleft_text.y), colorura);
 			topleft_text += Vec2f(0, 5);
 
 			// line 9
-			string line_nine = "/bindings - открыть меню настроек мода (оставлена как альтернатива кнопке)";
-			GUI::DrawText(line_nine, topleft_text, colorura);
-			GUI::GetTextDimensions(line_nine, dim);
+			//string line_nine = "/bindings - открыть меню настроек мода (оставлена как альтернатива кнопке)";
+			GUI::DrawText(Descriptions::pageonelinenine, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pageonelinenine, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
 			// line 10
-			string line_ten = "/realstone - сконвертировать 50 единиц виртуального камня в реальный";
-			GUI::DrawText(line_ten, topleft_text, colorura);
-			GUI::GetTextDimensions(line_ten, dim);
+			//string line_ten = "/realstone - сконвертировать 50 единиц виртуального камня в реальный";
+			GUI::DrawText(Descriptions::pageonelineten, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pageonelineten, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
 			// line 11
-			string line_el = "/togglesounds - переключить воспроизведение звуков войслайнов для себя";
-			GUI::DrawText(line_el, topleft_text, colorura);
-			GUI::GetTextDimensions(line_el, dim);
+			//string line_el = "/togglesounds - переключить воспроизведение звуков войслайнов для себя";
+			GUI::DrawText(Descriptions::pageonelineel, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pageonelineel, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
             // Footer
-			string line_footer = "Колесо меток, колесо модовых эмоций, бинды и настройки игрока находятся в меню настроек мода!";
-			GUI::DrawTextCentered(line_footer, footer, colorura);
-			GUI::GetTextDimensions(line_footer, dim);
+			//string line_footer = "Колесо меток, колесо модовых эмоций, бинды и настройки игрока находятся в меню настроек мода!";
+			GUI::DrawTextCentered(Descriptions::pageonelinefooter, footer, colorura);
+			GUI::GetTextDimensions(Descriptions::pageonelinefooter, dim);
 		}
 		else if (getRules().get_bool("show help page 1"))
 		{
@@ -322,28 +284,28 @@ void DrawCommandsHelp ()
 			GUI::SetFont("menu");
 
 			// Title
-			string line_main = "Gruhsha CTF: RU Captains Modification";
-			GUI::DrawTextCentered(line_main, title, colorura);
-			GUI::GetTextDimensions(line_main, dim);
+			//string line_main = "Gruhsha CTF: RU Captains Modification";
+			GUI::DrawTextCentered(Descriptions::pagetwolinemain, title, colorura);
+			GUI::GetTextDimensions(Descriptions::pagetwolinemain, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
 			GUI::DrawLine2D(Vec2f(topleft_text.x, topleft_text.y), Vec2f(topleft_text.x + 874, topleft_text.y), colorura);
 			topleft_text += Vec2f(0, 5);
 
-            // Category
-			string line_one = "Gruhsha CTF или же Груша - это русскоязычный вариант Captains-модов.";
-			GUI::DrawText(line_one, topleft_text, colorura);
-			GUI::GetTextDimensions(line_one, dim);
+            // Compact description
+			//string line_one = "Gruhsha CTF или же Груша - это русскоязычный вариант Captains-модов.";
+			GUI::DrawText(Descriptions::pagetwolineone, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagetwolineone, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
-			string line_two = "Здесь сохранены правила ванильного CTF-режима в максимально-исходном виде и проведён аккуратный ребаланс.";
-			GUI::DrawText(line_two, topleft_text, colorura);
-			GUI::GetTextDimensions(line_two, dim);
+			//string line_two = "Здесь сохранены правила ванильного CTF-режима в максимально-исходном виде и проведён аккуратный ребаланс.";
+			GUI::DrawText(Descriptions::pagetwolinetwo, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagetwolinetwo, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
-			string line_three = "Вам по-прежнему требуется захватить флаги противника для победы в матче, но теперь за команды отвечают Капитаны.";
-			GUI::DrawText(line_three, topleft_text, colorura);
-			GUI::GetTextDimensions(line_three, dim);
+			//string line_three = "Вам по-прежнему требуется захватить флаги противника для победы в матче, но теперь за команды отвечают Капитаны.";
+			GUI::DrawText(Descriptions::pagetwolinethree, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagetwolinethree, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
 			string line_empty1 = " ";
@@ -351,80 +313,56 @@ void DrawCommandsHelp ()
 			GUI::GetTextDimensions(line_empty1, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
-			string line_four = "Краткий экскурс в основные изменения мода:";
-			GUI::DrawText(line_four, topleft_text, colorura);
-			GUI::GetTextDimensions(line_four, dim);
+			// Feature list
+			//string line_four = "Краткий экскурс в основные изменения мода:";
+			GUI::DrawText(Descriptions::pagetwolinefour, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagetwolinefour, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
-			string line_five = "- Классы строителя и лучника имеют лимиты по количеству человек, одновременно играющих на них;";
-			GUI::DrawText(line_five, topleft_text, colorura);
-			GUI::GetTextDimensions(line_five, dim);
+			//string line_five = "- Классы строителя и лучника имеют лимиты по количеству человек, одновременно играющих на них;";
+			GUI::DrawText(Descriptions::pagetwolinefive, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagetwolinefive, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
-			string line_six = "- Рыцарям разрешено использовать дрели в конкретных зонах (база команды и внутри границы красной зоны);";
-			GUI::DrawText(line_six, topleft_text, colorura);
-			GUI::GetTextDimensions(line_six, dim);
+			//string line_six = "- Рыцарям разрешено использовать дрели в конкретных зонах (база команды и внутри границы красной зоны);";
+			GUI::DrawText(Descriptions::pagetwolinesix, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagetwolinesix, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
-			string line_seven = "- Изменена физика батутов: они толкают вас вперёд с силой, определяемой высотой прыжка или скоростью;";
-			GUI::DrawText(line_seven, topleft_text, colorura);
-			GUI::GetTextDimensions(line_seven, dim);
+			//string line_seven = "- Изменена физика батутов: они толкают вас вперёд с силой, определяемой высотой прыжка или скоростью;";
+			GUI::DrawText(Descriptions::pagetwolineseven, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagetwolineseven, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
-			string line_eight = "- Каждый игрок имеет свой собственный пул материалов, камень и дерево отныне виртуальныe;";
-			GUI::DrawText(line_eight, topleft_text, colorura);
-			GUI::GetTextDimensions(line_eight, dim);
+			//string line_eight = "- Каждый игрок имеет свой собственный пул материалов, камень и дерево отныне виртуальныe;";
+			GUI::DrawText(Descriptions::pagetwolineeight, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagetwolineeight, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
-			string line_kek = "- Аккуратно сбалансированы свойства некоторых предметов и цены на них;";
-			GUI::DrawText(line_kek, topleft_text, colorura);
-			GUI::GetTextDimensions(line_kek, dim);
+			//string line_nine = "- Аккуратно сбалансированы свойства некоторых предметов и цены на них;";
+			GUI::DrawText(Descriptions::pagetwolinenine, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagetwolinenine, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
-			/*string line_nine = "- Введён динамический респаун игроков (зависит от количества игроков в командах);";
-			GUI::DrawText(line_nine, topleft_text, colorura);
-			GUI::GetTextDimensions(line_nine, dim);
+			//string line_ten = "- Добавлены собственные настройки мода (меню вызывается через кнопку над таблицами игроков);";
+			GUI::DrawText(Descriptions::pagetwolineten, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagetwolineten, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
-			string line_ten = "- Введены динамические на некоторые предметы (так же зависят от количества игроков в командах);";
-			GUI::DrawText(line_ten, topleft_text, colorura);
-			GUI::GetTextDimensions(line_ten, dim);
-			topleft_text += Vec2f(0, dim.y + 2);*/
-
-			string line_el = "- Добавлены собственные настройки мода (меню вызывается через кнопку над таблицами игроков);";
-			GUI::DrawText(line_el, topleft_text, colorura);
-			GUI::GetTextDimensions(line_el, dim);
+			//string line_el = "- Пофикшены некоторые мозговыносящие баги ванильной игры;";
+			GUI::DrawText(Descriptions::pagetwolineel, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagetwolineel, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
-			/*string line_tw = "- Изменены требования (добавлено что-то или изменено имеющееся) к некоторым предметам;";
-			GUI::DrawText(line_tw, topleft_text, colorura);
-			GUI::GetTextDimensions(line_tw, dim);
-			topleft_text += Vec2f(0, dim.y + 2);
-
-			string line_th = "- Добавлены ограничения на кол-во переносимых дрелей и еды;";
-			GUI::DrawText(line_th, topleft_text, colorura);
-			GUI::GetTextDimensions(line_th, dim);
-			topleft_text += Vec2f(0, dim.y + 2);*/
-
-			/*string line_fr = "- Добавлены различные кастомные штуки по типу войслайнов, эмоций и голов;";
-			GUI::DrawText(line_fr, topleft_text, colorura);
-			GUI::GetTextDimensions(line_fr, dim);
-			topleft_text += Vec2f(0, dim.y + 2);*/
-
-			string line_fif = "- Пофикшены некоторые мозговыносящие баги ванильной игры;";
-			GUI::DrawText(line_fif, topleft_text, colorura);
-			GUI::GetTextDimensions(line_fif, dim);
-			topleft_text += Vec2f(0, dim.y + 2);
-
-			string line_sixt = "- И многое-многое другое.";
-			GUI::DrawText(line_sixt, topleft_text, colorura);
-			GUI::GetTextDimensions(line_sixt, dim);
+			//string line_twen = "- И многое-многое другое.";
+			GUI::DrawText(Descriptions::pagetwolinetwen, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagetwolinetwen, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
             // Footer
-			string line_footer = "Нажмите на любую кнопку слева от панели, чтобы перейти к другой странице.";
-			GUI::DrawTextCentered(line_footer, footer /*+ Vec2f(0, 40)*/, colorura);
-			GUI::GetTextDimensions(line_footer, dim);
+			//string line_footer = "Нажмите на любую кнопку слева от панели, чтобы перейти к другой странице.";
+			GUI::DrawTextCentered(Descriptions::pagetwolinefooter, footer, colorura);
+			GUI::GetTextDimensions(Descriptions::pagetwolinefooter, dim);
 		}
 		else if (getRules().get_bool("show help page 3"))
 		{
@@ -433,23 +371,23 @@ void DrawCommandsHelp ()
             GUI::DrawIcon("pear_big.png", 0, Vec2f(16, 16), top_left_info_pane + Vec2f(870, 0), 1.0f, 0);
 
 			// Title
-			string line_main = "Авторы модификации";
-			GUI::DrawTextCentered(line_main, title, colorura);
-			GUI::GetTextDimensions(line_main, dim);
+			//string line_main = "Авторы модификации";
+			GUI::DrawTextCentered(Descriptions::pagethreelinemain, title, colorura);
+			GUI::GetTextDimensions(Descriptions::pagethreelinemain, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
 			GUI::DrawLine2D(Vec2f(topleft_text.x, topleft_text.y), Vec2f(topleft_text.x + 874, topleft_text.y), colorura);
 			topleft_text += Vec2f(0, 5);
 
-            // Category
-			string line_one = "Skemonde - создатель Груши";
-			GUI::DrawText(line_one, topleft_text, colorura);
-			GUI::GetTextDimensions(line_one, dim);
+            // Maintainers
+			//string line_one = "Skemonde - создатель Груши";
+			GUI::DrawText(Descriptions::pagethreelineone, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagethreelineone, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
-			string line_two = "TerminalHash - основной майнтайнер мода";
-			GUI::DrawText(line_two, topleft_text, colorura);
-			GUI::GetTextDimensions(line_two, dim);
+			//string line_two = "TerminalHash - основной майнтайнер мода";
+			GUI::DrawText(Descriptions::pagethreelinetwo, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagethreelinetwo, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
 			string line_empty1 = " ";
@@ -457,15 +395,15 @@ void DrawCommandsHelp ()
 			GUI::GetTextDimensions(line_empty1, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
-
-			string line_third = "Програмисты:";
-			GUI::DrawText(line_third, topleft_text, colorura);
-			GUI::GetTextDimensions(line_third, dim);
+			// Coders
+			//string line_third = "Програмисты:";
+			GUI::DrawText(Descriptions::pagethreelinethree, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagethreelinethree, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
-			string line_four = "TerminalHash, Skemonde, kussakaa, egor0928931, Vagrament aka FeenRant";
-			GUI::DrawText(line_four, topleft_text, colorura);
-			GUI::GetTextDimensions(line_four, dim);
+			//string line_four = "TerminalHash, Skemonde, kussakaa, egor0928931, Vagrament aka FeenRant";
+			GUI::DrawText(Descriptions::pagethreelinefour, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagethreelinefour, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
 			string line_empty2 = " ";
@@ -473,14 +411,15 @@ void DrawCommandsHelp ()
 			GUI::GetTextDimensions(line_empty2, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
-			string line_five = "Художники:";
-			GUI::DrawText(line_five, topleft_text, colorura);
-			GUI::GetTextDimensions(line_five, dim);
+			// Artists
+			//string line_five = "Художники:";
+			GUI::DrawText(Descriptions::pagethreelinefive, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagethreelinefive, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
-			string line_six = "TerminalHash, Skemonde, kussakaa";
-			GUI::DrawText(line_six, topleft_text, colorura);
-			GUI::GetTextDimensions(line_six, dim);
+			//string line_six = "TerminalHash, Skemonde, kussakaa";
+			GUI::DrawText(Descriptions::pagethreelinesix, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagethreelinesix, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 		}
 	}

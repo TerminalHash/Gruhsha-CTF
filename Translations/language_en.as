@@ -28,6 +28,49 @@ namespace en
 	d_universalon							= "On",
 	d_universaloff							= "Off",
 
+	// CommandsHelpHUD.as
+		// Page 1
+	d_pageonelinemain						= "Command list:",
+	d_pageonelinecaptain					= "Captains System:",
+	d_pageonelineone						= "/specall - puts everyone in Spectators",
+	d_pageonelinetwo						= "/appoint - appoints two Team Leaders (they pick players in their teams)",
+	d_pageonelinethree						= "/demote - demotes the Team Leaders",
+	d_pageonelinefour						= "/pick - picks one player FROM SPECTATORS to your team and passes an opportunity to pick to next Team Leader",
+	d_pageonelinefive						= "/lock - ends picking process by approving team personnel",
+	d_pageonelinesix						= "/blim - limits count of builders for every team",
+	d_pageonelineseven						= "/alim - limits count of archers for every team",
+	d_pageonelineeight						= "/togglechclass - switch change of classes in shops",
+	d_pageonelineplayer						= "Personal:",
+	d_pageonelinenine						= "/bindings - show mod settings menu (оставлена как альтернатива кнопке)",
+	d_pageonelineten						= "/realstone - convert 50 units of virtual stone to real stone",
+	d_pageonelineel							= "/togglesounds - mute or unmute sound commands",
+	d_pageonelinefooter						= "The tag wheel, mod emote wheel, bindings and player settings are in the mod settings menu!",
+
+		// Page 2
+	d_pagetwolinemain						= "Gruhsha CTF: RU Captains Modification",
+	d_pagetwolineone						= "Gruhsha CTF - this is the Russian Captains version.",
+	d_pagetwolinetwo						= "Rules of the vanilla CTF mode have been preserved here in their most original form and has been a little rebalanced.",
+	d_pagetwolinethree						= "You still need to capture enemy flags to win the match, but now Captains are in charge of the teams.",
+	d_pagetwolinefour						= "A brief excursion into the main changes of the mod:",
+	d_pagetwolinefive						= "- Builder and archer classes have limits on the number of people playing them simultaneously;",
+	d_pagetwolinesix						= "- Knights are allowed to use drills in specific zones (team base and inside the red zone boundary);",
+	d_pagetwolineseven						= "- Changed the physics of trampolines: they push you forward with a force determined by your jump height or speed;",
+	d_pagetwolineeight						= "- Each player has his own pool of materials, stone and wood are virtual from now on;",
+	d_pagetwolinenine						= "- Carefully balanced the properties of some items and their prices;",
+	d_pagetwolineten						= "- Added custom mod settings (menu is called through the button above the player tables);",
+	d_pagetwolineel							= "- Fixed some braindead bugs of the vanilla game;",
+	d_pagetwolinetwen						= "- And much, much more.",
+	d_pagetwolinefooter						= "Click on any button to the left of the panel to go to another page.",
+
+		// Page 3
+	d_pagethreelinemain						= "Mod authors",
+	d_pagethreelineone						= "Skemonde - first developer of Gruhsha CTF",
+	d_pagethreelinetwo						= "TerminalHash - mod maintainer",
+	d_pagethreelinethree					= "Programmers:",
+	d_pagethreelinefour						= "TerminalHash, Skemonde, kussakaa, egor0928931, Vagrament aka FeenRant",
+	d_pagethreelinefive						= "Artists:",
+	d_pagethreelinesix						= "TerminalHash, Skemonde, kussakaa",
+
 	// PickingCommands.as
 	d_bindingscom							= "Show mod bindings menu",
 	d_togglechcomtext						= "Switch change of classes in shops",
