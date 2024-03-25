@@ -2,7 +2,6 @@
 // a bar with hearts in the bottom left, bottom right free for actor specific stuff
 
 #include "ActorHUDStartPos.as";
-#include "CommandsHelpHUD.as";
 
 void renderBackBar(Vec2f origin, f32 width, f32 scale)
 {
@@ -102,6 +101,5 @@ void onRender(CSprite@ this)
 	renderFrontStone(ul + Vec2f(dim.x + offset, 0), width + width_offset, 1.0f);
 	renderHPBar(blob, ul);
 
-	DrawCommandsHelp();
 	//GUI::DrawIcon("Entities/Common/GUI/BaseGUI.png", 0, Vec2f(128,32), topLeft);
 }
