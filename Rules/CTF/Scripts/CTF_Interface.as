@@ -1,5 +1,6 @@
 #include "CTF_Structs.as";
 #include "ActorHUDStartPos.as";
+#include "CommandsHelpHUD.as";
 
 /*
 void onTick( CRules@ this )
@@ -186,6 +187,9 @@ void onRender(CRules@ this)
 			GUI::DrawText(spawn_message , Vec2f(getScreenWidth() / 2 - 70, getScreenHeight() / 3 + Maths::Sin(getGameTime() / 3.0f) * 5.0f), SColor(255, 255, 255, 55));
 		}
 	}
+
+	DrawCommandsHelp();
+
 }
 
 void onNewPlayerJoin( CRules@ this, CPlayer@ player )
