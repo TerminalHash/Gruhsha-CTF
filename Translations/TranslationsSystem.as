@@ -44,7 +44,7 @@ namespace Descriptions
 	universaloff		  	  		= Translate(en::d_universaloff+"\\"+ru::d_universaloff),
 
 	// CommandsHelpHUD.as
-		// Page 1
+		// Page 1 (2)
 	pageonelinemain					= Translate(en::d_pageonelinemain+"\\"+ru::d_pageonelinemain),
 	pageonelinecaptain				= Translate(en::d_pageonelinecaptain+"\\"+ru::d_pageonelinecaptain),
 	pageonelineone					= Translate(en::d_pageonelineone+"\\"+ru::d_pageonelineone),
@@ -61,7 +61,7 @@ namespace Descriptions
 	pageonelineel					= Translate(en::d_pageonelineel+"\\"+ru::d_pageonelineel),
 	pageonelinefooter				= Translate(en::d_pageonelinefooter+"\\"+ru::d_pageonelinefooter),
 
-		// Page 2
+		// Page 2 (1)
 	pagetwolinemain					= Translate(en::d_pagetwolinemain+"\\"+ru::d_pagetwolinemain),
 	pagetwolineone					= Translate(en::d_pagetwolineone+"\\"+ru::d_pagetwolineone),
 	pagetwolinetwo					= Translate(en::d_pagetwolinetwo+"\\"+ru::d_pagetwolinetwo),
@@ -71,6 +71,7 @@ namespace Descriptions
 	pagetwolinesix					= Translate(en::d_pagetwolinesix+"\\"+ru::d_pagetwolinesix),
 	pagetwolineseven				= Translate(en::d_pagetwolineseven+"\\"+ru::d_pagetwolineseven),
 	pagetwolineeight				= Translate(en::d_pagetwolineeight+"\\"+ru::d_pagetwolineeight),
+	pagetwolinekek					= Translate(en::d_pagetwolinekek+"\\"+ru::d_pagetwolinekek),
 	pagetwolinenine					= Translate(en::d_pagetwolinenine+"\\"+ru::d_pagetwolinenine),
 	pagetwolineten					= Translate(en::d_pagetwolineten+"\\"+ru::d_pagetwolineten),
 	pagetwolineel					= Translate(en::d_pagetwolineel+"\\"+ru::d_pagetwolineel),
@@ -78,13 +79,13 @@ namespace Descriptions
 	pagetwolinefooter				= Translate(en::d_pagetwolinefooter+"\\"+ru::d_pagetwolinefooter),
 
 		// Page 3
-	pagethreelinemain					= Translate(en::d_pagethreelinemain+"\\"+ru::d_pagethreelinemain),
-	pagethreelineone					= Translate(en::d_pagethreelineone+"\\"+ru::d_pagethreelineone),
-	pagethreelinetwo					= Translate(en::d_pagethreelinetwo+"\\"+ru::d_pagethreelinetwo),
-	pagethreelinethree					= Translate(en::d_pagethreelinethree+"\\"+ru::d_pagethreelinethree),
-	pagethreelinefour					= Translate(en::d_pagethreelinefour+"\\"+ru::d_pagethreelinefour),
-	pagethreelinefive					= Translate(en::d_pagethreelinefive+"\\"+ru::d_pagethreelinefive),
-	pagethreelinesix					= Translate(en::d_pagethreelinesix+"\\"+ru::d_pagethreelinesix),
+	pagethreelinemain				= Translate(en::d_pagethreelinemain+"\\"+ru::d_pagethreelinemain),
+	pagethreelineone				= Translate(en::d_pagethreelineone+"\\"+ru::d_pagethreelineone),
+	pagethreelinetwo				= Translate(en::d_pagethreelinetwo+"\\"+ru::d_pagethreelinetwo),
+	pagethreelinethree				= Translate(en::d_pagethreelinethree+"\\"+ru::d_pagethreelinethree),
+	pagethreelinefour				= Translate(en::d_pagethreelinefour+"\\"+ru::d_pagethreelinefour),
+	pagethreelinefive				= Translate(en::d_pagethreelinefive+"\\"+ru::d_pagethreelinefive),
+	pagethreelinesix				= Translate(en::d_pagethreelinesix+"\\"+ru::d_pagethreelinesix),
 
 	// PickingCommands.as
 	bindingscom		  	       		= Translate(en::d_bindingscom+"\\"+ru::d_bindingscom),

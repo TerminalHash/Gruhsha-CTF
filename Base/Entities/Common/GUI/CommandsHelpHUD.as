@@ -339,6 +339,10 @@ void DrawCommandsHelp ()
 			GUI::GetTextDimensions(Descriptions::pagetwolineeight, dim);
 			topleft_text += Vec2f(0, dim.y + 2);
 
+			GUI::DrawText(Descriptions::pagetwolinekek, topleft_text, colorura);
+			GUI::GetTextDimensions(Descriptions::pagetwolinekek, dim);
+			topleft_text += Vec2f(0, dim.y + 2);
+
 			//string line_nine = "- Аккуратно сбалансированы свойства некоторых предметов и цены на них;";
 			GUI::DrawText(Descriptions::pagetwolinenine, topleft_text, colorura);
 			GUI::GetTextDimensions(Descriptions::pagetwolinenine, dim);

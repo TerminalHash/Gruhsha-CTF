@@ -29,7 +29,7 @@ namespace en
 	d_universaloff							= "Off",
 
 	// CommandsHelpHUD.as
-		// Page 1
+		// Page 1 (2)
 	d_pageonelinemain						= "Command list:",
 	d_pageonelinecaptain					= "Captains System:",
 	d_pageonelineone						= "/specall - puts everyone in Spectators",
@@ -46,16 +46,17 @@ namespace en
 	d_pageonelineel							= "/togglesounds - mute or unmute sound commands",
 	d_pageonelinefooter						= "The tag wheel, mod emote wheel, bindings and player settings are in the mod settings menu!",
 
-		// Page 2
+		// Page 2 (1)
 	d_pagetwolinemain						= "Gruhsha CTF: RU Captains Modification",
 	d_pagetwolineone						= "Gruhsha CTF - this is the Russian Captains version.",
-	d_pagetwolinetwo						= "Rules of the vanilla CTF mode have been preserved here in their most original form and has been a little rebalanced.",
-	d_pagetwolinethree						= "You still need to capture enemy flags to win the match, but now Captains are in charge of the teams.",
+	d_pagetwolinetwo						= "Our goal is to turn vanilla CTF into a competitive mode, keeping the core rules and balancing the available items",
+	d_pagetwolinethree						= "and mechanics around the principle of team play, destroying known unfair ways to win.",
 	d_pagetwolinefour						= "A brief excursion into the main changes of the mod:",
 	d_pagetwolinefive						= "- Builder and archer classes have limits on the number of people playing them simultaneously;",
 	d_pagetwolinesix						= "- Knights are allowed to use drills in specific zones (team base and inside the red zone boundary);",
 	d_pagetwolineseven						= "- Changed the physics of trampolines: they push you forward with a force determined by your jump height or speed;",
 	d_pagetwolineeight						= "- Each player has his own pool of materials, stone and wood are virtual from now on;",
+	d_pagetwolinekek						= "- Saws produce wood for the player who bought it (introduced to help builders with wood);",
 	d_pagetwolinenine						= "- Carefully balanced the properties of some items and their prices;",
 	d_pagetwolineten						= "- Added custom mod settings (menu is called through the button above the player tables);",
 	d_pagetwolineel							= "- Fixed some braindead bugs of the vanilla game;",
