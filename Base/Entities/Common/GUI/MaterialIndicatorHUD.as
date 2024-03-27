@@ -15,6 +15,7 @@ void DrawPersonalMats()
 		u16 text_indent = 32;
 		u16 material_display_width = 90;
 		u16 material_display_height = 40;
+		u16 material_display_height1 = 44;
 		Vec2f icon_dimensions = Vec2f(16, 16);
 		string icon = "Materials.png";
 		SColor wood_color = SColor(255, 164, 103, 39);
@@ -40,9 +41,11 @@ void DrawPersonalMats()
 			dcolor = red.color;
 		}
 
-		GUI::DrawPane(ul + Vec2f(0, 4), ul + Vec2f(material_display_width+leftside_indent, material_display_height), SColor(255, 200, 200, 200));
+		//GUI::DrawPane(ul + Vec2f(0, 4), ul + Vec2f(material_display_width+leftside_indent, material_display_height), SColor(255, 200, 200, 200));
+		GUI::DrawIcon("material_texture.png", ul + Vec2f(0,-15));
 
-		GUI::DrawPane(ul2 + Vec2f(0, 4), ul2 + Vec2f(material_display_width+leftside_indent, material_display_height), SColor(255, 200, 200, 200));
+		//GUI::DrawPane(ul2 + Vec2f(0, 4), ul2 + Vec2f(material_display_width+leftside_indent, material_display_height), SColor(255, 200, 200, 200));
+		GUI::DrawIcon("material_texture.png", ul2 + Vec2f(0,-8));
 
 		//GUI::DrawPane(ul3 + Vec2f(0, 4), ul3 + Vec2f(material_display_width+leftside_indent, material_display_height), SColor(255, 200, 200, 200));
 
@@ -51,20 +54,20 @@ void DrawPersonalMats()
 			icon,
 			25, //matwood icon
 			icon_dimensions,
-			ul2 + Vec2f(leftside_indent, 0),
+			ul2 + Vec2f(leftside_indent + 3, -6),
 			1.0f,
 			0);
-		GUI::DrawText(msg1, ul + Vec2f(leftside_indent*1.5+32, material_display_height/3), color_white);
+		GUI::DrawText(msg1, ul + Vec2f(leftside_indent*1.5+44, material_display_height - 40), color_white);
 
 		//stone
 		GUI::DrawIcon(
 			icon,
 			24, //matstone icon
 			icon_dimensions,
-			ul + Vec2f(leftside_indent, 0),
+			ul + Vec2f(leftside_indent + 4, -12),
 			1.0f,
 			0);
-		GUI::DrawText(msg2, ul2 + Vec2f(leftside_indent*1.5+32, material_display_height/3), color_white);
+		GUI::DrawText(msg2, ul2 + Vec2f(leftside_indent*1.5+44, material_display_height/5.5), color_white);
 		//gold
 		/*GUI::DrawIcon(
 			icon,
