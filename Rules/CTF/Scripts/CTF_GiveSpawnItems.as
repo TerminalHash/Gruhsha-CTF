@@ -80,57 +80,29 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 	{
 		if (gametime > getCTFTimer(this, p, "builder"))
 		{
-			for (uint i = 0; i < getPlayersCount(); ++i)
+
+			int wood_amount = matchtime_wood_amount;
+			int stone_amount = matchtime_stone_amount;
+
+			if (this.isWarmup())
 			{
-				CPlayer@ p = getPlayer(i);
-				if (p is null) continue;
-
-				int wood_amount = matchtime_wood_amount;
-				int stone_amount = matchtime_stone_amount;
-
-				/*u32 player_amount = getPlayersCount_NotSpectator(); // using this function because only it works :shrug:
-
-				if (player_amount >= 8 && player_amount < 10) // 4v4
-				{
-					wood_amount = matchtime_wood_amount;
-					stone_amount = matchtime_stone_amount;
-				}
-				else if (player_amount >= 10 && player_amount < 14) // 5v5 and 6v6
-				{
-					wood_amount = 275;
-					stone_amount = 100;
-				}
-				else if (player_amount >= 14 && player_amount < 16) // 7v7
-				{
-					wood_amount = 250;
-					stone_amount = 75;
-				}
-				else if (player_amount >= 16) // 8v8 and more
-				{
-					wood_amount = 200;
-					stone_amount = 50;
-				}*/
-
-				if (this.isWarmup())
-				{
-					wood_amount = warmup_wood_amount;
-					stone_amount = warmup_stone_amount;
-				}
-
-				if (this.get_s32("personalwood_" + p.getUsername()) < 2000)
-				{
-					this.add_s32("personalwood_" + p.getUsername(), wood_amount);
-					this.Sync("personalwood_" + p.getUsername(), true);
-				}
-
-				if (this.get_s32("personalstone_" + p.getUsername()) < 2000)
-				{
-					this.add_s32("personalstone_" + p.getUsername(), stone_amount);
-					this.Sync("personalstone_" + p.getUsername(), true);
-				}
-
-				SetCTFTimer(this, p, gametime + (this.isWarmup() ? materials_wait_warmup : materials_wait)*getTicksASecond(), "builder");
+				wood_amount = warmup_wood_amount;
+				stone_amount = warmup_stone_amount;
 			}
+
+			if (this.get_s32("personalwood_" + p.getUsername()) < 2000)
+			{
+				this.add_s32("personalwood_" + p.getUsername(), wood_amount);
+				this.Sync("personalwood_" + p.getUsername(), true);
+			}
+
+			if (this.get_s32("personalstone_" + p.getUsername()) < 2000)
+			{
+				this.add_s32("personalstone_" + p.getUsername(), stone_amount);
+				this.Sync("personalstone_" + p.getUsername(), true);
+			}
+
+			SetCTFTimer(this, p, gametime + (this.isWarmup() ? materials_wait_warmup : materials_wait)*getTicksASecond(), "builder");
 		}
 	}
 }
@@ -241,26 +213,7 @@ void onTick(CRules@ this)
 			}
 		}
 	}
-
-	if (this.getCurrentState() == GAME) // automatic resupplies for builders
-	{
-		for (int i = 0; i < getPlayerCount(); i++)
-		{
-			CPlayer@ player = getPlayer(i);
-			CBlob@ blob = player.getBlob();
-
-			//HACK: degenerate code
-			if (blob.getConfig() == "knight") return;
-			if (blob.getConfig() == "archer") return;
-
-			if (blob !is null)
-			{
-				doGiveSpawnMats(this, player, blob);
-			}
-		}
-	}
-
-	// vanilla resupply behaviour, works for both sides
+	else
 	{
 		CBlob@[] spots;
 		getBlobsByName(base_name(),   @spots);
@@ -294,6 +247,21 @@ void onTick(CRules@ this)
 				if (isShop && name.find(class_name) == -1) continue; // NOTE: builder doesn't get wood+stone at archershop, archer doesn't get arrows at buildershop
 
 				doGiveSpawnMats(this, p, overlapped);
+			}
+		}
+	}
+
+
+	if (this.getCurrentState() == GAME) // automatic resupplies for builders
+	{
+		for (int i = 0; i < getPlayerCount(); i++)
+		{
+			CPlayer@ player = getPlayer(i);
+			CBlob@ blob = player.getBlob();
+
+			if (blob !is null && blob.getConfig() == "builder")
+			{
+				doGiveSpawnMats(this, player, blob);
 			}
 		}
 	}
