@@ -3,7 +3,7 @@
 
 void onInit(CBlob@ this)
 {
-	this.Tag("bomberman_style");
+	//this.Tag("bomberman_style");
 	this.set_f32("map_bomberman_width", 24.0f);
 	this.set_f32("explosive_radius", 64.0f);
 	this.set_f32("explosive_damage", 10.0f);
@@ -78,6 +78,15 @@ void onAttach(CBlob@ this, CBlob@ attached, AttachmentPoint @attachedPoint)
 	if (isServer())
 	{
 		this.set_u16("_keg_carrier_id", attached.getNetworkID());
+		this.Tag("bomberman_style");
+	}
+}
+
+void onDetach(CBlob@ this, CBlob@ detached, AttachmentPoint@ attachedPoint)
+{
+	if (isServer())
+	{
+		this.Untag("bomberman_style");
 	}
 }
 
