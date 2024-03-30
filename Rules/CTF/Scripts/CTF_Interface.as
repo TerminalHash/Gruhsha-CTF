@@ -1,6 +1,6 @@
 #include "CTF_Structs.as";
 #include "ActorHUDStartPos.as";
-#include "CommandsHelpHUD.as";
+//#include "CommandsHelpHUD.as";
 
 /*
 void onTick( CRules@ this )
@@ -188,7 +188,7 @@ void onRender(CRules@ this)
 		}
 	}
 
-	DrawCommandsHelp();
+	//DrawCommandsHelp();
 
 }
 
