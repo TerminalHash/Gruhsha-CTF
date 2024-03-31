@@ -30,7 +30,7 @@ namespace en
 
 	// CommandsHelpHUD.as
 		// Page 1 (2)
-	d_pageonelinemain						= "Command list:",
+	/*d_pageonelinemain						= "Command list:",
 	d_pageonelinecaptain					= "Captains System:",
 	d_pageonelineone						= "/specall - puts everyone in Spectators",
 	d_pageonelinetwo						= "/appoint - appoints two Team Leaders (they pick players in their teams)",
@@ -70,7 +70,7 @@ namespace en
 	d_pagethreelinethree					= "Programmers:",
 	d_pagethreelinefour						= "TerminalHash, Skemonde, kussakaa, egor0928931, Vagrament aka FeenRant",
 	d_pagethreelinefive						= "Artists:",
-	d_pagethreelinesix						= "TerminalHash, Skemonde, kussakaa",
+	d_pagethreelinesix						= "TerminalHash, Skemonde, kussakaa",*/
 
 	// PickingCommands.as
 	d_bindingscom							= "Show mod bindings menu",

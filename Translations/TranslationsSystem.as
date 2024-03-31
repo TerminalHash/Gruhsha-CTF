@@ -45,7 +45,7 @@ namespace Descriptions
 
 	// CommandsHelpHUD.as
 		// Page 1 (2)
-	pageonelinemain					= Translate(en::d_pageonelinemain+"\\"+ru::d_pageonelinemain),
+	/*pageonelinemain					= Translate(en::d_pageonelinemain+"\\"+ru::d_pageonelinemain),
 	pageonelinecaptain				= Translate(en::d_pageonelinecaptain+"\\"+ru::d_pageonelinecaptain),
 	pageonelineone					= Translate(en::d_pageonelineone+"\\"+ru::d_pageonelineone),
 	pageonelinetwo					= Translate(en::d_pageonelinetwo+"\\"+ru::d_pageonelinetwo),
@@ -85,7 +85,7 @@ namespace Descriptions
 	pagethreelinethree				= Translate(en::d_pagethreelinethree+"\\"+ru::d_pagethreelinethree),
 	pagethreelinefour				= Translate(en::d_pagethreelinefour+"\\"+ru::d_pagethreelinefour),
 	pagethreelinefive				= Translate(en::d_pagethreelinefive+"\\"+ru::d_pagethreelinefive),
-	pagethreelinesix				= Translate(en::d_pagethreelinesix+"\\"+ru::d_pagethreelinesix),
+	pagethreelinesix				= Translate(en::d_pagethreelinesix+"\\"+ru::d_pagethreelinesix),*/
 
 	// PickingCommands.as
 	bindingscom		  	       		= Translate(en::d_bindingscom+"\\"+ru::d_bindingscom),

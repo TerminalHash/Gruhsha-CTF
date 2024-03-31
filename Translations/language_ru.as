@@ -30,7 +30,7 @@ namespace ru
 
 	// CommandsHelpHUD.as
 		// Page 1 (2)
-	d_pageonelinemain						= "Список команд мода:",
+	/*d_pageonelinemain						= "Список команд мода:",
 	d_pageonelinecaptain					= "Капитанская система:",
 	d_pageonelineone						= "/specall - сделать всех игроков наблюдателями",
 	d_pageonelinetwo						= "/appoint - повысить двух игроков до Капитанов",
@@ -70,7 +70,7 @@ namespace ru
 	d_pagethreelinethree					= "Програмисты:",
 	d_pagethreelinefour						= "TerminalHash, Skemonde, kussakaa, egor0928931, Vagrament aka FeenRant",
 	d_pagethreelinefive						= "Художники:",
-	d_pagethreelinesix						= "TerminalHash, Skemonde, kussakaa",
+	d_pagethreelinesix						= "TerminalHash, Skemonde, kussakaa",*/
 
 	// PickingCommands.as
 	d_bindingscom							= "Открыть меню кастомных биндингов",
