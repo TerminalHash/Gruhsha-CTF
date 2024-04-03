@@ -126,14 +126,14 @@ void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
                         upd_cooldown = 25;
                     }
 
-                    if      (kind == 1) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
-                    else if (kind == 2) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
-                    else if (kind == 3) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
-                    else if (kind == 4) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
-                    else if (kind == 5) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
-                    else if (kind == 6) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
-                    else if (kind == 7) { Sound::Play(soundsdir + "placeholder", pos, 3.0f); }
-                    else if (kind == 8) { Sound::Play(soundsdir + "placeholder_wtf", pos, 3.0f); }
+                    if      (kind == 1) { Sound::Play(soundsdir + "tag_default", pos, 3.0f); }   // GO HERE
+                    else if (kind == 2) { Sound::Play(soundsdir + "tag_dig", pos, 3.0f); }       // DIG HERE
+                    else if (kind == 3) { Sound::Play(soundsdir + "tag_attack", pos, 3.0f); }    // ATTACK
+                    else if (kind == 4) { Sound::Play(soundsdir + "tag_danger", pos, 3.0f); }    // DANGER
+                    else if (kind == 5) { Sound::Play(soundsdir + "tag_retreat", pos, 3.0f); }   // RETREAT
+                    else if (kind == 6) { Sound::Play(soundsdir + "tag_help", pos, 3.0f); }      // HELP
+                    else if (kind == 7) { Sound::Play(soundsdir + "tag_keg", pos, 3.0f); }       // KEG
+                    else if (kind == 8) { Sound::Play(soundsdir + "tag_wit", pos, 3.0f); }       // WiT SENCE
 
                     rules.set_u32(player.getUsername() + "tag_cooldown_time", upd_cooldown);
                 }
