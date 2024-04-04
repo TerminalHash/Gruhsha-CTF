@@ -67,6 +67,12 @@ string getButtonRequirementsText(CBitStream& inout bs, bool missing)
 			text += "Only " + quantity + " " + friendlyName + " per-team possible. \n";
 			text += quantityColor;
 		}
+		else if (requiredType == "no team side" && missing)
+		{
+			text += quantityColor;
+			text += "Cannot buy kegs on your side of the map.\n";
+			text += quantityColor;
+		}
 		else if (requiredType == "no less" && missing)
 		{
 			text += quantityColor;
@@ -142,7 +148,7 @@ bool ReadRequirement(CBitStream &inout bs, string &out req, string &out blobName
 	return true;
 }
 
-bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, CBitStream &inout missingBs, bool &in inventoryOnly = false)
+bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, CBitStream &inout missingBs, bool &in inventoryOnly = false, bool sussyBaka = false)
 {
 	string req, blobName, friendlyName;
 	u16 quantity = 0;
@@ -156,23 +162,24 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 
 		if (req == "blob")
 		{
-			if (blobName == "mat_wood" || blobName == "mat_stone")
+			bool cancel = false;
+
+			if (inv1 !is null && !sussyBaka && (blobName == "mat_wood" || blobName == "mat_stone" || blobName == "mat_gold") && (getRules().getCurrentState() == WARMUP || getRules().getCurrentState() == INTERMISSION || getRules().getCurrentState() == GAME))
 			{
-				CPlayer@ player1 = inv1 !is null ? inv1.getBlob().getPlayer() : null;
-
-				if (player1 !is null)
+				CBlob@[] storages;
+				if (getBlobsByName( "tent", @storages ) && inv1.getBlob() !is null)
 				{
-					string needed = "personalwood_";
-					if (blobName == "mat_stone") needed = "personalstone_";
-
-					if (getRules().get_s32(needed + player1.getUsername()) < quantity)
+					for (uint step = 0; step < storages.length; ++step)
 					{
-						AddRequirement(missingBs, req, blobName, friendlyName, quantity);
-						has = false;
+						CBlob@ storage = storages[step];
+						if (storage.getTeamNum() == inv1.getBlob().getTeamNum())
+						{
+							return hasRequirements(storage.getInventory(), null, bs, missingBs, true, true);
+						}
 					}
 				}
 			}
-			else
+
 			{
 				uint sum;
 
@@ -184,7 +191,6 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 				{
 					sum = (inv1 !is null ? inv1.getBlob().getBlobCount(blobName) : 0) + (inv2 !is null ? inv2.getBlob().getBlobCount(blobName) : 0);
 				}
-
 
 				if (sum < quantity)
 				{
@@ -208,10 +214,35 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 		else if (req == "hurt")
 		{
 			CBlob@ blob = inv1 !is null ? inv1.getBlob() : null;
-			if (blob is null || blob.getHealth() >= blob.getInitialHealth())
+			if (blob is null || blob.getHealth() >= blob.get_f32("max_health"))
 			{
 				AddHurtRequirement(missingBs);
 				has = false;
+			}
+		}
+		else if (req == "no team side")
+		{
+			CPlayer@ player1 = inv1 !is null ? inv1.getBlob().getPlayer() : null;
+			//CPlayer@ player2 = inv2 !is null ? inv2.getBlob().getPlayer() : null;
+
+			if(player1 !is null)
+			{
+				if(player1.getBlob() !is null)
+				{
+					int teamNum = player1.getBlob().getTeamNum();
+
+					if (teamNum == 0 && player1.getBlob().getPosition().x < (getMap().tilemapwidth * 8 / 2))
+					{
+						AddRequirement(missingBs, req, blobName, friendlyName, quantity);
+						has = false;
+					}
+					else if (teamNum == 1 && player1.getBlob().getPosition().x > (getMap().tilemapwidth * 8 / 2))
+					{
+						AddRequirement(missingBs, req, blobName, friendlyName, quantity);
+						has = false;
+					}
+
+				}
 			}
 		}
 		else if ((req == "no more" || req == "no less") && inv1 !is null)
@@ -249,7 +280,7 @@ bool hasRequirements(CInventory@ inv, CBitStream &inout bs, CBitStream &inout mi
 	return hasRequirements(inv, null, bs, missingBs, inventoryOnly);
 }
 
-void server_TakeRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs)
+void server_TakeRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, bool sussyBaka=false)
 {
 	if (!getNet().isServer())
 	{
@@ -265,20 +296,23 @@ void server_TakeRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &ino
 
 		if (req == "blob")
 		{
-			if (blobName == "mat_wood" || blobName == "mat_stone")
+			if (inv1.getBlob() !is null && !sussyBaka && (blobName == "mat_wood" || blobName == "mat_stone" || blobName == "mat_gold") && (getRules().getCurrentState() == WARMUP || getRules().getCurrentState() == INTERMISSION || getRules().getCurrentState() == GAME))
 			{
-				CPlayer@ player1 = inv1 !is null ? inv1.getBlob().getPlayer() : null;
-
-				if (player1 !is null && isServer())
+				CBlob@[] storages;
+				if (getBlobsByName( "tent", @storages ))
 				{
-					string needed = "personalwood_";
-					if (blobName == "mat_stone") needed = "personalstone_";
-
-					getRules().sub_s32(needed + player1.getUsername(), quantity);
-					getRules().Sync(needed + player1.getUsername(), true);
+					for (uint step = 0; step < storages.length; ++step)
+					{
+						CBlob@ storage = storages[step];
+						if (storage.getTeamNum() == inv1.getBlob().getTeamNum())
+						{
+							u16 taken = 0;
+							taken += storage.TakeBlob(blobName, quantity);
+						}
+					}
 				}
 			}
-			else
+			else 
 			{
 				u16 taken = 0;
 				if (inv1 !is null)

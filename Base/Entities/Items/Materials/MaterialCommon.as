@@ -97,25 +97,6 @@ namespace Material
 		if (quantity == 0) return;
 
 		CInventory@ inventory = this.getInventory();
-		if (name == "mat_wood" || name == "mat_stone")
-		{
-			CPlayer@ player = this.getPlayer();
-			if (player is null) return;
-			if (!isServer()) return;
-
-			if (name == "mat_stone")
-			{
-				getRules().add_s32("personalstone_" + player.getUsername(), quantity);
-				getRules().Sync("personalstone_" + player.getUsername(), true);
-			}
-			else if (name == "mat_wood")
-			{
-				getRules().add_s32("personalwood_" + player.getUsername(), quantity);
-				getRules().Sync("personalwood_" + player.getUsername(), true);
-			}
-
-			return;
-		}
 
 		// Filling matching materials
 		// inside the inventory first
@@ -240,7 +221,27 @@ namespace Material
 				harvestAmount = maxHarvest;
 			}
 
-			createFor(this, name, harvestAmount);
+			if (getRules().getCurrentState() == WARMUP || getRules().getCurrentState() == INTERMISSION || getRules().getCurrentState() == GAME)
+			{
+				CBlob@[] storages;
+				{
+					if (getBlobsByName( "tent", @storages ))
+					{
+						for (uint step = 0; step < storages.length; ++step)
+						{
+							CBlob@ storage = storages[step];
+							if (storage.getTeamNum() == this.getTeamNum())
+							{
+								createFor(storage, name, harvestAmount);
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				createFor(this, name, harvestAmount);
+			}
 		}
 	}
 
@@ -254,25 +255,67 @@ namespace Material
 		// Only solid tiles yield materials
 		if (not map.isTileSolid(type)) return;
 
-		if (map.isTileThickStone(type))
+		if (getRules().getCurrentState() == WARMUP || getRules().getCurrentState() == INTERMISSION || getRules().getCurrentState() == GAME)
 		{
-			createFor(this, 'mat_stone', 6.f * damage);
+			CBlob@[] storages;
+
+			{
+				if (getBlobsByName( "tent", @storages ))
+				{
+					for (uint step = 0; step < storages.length; ++step)
+					{
+						CBlob@ storage = storages[step];
+						if (storage.getTeamNum() == this.getTeamNum())
+						{
+							if (map.isTileThickStone(type))
+							{
+								createFor(storage, 'mat_stone', 6.f * damage);
+							}
+							else if (map.isTileStone(type))
+							{
+								createFor(storage, 'mat_stone', 4.f * damage);
+							}
+							else if (map.isTileCastle(type))
+							{
+								createFor(storage, 'mat_stone', damage);
+							}
+							else if (map.isTileWood(type))
+							{
+								createFor(storage, 'mat_wood', damage);
+							}
+							else if (map.isTileGold(type))
+							{
+								createFor(storage, 'mat_gold', 4.f * damage);
+							}
+
+							break;
+						}
+					}
+				}
+			}
 		}
-		else if (map.isTileStone(type))
+		else
 		{
-			createFor(this, 'mat_stone', 4.f * damage);
-		}
-		else if (map.isTileCastle(type))
-		{
-			createFor(this, 'mat_stone', damage);
-		}
-		else if (map.isTileWood(type))
-		{
-			createFor(this, 'mat_wood', damage);
-		}
-		else if (map.isTileGold(type))
-		{
-			createFor(this, 'mat_gold', 4.f * damage);
+			if (map.isTileThickStone(type))
+			{
+				createFor(this, 'mat_stone', 6.f * damage);
+			}
+			else if (map.isTileStone(type))
+			{
+				createFor(this, 'mat_stone', 4.f * damage);
+			}
+			else if (map.isTileCastle(type))
+			{
+				createFor(this, 'mat_stone', damage);
+			}
+			else if (map.isTileWood(type))
+			{
+				createFor(this, 'mat_wood', damage);
+			}
+			else if (map.isTileGold(type))
+			{
+				createFor(this, 'mat_gold', 4.f * damage);
+			}
 		}
 	}
 }

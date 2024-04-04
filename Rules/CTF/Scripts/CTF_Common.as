@@ -47,9 +47,3 @@ void SetCTFTimer(CRules@ this, CPlayer@ p, s32 time, string classname)
 	this.set_s32(property, time);
 	this.SyncToPlayer(property, p);
 }
-
-// Waffle: Add check
-bool isBuildPhase(CRules@ this)
-{
-	return this.isWarmup() || this.isIntermission();
-}

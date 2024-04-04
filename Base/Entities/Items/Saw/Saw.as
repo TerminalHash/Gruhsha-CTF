@@ -91,18 +91,40 @@ void Blend(CBlob@ this, CBlob@ tobeblended)
 
 	//make plank from wooden stuff
 	const string blobname = tobeblended.getName();
-	if (blobname == "log")
+	if (blobname == "log" || blobname == "crate")
 	{
 		if (isServer())
 		{
-			CPlayer@ p = getPlayerByUsername(this.get_string("owner"));
-			//printf("Saw blob has owner " + this.get_string("owner"));
+			CBlob@ blob = server_CreateBlobNoInit('mat_wood');
 
-			if (p !is null)
+			if (blob !is null)
 			{
-				getRules().add_s32("personalwood_" + p.getUsername(), 50);
-				getRules().Sync("personalwood_" + p.getUsername(), true);
-				//printf("Hui " + p.getUsername());
+				blob.Tag('custom quantity');
+				blob.Init();
+				blob.server_SetQuantity(50);
+
+				if (getRules().getCurrentState() == WARMUP || getRules().getCurrentState() == INTERMISSION || getRules().getCurrentState() == GAME)
+				{
+					CBlob@[] storages;
+					{
+						if (getBlobsByName( "tent", @storages ))
+						{
+							for (uint step = 0; step < storages.length; ++step)
+							{
+								CBlob@ storage = storages[step];
+								if (storage.getTeamNum() == this.getTeamNum())
+								{
+									storage.server_PutInInventory(blob);
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					blob.setPosition(this.getPosition());
+					blob.setVelocity(Vec2f(0, -4.0f));
+				}
 			}
 		}
 
