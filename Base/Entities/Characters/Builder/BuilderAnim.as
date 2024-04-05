@@ -51,6 +51,10 @@ void LoadSprites(CSprite@ this)
 		{
 			ensureCorrectRunnerTexture(this, "builder_terminalhash", "BuilderTerminalHash");
 		}
+	else if (username == "tigorsun")
+		{
+			ensureCorrectRunnerTexture(this, "builder_tigorsun", "Buildertigorsun");
+		}
 	else if (username == "NoNamedNN" || username == "yavuzalanya99" || username == "-Rossi_the_womanizer")
 		{
 			ensureCorrectRunnerTexture(this, "builder_nonamed", "BuilderNoNamed");

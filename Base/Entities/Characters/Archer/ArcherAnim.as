@@ -48,6 +48,10 @@ void LoadSprites(CSprite@ this)
 		{
 			ensureCorrectRunnerTexture(this, "archer_terminalhash", "ArcherTerminalHash");
 		}
+	else if (username == "tigorsun")
+		{
+			ensureCorrectRunnerTexture(this, "archer_tigorsun", "Archertigorsun");
+		}
 	else if (username == "NoNamedNN" || username == "yavuzalanya99" || username == "-Rossi_the_womanizer")
 		{
 			ensureCorrectRunnerTexture(this, "archer_nonamed", "ArcherNoNamed");
