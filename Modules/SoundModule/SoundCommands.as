@@ -145,7 +145,7 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 				this.set_u32(player.getUsername() + "soundcooldown", 30);
-			} else if (textIn.toUpper() == "RAKITA") {
+			} else if (textIn.toUpper() == "RAKIETA") {
 				if (localplayer_is_deaf == false)
 				{
 					Sound::Play(soundrandom + "rakita.ogg", pos, 2.0f);
