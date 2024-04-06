@@ -80,7 +80,7 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 			} else if (textIn.toUpper() == "KURWA" || textIn == "курва") {
 				if (localplayer_is_deaf == false)
 				{
-					int random = XORRandom(8) + 1;
+					int random = XORRandom(9) + 1;
 					Sound::Play(soundrandom + "kurwa" + random + ".ogg", pos, 2.0f);
 				}
 
@@ -125,6 +125,30 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 				if (localplayer_is_deaf == false)
 				{
 					Sound::Play(soundrandom + "nothwcd.ogg", pos, 2.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 30);
+			} else if (textIn.toUpper() == "KURWA PIERDOLE" || textIn.toUpper() == "KURWA JAPIERDOLE" || textIn.toUpper() == "JAPIERDOLE KURWA") {
+				if (localplayer_is_deaf == false)
+				{
+					Sound::Play(soundrandom + "kurwa9.ogg", pos, 1.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 30);
+			} else if (textIn.toUpper() == "KURWA BOBR" || textIn.toUpper() == "BOBR KURWA" || textIn == "курва бобр" || textIn == "бобр курва" || textIn == "Курва бобр" || textIn == "Бобр курва") {
+				if (localplayer_is_deaf == false)
+				{
+					Sound::Play(soundrandom + "kurwa6.ogg", pos, 2.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 30);
+			} else if (textIn.toUpper() == "RAKITA") {
+				if (localplayer_is_deaf == false)
+				{
+					Sound::Play(soundrandom + "rakita.ogg", pos, 2.0f);
 				}
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
@@ -307,6 +331,14 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 				if (localplayer_is_deaf == false)
 				{
 					Sound::Play(soundrandom + "loshadinyuhui.ogg", pos, 1.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 80);
+				} else if (textIn == "жаль" || textIn == "Жаль" || textIn == "жаль этого добряка" || textIn == "Жаль этого добряка" || textIn == "жаль конечно этого добряка" || textIn == "Жаль конечно этого добряка" || textIn.find("рип") != -1 || textIn.find("Рип") != -1 || textIn.toUpper().find("RIP") != -1) {
+				if (localplayer_is_deaf == false)
+				{
+					Sound::Play(soundrandom + "dobryak.ogg", pos, 2.0f);
 				}
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
