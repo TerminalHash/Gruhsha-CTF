@@ -72,7 +72,7 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 			} else if (textIn == ("оуе") || textIn == ("oue") || textIn == ("ohyea") || textIn == ("ohyeah") || textIn.find("оу", 0) != -1 && textIn.find("е", 0) != -1 || textIn.find("оу", 0) != -1 && textIn.find("еe", 0) != -1 || textIn.find("oh", 0) != -1 && textIn.find("yea", 0) != -1 || textIn.find("oh", 0) != -1 && textIn.find("yeah", 0) != -1 || textIn.find("OH", 0) != -1 && textIn.find("YEAH", 0) != -1 || textIn.find("OH", 0) != -1 && textIn.find("YEA", 0) != -1) {
 				if (localplayer_is_deaf == false)
 				{
-					Sound::Play(soundrandom + "oue.ogg", pos, 0.8f);
+					Sound::Play(soundrandom + "oue.ogg", pos, 1.0f);
 				}
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
@@ -109,6 +109,22 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 				if (localplayer_is_deaf == false)
 				{
 					Sound::Play(soundrandom + "banzai.ogg", pos, 2.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 30);
+			} else if (textIn.toUpper() == "BOMBASTIC" || textIn == ("бомбастик") || textIn == ("Бомбастик")) {
+				if (localplayer_is_deaf == false)
+				{
+					Sound::Play(soundrandom + "bombastic.ogg", pos, 1.2f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 30);
+			} else if (textIn.toUpper() == "NOTHING WE CAN DO") {
+				if (localplayer_is_deaf == false)
+				{
+					Sound::Play(soundrandom + "nothwcd.ogg", pos, 2.0f);
 				}
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
