@@ -90,6 +90,12 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 				stone_amount = warmup_stone_amount;
 			}
 
+			if (getGameTime() > lower_mats_timer * getTicksASecond())
+			{
+				wood_amount = lower_wood;
+				stone_amount = lower_stone;
+			}
+
 			if (this.get_s32("personalwood_" + p.getUsername()) < 2000)
 			{
 				this.add_s32("personalwood_" + p.getUsername(), wood_amount);
