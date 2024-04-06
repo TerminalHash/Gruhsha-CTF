@@ -110,32 +110,35 @@ void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
 
             CPlayer@ localplayer = getLocalPlayer();
             bool player_is_muted_tags = rules.get_bool(player.getUsername() + "is_tag_muted");
+            bool localplayer_is_deaf = rules.get_bool(localplayer.getUsername() + "is_deaf");
             u32 time_since_last_tag = getGameTime() - rules.get_u32(player.getUsername() + "last_tag");
             u32 tag_cooldown = rules.get_u32(player.getUsername() + "tag_cooldown_time");
 
             if (player_is_muted_tags == false)
             {
-                if (time_since_last_tag >= tag_cooldown)
+                if (localplayer_is_deaf == false)
                 {
-
-                    rules.set_u32(player.getUsername() + "last_tag", getGameTime());
-                    int upd_cooldown = 40;
-
-                    if (player.isMod())
+                    if (time_since_last_tag >= tag_cooldown)
                     {
-                        upd_cooldown = 25;
+                        rules.set_u32(player.getUsername() + "last_tag", getGameTime());
+                        int upd_cooldown = 40;
+
+                        if (player.isMod())
+                        {
+                            upd_cooldown = 25;
+                        }
+
+                        if      (kind == 1) { Sound::Play(soundsdir + "tag_default", pos, 3.0f); }   // GO HERE
+                        else if (kind == 2) { Sound::Play(soundsdir + "tag_dig", pos, 3.0f); }       // DIG HERE
+                        else if (kind == 3) { Sound::Play(soundsdir + "tag_attack", pos, 1.5f); }    // ATTACK
+                        else if (kind == 4) { Sound::Play(soundsdir + "tag_danger", pos, 1.5f); }    // DANGER
+                        else if (kind == 5) { Sound::Play(soundsdir + "tag_retreat", pos, 3.0f); }   // RETREAT
+                        else if (kind == 6) { Sound::Play(soundsdir + "tag_help", pos, 3.0f); }      // HELP
+                        else if (kind == 7) { Sound::Play(soundsdir + "tag_keg", pos, 3.0f); }       // KEG
+                        else if (kind == 8) { Sound::Play(soundsdir + "tag_wit", pos, 3.0f); }       // WiT SENCE
+
+                        rules.set_u32(player.getUsername() + "tag_cooldown_time", upd_cooldown);
                     }
-
-                    if      (kind == 1) { Sound::Play(soundsdir + "tag_default", pos, 3.0f); }   // GO HERE
-                    else if (kind == 2) { Sound::Play(soundsdir + "tag_dig", pos, 3.0f); }       // DIG HERE
-                    else if (kind == 3) { Sound::Play(soundsdir + "tag_attack", pos, 3.0f); }    // ATTACK
-                    else if (kind == 4) { Sound::Play(soundsdir + "tag_danger", pos, 3.0f); }    // DANGER
-                    else if (kind == 5) { Sound::Play(soundsdir + "tag_retreat", pos, 3.0f); }   // RETREAT
-                    else if (kind == 6) { Sound::Play(soundsdir + "tag_help", pos, 3.0f); }      // HELP
-                    else if (kind == 7) { Sound::Play(soundsdir + "tag_keg", pos, 3.0f); }       // KEG
-                    else if (kind == 8) { Sound::Play(soundsdir + "tag_wit", pos, 3.0f); }       // WiT SENCE
-
-                    rules.set_u32(player.getUsername() + "tag_cooldown_time", upd_cooldown);
                 }
             }
         }

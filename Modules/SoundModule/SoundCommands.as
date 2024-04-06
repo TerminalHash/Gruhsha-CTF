@@ -105,6 +105,14 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 				this.set_u32(player.getUsername() + "soundcooldown", 30);
+			} else if (textIn.toUpper() == "BANZAI" || textIn == ("банзай") || textIn == ("Банзай")) {
+				if (localplayer_is_deaf == false)
+				{
+					Sound::Play(soundrandom + "banzai.ogg", pos, 2.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 30);
 
 			// russian sounds
 			} else if (textIn == "пенек" || textIn == "пенёк" || textIn == "косарь" || textIn == "penek" || textIn.find("на", 0) != -1 && textIn.find("пенек", 0) != -1 || textIn.find("на", 0) != -1 && textIn.find("пенёк", 0) != -1) {
