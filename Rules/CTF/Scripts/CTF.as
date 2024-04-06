@@ -285,48 +285,64 @@ shared class CTFSpawns : RespawnSystem
 	void AddPlayerToSpawn(CPlayer@ player)
 	{
 		//s32 tickspawndelay = s32(CTF_core.spawnTime);
+		s32 warmUpTime;
+		s32 ticksFromStart = getGameTime() - warmUpTime / getTicksASecond();
 
 		// Dynamic respawn shit
 		s32 tickspawndelay = s32(getTicksASecond() * 7);
 
 		u32 counteg = 0;
-			for (int i=0; i<getPlayersCount(); ++i)
-			{
-				CPlayer@ p = getPlayer(i);
+		for (int i=0; i<getPlayersCount(); ++i)
+		{
+			CPlayer@ p = getPlayer(i);
 
-				if (p !is null)
+			if (p !is null)
+			{
+				if (p.getTeamNum() == 0 || p.getTeamNum() == 1)
 				{
-					if (p.getTeamNum() == 0 || p.getTeamNum() == 1)
-					{
-						counteg++;
-					}
+					counteg++;
 				}
 			}
+		}
 
-			if (counteg <= 8)
-			{
-				tickspawndelay = s32(getTicksASecond() * 2);
-			}
-			else if (counteg <= 10)
-			{
-				tickspawndelay = s32(getTicksASecond() * 4);
-			}
-			else if (counteg <= 12)
-			{
-				tickspawndelay = s32(getTicksASecond() * 5);
-			}
-			else if (counteg <= 14)
-			{
-				tickspawndelay = s32(getTicksASecond() * 7);
-			}
-			else if (counteg <= 16)
-			{
-				tickspawndelay = s32(getTicksASecond() * 9);
-			}
-			else if (counteg >= 16)
-			{
-				tickspawndelay = s32(getTicksASecond() * 10);
-			}
+		if (counteg <= 8)
+		{
+			tickspawndelay = s32(getTicksASecond() * 2);
+		}
+		else if (counteg <= 10)
+		{
+			tickspawndelay = s32(getTicksASecond() * 4);
+		}
+		else if (counteg <= 12)
+		{
+			tickspawndelay = s32(getTicksASecond() * 5);
+		}
+		else if (counteg <= 14)
+		{
+			tickspawndelay = s32(getTicksASecond() * 7);
+		}
+		else if (counteg <= 16)
+		{
+			tickspawndelay = s32(getTicksASecond() * 9);
+		}
+		else if (counteg >= 16)
+		{
+			tickspawndelay = s32(getTicksASecond() * 10);
+		}
+
+		// Sudden Death Mode: increase respawn time, if we have stalemate
+		if (ticksFromStart >= 1200) // 20 min
+		{
+			tickspawndelay = s32(getTicksASecond() * 12);
+		}
+		else if (ticksFromStart >= 1800) // 30 min
+		{
+			tickspawndelay = s32(getTicksASecond() * 14);
+		}
+		else if (ticksFromStart >= 3600) // 40 min
+		{
+			tickspawndelay = s32(getTicksASecond() * 16);
+		}
 
 		CTFPlayerInfo@ info = cast < CTFPlayerInfo@ > (core.getInfoFromPlayer(player));
 
