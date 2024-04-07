@@ -5,7 +5,7 @@ void onInit(CBlob@ this)
 
 void onTick(CBlob@ this)
 {
-	if (this is null) return;
+	if (this.getPlayer() is null) return;
 	if (this.hasTag("dead")) return;
 
 	if ((getGameTime() + this.get_u32("next_squeak")) % 400 == 1 && !this.hasTag("dead") && this.getPlayer().getUsername() == "vladkvs193")
