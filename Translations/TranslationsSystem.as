@@ -43,50 +43,6 @@ namespace Descriptions
 	universalon		  	  			= Translate(en::d_universalon+"\\"+ru::d_universalon),
 	universaloff		  	  		= Translate(en::d_universaloff+"\\"+ru::d_universaloff),
 
-	// CommandsHelpHUD.as
-		// Page 1 (2)
-	/*pageonelinemain					= Translate(en::d_pageonelinemain+"\\"+ru::d_pageonelinemain),
-	pageonelinecaptain				= Translate(en::d_pageonelinecaptain+"\\"+ru::d_pageonelinecaptain),
-	pageonelineone					= Translate(en::d_pageonelineone+"\\"+ru::d_pageonelineone),
-	pageonelinetwo					= Translate(en::d_pageonelinetwo+"\\"+ru::d_pageonelinetwo),
-	pageonelinethree				= Translate(en::d_pageonelinethree+"\\"+ru::d_pageonelinethree),
-	pageonelinefour					= Translate(en::d_pageonelinefour+"\\"+ru::d_pageonelinefour),
-	pageonelinefive					= Translate(en::d_pageonelinefive+"\\"+ru::d_pageonelinefive),
-	pageonelinesix					= Translate(en::d_pageonelinesix+"\\"+ru::d_pageonelinesix),
-	pageonelineseven				= Translate(en::d_pageonelineseven+"\\"+ru::d_pageonelineseven),
-	pageonelineeight				= Translate(en::d_pageonelineeight+"\\"+ru::d_pageonelineeight),
-	pageonelineplayer				= Translate(en::d_pageonelineplayer+"\\"+ru::d_pageonelineplayer),
-	pageonelinenine					= Translate(en::d_pageonelinenine+"\\"+ru::d_pageonelinenine),
-	pageonelineten					= Translate(en::d_pageonelineten+"\\"+ru::d_pageonelineten),
-	pageonelineel					= Translate(en::d_pageonelineel+"\\"+ru::d_pageonelineel),
-	pageonelinefooter				= Translate(en::d_pageonelinefooter+"\\"+ru::d_pageonelinefooter),
-
-		// Page 2 (1)
-	pagetwolinemain					= Translate(en::d_pagetwolinemain+"\\"+ru::d_pagetwolinemain),
-	pagetwolineone					= Translate(en::d_pagetwolineone+"\\"+ru::d_pagetwolineone),
-	pagetwolinetwo					= Translate(en::d_pagetwolinetwo+"\\"+ru::d_pagetwolinetwo),
-	pagetwolinethree				= Translate(en::d_pagetwolinethree+"\\"+ru::d_pagetwolinethree),
-	pagetwolinefour					= Translate(en::d_pagetwolinefour+"\\"+ru::d_pagetwolinefour),
-	pagetwolinefive					= Translate(en::d_pagetwolinefive+"\\"+ru::d_pagetwolinefive),
-	pagetwolinesix					= Translate(en::d_pagetwolinesix+"\\"+ru::d_pagetwolinesix),
-	pagetwolineseven				= Translate(en::d_pagetwolineseven+"\\"+ru::d_pagetwolineseven),
-	pagetwolineeight				= Translate(en::d_pagetwolineeight+"\\"+ru::d_pagetwolineeight),
-	pagetwolinekek					= Translate(en::d_pagetwolinekek+"\\"+ru::d_pagetwolinekek),
-	pagetwolinenine					= Translate(en::d_pagetwolinenine+"\\"+ru::d_pagetwolinenine),
-	pagetwolineten					= Translate(en::d_pagetwolineten+"\\"+ru::d_pagetwolineten),
-	pagetwolineel					= Translate(en::d_pagetwolineel+"\\"+ru::d_pagetwolineel),
-	pagetwolinetwen					= Translate(en::d_pagetwolinetwen+"\\"+ru::d_pagetwolinetwen),
-	pagetwolinefooter				= Translate(en::d_pagetwolinefooter+"\\"+ru::d_pagetwolinefooter),
-
-		// Page 3
-	pagethreelinemain				= Translate(en::d_pagethreelinemain+"\\"+ru::d_pagethreelinemain),
-	pagethreelineone				= Translate(en::d_pagethreelineone+"\\"+ru::d_pagethreelineone),
-	pagethreelinetwo				= Translate(en::d_pagethreelinetwo+"\\"+ru::d_pagethreelinetwo),
-	pagethreelinethree				= Translate(en::d_pagethreelinethree+"\\"+ru::d_pagethreelinethree),
-	pagethreelinefour				= Translate(en::d_pagethreelinefour+"\\"+ru::d_pagethreelinefour),
-	pagethreelinefive				= Translate(en::d_pagethreelinefive+"\\"+ru::d_pagethreelinefive),
-	pagethreelinesix				= Translate(en::d_pagethreelinesix+"\\"+ru::d_pagethreelinesix),*/
-
 	// PickingCommands.as
 	bindingscom		  	       		= Translate(en::d_bindingscom+"\\"+ru::d_bindingscom),
 	togglechcomtext		  	       	= Translate(en::d_togglechcomtext+"\\"+ru::d_togglechcomtext),
@@ -161,6 +117,7 @@ namespace Names
 	camerasw		  	      			 = Translate(en::n_camerasw+"\\"+ru::n_camerasw),
 	bodytilt		  	      			 = Translate(en::n_bodytilt+"\\"+ru::n_bodytilt),
 	drillzoneborders		  	      	 = Translate(en::n_drillzoneborders+"\\"+ru::n_drillzoneborders),
+	annoyingnature		 	 	      	 = Translate(en::n_annoyingnature+"\\"+ru::n_annoyingnature),
 
 		// Other
 	pressdelete		  	       			= Translate(en::n_pressdelete+"\\"+ru::n_pressdelete),

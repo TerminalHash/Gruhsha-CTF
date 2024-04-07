@@ -324,8 +324,6 @@ void LeafProximityCheck(CBlob@ this)
 						
 						if (XORRandom(5) == 0)
 						{
-							this.getSprite().PlayRandomSound("LeafRustle");
-
 							CParticle@ p;
 							
 							if (this.get_u8("particle type") == 0)
@@ -343,6 +341,9 @@ void LeafProximityCheck(CBlob@ this)
 							{
 								p.gravity = Vec2f(0, 0.1f);
 							}
+
+							if (getRules().get_string("annoying_nature") == "off") return;
+							this.getSprite().PlayRandomSound("LeafRustle");
 						}
 					}
 				}

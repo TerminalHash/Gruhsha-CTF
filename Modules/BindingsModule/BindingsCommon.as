@@ -86,7 +86,8 @@ string[][] setting_texts =
 		Names::blockbar,
 		Names::camerasw,
 		Names::bodytilt,
-		Names::drillzoneborders
+		Names::drillzoneborders,
+		Names::annoyingnature
 	}
 };
 
@@ -97,7 +98,8 @@ string[][] setting_file_names =
 		"blockbar_hud",
 		"camera_sway",
 		"body_tilting",
-		"drillzone_borders"
+		"drillzone_borders",
+		"annoying_nature"
 	}
 };
 
@@ -120,11 +122,15 @@ string[][][] setting_options =
 			"5" // 5
 		},
 		{
-			Descriptions::universaloff,
+			Descriptions::universaloff,       // BODY TILTING
 			Descriptions::universalon
 		},
 		{
-			Descriptions::universaloff,
+			Descriptions::universaloff,       // DRILLZONE BORDERS
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // BUSHES & LEAFS MUTE
 			Descriptions::universalon
 		}
 	}
@@ -149,11 +155,15 @@ string[][][] setting_option_names =
 			"5" // 5
 		},
 		{
-			"off",
+			"off",       // BODY TILTING
 			"on"
 		},
 		{
-			"off",
+			"off",       // DRILLZONE BORDERS
+			"on"
+		},
+		{
+			"off",       // BUSHES & LEAFS MUTE
 			"on"
 		}
 	}

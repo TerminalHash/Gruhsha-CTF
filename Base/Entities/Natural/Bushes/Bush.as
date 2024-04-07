@@ -38,6 +38,8 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 {
 	if (v_fastrender)	return;
 
+
+
 	CSprite@ s = this.getSprite();
 
 	if (blob !is null 
@@ -50,6 +52,8 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 		anim.time = 5;
 		this.Tag("is animated");
 		this.set_u32("anim end time", getGameTime() + 8);
+
+		if (getRules().get_string("annoying_nature") == "off") return;
 		s.PlayRandomSound("LeafRustle");
 	}
 }
