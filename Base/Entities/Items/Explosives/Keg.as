@@ -4,8 +4,8 @@
 void onInit(CBlob@ this)
 {
 	//this.Tag("bomberman_style");
-	this.set_f32("map_bomberman_width", 24.0f);
-	this.set_f32("explosive_radius", 64.0f);
+	//this.set_f32("map_bomberman_width", 24.0f);
+	this.set_f32("explosive_radius", 48.0f);
 	this.set_f32("explosive_damage", 10.0f);
 	this.set_u8("custom_hitter", Hitters::keg);
 	this.set_string("custom_explosion_sound", "Entities/Items/Explosives/KegExplosion.ogg");
@@ -75,13 +75,14 @@ void onAttach(CBlob@ this, CBlob@ attached, AttachmentPoint @attachedPoint)
 		this.SetDamageOwnerPlayer(attached.getPlayer());
 	}
 	
-	if (isServer())
+	/*if (isServer())
 	{
 		this.set_u16("_keg_carrier_id", attached.getNetworkID());
 		this.Tag("bomberman_style");
-	}
+	}*/
 }
 
+/*
 void onDetach(CBlob@ this, CBlob@ detached, AttachmentPoint@ attachedPoint)
 {
 	if (isServer())
@@ -89,6 +90,7 @@ void onDetach(CBlob@ this, CBlob@ detached, AttachmentPoint@ attachedPoint)
 		this.Untag("bomberman_style");
 	}
 }
+*/
 
 f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData)
 {
