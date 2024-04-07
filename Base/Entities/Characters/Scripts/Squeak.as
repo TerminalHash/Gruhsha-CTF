@@ -20,4 +20,8 @@ void onTick(CBlob@ this)
 			this.set_u32("next_squeak", XORRandom(200));
 		}
 	}
+	else
+	{
+		return;
+	}
 }
