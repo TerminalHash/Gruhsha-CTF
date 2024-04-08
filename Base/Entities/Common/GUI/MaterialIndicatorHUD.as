@@ -5,10 +5,11 @@ void DrawPersonalMats()
 	return;
 
 	CPlayer@ p = getLocalPlayer();
+	u8 team = p.getTeamNum();
 
 	if (p is null || !p.isMyPlayer()) { return; }
 
-	if (p.getBlob() !is null)
+	if (p.getBlob() !is null && p.getTeamNum() == team)
 	{
 		GUI::SetFont("hud");
 		u16 leftside_indent = 4;
@@ -30,8 +31,8 @@ void DrawPersonalMats()
 		Vec2f ul2 = ul + Vec2f(0, 40);
 		Vec2f ul3 = ul2 + Vec2f(0, 40);
 
-		string msg1 = getRules().get_s32("personalstone_" + p.getUsername());
-		string msg2 = getRules().get_s32("personalwood_" + p.getUsername());
+		string msg1 = getRules().get_s32("teamwood" + team);
+		string msg2 = getRules().get_s32("teamstone" + team);
 		//string msg3 = getRules().get_s32("personalgold_" + p.getUsername());
 
 		SColor dcolor = blue.color;
@@ -54,7 +55,7 @@ void DrawPersonalMats()
 			icon,
 			25, //matwood icon
 			icon_dimensions,
-			ul2 + Vec2f(leftside_indent + 3, -6),
+			ul + Vec2f(leftside_indent + 4, -12),
 			1.0f,
 			0);
 		GUI::DrawText(msg1, ul + Vec2f(leftside_indent*1.5+44, material_display_height - 40), color_white);
@@ -64,7 +65,7 @@ void DrawPersonalMats()
 			icon,
 			24, //matstone icon
 			icon_dimensions,
-			ul + Vec2f(leftside_indent + 4, -12),
+			ul2 + Vec2f(leftside_indent + 3, -6),
 			1.0f,
 			0);
 		GUI::DrawText(msg2, ul2 + Vec2f(leftside_indent*1.5+44, material_display_height/5.5), color_white);

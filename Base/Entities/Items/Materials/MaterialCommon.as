@@ -103,15 +103,17 @@ namespace Material
 			if (player is null) return;
 			if (!isServer()) return;
 
+			u8 team = player.getTeamNum();
+
 			if (name == "mat_stone")
 			{
-				getRules().add_s32("personalstone_" + player.getUsername(), quantity);
-				getRules().Sync("personalstone_" + player.getUsername(), true);
+				getRules().add_s32("teamstone" + team, quantity);
+				getRules().Sync("teamstone" + team, true);
 			}
 			else if (name == "mat_wood")
 			{
-				getRules().add_s32("personalwood_" + player.getUsername(), quantity);
-				getRules().Sync("personalwood_" + player.getUsername(), true);
+				getRules().add_s32("teamwood" + team, quantity);
+				getRules().Sync("teamwood" + team, true);
 			}
 
 			return;

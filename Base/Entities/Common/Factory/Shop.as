@@ -353,19 +353,6 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 						}
 						//////////////////////////////////////
 						//////////////////////////////////////
-
-						// HACK: set special tag for saws
-						if (s.blobName == "saw")
-						{
-							CBlob@ carried = caller.getCarriedBlob();
-							if (caller !is null && carried !is null)
-							{
-									carried.set_string("owner", caller.getPlayer().getUsername());
-									carried.Sync("owner", true);
-							}
-
-							//printf("Saw owner it's " + carried.get_string("owner"));
-						}
 					}
 				}
 			}

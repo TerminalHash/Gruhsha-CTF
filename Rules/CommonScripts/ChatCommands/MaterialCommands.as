@@ -12,11 +12,13 @@ class AllMatsCommand : BlobCommand
 
 	void SpawnBlobAt(Vec2f pos, string[] args, CPlayer@ player)
 	{
-		getRules().add_s32("personalwood_" + player.getUsername(), 500);
-		getRules().Sync("personalwood_" + player.getUsername(), true);
+		u8 team = player.getTeamNum();
 
-		getRules().add_s32("personalstone_" + player.getUsername(), 500);
-		getRules().Sync("personalstone_" + player.getUsername(), true);
+		getRules().add_s32("teamwood" + team, 500);
+		getRules().Sync("teamwood" + team, true);
+
+		getRules().add_s32("teamstone" + team, 500);
+		getRules().Sync("teamstone" + team, true);
 
 		/*CBlob@ wood = server_CreateBlob("mat_wood", -1, pos);
 		wood.server_SetQuantity(500);
@@ -37,9 +39,10 @@ class WoodCommand : BlobCommand
 	void Execute(string[] args, CPlayer@ player)
 	{
 		//Sound::Play("achievement");
+		u8 team = player.getTeamNum();
 
-		getRules().add_s32("personalwood_" + player.getUsername(), 500);
-		getRules().Sync("personalwood_" + player.getUsername(), true);
+		getRules().add_s32("teamwood" + team, 500);
+		getRules().Sync("teamwood" + team, true);
 	}
 
 	/*void SpawnBlobAt(Vec2f pos, string[] args, CPlayer@ player)
@@ -60,9 +63,10 @@ class StoneCommand : BlobCommand
 	void Execute(string[] args, CPlayer@ player)
 	{
 		//Sound::Play("achievement");
+		u8 team = player.getTeamNum();
 
-		getRules().add_s32("personalstone_" + player.getUsername(), 500);
-		getRules().Sync("personalstone_" + player.getUsername(), true);
+		getRules().add_s32("teamstone" + team, 500);
+		getRules().Sync("teamstone" + team, true);
 	}
 
 	/*void SpawnBlobAt(Vec2f pos, string[] args, CPlayer@ player)
@@ -103,11 +107,12 @@ class ConvertStoneToReal : BlobCommand
 
 	void SpawnBlobAt(Vec2f pos, string[] args, CPlayer@ player)
 	{
-		getRules().sub_s32("personalstone_" + player.getUsername(), 50);
-		getRules().Sync("personalstone_" + player.getUsername(), true);
+		u8 team = player.getTeamNum();
+
+		getRules().sub_s32("teamstone" + team, 50);
+		getRules().Sync("teamstone" + team, true);
 
 		CBlob@ stone = server_CreateBlob("mat_stone", -1, pos);
 		stone.server_SetQuantity(50);
 	}
-
 }

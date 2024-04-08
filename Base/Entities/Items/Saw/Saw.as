@@ -95,14 +95,13 @@ void Blend(CBlob@ this, CBlob@ tobeblended)
 	{
 		if (isServer())
 		{
-			CPlayer@ p = getPlayerByUsername(this.get_string("owner"));
-			//printf("Saw blob has owner " + this.get_string("owner"));
+			CPlayer@ p = getPlayerByUsername(tobeblended.get_string("lastdamageplayer"));
+			u8 team = p.getTeamNum();
 
-			if (p !is null)
+			if (p !is null && getGameTime() - tobeblended.get_u32("lastdamagetime") <= 30 * getTicksASecond())
 			{
-				getRules().add_s32("personalwood_" + p.getUsername(), 50);
-				getRules().Sync("personalwood_" + p.getUsername(), true);
-				//printf("Hui " + p.getUsername());
+				getRules().add_s32("teamwood" + team, 50);
+				getRules().Sync("teamwood" + team, true);
 			}
 		}
 
