@@ -376,15 +376,7 @@ void onTick(CBlob@ this)
 
 									this.server_Hit(b, hi.hitpos, attackVel, attack_dam, Hitters::drill);
 
-									// give mats from blobs like log
-									if (holder.getConfig() == "builder" )
-									{
-										Material::fromBlob(holder, hi.blob, attack_dam, this);
-									}
-									else // If it's a knight, the materials fall to the ground
-									{
-										Material::fromBlob(this, hi.blob, attack_dam, this);
-									}
+									Material::fromBlob(holder, hi.blob, attack_dam, this);
 								}
 
 								hitsomething = true;
@@ -413,44 +405,21 @@ void onTick(CBlob@ this)
 										map.server_DestroyTile(hi.hitpos, 1.0f, this);
 
 										// give mats from tiles like wood, stone, gold
-										if (holder.getConfig() == "builder" )
+										if (map.isTileCastle(tile) || map.isTileWood(tile) || map.isTileGold(tile))
 										{
-											if (map.isTileCastle(tile) || map.isTileWood(tile) || map.isTileGold(tile))
-											{
-												Material::fromTile(holder, tile, 1.0f);
-											}
-											else
-											{
-												Material::fromTile(holder, tile, 0.75f);
-											}
-										
-											if (map.isTileGround(tile) || map.isTileStone(tile) || map.isTileThickStone(tile))
-											{
-												this.set_bool("just hit dirt", true);
-												this.Sync("just hit dirt", true);
-											}
+											Material::fromTile(holder, tile, 1.0f);
 										}
-										else // If it's a knight, the materials fall to the ground
+										else
 										{
-											if (map.isTileCastle(tile) || map.isTileWood(tile) || map.isTileGold(tile))
-											{
-												Material::fromTile(this, tile, 1.0f);
-											}
-											else
-											{
-												Material::fromTile(this, tile, 0.75f);
-											}
-
-
-											if (map.isTileGround(tile) || map.isTileStone(tile) || map.isTileThickStone(tile))
-											{
-												this.set_bool("just hit dirt", true);
-												this.Sync("just hit dirt", true);
-											}
+											Material::fromTile(holder, tile, 0.75f);
 										}
 
+										if (map.isTileGround(tile) || map.isTileStone(tile) || map.isTileThickStone(tile))
+										{
+											this.set_bool("just hit dirt", true);
+											this.Sync("just hit dirt", true);
+										}
 									}
-
 								}
 
 								if (isClient())
