@@ -38,7 +38,7 @@ float getArcherMultiplier(string plcl)
 {
 	if (plcl == "archer")
 	{
-		return 1.25f;
+		return 1.50f;
 	}
 
 	return 1.0f;

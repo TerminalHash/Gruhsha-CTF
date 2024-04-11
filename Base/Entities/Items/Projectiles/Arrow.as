@@ -926,11 +926,11 @@ f32 getArrowDamage(CBlob@ this, f32 vellen = -1.0f)
 
 	if (vellen >= arrowFastSpeed)
 	{
-		return 1.0f;
+		return 1.5f;
 	}
 	else if (vellen >= arrowMediumSpeed)
 	{
-		return 1.0f;
+		return 1.5f;
 	}
 
 	return 0.5f;
