@@ -16,6 +16,9 @@ namespace en
 	// Accolades.as
 	d_goldgrushatext						= "Gruhsha Contributor - for developing mod Gruhsha CTF",
 
+	// ArcherShop.as
+	d_woodenarrowdesc						= "Spawns wooden block at the landing site.",
+
 	// BindingsCommon.as
 	d_modbindplaceholder					= "placeholder",
 	d_modbindnull							= "No binding",
@@ -66,6 +69,10 @@ namespace en
 	//////////////////////////////////////////////////////////
 	// Names
 	//////////////////////////////////////////////////////////
+
+	// ArcherShop.as
+	n_woodenarrow							= "Block Arrow",
+	n_bombarrow								= "Bomb Arrow",
 
 	//BindingsCommon.as
 

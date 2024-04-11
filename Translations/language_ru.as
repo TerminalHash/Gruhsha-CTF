@@ -16,6 +16,9 @@ namespace ru
 	// Accolades.as
 	d_goldgrushatext						= "Контрибьютор Груши - за разработку мода Gruhsha CTF",
 
+	// ArcherShop.as
+	d_woodenarrowdesc						= "Ставит деревянный блок на месте приземления.",
+
 	// BindingsCommon.as
 	d_modbindplaceholder					= "пусто",
 	d_modbindnull							= "Нет клавиши",
@@ -66,6 +69,10 @@ namespace ru
 	//////////////////////////////////////////////////////////
 	// Names
 	//////////////////////////////////////////////////////////
+
+	// ArcherShop.as
+	n_woodenarrow							= "Стрела-блок",
+	n_bombarrow								= "Стрела-бомба",
 
 	//BindingsCommon.as
 

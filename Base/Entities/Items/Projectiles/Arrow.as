@@ -8,6 +8,7 @@
 #include "KnockedCommon.as";
 #include "DoorCommon.as";
 #include "FireplaceCommon.as";
+#include "PlacementCommon.as";
 
 const s32 bomb_fuse = 120;
 const f32 arrowMediumSpeed = 8.0f;
@@ -87,6 +88,13 @@ void onInit(CBlob@ this)
 		anim.AddFrame(14);
 		anim.AddFrame(15);
 		if (arrowType == ArrowType::bomb)
+			sprite.SetAnimation(anim);
+	}
+
+	{
+		Animation@ anim = sprite.addAnimation("block arrow", 0, false);
+		anim.AddFrame(16);
+		if (arrowType == ArrowType::block)
 			sprite.SetAnimation(anim);
 	}
 }
@@ -306,6 +314,11 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 				Vec2f betweenpos = (this.getPosition() + this.getOldPosition()) * 0.5;
 				this.setPosition(betweenpos - (velnorm * vellen));
 			}
+		}
+		else if (arrowType == ArrowType::block)
+		{
+			this.server_Die();
+			return;
 		}
 
 		if (arrowType == ArrowType::water)
@@ -662,7 +675,7 @@ void ArrowHitMap(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, u8 c
 			this.server_Die(); //explode
 		}
 	}
-	else if (arrowType == ArrowType::water)
+	else if (arrowType == ArrowType::water || arrowType == ArrowType::block)
 	{
 		this.server_Die();
 	}
@@ -815,6 +828,13 @@ void onDie(CBlob@ this)
 	if (arrowType == ArrowType::water)
 	{
 		SplashArrow(this);
+	}
+	if (arrowType == ArrowType::block)
+	{
+		if (!inNoBuildZone(getMap(), this.getPosition(), CMap::tile_wood))
+		{
+			getMap().server_SetTile(this.getPosition(), CMap::tile_wood);
+		}
 	}
 }
 

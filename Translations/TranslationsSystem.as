@@ -31,6 +31,9 @@ namespace Descriptions
 	// Accolades.as
 	goldgrushatext		  	    	= Translate(en::d_goldgrushatext+"\\"+ru::d_goldgrushatext),
 
+	// ArcherShop.as
+	woodenarrowdesc		  	    	= Translate(en::d_woodenarrowdesc+"\\"+ru::d_woodenarrowdesc),
+
 	// BindingsCommon.as
 	modbindplaceholder		  	    = Translate(en::d_modbindplaceholder+"\\"+ru::d_modbindplaceholder),
 	modbindnull		  	    		= Translate(en::d_modbindnull+"\\"+ru::d_modbindnull),
@@ -84,6 +87,10 @@ namespace Descriptions
 namespace Names
 {
 	const string
+
+	// ArcherShop.as
+	woodenarrow		  	      	 	= Translate(en::n_woodenarrow+"\\"+ru::n_woodenarrow),
+	bombarrow		  	      	 	= Translate(en::n_bombarrow+"\\"+ru::n_bombarrow),
 
 	// BindingsCommon.as
 		// Buttons

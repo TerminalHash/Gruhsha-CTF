@@ -6,6 +6,7 @@
 #include "CheckSpam.as"
 #include "Costs.as"
 #include "GenericButtonCommon.as"
+#include "TranslationsSystem.as"
 
 void onInit(CBlob@ this)
 {
@@ -23,13 +24,16 @@ void onInit(CBlob@ this)
 
 	// SHOP
 	this.set_Vec2f("shop offset", Vec2f_zero);
-	this.set_Vec2f("shop menu size", Vec2f(4, 1));
+	this.set_Vec2f("shop menu size", Vec2f(5, 1));
 	this.set_string("shop description", "Buy");
 	this.set_u8("shop icon", 25);
 
 	// CLASS
 	this.set_Vec2f("class offset", Vec2f(-6, 0));
 	this.set_string("required class", "archer");
+
+	// ICONS
+	AddIconToken("$blockarrows$", "blockarrows_icon.png", Vec2f(16, 16), 0);
 
 	// Dynamic prices
 	u32 dynamic_fire_arrow_cost = 30;
@@ -75,8 +79,12 @@ void onInit(CBlob@ this)
 		AddRequirement(s.requirements, "coin", "", "Coins", dynamic_fire_arrow_cost /*CTFCosts::firearrows*/);
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Bomb Arrows", "$mat_bombarrows$", "mat_bombarrows", Descriptions::bombarrows, true);
+		ShopItem@ s = addShopItem(this, Names::bombarrow, "$mat_bombarrows$", "mat_bombarrows", Descriptions::bombarrows, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", dynamic_bomb_arrow_cost /*CTFCosts::bombarrows*/);
+	}
+	{
+		ShopItem@ s = addShopItem(this, Names::woodenarrow, "$blockarrows$", "mat_blockarrows", Descriptions::woodenarrowdesc, true);
+		AddRequirement(s.requirements, "coin", "", "Coins", 35);
 	}
 }
 
