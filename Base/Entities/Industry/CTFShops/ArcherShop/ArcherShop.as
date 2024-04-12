@@ -84,7 +84,7 @@ void onInit(CBlob@ this)
 	}
 	{
 		ShopItem@ s = addShopItem(this, Names::woodenarrow, "$blockarrows$", "mat_blockarrows", Descriptions::woodenarrowdesc, true);
-		AddRequirement(s.requirements, "coin", "", "Coins", 35);
+		AddRequirement(s.requirements, "coin", "", "Coins", 50);
 	}
 }
 
