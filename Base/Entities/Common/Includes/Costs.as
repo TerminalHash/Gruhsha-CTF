@@ -13,7 +13,7 @@ namespace CTFCosts
 {
 	//Building.as
 	s32 buildershop_wood, quarters_wood, knightshop_wood, archershop_wood,
-		boatshop_wood, vehicleshop_wood, vehicleshop_gold,
+		boatshop_wood, boatshop_gold, vehicleshop_wood, vehicleshop_gold,
 		storage_stone, storage_wood, tunnel_stone, tunnel_wood, tunnel_gold,
 		quarry_stone, quarry_gold, quarry_count;
 
@@ -106,6 +106,7 @@ void InitCosts()
 	CTFCosts::quarters_wood =               ReadCost(cfg, costs, "cost_quarters_wood"      , 50);
 	CTFCosts::knightshop_wood =             ReadCost(cfg, costs, "cost_knightshop_wood"    , 50);
 	CTFCosts::archershop_wood =             ReadCost(cfg, costs, "cost_archershop_wood"    , 50);
+	CTFCosts::boatshop_gold =               ReadCost(cfg, costs, "cost_boatshop_gold"      , 50);
 	CTFCosts::boatshop_wood =               ReadCost(cfg, costs, "cost_boatshop_wood"      , 100);
 	CTFCosts::vehicleshop_wood =            ReadCost(cfg, costs, "cost_vehicleshop_wood"   , 100);
 	CTFCosts::vehicleshop_gold =            ReadCost(cfg, costs, "cost_vehicleshop_gold"   , 50);
@@ -147,9 +148,9 @@ void InitCosts()
 	CTFCosts::crate =                       ReadCost(cfg, costs, "cost_crate"              , 20);
 
 	//BoatShop.as
-	CTFCosts::dinghy =                      ReadCost(cfg, costs, "cost_dinghy"             , 25);
+	CTFCosts::dinghy =                      ReadCost(cfg, costs, "cost_dinghy"             , 75);
 	CTFCosts::dinghy_wood =                 ReadCost(cfg, costs, "cost_dinghy_wood"        , 100);
-	CTFCosts::longboat =                    ReadCost(cfg, costs, "cost_longboat"           , 50);
+	CTFCosts::longboat =                    ReadCost(cfg, costs, "cost_longboat"           , 100);
 	CTFCosts::longboat_wood =               ReadCost(cfg, costs, "cost_longboat_wood"      , 200);
 	CTFCosts::warboat =                     ReadCost(cfg, costs, "cost_warboat"            , 250);
 	CTFCosts::warboat_gold =                ReadCost(cfg, costs, "cost_warboat_gold"       , 50);
