@@ -162,15 +162,30 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 
 				if (player1 !is null)
 				{
+					const u16 left = getRules().get_u16("barrier_x1");
+					const u16 right = getRules().get_u16("barrier_x2");
+
 					u8 team = player1.getTeamNum();
 
 					string needed = "teamwood";
 					if (blobName == "mat_stone") needed = "teamstone";
 
-					if (getRules().get_s32(needed + team) < quantity)
+					// dynamic requirements for building
+					if (player1.getBlob().getPosition().x >= left && player1.getBlob().getPosition().x <= right)
 					{
-						AddRequirement(missingBs, req, blobName, friendlyName, quantity);
-						has = false;
+						if (getRules().get_s32(needed + team) < quantity * 1.5)
+						{
+							AddRequirement(missingBs, req, blobName, friendlyName, quantity);
+							has = false;
+						}
+					}
+					else
+					{
+						if (getRules().get_s32(needed + team) < quantity)
+						{
+							AddRequirement(missingBs, req, blobName, friendlyName, quantity);
+							has = false;
+						}
 					}
 				}
 			}
@@ -273,13 +288,25 @@ void server_TakeRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &ino
 
 				if (player1 !is null && isServer())
 				{
+					const u16 left = getRules().get_u16("barrier_x1");
+					const u16 right = getRules().get_u16("barrier_x2");
+
 					u8 team = player1.getTeamNum();
 
 					string needed = "teamwood";
 					if (blobName == "mat_stone") needed = "teamstone";
 
-					getRules().sub_s32(needed + team, quantity);
-					getRules().Sync(needed + team, true);
+					// dynamic requirements for building
+					if (player1.getBlob().getPosition().x >= left && player1.getBlob().getPosition().x <= right)
+					{
+						getRules().sub_s32(needed + team, quantity * 1.5);
+						getRules().Sync(needed + team, true);
+					}
+					else
+					{
+						getRules().sub_s32(needed + team, quantity);
+						getRules().Sync(needed + team, true);
+					}
 				}
 			}
 			else
