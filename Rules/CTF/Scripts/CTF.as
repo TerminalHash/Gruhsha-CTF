@@ -329,7 +329,7 @@ shared class CTFSpawns : RespawnSystem
 		}
 
 		// Sudden Death Mode: increase respawn time, if we have stalemate
-		if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1980) // 20 min
+		if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) // 20 min
 		{
 			tickspawndelay = s32(getTicksASecond() * 12);
 		}
