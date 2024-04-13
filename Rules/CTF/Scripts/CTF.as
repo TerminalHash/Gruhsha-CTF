@@ -285,8 +285,6 @@ shared class CTFSpawns : RespawnSystem
 	void AddPlayerToSpawn(CPlayer@ player)
 	{
 		//s32 tickspawndelay = s32(CTF_core.spawnTime);
-		s32 warmUpTime;
-		s32 ticksFromStart = getGameTime() - warmUpTime / getTicksASecond();
 
 		// Dynamic respawn shit
 		s32 tickspawndelay = s32(getTicksASecond() * 7);
@@ -331,15 +329,15 @@ shared class CTFSpawns : RespawnSystem
 		}
 
 		// Sudden Death Mode: increase respawn time, if we have stalemate
-		if (ticksFromStart >= 1200) // 20 min
+		if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1980) // 20 min
 		{
 			tickspawndelay = s32(getTicksASecond() * 12);
 		}
-		else if (ticksFromStart >= 1800) // 30 min
+		else if (getGameTime() >= 1980 * getTicksASecond() && getGameTime() <= 3780 * getTicksASecond()) // 30 min
 		{
 			tickspawndelay = s32(getTicksASecond() * 14);
 		}
-		else if (ticksFromStart >= 3600) // 40 min
+		else if (getGameTime() >= 3780 * getTicksASecond()) // 40 min
 		{
 			tickspawndelay = s32(getTicksASecond() * 16);
 		}
