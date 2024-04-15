@@ -944,13 +944,17 @@ f32 getArrowDamage(CBlob@ this, f32 vellen = -1.0f)
 			vellen = this.getShape().getVars().oldvel.Length();
 	}
 
-	if (vellen >= arrowFastSpeed)
+	if (vellen >= shoot_max_vel)
 	{
 		return 1.5f;
 	}
+	else if (vellen >= arrowFastSpeed)
+	{
+		return 1.0f;
+	}
 	else if (vellen >= arrowMediumSpeed)
 	{
-		return 1.5f;
+		return 1.0f;
 	}
 
 	return 0.5f;
