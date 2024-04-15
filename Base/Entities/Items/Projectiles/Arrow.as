@@ -944,7 +944,7 @@ f32 getArrowDamage(CBlob@ this, f32 vellen = -1.0f)
 			vellen = this.getShape().getVars().oldvel.Length();
 	}
 
-	if (vellen >= shoot_max_vel)
+	if (vellen >= ArcherParams::shoot_max_vel)
 	{
 		return 1.5f;
 	}
