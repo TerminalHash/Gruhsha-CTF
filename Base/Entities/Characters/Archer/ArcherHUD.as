@@ -3,7 +3,6 @@
 #include "ArcherCommon.as";
 #include "ActorHUDStartPos.as";
 #include "ArcherResupplyHUD.as";
-#include "MaterialIndicatorHUD.as";
 
 const string iconsFilename = "Entities/Characters/Archer/ArcherIcons.png";
 const int slotsSize = 6;
@@ -59,9 +58,6 @@ void onRender(CSprite@ this)
 
 	// draw resupply
 	DrawArchResupplyOnHUD(blob, tl + Vec2f(8 + (slotsSize) * 44, -18));
-
-	// draw mats ui
-	DrawPersonalMats();
 
 	// class weapon icon
 	GUI::DrawIcon(iconsFilename, arrow_frame, Vec2f(16, 32), tl + Vec2f(8 + (slotsSize - 1) * 40, -16), 1.0f, blob.getTeamNum());

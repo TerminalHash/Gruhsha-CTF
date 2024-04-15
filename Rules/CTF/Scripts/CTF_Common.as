@@ -1,18 +1,12 @@
 // spawn resources
-const u32 materials_wait = 25; //seconds between free mats
+const u32 materials_wait = 20; //seconds between free mats
 const u32 materials_wait_warmup = 40; //seconds between free mats
 
-const int warmup_wood_amount = 500;
-const int warmup_stone_amount = 500;
+const int warmup_wood_amount = 250;
+const int warmup_stone_amount = 80;
 
-const int matchtime_wood_amount = 275;
-const int matchtime_stone_amount = 100;
-
-// Reducing resupplies stuff
-const u32 lower_mats_timer = 900; // 15 min
-
-const int lower_wood = 175;
-const int lower_stone = 30;
+const int matchtime_wood_amount = 100;
+const int matchtime_stone_amount = 30;
 
 // Waffle: Materials for the entire team. Drop once at the start of the game
 const int crate_warmup_wood_amount = 2500;
@@ -52,4 +46,10 @@ void SetCTFTimer(CRules@ this, CPlayer@ p, s32 time, string classname)
 	string property = getCTFTimerPropertyName(p, classname);
 	this.set_s32(property, time);
 	this.SyncToPlayer(property, p);
+}
+
+// Waffle: Add check
+bool isBuildPhase(CRules@ this)
+{
+	return this.isWarmup() || this.isIntermission();
 }

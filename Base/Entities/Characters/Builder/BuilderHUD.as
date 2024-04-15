@@ -6,7 +6,6 @@
 #include "CommonBuilderBlocks.as";
 //#include "/Entities/Common/GUI/ActorHUDStartPos.as";
 //#include "MaterialTeamIndicatorHUD.as";
-#include "MaterialIndicatorHUD.as";
 #include "pathway.as";
 
 const string iconsFilename = "Entities/Characters/Builder/BuilderIcons.png";
@@ -80,10 +79,6 @@ void onRender(CSprite@ this)
 
 	Vec2f tl = getActorHUDStartPosition(blob, slotsSize);
 	DrawInventoryOnHUD(blob, tl);
-
-	// draw mats ui
-	DrawPersonalMats();
-	//DrawTeamMaterialsIndicator(); // old, we dont have teampool anymore
 
 	// draw coins
 
