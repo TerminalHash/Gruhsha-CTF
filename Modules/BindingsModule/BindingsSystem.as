@@ -51,6 +51,9 @@ void onInit(CRules@ this)
 			sfile.add_string("blockbar_hud", "yes");
 			sfile.add_string("build_mode", "vanilla");
 			sfile.add_string("camera_sway", "5");
+			sfile.add_string("body_tilting", "on");
+			sfile.add_string("drillzone_borders", "on");
+			sfile.add_string("annoying_nature", "on");
 
 			printf("Creating local settings file with default values for Gruhsha.");
 		}
