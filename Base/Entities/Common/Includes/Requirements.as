@@ -173,7 +173,7 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 					// dynamic requirements for building
 					if (player1.getBlob().getPosition().x >= left && player1.getBlob().getPosition().x <= right)
 					{
-						if (getRules().get_s32(needed + team) < quantity * 1.5)
+						if (getRules().get_s32(needed + team) < quantity * 1.2)
 						{
 							AddRequirement(missingBs, req, blobName, friendlyName, quantity);
 							has = false;
@@ -299,7 +299,7 @@ void server_TakeRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &ino
 					// dynamic requirements for building
 					if (player1.getBlob().getPosition().x >= left && player1.getBlob().getPosition().x <= right)
 					{
-						getRules().sub_s32(needed + team, quantity * 1.5);
+						getRules().sub_s32(needed + team, quantity * 1.2);
 						getRules().Sync(needed + team, true);
 					}
 					else
