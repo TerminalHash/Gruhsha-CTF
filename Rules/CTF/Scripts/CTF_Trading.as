@@ -13,7 +13,7 @@ const int coinsOnDamageAddBuilder = 8;
 const int coinsOnAssistAddBuilder = 10;
 const int coinsOnKillAddBuilder = 15;
 
-const int coinsOnDeathLosePercent = 25;
+const int coinsOnDeathLosePercent = 15;
 
 const int coinsOnRestartAdd = 0;
 const bool keepCoinsOnRestart = false;
