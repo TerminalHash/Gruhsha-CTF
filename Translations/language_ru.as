@@ -65,6 +65,7 @@ namespace ru
 
 	// Quarters.as
 	d_peartext								= "Сочная и сладкая груша.",
+	d_sleeptext								= "Прилечь поспать. Бесплатно!",
 
 	//////////////////////////////////////////////////////////
 	// Names
@@ -125,6 +126,7 @@ namespace ru
 	n_eggitem								= "Яйцо - Полное здоровье",
 	n_burgeritem							= "Бургер - Полное здоровье",
 	n_pearitem								= "Груша - 2 Сердца",
+	n_sleepaction							= "Лечь спать",
 
 	empty 					= ""; // keep last
 }

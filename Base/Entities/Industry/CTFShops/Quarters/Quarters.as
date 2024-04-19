@@ -89,7 +89,7 @@ void onInit(CBlob@ this)
 
 	// SHOP
 	this.set_Vec2f("shop offset", Vec2f_zero);
-	this.set_Vec2f("shop menu size", Vec2f(6, 1));
+	this.set_Vec2f("shop menu size", Vec2f(7, 1));
 	this.set_string("shop description", "Buy");
 	this.set_u8("shop icon", 25);
 
@@ -119,6 +119,13 @@ void onInit(CBlob@ this)
 	{
 		ShopItem@ s = addShopItem(this, Names::pearitem, "$quarters_pear$", "pear", Descriptions::pear, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::pear);
+	}
+	{
+		ShopItem@ s = addShopItem(this, Names::sleepaction, "$rest$", "sleep", Descriptions::sleeptext, true);
+		s.spawnNothing = true;
+		s.customButton = true;
+		s.buttonwidth = 1;
+		s.buttonheight = 1;
 	}
 }
 
@@ -176,7 +183,9 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 	caller.getShape().getBoundingRect(c_tl, c_br);
 	bool isOverlapping = br.x - c_tl.x > 0.0f && br.y - c_tl.y > 0.0f && tl.x - c_br.x < 0.0f && tl.y - c_br.y < 0.0f;
 
-	if (!isOverlapping || !bedAvailable(this) || !requiresTreatment(this, caller))
+	this.set_Vec2f("shop offset", Vec2f_zero);
+
+	/*if (!isOverlapping || !bedAvailable(this) || !requiresTreatment(this, caller))
 	{
 		this.set_Vec2f("shop offset", Vec2f_zero);
 	}
@@ -186,7 +195,8 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 		CBitStream params;
 		params.write_u16(caller.getNetworkID());
 		caller.CreateGenericButton("$rest$", Vec2f(-6, 0), this, this.getCommandID("rest"), getTranslatedString("Rest"), params);
-	}
+	}*/
+
 	this.set_bool("shop available", isOverlapping);
 }
 

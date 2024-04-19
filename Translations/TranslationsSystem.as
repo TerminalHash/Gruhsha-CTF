@@ -80,6 +80,7 @@ namespace Descriptions
 
 	// Quarters.as
 	peartext						= Translate(en::d_peartext+"\\"+ru::d_peartext),
+	sleeptext						= Translate(en::d_sleeptext+"\\"+ru::d_sleeptext),
 
 	empty 					= "";
 }
@@ -142,6 +143,7 @@ namespace Names
 	eggitem		  	       				= Translate(en::n_eggitem+"\\"+ru::n_eggitem),
 	burgeritem		  	       			= Translate(en::n_burgeritem+"\\"+ru::n_burgeritem),
 	pearitem		  	       			= Translate(en::n_pearitem+"\\"+ru::n_pearitem),
+	sleepaction		  	       			= Translate(en::n_sleepaction+"\\"+ru::n_sleepaction),
 
 	empty					= "";
 }

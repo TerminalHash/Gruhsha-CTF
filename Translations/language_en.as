@@ -65,6 +65,7 @@ namespace en
 
 	// Quarters.as
 	d_peartext								= "A juicy and sweet pear.",
+	d_sleeptext								= "Sleep. Free!",
 
 	//////////////////////////////////////////////////////////
 	// Names
@@ -125,6 +126,7 @@ namespace en
 	n_eggitem								= "Egg - Full Health",
 	n_burgeritem							= "Burger - Full Health",
 	n_pearitem								= "Pear - 2 Hearts",
+	n_sleepaction							= "Sleep",
 
 	empty 					= ""; // keep last
 }
