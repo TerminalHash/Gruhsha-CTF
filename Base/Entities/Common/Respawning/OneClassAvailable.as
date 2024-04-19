@@ -52,14 +52,15 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 	if (!canSeeButtons(this, caller) || !this.exists(req_class)) return;
 
 	string cfg = this.get_string(req_class);
-	if(cfg == "archer" && P_Archers >= rules.get_u8("archers_limit")) {is_no_button_for_archersh = true;}
-	if(cfg == "builder" && P_Builders >= rules.get_u8("builders_limit" ) && !is_warmup) {is_no_button_for_buildersh = true;}
-//	if(cfg == "knight" && P_Knights >= rules.get_u8("knight_limit")) {disallow_class_change_on_shops = true;}
+	if (cfg == "archer" && P_Archers >= rules.get_u8("archers_limit")) {is_no_button_for_archersh = true;}
+	if (cfg == "builder" && P_Builders >= rules.get_u8("builders_limit" ) && !is_warmup) {is_no_button_for_buildersh = true;}
+//	if (cfg == "knight" && P_Knights >= rules.get_u8("knight_limit")) {disallow_class_change_on_shops = true;}
 
 	if (canChangeClass(this, caller) && caller.getName() != cfg)
 	{
 		if (caller.getPlayer() is null) return;
 
+		if (getRules().get_string("disable_class_change_in_shops") == "yes") return;
 		if (is_no_button_for_archersh == true) return;
 		if (is_no_button_for_buildersh == true) return;
 

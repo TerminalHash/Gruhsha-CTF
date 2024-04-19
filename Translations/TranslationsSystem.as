@@ -41,8 +41,8 @@ namespace Descriptions
 			// Settings
 	bmoptlag						= Translate(en::d_bmoptlag+"\\"+ru::d_bmoptlag),
 	bmoptvan						= Translate(en::d_bmoptvan+"\\"+ru::d_bmoptvan),
-	blockbaron		  	  			= Translate(en::d_blockbaron+"\\"+ru::d_blockbaron),
-	blockbaroff		  	  			= Translate(en::d_blockbaroff+"\\"+ru::d_blockbaroff),
+	universalyes		  	  		= Translate(en::d_universalyes+"\\"+ru::d_universalyes),
+	universalno		  	  			= Translate(en::d_universalno+"\\"+ru::d_universalno),
 	universalon		  	  			= Translate(en::d_universalon+"\\"+ru::d_universalon),
 	universaloff		  	  		= Translate(en::d_universaloff+"\\"+ru::d_universaloff),
 
@@ -125,6 +125,7 @@ namespace Names
 	bodytilt		  	      			 = Translate(en::n_bodytilt+"\\"+ru::n_bodytilt),
 	drillzoneborders		  	      	 = Translate(en::n_drillzoneborders+"\\"+ru::n_drillzoneborders),
 	annoyingnature		 	 	      	 = Translate(en::n_annoyingnature+"\\"+ru::n_annoyingnature),
+	switchclasschanginginshop			 = Translate(en::n_switchclasschanginginshop+"\\"+ru::n_switchclasschanginginshop),
 
 		// Other
 	pressdelete		  	       			= Translate(en::n_pressdelete+"\\"+ru::n_pressdelete),

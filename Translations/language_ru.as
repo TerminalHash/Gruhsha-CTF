@@ -26,8 +26,8 @@ namespace ru
 			// Settings
 	d_bmoptlag								= "Дружелюбный к лагам",
 	d_bmoptvan								= "Ванильное",
-	d_blockbaron							= "Да",
-	d_blockbaroff							= "Нет",
+	d_universalyes							= "Да",
+	d_universalno							= "Нет",
 	d_universalon							= "Включено",
 	d_universaloff							= "Выключено",
 
@@ -108,6 +108,7 @@ namespace ru
 	n_bodytilt								= "Иммерсивное поведение тела",
 	n_drillzoneborders						= "Границы зоны дриллинга",
 	n_annoyingnature						= "Звук от кустов и листьев",
+	n_switchclasschanginginshop				= "Выкл. смену класса в магазинах",
 
 		// Other
 	n_pressdelete							= "Выбери клавишу и нажми [DELETE] для очистки хоткея!",

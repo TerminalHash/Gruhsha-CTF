@@ -97,10 +97,11 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 {
 	CRules@ rules = getRules();
 	bool disallow_class_change_on_shops = rules.get_bool("no_class_change_on_shop");
+	string disabled_class_changing_in_shops = getRules().get_string("disable_class_change_in_shops");
 
 	if (!canSeeButtons(this, caller)) return;
 
-	if (caller.getConfig() == this.get_string("required class") || disallow_class_change_on_shops == true)
+	if (caller.getConfig() == this.get_string("required class") || disallow_class_change_on_shops == true || disabled_class_changing_in_shops == "yes")
 	{
 		this.set_Vec2f("shop offset", Vec2f_zero);
 	}

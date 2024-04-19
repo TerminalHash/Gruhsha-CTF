@@ -87,7 +87,8 @@ string[][] setting_texts =
 		Names::camerasw,
 		Names::bodytilt,
 		Names::drillzoneborders,
-		Names::annoyingnature
+		Names::annoyingnature,
+		Names::switchclasschanginginshop
 	}
 };
 
@@ -99,7 +100,8 @@ string[][] setting_file_names =
 		"camera_sway",
 		"body_tilting",
 		"drillzone_borders",
-		"annoying_nature"
+		"annoying_nature",
+		"disable_class_change_in_shops"
 	}
 };
 
@@ -111,8 +113,8 @@ string[][][] setting_options =
 			Descriptions::bmoptlag // 20
 		},
 		{
-			Descriptions::blockbaron, // 10
-			Descriptions::blockbaroff // 20
+			Descriptions::universalyes, // 10
+			Descriptions::universalno // 20
 		},
 		{
 			"1", // 1
@@ -132,6 +134,10 @@ string[][][] setting_options =
 		{
 			Descriptions::universaloff,       // BUSHES & LEAFS MUTE
 			Descriptions::universalon
+		},
+		{
+			Descriptions::universalyes, // 10
+			Descriptions::universalno // 20
 		}
 	}
 };
@@ -165,6 +171,10 @@ string[][][] setting_option_names =
 		{
 			"off",       // BUSHES & LEAFS MUTE
 			"on"
+		},
+		{
+			"yes", // 10
+			"no" // 20
 		}
 	}
 };

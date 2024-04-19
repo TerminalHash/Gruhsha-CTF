@@ -359,23 +359,3 @@ void onTick(CSprite@ this)
 		chop.RotateBy(30.0f, around);
 	}
 }
-void onRender(CSprite@ this)
-{
-	CBlob@ blob = this.getBlob();
-	Vec2f center = blob.getInterpolatedPosition();
-	Vec2f mouseWorld = getControls().getMouseWorldPos();
-	const f32 renderRadius = (blob.getRadius()) * 0.95f;
-	bool mouseOnBlob = (mouseWorld - center).getLength() < renderRadius;
-	CPlayer@ player = getPlayerByUsername(blob.get_string("owner"));
-	string ownership = "No owner";
-	if (player !is null)
-	{
-		ownership = "Owner: " + player.getUsername();
-	}
-	CControls@ controls = getLocalPlayer().getControls();
-	if (controls.isKeyPressed(KEY_LCONTROL) && mouseOnBlob)
-	{
-		GUI::SetFont("menu");
-		GUI::DrawTextCentered(ownership, blob.getScreenPos() + Vec2f(0, -30), color_white);
-	}
-}

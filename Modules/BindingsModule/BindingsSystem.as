@@ -54,6 +54,7 @@ void onInit(CRules@ this)
 			sfile.add_string("body_tilting", "on");
 			sfile.add_string("drillzone_borders", "on");
 			sfile.add_string("annoying_nature", "on");
+			sfile.add_string("disable_class_change_in_shops", "no");
 
 			printf("Creating local settings file with default values for Gruhsha.");
 		}

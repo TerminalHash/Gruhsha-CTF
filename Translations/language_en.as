@@ -26,8 +26,8 @@ namespace en
 			// Settings
 	d_bmoptlag								= "Lag-Friendly",
 	d_bmoptvan								= "Vanilla",
-	d_blockbaron							= "Yes",
-	d_blockbaroff							= "No",
+	d_universalyes							= "Yes",
+	d_universalno							= "No",
 	d_universalon							= "On",
 	d_universaloff							= "Off",
 
@@ -108,6 +108,7 @@ namespace en
 	n_bodytilt								= "Immersive body behaviour",
 	n_drillzoneborders						= "Drill Zone Borders",
 	n_annoyingnature						= "Sounds from bushes and tree leafs",
+	n_switchclasschanginginshop				= "Disable class changing in shops",
 
 		// Other
 	n_pressdelete							= "Choose a bind and press [DELETE] to remove key",
