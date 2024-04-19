@@ -196,14 +196,14 @@ void onTick(CRules@ this)
 	{
 		if (getGameTime() == 60)
 		{
-			this.set_s32("teamwood" + 0, 7500);
+			this.set_s32("teamwood" + 0, 6000);
 			this.Sync("teamwood" + 0, true);
-			this.set_s32("teamwood" + 1, 7500);
+			this.set_s32("teamwood" + 1, 6000);
 			this.Sync("teamwood" + 1, true);
 
-			this.set_s32("teamstone" + 0, 6500);
+			this.set_s32("teamstone" + 0, 4500);
 			this.Sync("teamstone" + 0, true);
-			this.set_s32("teamstone" + 1, 6500);
+			this.set_s32("teamstone" + 1, 4500);
 			this.Sync("teamstone" + 1, true);
 		}
 
