@@ -236,6 +236,25 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 				callerBlob.server_SetHealth(callerBlob.getInitialHealth());
 			}
 		}
+		else if (name == "sleep")
+		{
+			AttachmentPoint@ bed = this.getAttachments().getAttachmentPointByName("BED");
+			if (bed !is null && bedAvailable(this))
+			{
+				CBlob@ carried = callerBlob.getCarriedBlob();
+				if (isServer())
+				{
+					if (carried !is null)
+					{
+						if (!callerBlob.server_PutInInventory(carried))
+						{
+							carried.server_DetachFrom(callerBlob);
+						}
+					}
+					this.server_AttachTo(callerBlob, "BED");
+				}
+			}
+		}
 	}
 	else if (cmd == this.getCommandID("rest"))
 	{
