@@ -94,13 +94,6 @@ void onInit(CBlob@ this)
 	this.set_u8("shop icon", 25);
 
 	{
-		ShopItem@ s = addShopItem(this, Names::sleepaction, "$rest$", "sleep", Descriptions::sleeptext, true);
-		s.spawnNothing = true;
-		s.customButton = true;
-		s.buttonwidth = 1;
-		s.buttonheight = 1;
-	}
-	{
 		ShopItem@ s = addShopItem(this, Names::beeritem, "$quarters_beer$", "beer", Descriptions::beertext, false);
 		s.spawnNothing = true;
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::beer);
@@ -126,6 +119,13 @@ void onInit(CBlob@ this)
 	{
 		ShopItem@ s = addShopItem(this, Names::pearitem, "$quarters_pear$", "pear", Descriptions::pear, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::pear);
+	}
+	{
+		ShopItem@ s = addShopItem(this, Names::sleepaction, "$rest$", "sleep", Descriptions::sleeptext, true);
+		s.spawnNothing = true;
+		s.customButton = true;
+		s.buttonwidth = 1;
+		s.buttonheight = 1;
 	}
 }
 
