@@ -79,6 +79,9 @@ namespace Descriptions
 	totaltext						= Translate(en::d_totaltext+"\\"+ru::d_totaltext),
 
 	// Quarters.as
+	beertext						= Translate(en::d_beertext+"\\"+ru::d_beertext),
+	mealtext						= Translate(en::d_mealtext+"\\"+ru::d_mealtext),
+	burgertext						= Translate(en::d_burgertext+"\\"+ru::d_burgertext),
 	peartext						= Translate(en::d_peartext+"\\"+ru::d_peartext),
 	sleeptext						= Translate(en::d_sleeptext+"\\"+ru::d_sleeptext),
 

@@ -101,7 +101,7 @@ void onInit(CBlob@ this)
 		s.buttonheight = 1;
 	}
 	{
-		ShopItem@ s = addShopItem(this, Names::beeritem, "$quarters_beer$", "beer", Descriptions::beer, false);
+		ShopItem@ s = addShopItem(this, Names::beeritem, "$quarters_beer$", "beer", Descriptions::beertext, false);
 		s.spawnNothing = true;
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::beer);
 		AddHurtRequirement(s.requirements);
