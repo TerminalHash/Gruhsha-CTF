@@ -1,8 +1,6 @@
 #include "ChatCommandManager.as"
 #include "DefaultChatCommands.as"
 #include "GruhshaChatCommands.as"
-//#include "TagChatCommands.as"
-#include "SoundsChatCommands.as"
 
 ChatCommandManager@ manager;
 
@@ -17,8 +15,6 @@ void onReload(CRules@ this)
 	@manager = ChatCommands::getManager();
 	RegisterDefaultChatCommands(manager);
 	RegisterGruhshaChatCommands(manager);
-	//RegisterTagChatCommands(manager);
-	RegisterSoundsChatCommands(manager);
 	manager.ProcessConfigCommands();
 }
 

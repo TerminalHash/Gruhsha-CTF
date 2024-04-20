@@ -114,20 +114,24 @@ void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
             u32 time_since_last_tag = getGameTime() - rules.get_u32(player.getUsername() + "last_tag");
             u32 tag_cooldown = rules.get_u32(player.getUsername() + "tag_cooldown_time");
 
+            string annoying_tags_sounds = getRules().get_string("annoying_tags");
+
             if (player_is_muted_tags == false)
             {
-                if (localplayer_is_deaf == false)
+
+                if (time_since_last_tag >= tag_cooldown)
                 {
-                    if (time_since_last_tag >= tag_cooldown)
+                    rules.set_u32(player.getUsername() + "last_tag", getGameTime());
+                    int upd_cooldown = 40;
+
+                    if (player.isMod())
                     {
-                        rules.set_u32(player.getUsername() + "last_tag", getGameTime());
-                        int upd_cooldown = 40;
+                        upd_cooldown = 25;
+                    }
 
-                        if (player.isMod())
-                        {
-                            upd_cooldown = 25;
-                        }
-
+                    if (annoying_tags_sounds == "off") {
+                        rules.set_u32(player.getUsername() + "tag_cooldown_time", upd_cooldown);
+                    } else {
                         if      (kind == 1) { Sound::Play(soundsdir + "tag_default", pos, 1.5f); }   // GO HERE
                         else if (kind == 2) { Sound::Play(soundsdir + "tag_dig", pos, 1.5f); }       // DIG HERE
                         else if (kind == 3) { Sound::Play(soundsdir + "tag_attack", pos, 1.5f); }    // ATTACK

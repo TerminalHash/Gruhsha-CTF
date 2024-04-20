@@ -129,6 +129,8 @@ namespace Names
 	bodytilt		  	      			 = Translate(en::n_bodytilt+"\\"+ru::n_bodytilt),
 	drillzoneborders		  	      	 = Translate(en::n_drillzoneborders+"\\"+ru::n_drillzoneborders),
 	annoyingnature		 	 	      	 = Translate(en::n_annoyingnature+"\\"+ru::n_annoyingnature),
+	annoyingvoicelines		 	 	     = Translate(en::n_annoyingvoicelines+"\\"+ru::n_annoyingvoicelines),
+	annoyingtags		 	 	      	 = Translate(en::n_annoyingtags+"\\"+ru::n_annoyingtags),
 	switchclasschanginginshop			 = Translate(en::n_switchclasschanginginshop+"\\"+ru::n_switchclasschanginginshop),
 
 		// Other

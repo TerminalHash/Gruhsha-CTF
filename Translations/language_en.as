@@ -112,6 +112,8 @@ namespace en
 	n_bodytilt								= "Immersive body behaviour",
 	n_drillzoneborders						= "Drill Zone Borders",
 	n_annoyingnature						= "Sounds from bushes and tree leafs",
+	n_annoyingvoicelines					= "Sounds from voicelines",
+	n_annoyingtags							= "Sounds from tags",
 	n_switchclasschanginginshop				= "Disable class changing in shops",
 
 		// Other

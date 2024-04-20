@@ -112,6 +112,8 @@ namespace ru
 	n_bodytilt								= "Иммерсивное поведение тела",
 	n_drillzoneborders						= "Границы зоны дриллинга",
 	n_annoyingnature						= "Звук от кустов и листьев",
+	n_annoyingvoicelines					= "Звуки войслайнов",
+	n_annoyingtags							= "Звуки меток",
 	n_switchclasschanginginshop				= "Выкл. смену класса в магазинах",
 
 		// Other
