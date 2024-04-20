@@ -31,11 +31,13 @@ bool onServerProcessChat( CRules@ this, const string& in textIn, string& out tex
 
 void onRestart(CRules@ this)
 {
+	this.Untag("offi match");
+
 	this.set_u32("announce time", 0);
 	this.set_string("announce text", "");
 }
 
-bool onClientProcessChat( CRules@ this, const string& in textIn, string& out textOut, CPlayer@ player )
+bool onClientProcessChat(CRules@ this, const string& in textIn, string& out textOut, CPlayer@ player)
 {
 	RulesCore@ core;
 	this.get("core", @core);
@@ -61,6 +63,7 @@ bool onClientProcessChat( CRules@ this, const string& in textIn, string& out tex
 		Sound::Play(sound + "offi.ogg");
 		this.set_string("announce text", "OFFI");
 		this.set_u32("announce time", getGameTime());
+		this.Tag("offi match");
 	}
 
 	return true;

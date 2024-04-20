@@ -209,7 +209,7 @@ void onTick(CRules@ this)
 
 		u32 pog = 30 * 177;
 
-		if (getGameTime() == pog)
+		if (getGameTime() == pog && this.hasTag("offi match"))
 		{
 			this.set_s32("teamwood" + 0, 1000);
 			this.Sync("teamwood" + 0, true);
