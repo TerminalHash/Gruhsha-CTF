@@ -48,6 +48,7 @@ namespace en
 	d_demotecomtext							= "Demotes the Team Leaders",
 	d_appointcomtext						= "Appoints two Team Leaders (they pick players in their teams)",
 	d_specallcomtext						= "Puts everyone in Spectators",
+	d_preventvoicelinespamtext				= "Disallow annoying voiceline spam from player",
 
 	// Satchel.as
 	d_satcheldesc							= "Ignites flammable blocks, activated by throw key",

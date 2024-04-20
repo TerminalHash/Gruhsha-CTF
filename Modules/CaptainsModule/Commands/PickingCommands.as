@@ -36,6 +36,7 @@ class AppointCommand : ChatCommand
 	{
 		super("appoint", Descriptions::appointcomtext);
 		AddAlias("caps");
+		AddAlias("captains");
 		SetUsage("<blue leader username> <red leader username>");
 	}
 
@@ -284,12 +285,16 @@ class ToggleClassChangingOnShops : ChatCommand
 		CRules@ rules = getRules();
 		bool isEnable = rules.get_bool("no_class_change_on_shop");
 		rules.set_bool("no_class_change_on_shop", !isEnable);
-		//printf("Boolean no_class_change_on_shop is " + rules.get_bool("no_class_change_on_shop"));
+
 		string isEnableStr = Descriptions::togglechcom2;
+
 		if(!isEnable) {
 			isEnableStr = Descriptions::togglechcom3;
 		}
+
 		if (isServer()) server_AddToChat(Descriptions::togglechcomchat +isEnableStr, SColor(0xff474ac6));
+
+		printf("[ADMIN COMMAND] Class changing in shops is " + rules.get_bool("no_class_change_on_shop"));
 	}
 }
 
@@ -322,7 +327,47 @@ class BindingsMenu : ChatCommand
 			ResetRuleSettings();
 			LoadFileSettings();
 		}
+	}
+}
 
-		//printf("Boolean no_class_change_on_shop is " + rules.get_bool("no_class_change_on_shop"));
+class PreventVoicelineSpamming : ChatCommand
+{
+	PreventVoicelineSpamming()
+	{
+		super("mutevoice", Descriptions::preventvoicelinespamtext);
+		AddAlias("mutevc");
+		AddAlias("mvc");
+		SetUsage("<username>");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		if (args.size() < 1) return;
+
+		const string MUTED_PLAYER_USERNAME = args[0];
+
+		CPlayer@ muted_player = getPlayerByNamePart(MUTED_PLAYER_USERNAME);
+
+		if (muted_player is null) return;
+
+		rules.set_bool(muted_player.getUsername() + "is_sounds_muted", !rules.get_bool(muted_player.getUsername() + "is_sounds_muted"));
+		if (rules.get_bool(muted_player.getUsername() + "is_sounds_muted") == true)
+		{
+			printf("[ADMIN COMMAND] Player " + muted_player.getUsername() + " was forbidden using voiceline for spamming");
+		}
+		else
+		{
+			printf("[ADMIN COMMAND] Player " + muted_player.getUsername() + " was allowed using voicelines");
+		}
 	}
 }

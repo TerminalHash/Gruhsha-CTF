@@ -15,4 +15,5 @@ void RegisterGruhshaChatCommands(ChatCommandManager@ manager)
 	manager.RegisterCommand(SetArcherLimitCommand());
 	manager.RegisterCommand(ToggleClassChangingOnShops());
 	manager.RegisterCommand(BindingsMenu());
+	manager.RegisterCommand(PreventVoicelineSpamming());
 }
