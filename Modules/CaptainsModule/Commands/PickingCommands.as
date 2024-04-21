@@ -69,6 +69,13 @@ class AppointCommand : ChatCommand
 				return;
 			}
 
+			// if admin accidentally wrote the same player's name twice
+			if (blue_leader.getUsername() == red_leader.getUsername() || red_leader.getUsername() == blue_leader.getUsername())
+			{
+				error("One player cannot be a leader in two teams at the same time!");
+				return;
+			}
+
 			rules.set_string("team_0_leader", blue_leader.getUsername());
 			rules.set_string("team_1_leader", red_leader.getUsername());
 
