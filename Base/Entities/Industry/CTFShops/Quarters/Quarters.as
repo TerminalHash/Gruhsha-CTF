@@ -100,7 +100,7 @@ void onInit(CBlob@ this)
 		AddHurtRequirement(s.requirements);
 	}
 	{
-		ShopItem@ s = addShopItem(this, Names::mealitem, "$quarters_meal$", "meal", Descriptions::meal, false);
+		ShopItem@ s = addShopItem(this, Names::mealitem, "$quarters_meal$", "meal", Descriptions::mealtext, false);
 		s.spawnNothing = true;
 		s.customButton = true;
 		s.buttonwidth = 2;
@@ -113,7 +113,7 @@ void onInit(CBlob@ this)
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::egg);
 	}
 	{
-		ShopItem@ s = addShopItem(this, Names::burgeritem, "$quarters_burger$", "food", Descriptions::burger, true);
+		ShopItem@ s = addShopItem(this, Names::burgeritem, "$quarters_burger$", "food", Descriptions::burgertext, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::burger);
 	}
 	{

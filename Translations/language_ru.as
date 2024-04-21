@@ -67,7 +67,7 @@ namespace ru
 	// Quarters.as
 	d_beertext								= "Кружка освежающего кваса.",
 	d_mealtext								= "Нажористый и вкусный борщ.",
-	d_burgertext							= "Бутерброд с колбасой в дорогу для быстрого перекуса.",
+	d_burgertext							= "Пирожок с грушами с собой в дорогу.",
 	d_peartext								= "Сочная и сладкая груша.",
 	d_sleeptext								= "Прилечь поспать. Бесплатно!",
 
@@ -120,6 +120,9 @@ namespace ru
 		// Other
 	n_pressdelete							= "Выбери клавишу и нажми [DELETE] для очистки хоткея!",
 
+	// Food.as
+	n_burgerinv								= "Пирожок с грушами",
+
 	// ScoreboardCommon.as
 	n_modsettingsbutton						= "Настройки",
 
@@ -129,11 +132,11 @@ namespace ru
 	// Quarters.as
 	n_beeritem								= "Квас - 1 Сердце",
 	//n_beeritem								= "Пиво - 1 Сердце",
-	//n_mealitem								= "Борщ - Полное здоровье",
-	n_mealitem								= "Мясное блюдо - Полное здоровье",
+	n_mealitem								= "Борщ - Полное здоровье",
+	//n_mealitem								= "Мясное блюдо - Полное здоровье",
 	n_eggitem								= "Яйцо - Полное здоровье",
-	//n_burgeritem							= "Бутерброд с колбасой - Полное здоровье",
-	n_burgeritem							= "Бургер - Полное здоровье",
+	n_burgeritem							= "Пирожок с грушами - Полное здоровье",
+	//n_burgeritem							= "Бургер - Полное здоровье",
 	n_pearitem								= "Груша - 2 Сердца",
 	n_sleepaction							= "Лечь спать",
 

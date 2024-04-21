@@ -67,7 +67,7 @@ namespace en
 	// Quarters.as
 	d_beertext								= "A cup of refreshing kvass.",
 	d_mealtext								= "A rich and delicious borsch.",
-	d_burgertext							= "Sausage sandwich on the go for a quick snack.",
+	d_burgertext							= "Pear tart on the go for a quick snack.",
 	d_peartext								= "A juicy and sweet pear.",
 	d_sleeptext								= "Sleep. Free!",
 
@@ -120,6 +120,9 @@ namespace en
 		// Other
 	n_pressdelete							= "Choose a bind and press [DELETE] to remove key",
 
+	// Food.as
+	n_burgerinv								= "Pear tart",
+
 	// ScoreboardCommon.as
 	n_modsettingsbutton						= " Settings",
 
@@ -129,11 +132,11 @@ namespace en
 	// Quarters.as
 	n_beeritem								= "Kvass - 1 Heart",
 	//n_beeritem								= "Beer - 1 Heart",
-	n_mealitem								= "Meal - Full Health",
-	//n_mealitem								= "Borsch - Full Health",
+	n_mealitem								= "Borsch - Full Health",
+	//n_mealitem								= "Meal - Full Health",
 	n_eggitem								= "Egg - Full Health",
-	n_burgeritem							= "Burger - Full Health",
-	//n_burgeritem							= "Sausage Sandwitch - Full Health",
+	n_burgeritem							= "Pear Tart - Full Health",
+	//n_burgeritem							= "Burger - Full Health",
 	n_pearitem								= "Pear - 2 Hearts",
 	n_sleepaction							= "Sleep",
 

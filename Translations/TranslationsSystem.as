@@ -137,6 +137,9 @@ namespace Names
 		// Other
 	pressdelete		  	       			= Translate(en::n_pressdelete+"\\"+ru::n_pressdelete),
 
+	// Food.as
+	burgerinv		  	       			= Translate(en::n_burgerinv+"\\"+ru::n_burgerinv),
+
 	// ScoreboardCommon.as
 	modsettingsbutton	  	       		= Translate(en::n_modsettingsbutton+"\\"+ru::n_modsettingsbutton),
 

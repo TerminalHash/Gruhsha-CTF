@@ -61,18 +61,18 @@ class AppointCommand : ChatCommand
 			CPlayer@ red_leader = getPlayerByNamePart(RED_LEADER_NAME);
 
 			if (blue_leader is null) {
-				error("blue leader doesn't not exists! try again");
+				error("[CAPTAINS SYSTEM] blue leader doesn't not exists! try again");
 				return;
 			}
 			if (red_leader is null) {
-				error("red leader doesn't not exists! try again");
+				error("[CAPTAINS SYSTEM] red leader doesn't not exists! try again");
 				return;
 			}
 
 			// if admin accidentally wrote the same player's name twice
 			if (blue_leader.getUsername() == red_leader.getUsername() || red_leader.getUsername() == blue_leader.getUsername())
 			{
-				error("One player cannot be a leader in two teams at the same time!");
+				error("[CAPTAINS SYSTEM] One player cannot be a leader in two teams at the same time!");
 				return;
 			}
 
@@ -141,7 +141,7 @@ class PickPlayerCommand : ChatCommand
 		u8 first_team_picking = 0;
 
 		return (
-			rules.get_string("team_"+caller_team+"_leader")==player.getUsername()
+			rules.get_string("team_" + caller_team + "_leader") == player.getUsername()
 			&& !isPickingEnded()
 			//&& ((getSmallestTeam(core.teams)==caller_team || getTeamDifference(core.teams) == 0) && caller_team == first_team_picking)
 		);
