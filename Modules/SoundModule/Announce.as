@@ -52,18 +52,26 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 
 	if (textIn.find("!") == 0 && player.getTeamNum() == getLocalPlayer().getTeamNum() && player.isMod() || textIn.find("!") == 0 && player.getTeamNum() == getLocalPlayer().getTeamNum() && (getRules().get_string("team_" + teamNum + "_leader") == player.getUsername()))
 	{
-		Sound::Play(sound + "AnnounceSound.ogg");
+		Sound::Play(sound + "AnnounceSound.ogg");					// TEAM ONLY ANNOUNCE
 		string alert = textIn;
 		alert = alert.substr(1);
 		this.set_string("announce text", alert);
 		this.set_u32("announce time", getGameTime());
 	}
-	else if (textIn.find("*offi") == 0 && player.isMod())
+	else if (textIn == ("*offi") && player.isMod())
 	{
-		Sound::Play(sound + "offi.ogg");
+		Sound::Play(sound + "offi.ogg");							// OFFI ANNOUNCE
 		this.set_string("announce text", "OFFI");
 		this.set_u32("announce time", getGameTime());
 		this.Tag("offi match");
+	}
+	else if (textIn.find("*") == 0 && player.isMod())
+	{
+		Sound::Play(sound + "AnnounceSound.ogg");					// GLOBAL ANNOUNCE
+		string alert = textIn;
+		alert = alert.substr(1);
+		this.set_string("announce text", alert);
+		this.set_u32("announce time", getGameTime());
 	}
 
 	return true;
