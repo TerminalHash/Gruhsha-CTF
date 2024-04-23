@@ -23,43 +23,70 @@ void onRestart(CRules@ this)
 
     @modSettings = StandardPane();
 
+    ///////////////////////////////////////
+    // STANDART COMPONENTS
     Label@ titleLabel = StandardLabel();
     titleLabel.SetText("Mod Settings");
-    titleLabel.SetMargin(450, 10);
+    titleLabel.SetAlignment(0.5f, 0.5f);
 
 	Label@ closeLabel = StandardLabel();
     closeLabel.SetText("x");
     closeLabel.SetColor(color_black);
     closeLabel.SetAlignment(0.5f, 0.5f);
 
-    Label@ bindNameLabel = StandardLabel();
-    bindNameLabel.SetText("testtesttesttesttest");
-    bindNameLabel.SetStretchRatio(1.0f, 0.0f);
-    bindNameLabel.SetAlignment(0.0f, 0.5f);
-    bindNameLabel.SetWrap(true);
-    bindNameLabel.SetMaxLines(1);
-    bindNameLabel.SetMinSize(300, 0);
-
-    float[] serverColumnSizes = { 0, 1, 0 };
-    Pane@ bindingLists = StandardPane(ui, SColor(255, 150, 150, 255));
-    bindingLists.SetStretchRatio(1.0f, 0.0f);
-    bindingLists.SetPadding(10, 10);
-    bindingLists.SetSpacing(10, 10);
-    bindingLists.SetFlowDirection(FlowDirection::DownRight);
-    bindingLists.SetColumnSizes(serverColumnSizes);
-    bindingLists.AddComponent(bindNameLabel);
-
     Button@ closeButton = StandardButton(ui);
     closeButton.SetMinSize(20, 20);
     closeButton.SetAlignment(1.0f, 0.0f);
     closeButton.AddComponent(closeLabel);
     closeButton.AddEventListener(Event::Click, HideComponentHandler(modSettings));
+    ///////////////////////////////////////
+
+    //////////////////////////////////////
+    // BINDINGS COMPONENTS
+    Label@ bindNameLabel = StandardLabel();
+    bindNameLabel.SetText("");
+    bindNameLabel.SetStretchRatio(1.0f, 0.0f);
+    bindNameLabel.SetAlignment(0.0f, 0.5f);
+    bindNameLabel.SetWrap(true);
+    bindNameLabel.SetMaxLines(5);
+    bindNameLabel.SetMinSize(300, 0);
+
+    Label@ setBindNameLabel = StandardLabel();
+    setBindNameLabel.SetText("");
+    setBindNameLabel.SetStretchRatio(1.0f, 0.0f);
+    setBindNameLabel.SetAlignment(0.0f, 0.5f);
+    setBindNameLabel.SetWrap(true);
+    setBindNameLabel.SetMaxLines(5);
+    setBindNameLabel.SetMinSize(300, 0);
+
+    float[] serverColumnSizes = { 2, 1 };
+    Pane@ bindingLists = StandardPane(ui, SColor(255, 150, 150, 255));
+    bindingLists.SetStretchRatio(0.5f, 0.5f);
+    bindingLists.SetPadding(4, 4);
+    bindingLists.SetSpacing(10, 10);
+    bindingLists.SetMinSize(180, 40);
+    bindingLists.SetFlowDirection(FlowDirection::DownRight);
+    bindingLists.SetColumnSizes(serverColumnSizes);
+    bindingLists.AddComponent(bindNameLabel);
+
+    Pane@ setBindingLists = StandardPane(ui, SColor(255, 150, 150, 255));
+    setBindingLists.SetStretchRatio(0.5f, 0.5f);
+    setBindingLists.SetPadding(4, 4);
+    setBindingLists.SetSpacing(10, 10);
+    setBindingLists.SetFlowDirection(FlowDirection::DownRight);
+    setBindingLists.SetColumnSizes(serverColumnSizes);
+    setBindingLists.AddComponent(setBindNameLabel);
+    
+    //////////////////////////////////////
 
     Pane@ settingsPane = StandardPane(ui, StandardPaneType::Sunken);
     settingsPane.SetStretchRatio(1.0f, 1.0f);
     settingsPane.SetPadding(8, 8);
     settingsPane.SetSpacing(2, 2);
+    settingsPane.SetFlowDirection(FlowDirection::DownRight);
+    settingsPane.SetColumnSizes(serverColumnSizes);
     settingsPane.AddComponent(bindingLists);
+    settingsPane.AddComponent(setBindingLists);
 
 	float[] modSettingsColumnSizes = { 5, 3 };
     float[] modSettingsRowSizes = { 0, 1, 0 };
@@ -67,9 +94,10 @@ void onRestart(CRules@ this)
     modSettings.SetPadding(10, 10);
     modSettings.SetAlignment(0.5f, 0.5f);
     modSettings.SetStretchRatio(1.0f, 0.0f);
+    modSettings.SetMinSize(900, 720);
     modSettings.SetMaxSize(900, 720);
     modSettings.AddComponent(closeButton);
-    modSettings.AddComponent(titleLabel);
+    //modSettings.AddComponent(titleLabel);
     modSettings.AddComponent(settingsPane);
     modSettings.SetVisible(false);
 
@@ -110,10 +138,10 @@ void onRender(CRules@ this)
 
 void onMainMenuCreated(CRules@ this, CContextMenu@ menu)
 {
-    Menu::addContextItem(menu, "Mod Settings (TEST)", getCurrentScriptName(), "void ShowModSettings()");
+    Menu::addContextItem(menu, "Mod Settings (TEST)", getCurrentScriptName(), "void ShowSettings()");
 }
 
-void ShowModSettings()
+void ShowSettings()
 {
     Menu::CloseAllMenus();
     modSettings.SetVisible(true);
@@ -159,6 +187,12 @@ void settingsReload()
 			sfile.add_string("blockbar_hud", "yes");
 			sfile.add_string("build_mode", "vanilla");
 			sfile.add_string("camera_sway", "5");
+            sfile.add_string("body_tilting", "on");
+			sfile.add_string("drillzone_borders", "on");
+			sfile.add_string("annoying_nature", "on");
+			sfile.add_string("annoying_voicelines", "on");
+			sfile.add_string("annoying_tags", "on");
+			sfile.add_string("disable_class_change_in_shops", "no");
 
 			printf("Creating local settings file with default values for Gruhsha.");
 		}
@@ -188,11 +222,10 @@ class HideComponentHandler : EventHandler
 
     void Handle()
     {
-
         component.SetVisible(false);
     }
 }
-
+/*
 class BindingsHandler : EventHandler
 {
     private Component@ component;
@@ -204,17 +237,14 @@ class BindingsHandler : EventHandler
 
     void Handle()
     {
-        for (int i=0; i<button_texts.length; ++i)
+        for (int i = 0; i < button_texts.length; ++i)
         {
             ClickableButton[] bts;
 
-            for (int g=0; g<button_texts[i].length; ++g)
+            for (int g = 0; g < button_texts[i].length; ++g)
             {
                 ClickableButton button;
                 {
-                    //button.m_clickable_origin = center + Vec2f(5, i * 40);
-                    //button.m_clickable_size = Vec2f(200, 40);
-
                     button.cmd_id = getRules().getCommandID("b buttonclick");
                     button.cmd_subid = binding_index;
 
@@ -229,11 +259,11 @@ class BindingsHandler : EventHandler
                 bts.push_back(button);
             }
 
-            GUI.buttons.push_back(bts);
+            ui.push_back(bindingLists);
         }
     }
-}
-
+}*/
+/*
 class SettingsHandler : EventHandler
 {
     private Component@ component;
@@ -293,4 +323,4 @@ class SettingsHandler : EventHandler
             GUI.settings.push_back(bts);
         }
     }
-}
+}*/
