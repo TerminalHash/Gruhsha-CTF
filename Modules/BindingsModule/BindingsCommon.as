@@ -87,7 +87,10 @@ string[][] setting_texts =
 		Names::camerasw,
 		Names::bodytilt,
 		Names::drillzoneborders,
-		Names::annoyingnature
+		Names::annoyingnature,
+		Names::annoyingvoicelines,
+		Names::annoyingtags,
+		Names::switchclasschanginginshop
 	}
 };
 
@@ -99,7 +102,10 @@ string[][] setting_file_names =
 		"camera_sway",
 		"body_tilting",
 		"drillzone_borders",
-		"annoying_nature"
+		"annoying_nature",
+		"annoying_voicelines",
+		"annoying_tags",
+		"disable_class_change_in_shops"
 	}
 };
 
@@ -111,8 +117,8 @@ string[][][] setting_options =
 			Descriptions::bmoptlag // 20
 		},
 		{
-			Descriptions::blockbaron, // 10
-			Descriptions::blockbaroff // 20
+			Descriptions::universalno, // 10
+			Descriptions::universalyes // 20
 		},
 		{
 			"1", // 1
@@ -132,6 +138,18 @@ string[][][] setting_options =
 		{
 			Descriptions::universaloff,       // BUSHES & LEAFS MUTE
 			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // VOICELINES
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // TAGS
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universalno, // 10
+			Descriptions::universalyes // 20
 		}
 	}
 };
@@ -144,8 +162,8 @@ string[][][] setting_option_names =
 			"lagfriendly" // 20
 		},
 		{
-			"yes", // 10
-			"no" // 20
+			"no", // 10    BLOCKBAR
+			"yes" // 20
 		},
 		{
 			"1", // 1
@@ -165,6 +183,18 @@ string[][][] setting_option_names =
 		{
 			"off",       // BUSHES & LEAFS MUTE
 			"on"
+		},
+		{
+			"off",       // VOICELINES
+			"on"
+		},
+		{
+			"off",       // TAGS
+			"on"
+		},
+		{
+			"no", // 10    CLASS CHANGING IN SHOPS
+			"yes" // 20
 		}
 	}
 };
@@ -255,11 +285,11 @@ void UpdateSetting(int i, int g, string h)
 
 	if(!file.saveFile(SETTINGSFILE + ".cfg"))
 	{	
-		print("Failed to save VNR_customizableplayersettings.cfg");
+		print("Failed to save GRUHSHA_customizableplayersettings.cfg");
 	}
 	else
 	{
-		print("Successfully saved VNR_customizableplayersettings.cfg");
+		print("Successfully saved GRUHSHA_customizableplayersettings.cfg");
 	}
 
 	ResetRuleSettings();

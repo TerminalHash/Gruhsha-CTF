@@ -192,3 +192,105 @@ class HideComponentHandler : EventHandler
         component.SetVisible(false);
     }
 }
+
+class BindingsHandler : EventHandler
+{
+    private Component@ component;
+
+    BindingsHandler(Component@ component)
+    {
+        @this.component = component;
+    }
+
+    void Handle()
+    {
+        for (int i=0; i<button_texts.length; ++i)
+        {
+            ClickableButton[] bts;
+
+            for (int g=0; g<button_texts[i].length; ++g)
+            {
+                ClickableButton button;
+                {
+                    //button.m_clickable_origin = center + Vec2f(5, i * 40);
+                    //button.m_clickable_size = Vec2f(200, 40);
+
+                    button.cmd_id = getRules().getCommandID("b buttonclick");
+                    button.cmd_subid = binding_index;
+
+                    ++binding_index;
+
+                    button.m_text = button_texts[i][g];
+                    button.m_i = i;
+                    button.m_g = g;
+                    button.m_text_position = button.m_clickable_origin + Vec2f(4, 0);
+                }
+
+                bts.push_back(button);
+            }
+
+            GUI.buttons.push_back(bts);
+        }
+    }
+}
+
+class SettingsHandler : EventHandler
+{
+    private Component@ component;
+
+    SettingsHandler(Component@ component)
+    {
+        @this.component = component;
+    }
+
+    void Handle()
+    {
+        for (int i=0; i<setting_texts.length; ++i)
+        {
+            ClickableButtonThree[] bts;
+
+            for (int g=0; g<setting_texts[i].length; ++g)
+            {
+                ClickableButtonThree button;
+                {
+                    //button.m_clickable_origin = center + Vec2f(5, i * 40);
+                    //button.m_clickable_size = Vec2f(200, 40);
+
+                    button.cmd_id = getRules().getCommandID("s buttonclick");
+                    button.cmd_subid = setting_index;
+
+                    ++setting_index;
+
+                    button.m_text = setting_texts[i][g];
+                    button.m_i = i;
+                    button.m_g = g;
+                    button.m_text_position = button.m_clickable_origin + Vec2f(4, 0);
+
+                    for (int h=0; h<setting_options[i][g].length; ++h)
+                    {
+                        button.m_hovereds.push_back(false);
+
+                        //if (getRules().get_string(setting_file_names[i][g]) == setting_option_names[i][g][h])
+                        if (false)
+                        {
+                            button.m_selecteds.push_back(true);
+                            button.m_state.push_back(ClickableButtonStates::Selected);
+                        }
+                        else
+                        {
+                            button.m_selecteds.push_back(false);
+                            button.m_state.push_back(ClickableButtonStates::None);
+                        }
+
+
+                        button.possible_options.push_back(setting_options[i][g][h]);
+                    }
+                }
+
+                bts.push_back(button);
+            }
+
+            GUI.settings.push_back(bts);
+        }
+    }
+}
