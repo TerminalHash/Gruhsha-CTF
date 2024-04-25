@@ -244,7 +244,7 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 	if (draw_age)
 	{
 		int regtime = player.getRegistrationTime();
-		if (regtime>0 && !player.isBot())
+		if (regtime > 0 && !player.isBot())
 		{
 			int reg_month = Time_Month(regtime);
 			int reg_day = Time_MonthDate(regtime);
@@ -254,6 +254,8 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 
 			int age_icon_start = 32;
 			int icon = 0;
+			bool show_years = false;
+			int age = 0;
 			//less than a month?
 			if (days < 28)
 			{
@@ -336,6 +338,8 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 							{
 								icon -= 1;
 							}
+							show_years = true;
+							age = icon + 1; // icon frames start from 0
 							//ensure sane
 							icon = Maths::Clamp(icon, 0, 9);
 							//shift line
@@ -344,8 +348,19 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 					}
 				}
 			}
+
+			float extra = 8;
 			Vec2f age_icon_pos = Vec2f(portraitTopLeft.x, portraitBotRight.y)+Vec2f(4, 40);
-			GUI::DrawIcon("AccoladeBadges", age_icon_start + icon, Vec2f(16, 16), age_icon_pos, 1.0f);
+
+			if (show_years)
+			{
+				drawAgeIcon(age, age_icon_pos);
+			}
+			else
+			{
+				GUI::DrawIcon("AccoladeBadges", age_icon_start + icon, Vec2f(16, 16), age_icon_pos, 1.0f);
+			}
+
 			if (mousePos.x > age_icon_pos.x -4 && mousePos.x < age_icon_pos.x + 24 && mousePos.y < age_icon_pos.y + 24 && mousePos.y > age_icon_pos.y -4)
 			{
 				hovered_age = icon;
@@ -435,6 +450,26 @@ void drawHoverExplanation(int hovered_accolade, int hovered_age, int hovered_tie
 
 	GUI::DrawPane(tl, br, SColor(0xffffffff));
 	GUI::DrawText(desc, tl + expand, SColor(0xffffffff));
+}
+
+void drawAgeIcon(int age, Vec2f position)
+{
+	int number_gap = 8;
+	int years_frame_start = 48;
+
+	if (age >= 10)
+	{
+		position.x -= number_gap - 4;
+		GUI::DrawIcon("AccoladeBadges", years_frame_start + (age / 10), Vec2f(16, 16), position, 1.0f, 0);
+		age = age % 10;
+		position.x += number_gap;
+	}
+
+	GUI::DrawIcon("AccoladeBadges", years_frame_start + age, Vec2f(16, 16), position, 1.0f, 0);
+	position.x += 4;
+
+	if(age == 1) position.x -= 1; // fix y letter offset for number 1
+	GUI::DrawIcon("AccoladeBadges", 58, Vec2f(16, 16), position, 1.0f, 0); // y letter
 }
 
 string[] age_description = {

@@ -94,7 +94,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 	f32 ping_offset = 26;
 	f32 info_icon_offset = ping_offset + 480;
 
-	const int tier_start = (draw_age ? age_start : accolades_start) + 70;
+	//const int tier_start = (draw_age ? age_start : accolades_start) + 70;
 
 	// Waffle: Change header color for old stats
 	CControls@ controls = getControls();
@@ -1102,6 +1102,7 @@ void getMapName(CRules@ this)
 	}
 }
 
+/*
 void drawAgeIcon(int age, Vec2f position)
 {
 	int number_gap = 8;
@@ -1118,6 +1119,7 @@ void drawAgeIcon(int age, Vec2f position)
 	if(age == 1) position.x -= 1; // fix y letter offset for number 1
 	GUI::DrawIcon("AccoladeBadges", 58, Vec2f(16, 16), position, 0.5f, 0); // y letter
 }
+*/
 
 void DrawFancyCopiedText(string username, Vec2f mousePos, uint duration)
 {
