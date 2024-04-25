@@ -379,22 +379,24 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 		Vec2f head_icon_pos = Vec2f(portraitTopLeft.x,portraitBotRight.y)+Vec2f(38, 40);
 		GUI::DrawIcon(head_file, head_frame+(getGameTime()%90<60?(getGameTime()%90<40?1:2):0), head_dims, head_icon_pos, head_icon_scale, head_icon_scale, player.getTeamNum(), SColor(0xaaffffff));
 
+		// TODO: need more space for clan badges
+		/*f32 clan_badge_icon_scale = 1.0f;
 		Vec2f clan_badge_icon_pos = Vec2f(portraitTopLeft.x,portraitBotRight.y)+Vec2f(40, 8);
 		if (clantag.toUpper() == "MINECULT") {
-			GUI::DrawIcon("Sprites/clan_badges.png", 0, Vec2f(16, 16), clan_badge_icon_pos, head_icon_scale, player.getTeamNum());
+			GUI::DrawIcon("Sprites/clan_badges.png", 0, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, player.getTeamNum());
 		} else if (clantag.toUpper() == "TTOGAD") {
-			GUI::DrawIcon("Sprites/clan_badges.png", 1, Vec2f(16, 16), clan_badge_icon_pos, head_icon_scale, 0);
+			GUI::DrawIcon("Sprites/clan_badges.png", 1, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, 0);
 		} else if (clantag.toUpper() == "MAGMUS") {
-			GUI::DrawIcon("Sprites/clan_badges.png", 2, Vec2f(16, 16), clan_badge_icon_pos, head_icon_scale, player.getTeamNum());
+			GUI::DrawIcon("Sprites/clan_badges.png", 2, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, player.getTeamNum());
 		} else if (clantag.toUpper() == "HOMEK") {
-			GUI::DrawIcon("Sprites/clan_badges.png", 3, Vec2f(16, 16), clan_badge_icon_pos, head_icon_scale, 0);
+			GUI::DrawIcon("Sprites/clan_badges.png", 3, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, 0);
 		} else if (clantag.toUpper() == "BUTTER") {
-			GUI::DrawIcon("Sprites/clan_badges.png", 4, Vec2f(16, 16), clan_badge_icon_pos, head_icon_scale, 0);
+			GUI::DrawIcon("Sprites/clan_badges.png", 4, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, 0);
 		} else if (clantag.toUpper() == "GRUHSHA") {
-			GUI::DrawIcon("Sprites/clan_badges.png", 5, Vec2f(16, 16), clan_badge_icon_pos, head_icon_scale, 0);
+			GUI::DrawIcon("Sprites/clan_badges.png", 5, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, 0);
 		} else if (clantag.toUpper() == "BUTTERMINA" || clantag.toUpper() == "BUTTERCULT") {
-			GUI::DrawIcon("Sprites/clan_badges.png", 6, Vec2f(16, 16), clan_badge_icon_pos, head_icon_scale, player.getTeamNum());
-		}
+			GUI::DrawIcon("Sprites/clan_badges.png", 6, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, player.getTeamNum());
+		}*/
 		
 	drawHoverExplanation(hovered_accolade, hovered_age, hovered_tier, Vec2f(mousePos.x, mousePos.y+32));
 }

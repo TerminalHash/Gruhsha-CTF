@@ -94,21 +94,6 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 	f32 ping_offset = 26;
 	f32 info_icon_offset = ping_offset + 480;
 
-	draw_age = false;
-	for(int i = 0; i < players.length; i++) {
-		if (players[i].getRegistrationTime() > 0) {
-			draw_age = true;
-			break;
-		}
-	}
-
-	draw_tier = false;
-	for(int i = 0; i < players.length; i++) {
-		if (players[i].getSupportTier() > 0) {
-			draw_tier = true;
-			break;
-		}
-	}
 	const int tier_start = (draw_age ? age_start : accolades_start) + 70;
 
 	// Waffle: Change header color for old stats
