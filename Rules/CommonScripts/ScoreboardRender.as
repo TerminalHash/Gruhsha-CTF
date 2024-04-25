@@ -1,4 +1,5 @@
 #include "ScoreboardCommon.as";
+#include "KIWI_Playercard.as";
 #include "Accolades.as";
 #include "ColoredNameToggleCommon.as";
 #include "ApprovedTeams.as";
@@ -9,10 +10,11 @@
 
 CPlayer@ hoveredPlayer;
 Vec2f hoveredPos;
+Vec2f hovered_pos;
+Vec2f card_pos;
 
-int hovered_accolade = -1;
-int hovered_age = -1;
-int hovered_tier = -1;
+int hovered_player;
+int hovered_card = -1;
 bool draw_age = false;
 bool draw_tier = false;
 
@@ -20,6 +22,8 @@ float scoreboardMargin = 52.0f;
 float scrollOffset = 0.0f;
 float scrollSpeed = 4.0f;
 float maxMenuWidth = 700;
+
+Vec2f screen_dims = Vec2f(getScreenWidth(), getScreenHeight());
 
 bool mouseWasPressed2 = false;
 
@@ -43,45 +47,8 @@ class OldPlayerStats {
 	}
 }
 
-string[] age_description = {
-	"New Player - Welcome them to the game!",
-	//first month
-	"This player has 1 to 2 weeks of experience",
-	"This player has 2 to 3 weeks of experience",
-	"This player has 3 to 4 weeks of experience",
-	//first year
-	"This player has 1 to 2 months of experience",
-	"This player has 2 to 3 months of experience",
-	"This player has 3 to 6 months of experience",
-	"This player has 6 to 9 months of experience",
-	"This player has 9 to 12 months of experience",
-	//cake day
-	"Cake Day - it's this player's KAG Birthday!",
-	//(gap in the sheet)
-	"", "", "", "", "", "",
-	//established player
-	"This player has 1 year of experience",
-	"This player has 2 years of experience",
-	"This player has 3 years of experience",
-	"This player has 4 years of experience",
-	"This player has 5 years of experience",
-	"This player has 6 years of experience",
-	"This player has 7 years of experience",
-	"This player has 8 years of experience",
-	"This player has 9 years of experience",
-	"This player has over a decade of experience"
-};
-
-string[] tier_description = {
-	"", //f2p players, no description
-	"This player is a Squire Supporter",
-	"This player is a Knight Supporter",
-	"This player is a Royal Guard Supporter",
-	"This player is a Round Table Supporter"
-};
-
 //returns the bottom
-float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ team, Vec2f emblem)
+float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ team, Vec2f &out pane_tl, Vec2f &out pane_br, Vec2f emblem)
 {
 	if (players.size() <= 0)
 		return tl.y;
@@ -106,6 +73,9 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 	Vec2f br(Maths::Min(getScreenWidth() - 100, getScreenWidth()/2 + maxMenuWidth), tl.y + (players.length + 5.5) * stepheight);
 	GUI::DrawPane(tl, br, teamColor);
 
+	pane_tl = tl;
+	pane_br = br;
+
 	//offset border
 	tl.x += stepheight;
 	br.x -= stepheight;
@@ -121,6 +91,8 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 
 	const int accolades_start = 770;
 	const int age_start = accolades_start + 80;
+	f32 ping_offset = 26;
+	f32 info_icon_offset = ping_offset + 480;
 
 	draw_age = false;
 	for(int i = 0; i < players.length; i++) {
@@ -152,7 +124,9 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 	GUI::DrawText(getTranslatedString("Deaths"), Vec2f(br.x - 190, tl.y), kdr_color);     // Waffle: --
 	GUI::DrawText(getTranslatedString("Assists"), Vec2f(br.x - 120, tl.y), kdr_color);    // Waffle: --
 	GUI::DrawText(getTranslatedString("KDR"), Vec2f(br.x - 50, tl.y), kdr_color);         // Waffle: --
-	GUI::DrawText(getTranslatedString("Accolades"), Vec2f(br.x - accolades_start, tl.y), SColor(0xffffffff));
+
+	// Old accolades shit, we dont using this anymore
+	/*GUI::DrawText(getTranslatedString("Accolades"), Vec2f(br.x - accolades_start, tl.y), SColor(0xffffffff));
 	if(draw_age)
 	{
 		GUI::DrawText(getTranslatedString("Age"), Vec2f(br.x - age_start, tl.y), SColor(0xffffffff));
@@ -160,10 +134,13 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 	if(draw_tier)
 	{
 		GUI::DrawText(getTranslatedString("Tier"), Vec2f(br.x - tier_start, tl.y), SColor(0xffffffff));
-	}
+	}*/
+
 	//GUI::DrawText(Names::matssection, Vec2f(br.x - 600, tl.y), SColor(0xffffffff));
 
 	tl.y += stepheight * 0.5f;
+
+	string playerCardToDraw = "";
 
 	Vec2f mousePos = controls.getMouseScreenPos();
 
@@ -178,7 +155,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 		tl.y += stepheight;
 		br.y = tl.y + lineheight;
 
-		bool playerHover = mousePos.y > tl.y && mousePos.y < tl.y + 15;
+		bool playerHover = mousePos.x > tl.x && mousePos.x < br.x && mousePos.y > tl.y && mousePos.y < br.y;
 
 		if (playerHover)
 		{
@@ -373,7 +350,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 				GUI::DrawIcon("Sprites/clan_badges.png", 4, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
 			} else if (clantag.toUpper() == "GRUHSHA") {
 				GUI::DrawIcon("Sprites/clan_badges.png", 5, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
-			} else if (clantag.toUpper() == "BUTTERMINA") {
+			} else if (clantag.toUpper() == "BUTTERMINA" || clantag.toUpper() == "BUTTERCULT") {
 				GUI::DrawIcon("Sprites/clan_badges.png", 6, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, teamIndex);
 			}
 
@@ -388,8 +365,33 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 			GUI::DrawText(playername, tl + Vec2f(name_buffer, 0), namecolour);
 		}
 
+		///////////////////////////////////////////////
+		// Player card section
+		///////////////////////////////////////////////
+
+		u8 card_variants_amount = CFileImage("id_card_icon").getWidth()/16;
+		Vec2f card_icon_pos = Vec2f(br.x - info_icon_offset, tl.y-8);
+		GUI::DrawIcon(
+			"id_card_icon",
+			p.getNetworkID() % card_variants_amount + (p.getOldGold() && !p.isBot() ? card_variants_amount : 0),
+			Vec2f(16, 16),
+			card_icon_pos,
+			1.0f,
+			69
+		);
+
+		if (playerHover && mousePos.x > br.x - info_icon_offset && mousePos.x < br.x - info_icon_offset + 24)
+		{
+			if (hovered_card < 0) {
+				hovered_card = i;
+				hovered_pos = card_icon_pos;
+			}
+		}
+		///////////////////////////////////////////////
+
+		// Old accolades shit, we dont using this anymore
 		//draw account age indicator
-		if (draw_age)
+		/*if (draw_age)
 		{
 			int regtime = p.getRegistrationTime();
 			if (regtime > 0)
@@ -626,7 +628,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 				group_encode[group_idx] -= group_step;
 
 			}
-		}
+		}*/
 
 		// Waffle: Keep old stats
 		s32 kills   = p.getKills();
@@ -868,26 +870,36 @@ void onRenderScoreboard(CRules@ this)
 	hovered_age = -1;
 	hovered_tier = -1;
 
+	//need those to know which array of players we should check for creating a player card
+	Vec2f bluz_pane_tl();
+	Vec2f bluz_pane_br();
+
+	Vec2f redz_pane_tl();
+	Vec2f redz_pane_br();
+
+	Vec2f spec_pane_tl();
+	Vec2f spec_pane_br();
+
 	//draw the scoreboards
 	tl.y += 10;
 
 	if (localTeamNum == 0)
-		tl.y = drawScoreboard(localPlayer, blueplayers, tl, this.getTeam(0), Vec2f(0, 0));
+		tl.y = drawScoreboard(localPlayer, blueplayers, tl, this.getTeam(0), bluz_pane_tl, bluz_pane_br,  Vec2f(0, 0));
 	else
-		tl.y = drawScoreboard(localPlayer, redplayers, tl, this.getTeam(1), Vec2f(32, 0));
+		tl.y = drawScoreboard(localPlayer, redplayers, tl, this.getTeam(1), redz_pane_tl, redz_pane_br, Vec2f(32, 0));
 
 	if (blueplayers.length > 0)
 		tl.y += 52;
 
 	if (localTeamNum == 1)
-		tl.y = drawScoreboard(localPlayer, blueplayers, tl, this.getTeam(0), Vec2f(0, 0));
+		tl.y = drawScoreboard(localPlayer, blueplayers, tl, this.getTeam(0), bluz_pane_tl, bluz_pane_br, Vec2f(0, 0));
 	else
-		tl.y = drawScoreboard(localPlayer, redplayers, tl, this.getTeam(1), Vec2f(32, 0));
+		tl.y = drawScoreboard(localPlayer, redplayers, tl, this.getTeam(1), redz_pane_tl, redz_pane_br, Vec2f(32, 0));
 
 	if (redplayers.length > 0)
 		tl.y += 52;
 
-	tl.y = drawScoreboard(localPlayer, spectators, tl, this.getTeam(255), Vec2f(32, 0));
+	tl.y = drawScoreboard(localPlayer, spectators, tl, this.getTeam(255), spec_pane_tl, spec_pane_br, Vec2f(32, 0));
 
 
 	float scoreboardHeight = tl.y + scrollOffset;
@@ -910,9 +922,66 @@ void onRenderScoreboard(CRules@ this)
 		scrollOffset = Maths::Clamp(scrollOffset, 0.0f, fullOffset);
 	}
 
-	drawPlayerCard(hoveredPlayer, hoveredPos);
+	Vec2f mousePos = controls.getMouseScreenPos();
+	bool left_side = mousePos.x<getScreenWidth()/2;
 
-	drawHoverExplanation(hovered_accolade, hovered_age, hovered_tier, Vec2f(getScreenWidth() * 0.5, tl.y));
+	///////////////////////////////////////////////
+	// Player card section
+	///////////////////////////////////////////////
+
+	//Vec2f card_pos = Vec2f(left_side?tl.x:getScreenWidth()/2, tl.y)+Vec2f(getScreenWidth()/3.75, tl.y-64+(23+9)*hovered_card);
+
+	//have to keep the whole scoreboard offset in mind :>
+	//card_pos.y -= scrollOffset;
+	Vec2f card_topLeft = hovered_pos+Vec2f(-0.164f*screen_dims.x,0);
+	card_topLeft = hovered_pos-Vec2f(playerCardDims.x/2, 0);
+	Vec2f card_botRight = card_topLeft+Vec2f(playerCardDims.x,playerCardDims.y);
+
+	bool click_to_close = controls.mousePressed1;
+	bool left_card_bounds = mousePos.y>card_botRight.y||mousePos.y<card_topLeft.y||mousePos.x>card_botRight.x||mousePos.x<card_topLeft.x;
+
+	if (click_to_close||left_card_bounds) {
+		//debug thing to check the borderlines
+		if (g_debug > 0 && hovered_card > -1)
+		GUI::DrawBubble(card_topLeft, card_botRight);
+
+		hovered_card = -1;
+	}
+
+	bool on_blue_pane = hovered_pos.x > bluz_pane_tl.x && hovered_pos.x < bluz_pane_br.x && hovered_pos.y > bluz_pane_tl.y && hovered_pos.y < bluz_pane_br.y;
+	bool on_red_pane = hovered_pos.x > redz_pane_tl.x && hovered_pos.x < redz_pane_br.x && hovered_pos.y > redz_pane_tl.y && hovered_pos.y < redz_pane_br.y;
+	bool on_spec_pane = hovered_pos.x > spec_pane_tl.x && hovered_pos.x < spec_pane_br.x && hovered_pos.y > spec_pane_tl.y && hovered_pos.y < spec_pane_br.y;
+
+	if (hovered_card != -1) {
+		CPlayer@ player = null;
+
+		if (on_blue_pane) {
+			if (blueplayers.size() > hovered_card) @player = blueplayers[hovered_card];
+		}
+		if (on_red_pane) {
+			if (redplayers.size() > hovered_card) @player = redplayers[hovered_card];
+		}
+		if (on_spec_pane) {
+			if (spectators.size() > hovered_card) @player = spectators[hovered_card];
+		}
+
+		//prevent algorythm from drawing card which doesn't fit on screen
+		f32 outbounds_y_difference = card_botRight.y-getDriver().getScreenHeight()+32.0f/704*getDriver().getScreenHeight();
+		//do something about drawing position if it doesn't fit
+		if (outbounds_y_difference>0) {
+			card_topLeft = Vec2f(card_topLeft.x, card_topLeft.y-outbounds_y_difference);
+		}
+
+		if (player !is null) {
+			makePlayerCard(player, card_topLeft);
+		}
+	}
+
+	drawPlayerCard(hoveredPlayer, hoveredPos);
+	///////////////////////////////////////////////
+
+	// Old accolades shit, we dont using this anymore
+	/*drawHoverExplanation(hovered_accolade, hovered_age, hovered_tier, Vec2f(getScreenWidth() * 0.5, tl.y));*/
 
 	ScoreboardField(
 		Vec2f(screenWidth - tl.x - 200, 115 - scrollOffset),
@@ -929,44 +998,14 @@ void onRenderScoreboard(CRules@ this)
 	mouseWasPressed2 = controls.mousePressed2;
 }
 
-void drawHoverExplanation(int hovered_accolade, int hovered_age, int hovered_tier, Vec2f centre_top)
-{
-	if( //(invalid/"unset" hover)
-		(hovered_accolade < 0
-		 || hovered_accolade >= accolade_description.length) &&
-		(hovered_age < 0
-		 || hovered_age >= age_description.length) &&
-		(hovered_tier < 0
-		 || hovered_tier >= tier_description.length)
-	) {
-		return;
-	}
-
-	string desc = getTranslatedString(
-		(hovered_accolade >= 0) ?
-			accolade_description[hovered_accolade] :
-			hovered_age >= 0 ?
-				age_description[hovered_age] :
-				tier_description[hovered_tier]
-	);
-
-	Vec2f size(0, 0);
-	GUI::GetTextDimensions(desc, size);
-
-	Vec2f tl = centre_top - Vec2f(size.x / 2, -60);
-	Vec2f br = tl + size;
-
-	//margin
-	Vec2f expand(8, 8);
-	tl -= expand;
-	br += expand;
-
-	GUI::DrawPane(tl, br, SColor(0xffffffff));
-	GUI::DrawText(desc, tl + expand, SColor(0xffffffff));
-}
-
 void onTick(CRules@ this)
 {
+
+	if (!isPlayerListShowing() && hovered_card>-1)
+	{
+		hovered_card = -1; //deactivate any cards
+	}
+
 	if (this.getCurrentState() == GAME)
 	{
 		this.add_u32("match_time", 1);
