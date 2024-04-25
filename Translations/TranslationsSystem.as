@@ -30,6 +30,9 @@ namespace Descriptions
 
 	// Accolades.as
 	goldgrushatext		  	    	= Translate(en::d_goldgrushatext+"\\"+ru::d_goldgrushatext),
+	bronzetokentext		  	    	= Translate(en::d_bronzetokentext+"\\"+ru::d_bronzetokentext),
+	kiwitext		  	    		= Translate(en::d_kiwitext+"\\"+ru::d_kiwitext),
+	captaintext		  	    		= Translate(en::d_captaintext+"\\"+ru::d_captaintext),
 
 	// ArcherShop.as
 	woodenarrowdesc		  	    	= Translate(en::d_woodenarrowdesc+"\\"+ru::d_woodenarrowdesc),

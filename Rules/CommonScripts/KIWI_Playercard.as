@@ -168,6 +168,10 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 				1 : 0),             7,     0,         0,
 			(acc.grusha_contributor ?
 				1 : 0),				9,     0,         0,
+			(acc.kiwi_contributor   ?
+				1 : 0),             11,     0,         0,
+			(acc.best_captain   	?
+				1 : 0),             12,     0,         0,
 
 			//medals
 			acc.gold,               0,     1,         1,

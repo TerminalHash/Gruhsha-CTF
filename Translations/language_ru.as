@@ -15,6 +15,9 @@ namespace ru
 
 	// Accolades.as
 	d_goldgrushatext						= "Контрибьютор Груши - за разработку мода Gruhsha CTF",
+	d_bronzetokentext						= "Бронзовая монета - за поддержание игры после запуска во F2P",
+	d_kiwitext								= "Контрибьютор KIW1 - за помощь в разработке мода KIW1",
+	d_captaintext							= "Лучший капитан - за смелость и умение набирать хорошие команды",
 
 	// ArcherShop.as
 	d_woodenarrowdesc						= "Ставит деревянный блок на месте приземления.",

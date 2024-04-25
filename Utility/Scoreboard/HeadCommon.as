@@ -25,7 +25,7 @@ int getHeadSpecs(CPlayer@ player, string &out head_file)
 
 		if (player !is null)
 		{
-			string file_path = getPath() + "Base/Entity/Characters/Sprites/CustomHeads/";
+			string file_path = getPath() + "Base/Entities/Characters/Sprites/CustomHeads/";
 			string png_file = file_path + player.getUsername() + ".png";
 
 			bool customFileExists = CFileMatcher(png_file).hasMatch();

@@ -15,6 +15,9 @@ namespace en
 
 	// Accolades.as
 	d_goldgrushatext						= "Gruhsha Contributor - for developing mod Gruhsha CTF",
+	d_bronzetokentext						= "Bronzenmünze - for keeping the game alive after the F2P launch",
+	d_kiwitext								= "KIW1 Contributor - for contributing to the mod developing",
+	d_captaintext							= "Best Captain - for courage and the ability to recruit good teams",
 
 	// ArcherShop.as
 	d_woodenarrowdesc						= "Spawns wooden block at the landing site.",

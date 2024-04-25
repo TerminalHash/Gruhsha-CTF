@@ -37,11 +37,13 @@ shared class Accolades
 	bool map_contributor = false;           //official mapcycle (at any point)
 	bool moderation_contributor = false;    //official forum/discord/ingame admin, (at any point, not "dishonourably discharged")
 	bool grusha_contributor = false;
+	bool kiwi_contributor = false;
+	bool best_captain = false;
 
 	Accolades(ConfigFile@ cfg, string _username)
 	{
 		username = _username;
-		customHeadTexture = getPath() + "Characters/CustomHeads/" + username + ".png";
+		customHeadTexture = getPath() + "Base/Entities/Characters/Sprites/CustomHeads/" + username + ".png";
 		array<string> slices;
 		if(cfg.readIntoArray_string(slices, username))
 		{
@@ -67,6 +69,10 @@ shared class Accolades
 					moderation_contributor = true;
 				} else if (s1 == "grusha") {
 					grusha_contributor = true;
+				} else if (s1 == "kiwi") {
+					kiwi_contributor = true;
+				} else if (s1 == "captain") {
+					best_captain = true;
 				}
 
 				//2-part accolades
@@ -247,16 +253,20 @@ Accolades@ getPlayerAccolades(string username)
 
 //(based on the frame order in the badges file)
 string[] accolade_description = {
-	//tourney
+	// tourney
 	"Gold Medal - for Placing 1st in a Suitable Community Tournament",
 	"Silver Medal - for Placing 2nd in a Suitable Community Tournament",
 	"Bronze Medal - for Placing 3rd in a Suitable Community Tournament",
 	"Participation Ribbon - for Participating in a Suitable Community Tournament",
-	//misc
+	// misc
 	"Community Contributor - for significantly contributing to the KAG community in some way",
 	"Github Contributor - for significantly contributing to an issue or pull request on the KAG GitHub",
 	"Map Contributor - for contributing to the official map cycle",
 	"Moderation Contributor - for contributing to moderating the game, forums, or discord",
 	"Gold Member - for enjoying the game with us since before the F2P launch",
-	Descriptions::goldgrushatext
+	// gruhsha accolades
+	Descriptions::goldgrushatext,
+	Descriptions::bronzetokentext, //like golden crown but for F2P players so they're special
+	Descriptions::kiwitext,
+	Descriptions::captaintext
 };
