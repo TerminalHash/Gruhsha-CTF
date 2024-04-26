@@ -52,6 +52,7 @@ void onInit(CRules@ this)
 			sfile.add_string("build_mode", "vanilla");
 			sfile.add_string("camera_sway", "5");
 			sfile.add_string("body_tilting", "on");
+			sfile.add_string("head_rotating", "on");
 			sfile.add_string("drillzone_borders", "on");
 			sfile.add_string("annoying_nature", "on");
 			sfile.add_string("disable_class_change_in_shops", "no");
