@@ -144,6 +144,10 @@ namespace Names
 	// Food.as
 	burgerinv		  	       			= Translate(en::n_burgerinv+"\\"+ru::n_burgerinv),
 
+	// KIWI_Playercard.as
+	medalsn		  	       				= Translate(en::n_medalsn+"\\"+ru::n_medalsn),
+	partipin		  	       			= Translate(en::n_partipin+"\\"+ru::n_partipin),
+
 	// ScoreboardCommon.as
 	modsettingsbutton	  	       		= Translate(en::n_modsettingsbutton+"\\"+ru::n_modsettingsbutton),
 

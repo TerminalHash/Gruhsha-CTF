@@ -1,6 +1,7 @@
 #include "Accolades"
 #include "SocialStatus"
 #include "HeadCommon.as"
+#include "TranslationsSystem.as"
 
 Vec2f playerCardDims(256, 198+26);
 
@@ -121,8 +122,8 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 	int accolades_start = -accoladePaneTopLeft.x;
 	int accolades_y = accoladePaneTopLeft.y+2+16;
 	GUI::DrawShadowedText(getTranslatedString("Accolades"), topLeft+accoladePaneTopLeft+Vec2f(4,charnameDims.y/4), SColor(0xffffffff));
-	GUI::DrawShadowedText("Medals", topLeft+accoladePaneTopLeft+Vec2f(4,charnameDims.y/4+48), SColor(0xffffffff));
-	GUI::DrawShadowedText("Participation", topLeft+accoladePaneTopLeft+Vec2f(4,charnameDims.y/4+96), SColor(0xffffffff));
+	GUI::DrawShadowedText(Names::medalsn, topLeft+accoladePaneTopLeft+Vec2f(4,charnameDims.y/4+48), SColor(0xffffffff));
+	GUI::DrawShadowedText(Names::partipin, topLeft+accoladePaneTopLeft+Vec2f(4,charnameDims.y/4+96), SColor(0xffffffff));
 	
 	//draw support tier
 	int tier = player.getSupportTier();

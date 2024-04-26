@@ -127,6 +127,10 @@ namespace ru
 	// Food.as
 	n_burgerinv								= "Пирожок с грушами",
 
+	// KIWI_Playercard.as
+	n_medalsn								= "Медали",
+	n_partipin								= "Участие",
+
 	// ScoreboardCommon.as
 	n_modsettingsbutton						= "Настройки",
 

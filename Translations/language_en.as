@@ -127,6 +127,10 @@ namespace en
 	// Food.as
 	n_burgerinv								= "Pear tart",
 
+	// KIWI_Playercard.as
+	n_medalsn								= "Medals",
+	n_partipin								= "Participation",
+
 	// ScoreboardCommon.as
 	n_modsettingsbutton						= " Settings",
 
