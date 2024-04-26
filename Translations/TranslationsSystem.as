@@ -131,6 +131,7 @@ namespace Names
 	blockbar		  	      			 = Translate(en::n_blockbar+"\\"+ru::n_blockbar),
 	camerasw		  	      			 = Translate(en::n_camerasw+"\\"+ru::n_camerasw),
 	bodytilt		  	      			 = Translate(en::n_bodytilt+"\\"+ru::n_bodytilt),
+	headrotating		  	      		 = Translate(en::n_headrotating+"\\"+ru::n_headrotating),
 	drillzoneborders		  	      	 = Translate(en::n_drillzoneborders+"\\"+ru::n_drillzoneborders),
 	annoyingnature		 	 	      	 = Translate(en::n_annoyingnature+"\\"+ru::n_annoyingnature),
 	annoyingvoicelines		 	 	     = Translate(en::n_annoyingvoicelines+"\\"+ru::n_annoyingvoicelines),

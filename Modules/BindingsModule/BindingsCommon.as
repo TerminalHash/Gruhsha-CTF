@@ -86,6 +86,7 @@ string[][] setting_texts =
 		Names::blockbar,
 		Names::camerasw,
 		Names::bodytilt,
+		Names::headrotating,
 		Names::drillzoneborders,
 		Names::annoyingnature,
 		Names::annoyingvoicelines,
@@ -101,6 +102,7 @@ string[][] setting_file_names =
 		"blockbar_hud",
 		"camera_sway",
 		"body_tilting",
+		"head_rotating",
 		"drillzone_borders",
 		"annoying_nature",
 		"annoying_voicelines",
@@ -129,6 +131,10 @@ string[][][] setting_options =
 		},
 		{
 			Descriptions::universaloff,       // BODY TILTING
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // HEAD ROTATING
 			Descriptions::universalon
 		},
 		{
@@ -174,6 +180,10 @@ string[][][] setting_option_names =
 		},
 		{
 			"off",       // BODY TILTING
+			"on"
+		},
+		{
+			"off",       // HEAD ROTATING
 			"on"
 		},
 		{

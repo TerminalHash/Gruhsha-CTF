@@ -280,6 +280,7 @@ void onTick(CSprite@ this)
 			headoffset += Vec2f(0, 2);
 		head.SetOffset(headoffset);
 		head.ResetTransform();
+
 		f32 lower_clamp = Maths::Abs(blob.getVelocity().x)<1?-35:0;
 		f32	upper_clamp = 45;
 		f32 headangle = Maths::Clamp(getHeadAngle(blob, headoffset), FLIP?lower_clamp:-upper_clamp, FLIP?upper_clamp:-lower_clamp);
@@ -310,6 +311,7 @@ void onTick(CSprite@ this)
 
 		blob.set_f32("head_angle", headangle);
 
+		if (getRules().get_string("head_rotating") == "off") return;
 		head.RotateBy(headangle+blob.getAngleDegrees()*0, Vec2f(0, 4));
 	}
 }
