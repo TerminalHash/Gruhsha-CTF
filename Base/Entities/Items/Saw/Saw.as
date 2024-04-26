@@ -95,10 +95,11 @@ void Blend(CBlob@ this, CBlob@ tobeblended)
 	{
 		if (isServer())
 		{
-			CPlayer@ p = getPlayerByUsername(tobeblended.get_string("lastdamageplayer"));
-			u8 team = p.getTeamNum();
+			if (this is null) return;
 
-			if (p !is null && getGameTime() - tobeblended.get_u32("lastdamagetime") <= 30 * getTicksASecond())
+			u8 team = this.getTeamNum();
+
+			if (this !is null)
 			{
 				getRules().add_s32("teamwood" + team, 50);
 				getRules().Sync("teamwood" + team, true);
