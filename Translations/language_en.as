@@ -85,7 +85,9 @@ namespace en
 	//BindingsCommon.as
 
 		// Buttons
-	n_modbindsmenu							= "Emotes/Tags",
+	n_modbindemote							= "Emote ",
+	n_modbindsmenu							= "Tags",
+	n_emotemenu								= "Emotes",
 	n_blocksmenu							= "Blocks",
 	n_actionsmenu							= "Actions",
 	n_settingsmenu							= "Settings",

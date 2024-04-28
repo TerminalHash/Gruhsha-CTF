@@ -8,6 +8,7 @@ string[] page_texts =
 {
 	Names::modbindsmenu,
 	Names::blocksmenu,
+	Names::emotemenu,
 	Names::actionsmenu,
 	Names::settingsmenu
 };
@@ -23,9 +24,9 @@ string[][] button_texts =
 		"HELP",
 		"KEG",
 		"WiT SENCE",
-		Names::tagwheel,
-		Names::emotewheelvanilla,
-		Names::emotewheelsecond
+		Names::tagwheel
+		//Names::emotewheelvanilla,
+		//Names::emotewheelsecond
 	},
 	{
 		Names::stonebl,
@@ -39,6 +40,19 @@ string[][] button_texts =
 		Names::platform,
 		Names::shop,
 		Names::spikes
+	},
+	{
+		Names::modbindemote + "1",
+		Names::modbindemote + "2",
+		Names::modbindemote + "3",
+		Names::modbindemote + "4",
+		Names::modbindemote + "5",
+		Names::modbindemote + "6",
+		Names::modbindemote + "7",
+		Names::modbindemote + "8",
+		Names::modbindemote + "9",
+		Names::emotewheelvanilla,
+		Names::emotewheelsecond
 	},
 	{
 		Names::drillcommand
@@ -72,6 +86,19 @@ string[][] button_file_names =
 		"platform",
 		"shop",
 		"spikes"
+	},
+	{
+		"emote1",
+		"emote2",
+		"emote3",
+		"emote4",
+		"emote5",
+		"emote6",
+		"emote7",
+		"emote8",
+		"emote9",
+		"emote_wheel_vanilla",
+		"emote_wheel_two"
 	},
 	{
 		"take_out_drill"
@@ -1107,7 +1134,7 @@ class ClickableButtonTwo
 	}
 }
 
-u8 magic_number = 3;
+u8 magic_number = 4;
 
 class ClickableButtonGUI
 {

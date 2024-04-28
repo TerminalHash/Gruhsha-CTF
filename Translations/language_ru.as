@@ -85,7 +85,9 @@ namespace ru
 	//BindingsCommon.as
 
 		// Buttons
-	n_modbindsmenu							= "Эмоции/Метки",
+	n_modbindemote							= "Эмоция ",
+	n_modbindsmenu							= "Метки",
+	n_emotemenu								= "Эмоции",
 	n_blocksmenu							= "Блоки",
 	n_actionsmenu							= "Действия",
 	n_settingsmenu							= "Настройки",
