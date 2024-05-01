@@ -34,7 +34,7 @@ bool PlaceBlob(CBlob@ this, CBlob@ blob, Vec2f cursorPos, bool repairing = false
 		}
 
 		// out of range
-		if (mouseLen >= getMaxBuildDistance(this) + 16.0f)
+		if (mouseLen >= getMaxBuildDistance(this))
 		{
 			return false;
 		} 
@@ -58,75 +58,30 @@ bool PlaceBlob(CBlob@ this, CBlob@ blob, Vec2f cursorPos, bool repairing = false
 			blob.SetDamageOwnerPlayer(this.getPlayer());
 		}
 
-		// EPIC DIRTY HACK: change the condition for setting the blob depending on whether we are holding a seed or not.
-		CBlob@ carryBlob = this.getCarriedBlob();
-
-		if (carryBlob !is null)
+		if (this.server_DetachFrom(blob))
 		{
-			if (carryBlob.getConfig() != "seed")
+			if (repairing && repairBlob !is null)
 			{
-				if (true) // for bunnie blob/block code
+				repairBlob.server_SetHealth(repairBlob.getInitialHealth());
+				getMap().server_SetTile(repairBlob.getPosition(), blob.get_TileType("background tile"));
+				blob.server_Die();
+			}
+			else
+			{
+				blob.setPosition(cursorPos);
+				if (blob.isSnapToGrid())
 				{
-					if (repairing && repairBlob !is null)
-					{
-						repairBlob.server_SetHealth(repairBlob.getInitialHealth());
-						getMap().server_SetTile(repairBlob.getPosition(), blob.get_TileType("background tile"));
-						blob.server_Die();
-					}
-					else
-					{
-						blob.setPosition(cursorPos);
-						shape.SetStatic(true);
-						DestroyScenary(cursorPos, cursorPos);
-					}
-					return true;
+					shape.SetStatic(true);
 				}
 			}
-
-			//////////////////////////////////////////////////////
-			//////////////////////////////////////////////////////
-			else // for seed
-			{
-				if (this.server_DetachFrom(blob))
-				{
-					if (repairing && repairBlob !is null)
-					{
-						repairBlob.server_SetHealth(repairBlob.getInitialHealth());
-						getMap().server_SetTile(repairBlob.getPosition(), blob.get_TileType("background tile"));
-						blob.server_Die();
-					}
-					else
-					{
-						blob.setPosition(cursorPos);
-						if (blob.isSnapToGrid())
-						{
-							shape.SetStatic(true);
-						}
-					}
-				}
-
-				DestroyScenary(cursorPos, cursorPos);
-
-				return true;
-			}
-			//////////////////////////////////////////////////////
-			//////////////////////////////////////////////////////
-
 		}
+
+		DestroyScenary(cursorPos, cursorPos);
+
+		return true;
 	}
 
 	return false;
-}
-
-bool numberChecker(s32 number)
-{
-    if (getMap().isTileGrass(number))
-    return false;
-
-    if (number == 0)
-    return false;
-
-    return true;
 }
 
 // Returns true if pos is valid
@@ -135,10 +90,9 @@ bool serverBlobCheck(CBlob@ blob, CBlob@ blobToPlace, Vec2f cursorPos, bool repa
 	// Pos check of about 8 tiles, accounts for people with lag
 	Vec2f pos = (blob.getPosition() - cursorPos) / 2;
 
-	//if (pos.Length() > 30)
-	if (pos.Length() > getMaxBuildDistance(blob) + 16.0f)
+	if (pos.Length() > 30)
 		return false;
-	
+    
 	// Are we still on cooldown?
 	if (isBuildDelayed(blob)) 
 		return true;
@@ -146,50 +100,6 @@ bool serverBlobCheck(CBlob@ blob, CBlob@ blobToPlace, Vec2f cursorPos, bool repa
 	// Are we trying to place in a bad pos?
 	CMap@ map = getMap();
 	Tile backtile = map.getTile(cursorPos);
-
-	s32 support = blobToPlace.getShape().getConsts().support;
-
-    //cross check
-    if (blobToPlace.getName() == "spikes")
-    {
-        Vec2f cpos = cursorPos;
-
-        Vec2f cpos_1 = cpos + Vec2f(-8, 0);
-        Vec2f cpos_2 = cpos + Vec2f(8, 0);
-        Vec2f cpos_3 = cpos + Vec2f(0, 8);
-        Vec2f cpos_4 = cpos + Vec2f(0, -8);
-
-        Vec2f[] checks;
-        checks.push_back(cpos_1);
-        checks.push_back(cpos_2);
-        checks.push_back(cpos_3);
-        checks.push_back(cpos_4);
-
-        bool got_ladder_support = false;
-
-        for (int i=0; i<checks.length; ++i)
-        {
-            CBlob@[] blobs_at_pos;
-
-            if (getMap().getBlobsAtPosition(checks[i], blobs_at_pos))
-            {
-                for (int g=0; g < blobs_at_pos.length; ++g)
-                {
-                    if (blobs_at_pos[g].getName() == "ladder")
-                    {
-                        got_ladder_support = true;
-                    }
-                }
-            }
-        }
-
-        bool has_no_support = !numberChecker(getMap().getTile(cpos_1).type) && !numberChecker(getMap().getTile(cpos_2).type) && !numberChecker(getMap().getTile(cpos_3).type) && !numberChecker(getMap().getTile(cpos_4).type) && !got_ladder_support;
-
-        if (has_no_support)
-        {
-            return false;
-        }
-    }
 
 	if (map.isTileBedrock(backtile.type) || map.isTileSolid(backtile.type))
 		return false;
@@ -236,7 +146,7 @@ bool serverBlobCheck(CBlob@ blob, CBlob@ blobToPlace, Vec2f cursorPos, bool repa
 	return true;
 } 
 
-Vec2f getBottomOfCursor(Vec2f cursorPos, CBlob@ carryBlob=null)
+Vec2f getBottomOfCursor(Vec2f cursorPos, CBlob@ carryBlob)
 {
 	// check at bottom of cursor
 	CMap@ map = getMap();
@@ -326,14 +236,12 @@ void onInit(CBlob@ this)
 	SetupBuildDelay(this);
 
 	this.addCommandID("placeBlob");
-	this.addCommandID("placeSeed");
 	this.addCommandID("repairBlob");
-	this.addCommandID("settleLadder");
 	this.addCommandID("rotateBlob");
 
 	this.set_u16("build_angle", 0);
 
-	//this.getCurrentScript().runFlags |= Script::tick_not_attached;
+	this.getCurrentScript().runFlags |= Script::tick_not_attached;
 	this.getCurrentScript().removeIfTag = "dead";
 }
 
@@ -393,23 +301,20 @@ void onTick(CBlob@ this)
 
 	bc.blobActive = false;
 
-	// CODE ATHEONFISH: clientside block selection
-	/*if (carryBlob is null)
+	if (carryBlob is null)
 	{
 		return;
-	}*/
-
-	// don't draw blob locally
-	if (carryBlob !is null && carryBlob.hasTag("temp blob"))
-	{
-		carryBlob.SetVisible(false);
 	}
 
 	if (isBuildDelayed(this))
 	{
+		// don't draw blob while waiting to build
+		if (carryBlob !is null)
+		{
+			carryBlob.SetVisible(false);
+		}
 		return;
 	}
-
 
 	SetTileAimpos(this, bc);
 	// check buildable
@@ -418,350 +323,163 @@ void onTick(CBlob@ this)
 	bc.supported = false;
 	bc.hasReqs = true;
 
-	////////////////////////////////////////////////////
-	// 		Bunnie code block for blob placing		 //
-	//////////////////////////////////////////////////
-	// CODE ATHEONFISH: clientside block selection
+	u8 blockIndex = this.get_u8("buildblob");
+	BuildBlock @block = getBlockByIndex(this, blockIndex);
+	if (block !is null && block.name == carryBlob.getName()) {
+		bc.hasReqs = hasRequirements(this.getInventory(), block.reqs, bc.missing, not block.buildOnGround);
+	}
 
-	if (carryBlob !is null && carryBlob.getConfig() != "seed")
+	if (carryBlob !is null)
 	{
-		u8 blockIndex = this.get_u8("bunnie_tile");
+		CMap@ map = this.getMap();
+		bool snap = carryBlob.isSnapToGrid();
 
-		string blobtile = "null";
-		switch (blockIndex)
+		carryBlob.SetVisible(!carryBlob.hasTag("temp blob"));
+
+		bool isLadder = false;
+		if (carryBlob.getName() == "ladder")
 		{
-			case 2: blobtile = "stone_door"; break;
-			case 5: blobtile = "wooden_door"; break;
-			case 6: blobtile = "bridge"; break;
-			case 7: blobtile = "ladder"; break;
-			case 8: blobtile = "wooden_platform"; break;
-			case 10: blobtile = "spikes"; break;
-
-			case 0: blobtile = "null";
+			isLadder = true;
 		}
 
-		/*if (carryBlob !is null)
+		if (snap) // activate help line
 		{
-			this.set_u8("bunnie_tile", 255);
-		}*/
-
-		BuildBlock @block = getBlockByIndex(this, blockIndex);
-		if (block !is null && block.name == blobtile)
-		{
-			bc.hasReqs = hasRequirements(this.getInventory(), block.reqs, bc.missing, not block.buildOnGround);
+			bc.blobActive = true;
+			bc.blockActive = false;
 		}
 
-		if (blobtile != "null")
+		if (bc.cursorClose)
 		{
-			CMap@ map = this.getMap();
-			bool snap = true;
-		
-			bool onetile = false;
-			if (blobtile == "ladder")
+			if (snap) // if snaps to grid make cursor
 			{
-				onetile = true;
-			}
-		
-			if (snap) // activate help line
-			{
-				bc.blobActive = true;
-				bc.blockActive = false;
-			}
-		
-			if (bc.cursorClose)
-			{
-				if (snap) // if snaps to grid make cursor
+				Vec2f halftileoffset(map.tilesize * 0.5f, map.tilesize * 0.5f);
+
+				CMap@ map = this.getMap();
+				TileType buildtile = 256;   // something else than a tile
+				Vec2f bottomPos = getBottomOfCursor(bc.tileAimPos, carryBlob);
+
+				bool overlapped;
+
+				if (isLadder)
 				{
-					Vec2f halftileoffset(map.tilesize * 0.5f, map.tilesize * 0.5f);
-				
-					CMap@ map = this.getMap();
-					TileType buildtile = 256;   // something else than a tile
-					Vec2f bottomPos = getBottomOfCursor(bc.tileAimPos);
+					Vec2f ontilepos = halftileoffset + bc.tileAimPos;
 
-					bool overlapped;
+					overlapped = false;
+					CBlob@[] b;
 
-					if (true)
+					f32 tsqr = halftileoffset.LengthSquared() - 1.0f;
+
+					if (map.getBlobsInRadius(ontilepos, 0.5f, @b))
 					{
-						Vec2f ontilepos = halftileoffset + bc.tileAimPos;
-
-						overlapped = false;
-						CBlob@[] b;
-
-						f32 tsqr = halftileoffset.LengthSquared() - 1.0f;
-					
-						if (map.getBlobsInRadius(ontilepos, 0.5f, @b))
+						for (uint nearblob_step = 0; nearblob_step < b.length && !overlapped; ++nearblob_step)
 						{
-							for (uint nearblob_step = 0; nearblob_step < b.length && !overlapped; ++nearblob_step)
+							CBlob@ blob = b[nearblob_step];
+
+							string bname = blob.getName();
+							if (blob is carryBlob || blob.hasTag("player") || !isBlocking(blob) || !blob.getShape().isStatic())
 							{
-								CBlob@ blob = b[nearblob_step];
-
-								string bname = blob.getName();
-								if (blob.hasTag("player") || bname == "bush" || bname == "flowers" || bname == "log"
-									|| !isBlocking(blob) || !blob.getShape().isStatic() || (blobtile == bname && (blob.getTeamNum() == this.getTeamNum() || blob.getTeamNum() == 255) && blob.getHealth() != blob.getInitialHealth())) continue;
-
-								overlapped = (blob.getPosition() - ontilepos).LengthSquared() < tsqr;
+								continue;
 							}
+
+							overlapped = (blob.getPosition() - ontilepos).LengthSquared() < tsqr;
 						}
 					}
-					else
-					{
-						overlapped = false;
-					}
-
-					u8 support = 0;
-
-					switch (blockIndex)
-					{
-						case 2: support = 3; break;
-						case 5: support = 3; break;
-						case 6: support = 1; break;
-						case 7: support = 5; break;
-						case 8: support = 1; break;
-						case 10: support = 0; break;
-
-						case 0: support = 0;
-					}
-
-				
-					bc.buildableAtPos = isBuildableAtPos(this, bottomPos, buildtile, null, bc.sameTileOnBack, blobtile) && !overlapped;
-					//printf("hello " + isBuildableAtPos(this, bottomPos, buildtile, null, bc.sameTileOnBack, blobtile));
-					bc.rayBlocked = isBuildRayBlocked(this.getPosition(), bc.tileAimPos + halftileoffset, bc.rayBlockedPos);
-					bc.buildable = bc.buildableAtPos && !bc.rayBlocked;
-					bc.buildable_alt = isBuildableAtPosAlt(this, bc.tileAimPos + halftileoffset, buildtile, null, bc.sameTileOnBack, blobtile) && !bc.rayBlocked && !overlapped;
-					bc.supported = support > 0 ? map.hasSupportAtPos(bc.tileAimPos) : true;
-
-					//printf("buildable: " + bc.buildable);
 				}
+				else
+				{
+					overlapped = carryBlob.isOverlappedAtPosition(bottomPos, carryBlob.getAngleDegrees());
+				}
+
+				bc.buildableAtPos = isBuildableAtPos(this, bottomPos, buildtile, carryBlob, bc.sameTileOnBack) && !overlapped;
+				bc.rayBlocked = isBuildRayBlocked(this.getPosition(), bc.tileAimPos + halftileoffset, bc.rayBlockedPos);
+				bc.buildable = bc.buildableAtPos && !bc.rayBlocked;
+				bc.supported = carryBlob.getShape().getConsts().support > 0 ? map.hasSupportAtPos(bc.tileAimPos) : true;
+				//printf("bc.buildableAtPos " + bc.buildableAtPos + " bc.supported " + bc.supported );
 			}
-		
-			// place blob with action1 key
-			if (!getHUD().hasButtons())
+		}
+
+		// place blob with action1 key
+		if (!getHUD().hasButtons() && !carryBlob.hasTag("custom drop"))
+		{
+			if (this.isKeyPressed(key_action1))
 			{
-				if (this.isKeyPressed(key_action1))
+				if (snap && bc.cursorClose && bc.hasReqs && bc.buildable && bc.supported)
 				{
-					bool check = (bc.cursorClose && bc.buildable && bc.supported && bc.hasReqs);
+					CMap@ map = getMap();
 
-					string build_mode = "vanilla";
+					CBlob@ currentBlobAtPos = null;
 
-					if (getRules().exists("build_mode"))
+					CBlob@[] blobsAtPos;
+					map.getBlobsAtPosition(getBottomOfCursor(bc.tileAimPos, carryBlob), blobsAtPos);
+
+					for (int i = 0; i < blobsAtPos.size(); i++)
 					{
-						build_mode = getRules().get_string("build_mode");
-					}
-
-					if (build_mode == "lagfriendly") check = (bc.cursorClose && bc.hasReqs && bc.buildable_alt);
-
-					if (snap && check)
-					{
-						CMap@ map = getMap();
-						CBlob@ blobAtPos = map.getBlobAtPosition(getBottomOfCursor(bc.tileAimPos));
-						if (blobAtPos !is null && blobtile == blobAtPos.getConfig() && blobAtPos.getHealth() < blobAtPos.getInitialHealth() && blobAtPos.getName() != "ladder")
+						CBlob@ blobAtPos = blobsAtPos[i];
+						
+						if (isRepairable(blobAtPos))
 						{
-							CBitStream params;
-							params.write_string(blobtile);
-							params.write_Vec2f(getBottomOfCursor(bc.tileAimPos, null));
-							params.write_u8(blockIndex);
-							params.write_u16(blobAtPos.getNetworkID());
-							this.SendCommand(this.getCommandID("repairBlob"), params);
+							@currentBlobAtPos = getBlobByNetworkID(blobAtPos.getNetworkID());
 						}
-						else
-						{
-							CBitStream params;
-							params.write_string(blobtile);
-							params.write_Vec2f(getBottomOfCursor(bc.tileAimPos, null));
-							params.write_u8(blockIndex);
-							this.SendCommand(this.getCommandID("placeBlob"), params);
-						}
+					}
 
-						u32 delay = 2 * getCurrentBuildDelay(this);
-						SetBuildDelay(this, delay);
-						bc.blobActive = false;
-					}
-					else if (snap && this.isKeyJustPressed(key_action1))
-					{
-						this.getSprite().PlaySound("NoAmmo.ogg", 0.5);
-					}
-				}
-			
-				if (this.isKeyJustPressed(key_action3))
-				{
 					CBitStream params;
-					params.write_u16((this.get_u16("build_angle") + 90) % 360);
-					this.set_u16("build_angle", ((this.get_u16("build_angle") + 90) % 360));
-					this.SendCommand(this.getCommandID("rotateBlob"), params);
-				}
-			}
-		}
-	}
+					params.write_u16(carryBlob.getNetworkID());
+					params.write_Vec2f(this.getAimPos()); // we're gonna send the aimpos and double-check range on server for safety
+					//params.write_Vec2f(getBottomOfCursor(bc.tileAimPos, carryBlob));
 
-	////////////////////////////////////////////////////
-	////////////////////////////////////////////////////
-	////////////////////////////////////////////////////
-
-	////////////////////////////////////////////////////////////////////////
-	// EPIC DIRTY HACK: we set separate, correct conditions for placing seed
-	else if (carryBlob !is null && carryBlob.getConfig() == "seed")
-	{
-		u8 blockIndex = this.get_u8("buildblob");
-		BuildBlock @block = getBlockByIndex(this, blockIndex);
-		if (block !is null && block.name == carryBlob.getName()) {
-			bc.hasReqs = hasRequirements(this.getInventory(), block.reqs, bc.missing, not block.buildOnGround);
-		}
-
-		if (carryBlob !is null)
-		{
-			CMap@ map = this.getMap();
-			bool snap = carryBlob.isSnapToGrid();
-
-			carryBlob.SetVisible(!carryBlob.hasTag("temp blob"));
-
-			bool isLadder = false;
-			if (carryBlob.getName() == "ladder")
-			{
-				isLadder = true;
-			}
-
-			if (snap) // activate help line
-			{
-				bc.blobActive = true;
-				bc.blockActive = false;
-			}
-
-			if (bc.cursorClose)
-			{
-				if (snap) // if snaps to grid make cursor
-				{
-					Vec2f halftileoffset(map.tilesize * 0.5f, map.tilesize * 0.5f);
-
-					CMap@ map = this.getMap();
-					TileType buildtile = 256;   // something else than a tile
-					Vec2f bottomPos = getBottomOfCursor(bc.tileAimPos, carryBlob);
-
-					bool overlapped;
-
-					if (isLadder)
+					if (currentBlobAtPos !is null && carryBlob.getName() == currentBlobAtPos.getName() && currentBlobAtPos.getHealth() < currentBlobAtPos.getInitialHealth() && currentBlobAtPos.getName() != "ladder")
 					{
-						Vec2f ontilepos = halftileoffset + bc.tileAimPos;
-
-						overlapped = false;
-						CBlob@[] b;
-
-						f32 tsqr = halftileoffset.LengthSquared() - 1.0f;
-
-						if (map.getBlobsInRadius(ontilepos, 0.5f, @b))
-						{
-							for (uint nearblob_step = 0; nearblob_step < b.length && !overlapped; ++nearblob_step)
-							{
-								CBlob@ blob = b[nearblob_step];
-
-								string bname = blob.getName();
-								if (blob is carryBlob || blob.hasTag("player") || !isBlocking(blob) || !blob.getShape().isStatic())
-								{
-									continue;
-								}
-
-								overlapped = (blob.getPosition() - ontilepos).LengthSquared() < tsqr;
-							}
-						}
+						params.write_u16(currentBlobAtPos.getNetworkID());
+						this.SendCommand(this.getCommandID("repairBlob"), params);
 					}
 					else
 					{
-						overlapped = carryBlob.isOverlappedAtPosition(bottomPos, carryBlob.getAngleDegrees());
+						this.SendCommand(this.getCommandID("placeBlob"), params);
 					}
 
-					bc.buildableAtPos = isBuildableAtPos(this, bottomPos, buildtile, carryBlob, bc.sameTileOnBack) && !overlapped;
-					bc.rayBlocked = isBuildRayBlocked(this.getPosition(), bc.tileAimPos + halftileoffset, bc.rayBlockedPos);
-					bc.buildable = bc.buildableAtPos && !bc.rayBlocked;
-					bc.supported = carryBlob.getShape().getConsts().support > 0 ? map.hasSupportAtPos(bc.tileAimPos) : true;
-					//printf("bc.buildableAtPos " + bc.buildableAtPos + " bc.supported " + bc.supported );
+					u32 delay = 2 * getCurrentBuildDelay(this);
+					SetBuildDelay(this, delay);
+					bc.blobActive = false;
+				}
+				else if (snap && this.isKeyJustPressed(key_action1))
+				{
+					this.getSprite().PlaySound("NoAmmo.ogg", 0.5);
 				}
 			}
 
-			// place blob with action1 key
-			if (!getHUD().hasButtons() && !carryBlob.hasTag("custom drop"))
+			if (this.isKeyJustPressed(key_action3))
 			{
-				if (this.isKeyPressed(key_action1))
-				{
-					if (snap && bc.cursorClose && bc.hasReqs && bc.buildable && bc.supported)
-					{
-						CMap@ map = getMap();
+				s8 rotateDir = controls.ActionKeyPressed(AK_BUILD_MODIFIER) ? -1 : 1;
 
-						CBlob@ currentBlobAtPos = null;
+				u16 new_angle = (360 + this.get_u16("build_angle") + 90 * rotateDir) % 360;
+				this.set_u16("build_angle", new_angle);
 
-						CBlob@[] blobsAtPos;
-						map.getBlobsAtPosition(getBottomOfCursor(bc.tileAimPos, carryBlob), blobsAtPos);
-
-						for (int i = 0; i < blobsAtPos.size(); i++)
-						{
-							CBlob@ blobAtPos = blobsAtPos[i];
-
-							if (isRepairable(blobAtPos))
-							{
-								@currentBlobAtPos = getBlobByNetworkID(blobAtPos.getNetworkID());
-							}
-						}
-
-						CBitStream params;
-						params.write_u16(carryBlob.getNetworkID());
-						params.write_Vec2f(getBottomOfCursor(bc.tileAimPos, carryBlob));
-
-						if (currentBlobAtPos !is null && carryBlob.getName() == currentBlobAtPos.getName() && currentBlobAtPos.getHealth() < currentBlobAtPos.getInitialHealth() && 	currentBlobAtPos.getName() != "ladder")
-						{
-							params.write_u16(currentBlobAtPos.getNetworkID());
-							this.SendCommand(this.getCommandID("repairBlob"), params);
-						}
-						else
-						{
-								this.SendCommand(this.getCommandID("placeSeed"), params);
-						}
-
-						u32 delay = 2 * getCurrentBuildDelay(this);
-						SetBuildDelay(this, delay);
-						bc.blobActive = false;
-					}
-					else if (snap && this.isKeyJustPressed(key_action1))
-					{
-						this.getSprite().PlaySound("NoAmmo.ogg", 0.5);
-					}
-				}
+				CBitStream params;
+				params.write_u16(new_angle);
+				this.SendCommand(this.getCommandID("rotateBlob"), params);
 			}
 		}
 	}
-	////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////
+
 }
 
 void onInit(CSprite@ this)
 {
-	//this.getCurrentScript().runFlags |= Script::tick_not_attached;
-	//this.getCurrentScript().runFlags |= Script::tick_hasattached;
+	this.getCurrentScript().runFlags |= Script::tick_not_attached;
+	this.getCurrentScript().runFlags |= Script::tick_hasattached;
 	this.getCurrentScript().runFlags |= Script::tick_myplayer;
 	this.getCurrentScript().removeIfTag = "dead";
-}
-
-string NewBlockIcons = "NewBlockIcons.png";
-
-const string cursorTexture = "TileCursor_caps.png";
-
-void DrawCursorAt(Vec2f position, string& in filename, bool draw_red=false)
-{
-	SColor dc = color_white;
-	if (draw_red) dc = SColor(255, 255, 0, 0);
-	
-	position = getMap().getAlignedWorldPos(position);
-	if (position == Vec2f_zero) return;
-	position = getDriver().getScreenPosFromWorldPos(position - Vec2f(1, 1));
-	GUI::DrawIcon(filename, 0, Vec2f(16, 16), position, getCamera().targetDistance * getDriver().getResolutionScaleFactor(), dc);
 }
 
 // render block placement
 void onRender(CSprite@ this)
 {
 	CBlob@ blob = this.getBlob();
-	/*if (getHUD().hasButtons())
+	if (getHUD().hasButtons())
 	{
 		return;
-	}*/
-	if ((blob.isKeyPressed(key_action2) || blob.isKeyPressed(key_pickup)) && blob.getName() == "builder")   //hack: dont show when builder is attacking
+	}
+	if (blob.isKeyPressed(key_action2) || blob.isKeyPressed(key_pickup))   //hack: dont show when builder is attacking
 	{
 		return;
 	}
@@ -769,223 +487,45 @@ void onRender(CSprite@ this)
 	{
 		return;
 	}
-	
+
 	// draw a map block or other blob that snaps to grid
 	CBlob@ carryBlob = blob.getCarriedBlob();
 
-	u8 bunnie_tile = blob.get_u8("bunnie_tile");
-
-	bool custom_draw = false;
-
-	bool enable_this = true;
-
-	if (enable_this && (bunnie_tile == 2 || bunnie_tile == 5 || bunnie_tile == 6 || bunnie_tile == 7 || bunnie_tile == 8 || bunnie_tile == 10))
+	if (carryBlob !is null) // && carryBlob.isSnapToGrid()
 	{
-		custom_draw = true;
-		CCamera@ camera = getCamera();
-		f32 zoom = camera.targetDistance;
-
-		BlockCursor @bc;
-		blob.get("blockCursor", @bc);
-
-		CMap@ map = getMap();
-			
-		if (bc !is null)
-		{
-			if (!bc.hasReqs)
-			{
-				getHUD().SetCursorFrame(1);
-			}
-			else
-			{
-				getHUD().SetCursorFrame(0);
-			}
-
-			/*if (bc.cursorClose && bc.hasReqs && bc.buildable_alt)
-			{
-				SColor color;
-				Vec2f aimpos = bc.tileAimPos;
-					
-				color.set(255, 255, 255, 255);
-				map.DrawTile(aimpos, buildtile, color, getCamera().targetDistance, false);
-				DrawCursorAt(aimpos, cursorTexture, (!bc.buildable || !bc.supported));
-			}
-			else
-			{
-				f32 halfTile = map.tilesize / 2.0f;
-				Vec2f aimpos = blob.getAimPos() + getCamera().getInterpolationOffset();
-				Vec2f offset(-0.2f + 0.4f * (Maths::Sin(getGameTime() * 0.5f)), 0.0f);
-				map.DrawTile(Vec2f(aimpos.x - halfTile, aimpos.y - halfTile) + offset, buildtile,
-							 SColor(255, 255, 46, 50),
-							 getCamera().targetDistance, false);
-			}*/
-
-			SColor color;
-
-			u8 frame = 0;
-			Vec2f dimensions = Vec2f(8, 8);
-
-			Vec2f ladder_offset = Vec2f(0, 0);
-
-			if (bunnie_tile == 2)
-			{
-				dimensions = Vec2f(10, 8);
-				frame = 5;
-				ladder_offset = Vec2f(-0.5 * getDriver().getResolutionScaleFactor(), 0);
-			}
-			else if (bunnie_tile == 5)
-			{
-				frame = 0;
-			}
-			else if (bunnie_tile == 6)
-			{
-				frame = 1;
-			}
-			else if (bunnie_tile == 7)
-			{
-				if (blob.get_u16("build_angle") == 0 || blob.get_u16("build_angle") == 180)
-				{
-					dimensions = Vec2f(10, 24);
-					frame = 4;
-					ladder_offset = Vec2f(-0.5 * getDriver().getResolutionScaleFactor(), -4 * getDriver().getResolutionScaleFactor());
-				}
-				else 
-				{
-					dimensions = Vec2f(24, 10);
-					frame = 10;
-					ladder_offset = Vec2f(-4 * getDriver().getResolutionScaleFactor(), -0.5 * getDriver().getResolutionScaleFactor()); 
-				}
-			}
-			else if (bunnie_tile == 8)
-			{
-				frame = 2 + (blob.get_u16("build_angle") / 90) * 9;
-			}
-			else if (bunnie_tile == 10)
-			{
-				frame = 3;
-			}
-
-			if (bc.cursorClose && bc.hasReqs)
-			{
-				if (getRules().get_string("build_mode") == "lagfriendly")
-				{
-					if (bc.buildable_alt)
-					{
-						color.set(255, 255, 255, 255);
-						Vec2f drawpos = getDriver().getScreenPosFromWorldPos(bc.tileAimPos + ladder_offset);
-						//carryBlob.RenderForHUD(getBottomOfCursor(bc.tileAimPos, carryBlob) - carryBlob.getPosition(), 0.0f, color, RenderStyle::normal);
-						GUI::DrawIcon(NewBlockIcons, frame, dimensions, drawpos, getCamera().targetDistance * getDriver().getResolutionScaleFactor(), blob.getTeamNum());
-						DrawCursorAt(bc.tileAimPos, cursorTexture, (!bc.buildable || !bc.supported));
-					}
-					else
-					{
-						color.set(255, 255, 46, 50);
-						Vec2f offset(0.0f, -1.0f + 1.0f * ((getGameTime() * 0.8f) % 8));
-						Vec2f drawpos = getDriver().getScreenPosFromWorldPos(bc.tileAimPos + ladder_offset + offset);
-						//carryBlob.RenderForHUD(getBottomOfCursor(bc.tileAimPos, carryBlob) + offset - carryBlob.getPosition(), 0.0f, color, RenderStyle::normal);
-						GUI::DrawIcon(NewBlockIcons, frame, dimensions, drawpos, getCamera().targetDistance * getDriver().getResolutionScaleFactor(), color);
-					}
-				}
-				else
-				{
-
-					if (bc.buildable && bc.supported)
-					{
-						color.set(255, 255, 255, 255);
-						Vec2f drawpos = getDriver().getScreenPosFromWorldPos(bc.tileAimPos + ladder_offset);
-						//carryBlob.RenderForHUD(getBottomOfCursor(bc.tileAimPos, carryBlob) - carryBlob.getPosition(), 0.0f, color, RenderStyle::normal);
-						GUI::DrawIcon(NewBlockIcons, frame, dimensions, drawpos, getCamera().targetDistance * getDriver().getResolutionScaleFactor(), blob.getTeamNum());
-					}
-					else
-					{
-						color.set(255, 255, 46, 50);
-						Vec2f offset(0.0f, -1.0f + 1.0f * ((getGameTime() * 0.8f) % 8));
-						Vec2f drawpos = getDriver().getScreenPosFromWorldPos(bc.tileAimPos + ladder_offset + offset);
-						//carryBlob.RenderForHUD(getBottomOfCursor(bc.tileAimPos, carryBlob) + offset - carryBlob.getPosition(), 0.0f, color, RenderStyle::normal);
-						GUI::DrawIcon(NewBlockIcons, frame, dimensions, drawpos, getCamera().targetDistance * getDriver().getResolutionScaleFactor(), color);
-					}
-				}
-			}
-			else if (bc.hasReqs)
-			{
-				Vec2f aimpos = blob.getMovement().getVars().aimpos;
-				{
-					f32 halfTile = getMap().tilesize / 2.0f;
-					Vec2f aimpos = blob.getMovement().getVars().aimpos;
-					Vec2f drawpos = getDriver().getScreenPosFromWorldPos(Vec2f(aimpos.x - halfTile, aimpos.y - halfTile) + ladder_offset);
-
-					/*carryBlob.RenderForHUD(Vec2f(aimpos.x - halfTile, aimpos.y - halfTile) - carryBlob.getPosition(), 0.0f,
-										   SColor(255, 255, 46, 50) ,
-										   RenderStyle::normal);*/
-
-					GUI::DrawIcon(NewBlockIcons, frame, dimensions, drawpos, getCamera().targetDistance * getDriver().getResolutionScaleFactor(), SColor(255, 255, 46, 50));
-				}
-			}
-		}
-	}
-	else if (carryBlob !is null && !custom_draw) // && carryBlob.isSnapToGrid()
-	{
-		CCamera@ camera = getCamera();
-		f32 zoom = camera.targetDistance;
-
 		if (!carryBlob.isSnapToGrid())
 		{
 			return;
 		}
-		
+
 		BlockCursor @bc;
 		blob.get("blockCursor", @bc);
-		
+
 		if (bc !is null)
 		{
-			if (bc.cursorClose)// && bc.hasReqs && bc.buildable)
+			if (bc.cursorClose && bc.hasReqs && bc.buildable)
 			{
 				SColor color;
 
-				if (true)
+				if (bc.buildable && bc.supported)
 				{
-					if (getRules().get_string("build_mode") == "lagfriendly")
-					{
-						if (bc.buildable_alt)
-						{
-							color.set(255, 255, 255, 255);
-							carryBlob.RenderForHUD(getBottomOfCursor(bc.tileAimPos, carryBlob) - carryBlob.getPosition(), 0.0f, color, RenderStyle::normal);
-							DrawCursorAt(bc.tileAimPos, cursorTexture, (!bc.buildable || !bc.supported));
-						}
-						else
-						{
-							color.set(255, 255, 46, 50);
-							Vec2f offset(0.0f, -1.0f + 1.0f * ((getGameTime() * 0.8f) % 8));
-							carryBlob.RenderForHUD(getBottomOfCursor(bc.tileAimPos, carryBlob) + offset - carryBlob.getPosition(), 0.0f, color, RenderStyle::normal);
-						}
-					}
-					else
-					{
-						if (bc.buildable && bc.supported)
-						{
-							color.set(255, 255, 255, 255);
-							carryBlob.RenderForHUD(getBottomOfCursor(bc.tileAimPos, carryBlob) - carryBlob.getPosition(), 0.0f, color, RenderStyle::normal);
-						}
-						else
-						{
-							color.set(255, 255, 46, 50);
-							Vec2f offset(0.0f, -1.0f + 1.0f * ((getGameTime() * 0.8f) % 8));
-							carryBlob.RenderForHUD(getBottomOfCursor(bc.tileAimPos, carryBlob) + offset - carryBlob.getPosition(), 0.0f, color, RenderStyle::normal);
-						}
-					}
+					color.set(255, 255, 255, 255);
+					carryBlob.RenderForHUD(getBottomOfCursor(bc.tileAimPos, carryBlob) - carryBlob.getPosition(), 0.0f, color, RenderStyle::normal);
+				}
+				else
+				{
+					color.set(255, 255, 46, 50);
+					Vec2f offset(0.0f, -1.0f + 1.0f * ((getGameTime() * 0.8f) % 8));
+					carryBlob.RenderForHUD(getBottomOfCursor(bc.tileAimPos, carryBlob) + offset - carryBlob.getPosition(), 0.0f, color, RenderStyle::normal);
 				}
 			}
-			else //if (blob.isKeyPressed(key_use))
+			else
 			{
+				f32 halfTile = getMap().tilesize / 2.0f;
 				Vec2f aimpos = blob.getMovement().getVars().aimpos;
-				if (true)
-				{
-					f32 halfTile = getMap().tilesize / 2.0f;
-					Vec2f aimpos = blob.getMovement().getVars().aimpos;
-					carryBlob.RenderForHUD(Vec2f(aimpos.x - halfTile, aimpos.y - halfTile) - carryBlob.getPosition(), 0.0f,
-										   SColor(255, 255, 46, 50) ,
-										   RenderStyle::normal);
-				}
+				carryBlob.RenderForHUD(Vec2f(aimpos.x - halfTile, aimpos.y - halfTile) - carryBlob.getPosition(), 0.0f,
+				                       SColor(255, 255, 46, 50) ,
+				                       RenderStyle::normal);
 			}
 		}
 	}
@@ -995,7 +535,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
 	if (!isServer()) return;
 
-	if (cmd == this.getCommandID("rotateBlob") && isServer())
+	if (cmd == this.getCommandID("rotateBlob"))
 	{
 		CPlayer@ callerp = getNet().getActiveCommandPlayer();
 		if (callerp is null) return;
@@ -1013,105 +553,57 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 	}
 	else if (cmd == this.getCommandID("placeBlob"))
 	{
-		string name;
-		if (!params.saferead_string(name)) return;
+		u16 block_id;
+		if (!params.saferead_u16(block_id)) return;
+		CBlob @carryBlob = getBlobByNetworkID(block_id);
+		if (carryBlob is null) return;
 
-		Vec2f pos;
-		if (!params.saferead_Vec2f(pos)) return;
-
-		u8 index;
-		if (!params.saferead_u8(index)) return;
-
-		CBlob @carryBlob = server_CreateBlob(name, this.getTeamNum(), pos);
-
-		BuildBlock @block = getBlockByIndex(this, index);
+		Vec2f aimpos;
+		if (!params.saferead_Vec2f(aimpos)) return;
 			
-		if (carryBlob !is null)
+		if (PlaceBlob(this, carryBlob, aimpos))
 		{
-			if (carryBlob.getName() == "wooden_platform" || carryBlob.getName() == "ladder")
-				carryBlob.setAngleDegrees(this.get_u16("build_angle"));
-
-			if (!serverBlobCheck(this, carryBlob, pos))
-			{
-				carryBlob.server_Die();
-				return;
-			}
-
-			if (PlaceBlob(this, carryBlob, pos, true))
-			{
-				server_TakeRequirements(this.getInventory(), block.reqs);
-				CPlayer@ p = this.getPlayer();
-				if (p !is null)
-				{
-					GE_BuildBlob(p.getNetworkID(), carryBlob.getName()); // gameplay event for coins
-				}
-			}
+			CPlayer@ p = this.getPlayer();
+            if (p !is null)
+            {
+                GE_BuildBlob(p.getNetworkID(), carryBlob.getName()); // gameplay event for coins
+            }
 		}
+
 	}
-
-	/////////////////////////////////////////////////////////////////
-	// EPIC DIRTY HACK: use semi-vanilla code to place seed correctly
-	else if (cmd == this.getCommandID("placeSeed"))
-	{
-		CBlob @carryBlob = getBlobByNetworkID(params.read_u16());
-		if (carryBlob !is null)
-		{
-			Vec2f pos = params.read_Vec2f();
-
-			if (PlaceBlob(this, carryBlob, pos))
-			{
-				CPlayer@ p = this.getPlayer();
-				if (p !is null)
-				{
-					GE_BuildBlob(p.getNetworkID(), carryBlob.getName()); // gameplay event for coins
-				}
-			}
-		}
-	}
-	/////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////
-
 	else if (cmd == this.getCommandID("repairBlob"))
 	{
-		string name;
-		if (!params.saferead_string(name)) return;
+		u16 block_id;
+		if (!params.saferead_u16(block_id)) return;
+		CBlob @carryBlob = getBlobByNetworkID(block_id);
+		if (carryBlob is null) return;
 
-		Vec2f pos;
-		if (!params.saferead_Vec2f(pos)) return;
-
-		u8 index;
-		if (!params.saferead_u8(index)) return;
+		Vec2f aimpos;
+		if (!params.saferead_Vec2f(aimpos)) return;
 
 		u16 repair_id;
 		if (!params.saferead_u16(repair_id)) return;
-
 		CBlob @repairBlob = getBlobByNetworkID(repair_id);
 		if (repairBlob is null) return;
 
 		// the getHealth() is here because apparently a blob isn't null for a tick (?) after being destroyed
 		bool repairing = (repairBlob !is null && repairBlob.getHealth() > 0);
 
-		CBlob @carryBlob = server_CreateBlob(name, this.getTeamNum(), pos);
-
-		BuildBlock @block = getBlockByIndex(this, index);
-
 		if (repairing) // is there a blobtile here?
 		{
-			if (PlaceBlob(this, carryBlob, pos, true, repairBlob))
+			if (PlaceBlob(this, carryBlob, aimpos, true, repairBlob))
 			{
-				server_TakeRequirements(this.getInventory(), block.reqs);
 				CPlayer@ p = this.getPlayer();
 				if (p !is null)
 				{
 					GE_BuildBlob(p.getNetworkID(), carryBlob.getName()); // gameplay event for coins
-				}
+                }
 			}
 		}
 		else // there's nothing here so we can place a new one
 		{
-			if (PlaceBlob(this, carryBlob, pos))
+			if (PlaceBlob(this, carryBlob, aimpos))
 			{
-				server_TakeRequirements(this.getInventory(), block.reqs);
 				CPlayer@ p = this.getPlayer();
 				if (p !is null)
 				{
