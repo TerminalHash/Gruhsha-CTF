@@ -1,21 +1,24 @@
+funcdef void ControlsSwitch(CBitStream@);
+funcdef void ControlsCycle(CBitStream@);
 
-void server_Pickup(CBlob@ this, CBlob@ picker, CBlob@ pickBlob)
+void client_Pickup(CBlob@ this, CBlob@ pickBlob)
 {
-	if (pickBlob is null || picker is null || pickBlob.isAttached())
-		return;
+    if (!isClient()) return;
+
+	if (this is null || pickBlob is null || pickBlob.isAttached()) return;
+
 	CBitStream params;
-	params.write_netid(picker.getNetworkID());
 	params.write_netid(pickBlob.getNetworkID());
 	this.SendCommand(this.getCommandID("pickup"), params);
 }
 
-void server_PutInHeld(CBlob@ this, CBlob@ picker)
+void client_PutInHeld(CBlob@ this)
 {
-	if (picker is null)
-		return;
-	CBitStream params;
-	params.write_netid(picker.getNetworkID());
-	this.SendCommand(this.getCommandID("putinheld"), params);
+    if (!isClient()) return;
+
+	if (this is null) return;
+
+	this.SendCommand(this.getCommandID("putinheld"));
 }
 
 void Tap(CBlob@ this)
@@ -52,7 +55,7 @@ bool ClickGridMenu(CBlob@ this, int button)
 			{
 				if (gbutton is null)    // carrying something, put it in
 				{
-					server_PutInHeld(this, gmenu.getOwner());
+					client_PutInHeld(this);
 				}
 				else // take something
 				{
@@ -91,46 +94,46 @@ void ButtonOrMenuClick(CBlob@ this, Vec2f pos, bool clear, bool doClosestClick)
 
 bool pointInsidePolygon( Vec2f Point, Vec2f[] polygon, Vec2f polyPos, bool facingLeft )
 {
-	// Mirror the polygon when the blob is facing left
-	if (facingLeft) 
-	{
-		for ( int i = 0 ; i < polygon.length ; i++ )
-		{
-		polygon[i].x = -polygon[i].x;
-		}
-	}
+    // Mirror the polygon when the blob is facing left
+    if (facingLeft) 
+    {
+      for ( int i = 0 ; i < polygon.length ; i++ )
+      {
+        polygon[i].x = -polygon[i].x;
+      }
+    }
 
-	double minX = polyPos.x+polygon[0].x;
-	double maxX = polyPos.x+polygon[0].x;
-	double minY = polyPos.y+polygon[0].y;
-	double maxY = polyPos.y+polygon[0].y;
+    double minX = polyPos.x+polygon[0].x;
+    double maxX = polyPos.x+polygon[0].x;
+    double minY = polyPos.y+polygon[0].y;
+    double maxY = polyPos.y+polygon[0].y;
 
-	for ( int i = 1 ; i < polygon.length ; i++ )
-	{
-		Vec2f q = polyPos+polygon[ i ];
-		minX = Maths::Min( q.x, minX );
-		maxX = Maths::Max( q.x, maxX );
-		minY = Maths::Min( q.y, minY );
-		maxY = Maths::Max( q.y, maxY );
-	}
+    for ( int i = 1 ; i < polygon.length ; i++ )
+    {
+        Vec2f q = polyPos+polygon[ i ];
+        minX = Maths::Min( q.x, minX );
+        maxX = Maths::Max( q.x, maxX );
+        minY = Maths::Min( q.y, minY );
+        maxY = Maths::Max( q.y, maxY );
+    }
 
-	if ( Point.x < minX || Point.x > maxX || Point.y < minY || Point.y > maxY )
-	{
-		return false;
-	}
+    if ( Point.x < minX || Point.x > maxX || Point.y < minY || Point.y > maxY )
+    {
+        return false;
+    }
 
-	bool inside = false;
-	for ( int i = 0, j = polygon.length - 1 ; i < polygon.length ; j = i++ )
-	{
-		Vec2f pvi = polyPos + polygon[ i ];
-		Vec2f pvj = polyPos + polygon[ j ];
-		if ( ( pvi.y > Point.y ) != ( pvj.y > Point.y ) &&
-			 Point.x < ( pvj.x - pvi.x ) * ( Point.y - pvi.y ) / ( pvj.y - pvi.y ) + pvi.x )
-		{
-			inside = !inside;
-		}
-	}
+    bool inside = false;
+    for ( int i = 0, j = polygon.length - 1 ; i < polygon.length ; j = i++ )
+    {
+    	Vec2f pvi = polyPos + polygon[ i ];
+    	Vec2f pvj = polyPos + polygon[ j ];
+        if ( ( pvi.y > Point.y ) != ( pvj.y > Point.y ) &&
+             Point.x < ( pvj.x - pvi.x ) * ( Point.y - pvi.y ) / ( pvj.y - pvi.y ) + pvi.x )
+        {
+            inside = !inside;
+        }
+    }
 
-	return inside;
+    return inside;
 }
 
