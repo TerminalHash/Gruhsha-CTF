@@ -1,14 +1,15 @@
 // Archer logic
 
 #include "ArcherCommon.as"
-#include "ActivationThrowCommon"
+#include "ActivationThrowCommon.as"
 #include "KnockedCommon.as"
 #include "Hitters.as"
 #include "RunnerCommon.as"
 #include "ShieldCommon.as";
 #include "Help.as";
 #include "BombCommon.as";
-#include "RedBarrierCommon.as"
+#include "RedBarrierCommon.as";
+#include "StandardControlsCommon.as";
 
 const int FLETCH_COOLDOWN = 45;
 const int PICKUP_COOLDOWN = 15;
@@ -27,8 +28,6 @@ void onInit(CBlob@ this)
 	ArcherInfo archer;
 	this.set("archerInfo", @archer);
 
-	this.set_s8("charge_time", 0);
-	this.set_u8("charge_state", ArcherParams::not_aiming);
 	this.set_bool("has_arrow", false);
 	this.set_f32("gib health", -1.5f);
 	this.Tag("player");
@@ -408,7 +407,7 @@ void ManageBow(CBlob@ this, ArcherInfo@ archer, RunnerMoveVars@ moveVars)
 		          !this.isKeyPressed(key_action1) &&
 		          this.wasKeyPressed(key_action1)))
 		{
-			ClientFire(this, charge_time);
+			ClientFire(this, charge_time, charge_state);
 
 			charge_state = ArcherParams::legolas_charging;
 			charge_time = ArcherParams::shoot_period - ArcherParams::legolas_charge_time;
@@ -566,7 +565,7 @@ void ManageBow(CBlob@ this, ArcherInfo@ archer, RunnerMoveVars@ moveVars)
 		{
 			if (charge_state < ArcherParams::fired)
 			{
-				ClientFire(this, charge_time);
+				ClientFire(this, charge_time, charge_state);
 				charge_time = ArcherParams::fired_time;
 				charge_state = ArcherParams::fired;
 			}
@@ -834,13 +833,14 @@ bool canSend(CBlob@ this)
 	return (this.isMyPlayer() || this.getPlayer() is null || this.getPlayer().isBot());
 }
 
-void ClientFire(CBlob@ this, const s8 charge_time)
+void ClientFire(CBlob@ this, s8 charge_time, u8 charge_state)
 {
 	//time to fire!
 	if (canSend(this))  // client-logic
 	{
 		CBitStream params;
-		params.write_u8(charge_time);
+		params.write_s8(charge_time);
+		params.write_u8(charge_state);
 
 		this.SendCommand(this.getCommandID("request shoot"), params);
 	}
@@ -1071,10 +1071,14 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		s8 charge_time;
 		if (!params.saferead_u8(charge_time)) { return; }
 
+		u8 charge_state;
+		if (!params.saferead_u8(charge_state)) { return; }
+
 		ArcherInfo@ archer;
 		if (!this.get("archerInfo", @archer)) { return; }
 
 		archer.charge_time = charge_time;
+		archer.charge_state = charge_state;
 
 		ShootArrow(this);
 	}
