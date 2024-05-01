@@ -64,9 +64,6 @@ void onInit(CInventory@ this)
 	blob.addCommandID("page select");
 	blob.addCommandID("page select client");
 
-	blob.addCommandID("building built client");
-	blob.addCommandID("building built fail client");
-
 	blob.set_Vec2f("backpack position", Vec2f_zero);
 
 	blob.set_u8("build page", 0);
@@ -92,18 +89,10 @@ void MakeBlocksMenu(CInventory@ this, const Vec2f &in INVENTORY_CE)
 	const Vec2f MENU_CE = Vec2f(0, MENU_SIZE.y * -GRID_SIZE - GRID_PADDING) + INVENTORY_CE;
 	
 	CGridMenu@ menu = CreateGridMenu(MENU_CE, blob, MENU_SIZE, getTranslatedString("Build"));
-	getRules().set_bool("blockmenu_clicked", false);
-
-	if (menu !is null)
-	{
-		getRules().set_Vec2f("opened_block_menu", menu.getUpperLeftPosition());
-		getRules().set_bool("menu_just_closed", false);
-	}
-
 	if (menu !is null)
 	{
 		menu.deleteAfterClick = false;
-		
+
 		const u8 PAGE = blob.get_u8("build page");
 
 		for(u8 i = 0; i < blocks[PAGE].length; i++)
@@ -114,13 +103,6 @@ void MakeBlocksMenu(CInventory@ this, const Vec2f &in INVENTORY_CE)
 			CBitStream params;
 			params.write_u8(i);
 			CGridButton@ button = menu.AddButton(b.icon, "\n" + block_desc, blob.getCommandID("make block"), params);
-			//button.clickable = false;
-			/* bunnie todo:
-			fully clientside
-			clickable = false
-			gui reloading
-			play sound elsewhere rather than hardcoded cgridbutton click
-			*/
 			if (button is null) continue;
 
 			button.selectOneOnClick = true;
@@ -138,7 +120,16 @@ void MakeBlocksMenu(CInventory@ this, const Vec2f &in INVENTORY_CE)
 
 			u8 bunnie_tile = blob.get_u8("bunnie_tile");
 
-			if (bunnie_tile == i)
+			CBlob@ carryBlob = blob.getCarriedBlob();
+			if (carryBlob !is null && carryBlob.getName() == b.name)
+			{
+				button.SetSelected(1);
+			}
+			else if (b.tile == blob.get_TileType("buildtile") && b.tile != 0)
+			{
+				button.SetSelected(1);
+			}
+			else if (bunnie_tile == i)
 			{
 				button.SetSelected(1);
 			}
@@ -157,6 +148,33 @@ void MakeBlocksMenu(CInventory@ this, const Vec2f &in INVENTORY_CE)
 				clear.SetHoverText(getTranslatedString("Stop building\n"));
 			}
 		}
+
+		// index menu only available in sandbox
+		if (getRules().gamemode_name != "Sandbox") return;
+
+		const Vec2f INDEX_POS = Vec2f(menu.getLowerRightPosition().x + GRID_PADDING + GRID_SIZE, menu.getUpperLeftPosition().y + GRID_SIZE * Builder::PAGE_COUNT / 2);
+
+		CGridMenu@ index = CreateGridMenu(INDEX_POS, blob, Vec2f(2, Builder::PAGE_COUNT), "Type");
+		if (index !is null)
+		{
+			index.deleteAfterClick = false;
+
+
+			for(u8 i = 0; i < Builder::PAGE_COUNT; i++)
+			{
+				CBitStream params;
+				params.write_u8(i);
+				CGridButton@ button = index.AddButton("$"+PAGE_NAME[i]+"$", PAGE_NAME[i], blob.getCommandID("page select"), Vec2f(2, 1), params);
+				if (button is null) continue;
+
+				button.selectOneOnClick = true;
+
+				if (i == PAGE)
+				{
+					button.SetSelected(1);
+				}
+			}
+		}
 	}
 }
 
@@ -171,8 +189,6 @@ void onCreateInventoryMenu(CInventory@ this, CBlob@ forBlob, CGridMenu@ menu)
 	blob.ClearGridMenusExceptInventory();
 
 	MakeBlocksMenu(this, INVENTORY_CE);
-	
-	Vec2f pos2 = menu.getUpperLeftPosition() + Vec2f(-80, -110);
 }
 
 void onCommand(CInventory@ this, u8 cmd, CBitStream@ params)
@@ -180,22 +196,6 @@ void onCommand(CInventory@ this, u8 cmd, CBitStream@ params)
 	CBlob@ blob = this.getBlob();
 	if (blob is null) return;
 
-	if (cmd == blob.getCommandID("building built fail client") && isClient())
-	{
-		CPlayer@ p = blob.getPlayer();
-		if (p is null) return;
-		if (p !is getLocalPlayer()) return;
-
-		blob.getSprite().PlaySound("/NoAmmo", 0.5);
-	}
-	if (cmd == blob.getCommandID("building built client") && isClient())
-	{
-		CPlayer@ p = blob.getPlayer();
-		if (p is null) return;
-		if (p !is getLocalPlayer()) return;
-
-		blob.getSprite().PlaySound("/Construct");
-	}
 	if (cmd == blob.getCommandID("make block") && isServer())
 	{
 		CPlayer@ callerp = getNet().getActiveCommandPlayer();
@@ -204,18 +204,15 @@ void onCommand(CInventory@ this, u8 cmd, CBitStream@ params)
 		CBlob@ callerb = callerp.getBlob();
 		if (callerb is null) return;
 		if (callerb !is blob) return;
-		
-		//return;
-
 		BuildBlock[][]@ blocks;
 		if (!blob.get(blocks_property, @blocks)) return;
 
 		u8 i;
 		if (!params.saferead_u8(i)) return; 
 
-		//CBitStream sparams;
-		//sparams.write_u8(i);
-		//blob.SendCommand(blob.getCommandID("make block client"), sparams);
+		CBitStream sparams;
+		sparams.write_u8(i);
+		blob.SendCommand(blob.getCommandID("make block client"), sparams);
 
 		const u8 PAGE = blob.get_u8("build page");
 		if (blocks !is null && i >= 0 && i < blocks[PAGE].length)
@@ -403,8 +400,6 @@ void onTick(CBlob@ this)
 		return;
 	}
 
-	//printf("Current block: " + this.get_u8("bunnie_tile"));
-	
 	if (this.hasTag("reload blocks"))
 	{
 		this.Untag("reload blocks");
