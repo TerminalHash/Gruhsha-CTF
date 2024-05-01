@@ -1,7 +1,7 @@
 // Archer logic
 
 #include "ArcherCommon.as"
-#include "ThrowCommon.as"
+#include "ActivationThrowCommon"
 #include "KnockedCommon.as"
 #include "Hitters.as"
 #include "RunnerCommon.as"

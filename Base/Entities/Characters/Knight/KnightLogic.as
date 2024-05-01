@@ -1,6 +1,6 @@
 // Knight logic
 
-#include "ThrowCommon.as"
+#include "ActivationThrowCommon.as"
 #include "KnightCommon.as";
 #include "RunnerCommon.as";
 #include "Hitters.as";
