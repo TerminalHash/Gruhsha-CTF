@@ -11,7 +11,7 @@ void onInit(CRules@ this)
 	// comment this out if you want to restore legacy net command script
 	// compatibility. mods that include scripts from before build 4541 may
 	// additionally want to bring back scripts they share commands with.
-	//getNet().legacy_cmd = false;
+	getNet().legacy_cmd = false;
 
 	if (isServer())
 	{
