@@ -12,7 +12,7 @@
 - И многое другое, узнать подробнее можно в CHANGES.md!
 
 ## Установка
-Создать папку ctf_gruhsha_v2 в Mods (King Arthur's Gold/Mods), скопировать файлы из репозитория туда и в mods.cfg вписать название мода (ctf_gruhsha_v2).
+Создать папку ctf_gruhsha_v3 в Mods (King Arthur's Gold/Mods), скопировать файлы из репозитория туда и в mods.cfg вписать название мода (ctf_gruhsha_v3).
 
 ## Авторы
 - Skemonde - создатель Груши
