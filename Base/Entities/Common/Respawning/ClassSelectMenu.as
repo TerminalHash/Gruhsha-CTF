@@ -1,6 +1,5 @@
 //stuff for building respawn menus
 
-#include "RespawnCommandCommon.as"
 #include "TranslationsSystem.as"
 
 //class for getting everything needed for swapping to a class at a building
@@ -60,16 +59,15 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 	}
 
 	PlayerClass[]@ classes;
-//	for(uint i = 0 ; i < classes.length; i++)
+
 	if (this.get("playerclasses", @classes))
 	{
 		for (uint i = 0 ; i < classes.length; i++)
 		{
 			PlayerClass @pclass = classes[i];
+
 			CBitStream params;
-			write_classchange(params, callerID, pclass.configFilename);
-			CGridButton@ button = menu.AddButton(pclass.iconName, getTranslatedString(pclass.name), SpawnCmd::changeClass, Vec2f(CLASS_BUTTON_SIZE, CLASS_BUTTON_SIZE), params);
-			CRules@ rules = getRules();
+			params.write_u8(i);
 
 			// Limiting classes stuff
 			archers_limit = rules.get_u8("archers_limit");
@@ -103,6 +101,8 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 					button.SetEnabled(false);
 				}
 			}
+
+			CGridButton@ button = menu.AddButton(pclass.iconName, getTranslatedString(pclass.name), this.getCommandID("change class"), Vec2f(CLASS_BUTTON_SIZE, CLASS_BUTTON_SIZE), params);
 //			button.SetHoverText( pclass.description + "\n");
 		}
 	}
