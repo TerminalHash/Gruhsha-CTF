@@ -246,6 +246,36 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 			this.getSprite().PlaySound("/Eat.ogg");
 		}
 	}
+	else if (name == "sleep")
+	{
+		CPlayer@ player = getNet().getActiveCommandPlayer();
+
+		if (player is null)
+		{
+			return;
+		}
+
+		CBlob@ caller = player.getBlob();
+
+		if (caller !is null && !caller.isAttached())
+		{
+
+			AttachmentPoint@ bed = this.getAttachments().getAttachmentPointByName("BED");
+			if (bed !is null && bedAvailable(this))
+			{
+				CBlob@ carried = caller.getCarriedBlob();
+
+				if (carried !is null)
+				{
+					if (!caller.server_PutInInventory(carried))
+					{
+						carried.server_DetachFrom(caller);
+					}
+				}
+				this.server_AttachTo(caller, "BED");
+			}
+		}
+	}
 	else if (cmd == this.getCommandID("rest") && isServer())
 	{
 		CPlayer@ player = getNet().getActiveCommandPlayer();
