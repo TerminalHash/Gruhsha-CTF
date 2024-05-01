@@ -41,6 +41,15 @@ void onTick(CBlob@ this)
 		this.SetLight(true);
 		this.SetLightRadius(32);
 
+		if (!this.exists("satchel_timer")) //just got set
+		{
+			this.getSprite().SetEmitSound("/Sparkle.ogg");
+			this.getSprite().SetEmitSoundPaused(false);
+			this.set_s32("satchel_timer", getGameTime() + satchel_fuse);
+			this.Sync("satchel_timer", true);
+			this.Sync("exploding", true);
+		}
+
 		s32 timer = this.get_s32("satchel_timer") - getGameTime();
 
 		if (timer <= 0)
@@ -73,9 +82,9 @@ void Combust(CBlob@ this)
 //if splashed with water,
 f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData)
 {
-	if (hitterBlob.getName() == "bucket" && this.hasTag("exploding"))
+	if (customData == Hitters::water)
 	{
-		this.SendCommand(this.getCommandID("deactivate"));
+		this.Tag("wet");
 	}
 	else if (customData == Hitters::fire)
 	{
@@ -90,64 +99,6 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 void onInit(CSprite@ this)
 {
 	this.getCurrentScript().tickIfTag = "exploding";
-}
-
-void MakeFireCross(CBlob@ this, Vec2f burnpos)
-{
-	/*
-	fire starting pattern
-	X -> fire | O -> not fire
-
-	[O] [X] [O]
-	[X] [X] [X]
-	[O] [X] [O]
-	*/
-
-	CMap@ map = getMap();
-
-	const float ts = map.tilesize;
-
-	//align to grid
-	burnpos = Vec2f(
-		(Maths::Floor(burnpos.x / ts) + 0.5f) * ts,
-		(Maths::Floor(burnpos.y / ts) + 0.5f) * ts
-	);
-
-	Vec2f[] positions = {
-		burnpos, // center
-		burnpos - Vec2f(ts, 0.0f), // left
-		burnpos - Vec2f(ts * 2, 0.0f), // left 2
-		burnpos + Vec2f(ts, 0.0f), // right
-		burnpos + Vec2f(ts * 2, 0.0f), // right 2
-		burnpos - Vec2f(0.0f, ts), // up
-		burnpos - Vec2f(0.0f, ts * 2), // up 2
-		burnpos + Vec2f(0.0f, ts), // down
-		burnpos + Vec2f(0.0f, ts * 2), // down
-		burnpos + Vec2f(ts, ts),
-		burnpos + Vec2f(ts, -ts),
-		burnpos + Vec2f(-ts, ts),
-		burnpos + Vec2f(-ts, -ts)
-
-	};
-
-	for (int i = 0; i < positions.length; i++)
-	{
-		Vec2f pos = positions[i];
-		//set map on fire
-		map.server_setFireWorldspace(pos, true);
-
-		//set blob on fire
-		CBlob@ b = map.getBlobAtPosition(pos);
-		//skip self or nothing there
-		if (b is null || b is this) continue;
-
-		//only hit static blobs
-		CShape@ s = b.getShape();
-		if (s !is null && s.isStatic())
-		{
-			this.server_Hit(b, this.getPosition(), this.getVelocity(), 0.5f, Hitters::fire);
-		}
-	}
 }
 
 void onTick(CSprite@ this)
@@ -200,9 +151,8 @@ void onDie(CBlob@ this)
 
 		if (getNet().isServer())
 		{
+			CMap@ map = getMap();
 			Vec2f pos = this.getPosition();
-			
-			/*CMap@ map = getMap();
 			// hit all in radius with burn hitter, needed for some things to catch alight!
 			HitInfo@[] hitInfos;
 
@@ -236,9 +186,7 @@ void onDie(CBlob@ this)
 				map.server_setFireWorldspace(pos + Vec2f(8, -8), true);
 				map.server_setFireWorldspace(pos + Vec2f(8, 8), true);
 				map.server_setFireWorldspace(pos + Vec2f(-8, -8), true);
-			}*/
-
-			MakeFireCross(this, pos);
+			}
 		}
 	}
 }
@@ -279,14 +227,6 @@ void onActivate(CBitStream@ params)
 	this.Tag("exploding");
 	this.Tag("activated");
 
-	this.getSprite().SetEmitSound("/Sparkle.ogg");
-	#ifdef STAGING
-		this.getSprite().SetEmitSoundVolume(3.5f);
-	#endif
-	this.getSprite().SetEmitSoundPaused(false);
-	this.set_s32("satchel_timer", getGameTime() + satchel_fuse);
-
-	this.Sync("satchel_timer", true);
 	this.Sync("exploding", true);
 	this.Sync("activated", true);
 }

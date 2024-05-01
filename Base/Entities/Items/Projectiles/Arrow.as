@@ -1,4 +1,3 @@
-
 #include "Hitters.as";
 #include "ShieldCommon.as";
 #include "FireParticle.as"
@@ -8,6 +7,7 @@
 #include "KnockedCommon.as";
 #include "DoorCommon.as";
 #include "FireplaceCommon.as";
+#include "ActivationThrowCommon.as"
 #include "PlacementCommon.as";
 
 const s32 bomb_fuse = 120;
@@ -241,7 +241,6 @@ void onTick(CBlob@ this)
 		if (gametime % 6 == 0)
 		{
 			this.getSprite().SetAnimation("fire");
-			this.Tag("fire source");
 
 			Vec2f offset = Vec2f(this.getWidth(), 0.0f);
 			offset.RotateBy(-angle);
@@ -573,14 +572,10 @@ f32 ArrowHitBlob(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlo
 
 		if (arrowType == ArrowType::fire)
 		{
-			this.server_SetTimeToDie(0.5f);
-
-			if (hitBlob.getName() == "keg" && !hitBlob.hasTag("exploding"))
+			if (hitBlob.getName() == "keg" && !hitBlob.hasTag("exploding") && isServer())
 			{
-				hitBlob.SendCommand(hitBlob.getCommandID("activate"));
+				server_Activate(hitBlob);
 			}
-
-			this.set_Vec2f("override fire pos", hitBlob.getPosition());
 
 			if (hitShield)
 			{
@@ -681,7 +676,7 @@ void ArrowHitMap(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, u8 c
 	}
 	else if (arrowType == ArrowType::fire)
 	{
-		this.server_Die();
+		this.server_SetTimeToDie(FIRE_IGNITE_TIME);
 	}
 
 	//kill any grain plants we shot the base of
@@ -736,7 +731,6 @@ void MakeFireCross(CBlob@ this, Vec2f burnpos)
 	/*
 	fire starting pattern
 	X -> fire | O -> not fire
-
 	[O] [X] [O]
 	[X] [X] [X]
 	[O] [X] [O]
