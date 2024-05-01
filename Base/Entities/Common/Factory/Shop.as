@@ -223,6 +223,18 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 				{
 					onShopMadeItem(params);
 				}
+
+				//////////////////////////////////////
+				//////////////////////////////////////
+				string whatwebuying = s.blobName.replace(" ", "-");
+				string shopweat = this.getInventoryName().replace(" ", "-");
+				if(getRules().hasTag("track_stats"))
+				{
+					tcpr("ItemBought " + caller.getPlayer().getUsername() + " " + whatwebuying + " " + shopweat + " " + getGameTime());
+				}
+				//////////////////////////////////////
+				//////////////////////////////////////
+
 				this.SendCommand(this.getCommandID("shop made item client"), params);
 			}
 			else
@@ -232,10 +244,12 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 				if (this.exists("shop offset")) { Vec2f _offset = this.get_Vec2f("shop offset"); spawn_offset = Vec2f(2*_offset.x, _offset.y); }
 				if (this.isFacingLeft()) { spawn_offset.x *= -1; }
 				CBlob@ newlyMade = null;
+				string whatwebuying = "SHOP.AS-BUYINGITEM";
 
 				if (spawnInCrate)
 				{
 					CBlob@ crate = server_MakeCrate(s.blobName, s.name, s.crate_icon, caller.getTeamNum(), caller.getPosition());
+					whatwebuying = s.name;
 
 					if (crate !is null)
 					{
@@ -256,6 +270,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 					CInventory@ callerInv = caller.getInventory();
 					if (blob !is null)
 					{
+						whatwebuying = blob.getInventoryName();
 						bool pickable = blob.getAttachments() !is null && blob.getAttachments().getAttachmentPointByName("PICKUP") !is null;
 						if (spawnToInventory)
 						{
@@ -332,11 +347,25 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 					params.write_u16(newlyMade.getNetworkID());
 					params.write_string(s.blobName);
 					params.ResetBitIndex();
+
 					ShopMadeItem@ onShopMadeItem;
 					if (this.get("onShopMadeItem handle", @onShopMadeItem))
 					{
 						onShopMadeItem(params);
 					}
+
+					//////////////////////////////////////
+					//////////////////////////////////////
+					string whatwereallybuying = whatwebuying.replace(" ", "-");
+					string shopweat = this.getInventoryName().replace(" ", "-");
+
+					if (getRules().hasTag("track_stats"))
+					{
+						tcpr("ItemBought " + caller.getPlayer().getUsername() + " " + whatwereallybuying + " " + shopweat + " " + getGameTime());
+					}
+					//////////////////////////////////////
+					//////////////////////////////////////
+
 					this.SendCommand(this.getCommandID("shop made item client"), params);
 				}
 			}
