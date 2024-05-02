@@ -109,7 +109,7 @@ string[][] button_file_names =
 string[][] setting_texts =
 {
 	{
-		Names::buildmode,
+		//Names::buildmode,           // rip
 		Names::blockbar,
 		Names::camerasw,
 		Names::bodytilt,
@@ -125,7 +125,7 @@ string[][] setting_texts =
 string[][] setting_file_names =
 {
 	{
-		"build_mode",
+		//"build_mode",                 // rip
 		"blockbar_hud",
 		"camera_sway",
 		"body_tilting",
@@ -141,10 +141,10 @@ string[][] setting_file_names =
 string[][][] setting_options =
 {
 	{
-		{
-			Descriptions::bmoptvan, // 10
-			Descriptions::bmoptlag // 20
-		},
+		//{                              // rip
+		//	Descriptions::bmoptvan, // 10
+		//	Descriptions::bmoptlag // 20
+		//},
 		{
 			Descriptions::universalno, // 10
 			Descriptions::universalyes // 20
@@ -190,10 +190,10 @@ string[][][] setting_options =
 string[][][] setting_option_names =
 {
 	{
-		{
-			"vanilla", // 10
-			"lagfriendly" // 20
-		},
+		//{                              // rip
+		//	"vanilla", // 10
+		//	"lagfriendly" // 20
+		//},
 		{
 			"no", // 10    BLOCKBAR
 			"yes" // 20
