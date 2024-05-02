@@ -248,32 +248,19 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		}
 		else if (name == "sleep")
 		{
-			CPlayer@ player = getNet().getActiveCommandPlayer();
-
-			if (player is null)
+			AttachmentPoint@ bed = this.getAttachments().getAttachmentPointByName("BED");
+			if (bed !is null && bedAvailable(this))
 			{
-				return;
-			}
+				CBlob@ carried = caller.getCarriedBlob();
 
-			CBlob@ caller = player.getBlob();
-
-			if (caller !is null && !caller.isAttached())
-			{
-
-				AttachmentPoint@ bed = this.getAttachments().getAttachmentPointByName("BED");
-				if (bed !is null && bedAvailable(this))
+				if (carried !is null)
 				{
-					CBlob@ carried = caller.getCarriedBlob();
-
-					if (carried !is null)
+					if (!caller.server_PutInInventory(carried))
 					{
-						if (!caller.server_PutInInventory(carried))
-						{
-							carried.server_DetachFrom(caller);
-						}
+						carried.server_DetachFrom(caller);
 					}
-					this.server_AttachTo(caller, "BED");
 				}
+				this.server_AttachTo(caller, "BED");
 			}
 		}
 	}
