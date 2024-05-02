@@ -130,21 +130,19 @@ CBlob@ server_BuildBlob(CBlob@ this, BuildBlock[]@ blocks, uint index)
 			}
 		}
 
-        if (fail)
-        {
-            this.SendCommand(this.getCommandID("building built fail client"));
-            //this.getSprite().PlaySound("/NoAmmo", 0.5);
-
-            this.set_Vec2f("building space", space);
-            this.Sync("building space", true);
-            this.set_u32("cant build time", getGameTime());
-            this.Sync("cant build time", true);
-            return null;
-        }
+		if (fail)
+		{
+			if (this.isMyPlayer())
+			{
+				this.getSprite().PlaySound("/NoAmmo", 0.5);
+			}
+			this.set_Vec2f("building space", space);
+			this.set_u32("cant build time", getGameTime());
+			return null;
+		}
 
 		pos = offsetPos + space * map.tilesize * 0.5f;
 
-		this.SendCommand(this.getCommandID("building built client"));
 		// take inv here instead of in onDetach
 		server_TakeRequirements(inv, b.reqs);
 		DestroyScenary(tl, br);

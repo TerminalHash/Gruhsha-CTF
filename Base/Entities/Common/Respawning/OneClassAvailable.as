@@ -24,6 +24,7 @@ void onInit(CBlob@ this)
 			this.set_u8("class button radius", ts * 2);
 		}
 	}
+	this.addCommandID("change class");
 }
 
 void GetButtonsFor(CBlob@ this, CBlob@ caller)
@@ -67,17 +68,18 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 		if (disallow_class_change_on_shops == false)
 		{
 			CBitStream params;
-			write_classchange(params, caller.getNetworkID(), cfg);
+			params.write_u8(0);
 
-			CButton@ button = caller.CreateGenericButton(
-			"$change_class$",                           // icon token
-			this.get_Vec2f("class offset"),             // button offset
-			this,                                       // button attachment
-			SpawnCmd::changeClass,                      // command id
-			getTranslatedString("Swap Class"),                               // description
-			params);                                    // bit stream
+		CButton@ button = caller.CreateGenericButton(
+			"$change_class$",                         	  // icon token
+			this.get_Vec2f("class offset"),            	 // button offset
+			this,                                      	 // button attachment
+			this.getCommandID("change class"),           // command id
+			getTranslatedString("Swap Class"),           // description
+			params                                   	 // bit stream
+		);
 
-			button.enableRadius = this.get_u8("class button radius");
+		button.enableRadius = this.get_u8("class button radius");
 		}
 	}
 }

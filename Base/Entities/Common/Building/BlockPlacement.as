@@ -55,8 +55,7 @@ bool serverTileCheck(CBlob@ blob, u8 tileIndex, Vec2f cursorPos)
 	// Pos check of about 8 tiles, accounts for people with lag
 	Vec2f pos = (blob.getPosition() - cursorPos) / 2;
 
-	//if (pos.Length() > 30)
-    if (pos.Length() > getMaxBuildDistance(blob) + 16.0f)
+	if (pos.Length() > 30)
 		return false;
     
 	// Are we still on cooldown?
@@ -109,130 +108,92 @@ void onInit(CBlob@ this)
 	SetupBuildDelay(this);
 	this.addCommandID("placeBlock");
 
+	this.getCurrentScript().runFlags |= Script::tick_not_attached;
 	this.getCurrentScript().runFlags |= Script::tick_myplayer;
 	this.getCurrentScript().removeIfTag = "dead";
 }
 
-const string cursorTexture = "TileCursor_caps.png";
-
-void DrawCursorAt(Vec2f position, string& in filename, bool draw_red=false)
-{
-    SColor dc = color_white;
-    if (draw_red) dc = SColor(255, 255, 0, 0);
-    
-    position = getMap().getAlignedWorldPos(position);
-    if (position == Vec2f_zero) return;
-    position = getDriver().getScreenPosFromWorldPos(position - Vec2f(1, 1));
-    GUI::DrawIcon(filename, 0, Vec2f(16, 16), position, getCamera().targetDistance * getDriver().getResolutionScaleFactor(), dc);
-}
-
-string NewBlockIcons = "NewBlockIcons.png";
-
 void onTick(CBlob@ this)
 {
-    if (this.isInInventory())
-    {
-        return;
-    }
-    
-    //don't build with menus open
-    if (getHUD().hasMenus())
-    {
-        return;
-    }
-    
-    u8 bunnie_tile = this.get_u8("bunnie_tile");
+	if (this.isInInventory())
+	{
+		return;
+	}
 
-    if (bunnie_tile == 2 || bunnie_tile == 5 || bunnie_tile == 6 || bunnie_tile == 7 || bunnie_tile == 8 || bunnie_tile == 9 || bunnie_tile == 10 || bunnie_tile == 255)
-    {
-        return;
-    }
+	//don't build with menus open
+	if (getHUD().hasMenus())
+	{
+		return;
+	}
 
-    CBlob @carryBlob = this.getCarriedBlob();
-    /*if (carryBlob !is null)
-    {
-        this.set_u8("bunnie_tile", 255);
-        return;
-    }*/
+	CBlob @carryBlob = this.getCarriedBlob();
+	if (carryBlob !is null)
+	{
+		return;
+	}
 
-    if (isBuildDelayed(this))
-    {
-        return;
-    }
-    
-    BlockCursor @bc;
-    this.get("blockCursor", @bc);
-    if (bc is null)
-    {
-        return;
-    }
-    
-    SetTileAimpos(this, bc);
-    // check buildable
-    bc.buildable = false;
-    bc.supported = false;
-    bc.hasReqs = false;
-    TileType buildtile = this.get_TileType("buildtile");
+	if (isBuildDelayed(this))
+	{
+		return;
+	}
 
-    //printf("hi " + buildtile);
-    
-    if (buildtile > 0)
-    {
-        bc.blockActive = true;
-        bc.blobActive = false;
-        CMap@ map = this.getMap();
-        u8 blockIndex = getBlockIndexByTile(this, buildtile);
-        BuildBlock @block = getBlockByIndex(this, blockIndex);
-        if (block !is null)
-        {
-            bc.missing.Clear();
-            //CBitStream requirements; getZoneRequirements(this, block.reqs, false, requirements, block.name);
-            //bc.hasReqs = hasRequirements(this.getInventory(), requirements, bc.missing, not block.buildOnGround);
-            bc.hasReqs = hasRequirements(this.getInventory(), block.reqs, bc.missing, not block.buildOnGround);
-        }
-        
-        if (bc.cursorClose)
-        {
-            Vec2f halftileoffset(map.tilesize * 0.5f, map.tilesize * 0.5f);
-            bc.buildableAtPos = isBuildableAtPos(this, bc.tileAimPos + halftileoffset, buildtile, null, bc.sameTileOnBack);
-            //printf("bc.buildableAtPos " + bc.buildableAtPos );
-            bc.rayBlocked = isBuildRayBlocked(this.getPosition(), bc.tileAimPos + halftileoffset, bc.rayBlockedPos);
-            bc.buildable = bc.buildableAtPos && !bc.rayBlocked;
-            bc.buildable_alt = isBuildableAtPosAlt(this, bc.tileAimPos + halftileoffset, buildtile, null, bc.sameTileOnBack) && !bc.rayBlocked;
-            
-            bc.supported = bc.buildable && map.hasSupportAtPos(bc.tileAimPos);
-        }
-        
-        // place block
-        
-        if (!getHUD().hasButtons() && this.isKeyPressed(key_action1))
+	BlockCursor @bc;
+	this.get("blockCursor", @bc);
+	if (bc is null)
+	{
+		return;
+	}
+
+	SetTileAimpos(this, bc);
+	// check buildable
+	bc.buildable = false;
+	bc.supported = false;
+	bc.hasReqs = false;
+	TileType buildtile = this.get_TileType("buildtile");
+
+	if (buildtile > 0)
+	{
+		bc.blockActive = true;
+		bc.blobActive = false;
+		CMap@ map = this.getMap();
+		u8 blockIndex = getBlockIndexByTile(this, buildtile);
+		BuildBlock @block = getBlockByIndex(this, blockIndex);
+		if (block !is null)
 		{
-            bool check = (bc.cursorClose && bc.buildable && bc.supported && bc.hasReqs);
+			bc.missing.Clear();
+			bc.hasReqs = hasRequirements(this.getInventory(), block.reqs, bc.missing, not block.buildOnGround);
+		}
 
-            string build_mode = "vanilla";
+		if (bc.cursorClose)
+		{
+			Vec2f halftileoffset(map.tilesize * 0.5f, map.tilesize * 0.5f);
+			bc.buildableAtPos = isBuildableAtPos(this, bc.tileAimPos + halftileoffset, buildtile, null, bc.sameTileOnBack);
+			//printf("bc.buildableAtPos " + bc.buildableAtPos );
+			bc.rayBlocked = isBuildRayBlocked(this.getPosition(), bc.tileAimPos + halftileoffset, bc.rayBlockedPos);
+			bc.buildable = bc.buildableAtPos && !bc.rayBlocked;
 
-            if (getRules().exists("build_mode"))
-            {
-                build_mode = getRules().get_string("build_mode");
-            }
+			bc.supported = bc.buildable && map.hasSupportAtPos(bc.tileAimPos);
+		}
 
-            if (build_mode == "lagfriendly") check = (bc.cursorClose && bc.hasReqs && bc.buildable_alt);
+		// place block
 
-            if (check)
-            {
-                CBitStream params;
-                params.write_u8(blockIndex);
-                //params.write_Vec2f(bc.tileAimPos);
-                params.write_Vec2f(this.getAimPos()); // we're gonna send the aimpos and double-check range on server for safety
-                this.SendCommand(this.getCommandID("placeBlock"), params);
-                u32 delay = getCurrentBuildDelay(this);
-                SetBuildDelay(this, block.tile < 255 ? delay : delay / 3);
-                bc.blockActive = false;
-            }
-            else if (this.isKeyJustPressed(key_action1) && !bc.sameTileOnBack)
-            {
-                this.getSprite().PlaySound("NoAmmo.ogg", 0.5);
-            }
+		if (!getHUD().hasButtons() && this.isKeyPressed(key_action1))
+		{
+			if (bc.cursorClose && bc.buildable && bc.supported)
+			{
+				CBitStream params;
+				params.write_u8(blockIndex);
+				//params.write_Vec2f(bc.tileAimPos);
+				params.write_Vec2f(this.getAimPos()); // we're gonna send the aimpos and double-check range on server for safety
+				this.SendCommand(this.getCommandID("placeBlock"), params);
+				u32 delay = getCurrentBuildDelay(this);
+				SetBuildDelay(this, block.tile < 255 ? delay : delay / 3);
+				bc.blockActive = false;
+			}
+			else if (this.isKeyJustPressed(key_action1) && !bc.sameTileOnBack)
+			{
+				this.getSprite().PlaySound("NoAmmo.ogg", 0.5);
+			}
 		}
 	}
 	else
@@ -245,177 +206,92 @@ void onTick(CBlob@ this)
 
 void onInit(CSprite@ this)
 {
+	this.getCurrentScript().runFlags |= Script::tick_not_attached;
 	this.getCurrentScript().runFlags |= Script::tick_myplayer;
 	this.getCurrentScript().removeIfTag = "dead";
 }
 
 void onRender(CSprite@ this)
 {
-    CBlob@ blob = this.getBlob();
-    if (getHUD().hasButtons())
-    {
-        return;
-    }
-    
-    if (blob.isKeyPressed(key_action2) || blob.isKeyPressed(key_pickup))   //hack: dont show when builder is attacking
-    {
-        return;
-    }
-    
-    if (isBuildDelayed(blob))
-    {
-        return;
-    }
+	CBlob@ blob = this.getBlob();
+	if (getHUD().hasButtons())
+	{
+		return;
+	}
 
-    // draw a map block or other blob that snaps to grid
-    TileType buildtile = blob.get_TileType("buildtile");
+	if (blob.isKeyPressed(key_action2) || blob.isKeyPressed(key_pickup))   //hack: dont show when builder is attacking
+	{
+		return;
+	}
 
-    u8 bunnie_tile = blob.get_u8("bunnie_tile");
-    
-    if (bunnie_tile == 2 || bunnie_tile == 5 || bunnie_tile == 6 || bunnie_tile == 7 || bunnie_tile == 8 || bunnie_tile == 9 || bunnie_tile == 10 || bunnie_tile == 255)
-    {
-        return;
-    }
+	CBlob @carryBlob = blob.getCarriedBlob();
+	if (carryBlob !is null)
+	{
+		return;
+	}
 
-    //printf("bunnie_tile" + bunnie_tile);
+	if (isBuildDelayed(blob))
+	{
+		return;
+	}
 
-    //printf("test " + getRules().get_string("buildmode"));
-    if (buildtile > 0 && getRules().get_string("build_mode") == "lagfriendly")
-    {
-        CMap@ map = getMap();
-        CBlob@ localBlob = getLocalPlayerBlob();
-        if (localBlob is blob) 
-        {
-            BlockCursor @bc;
-            blob.get("blockCursor", @bc);
-            
-            if (bc !is null)
-            {
-                if (!bc.hasReqs)
-                {
-                    getHUD().SetCursorFrame(1);
-                }
-                else
-                {
-                    getHUD().SetCursorFrame(0);
-                }
+	// draw a map block or other blob that snaps to grid
+	TileType buildtile = blob.get_TileType("buildtile");
 
-                if (bc.cursorClose && bc.hasReqs && bc.buildable_alt)
-                {
-                    SColor color;
-                    Vec2f aimpos = bc.tileAimPos;
-                    
-                    color.set(255, 255, 255, 255);
-                    map.DrawTile(aimpos, buildtile, color, getCamera().targetDistance, false);
-                    DrawCursorAt(aimpos, cursorTexture, (!bc.buildable || !bc.supported));
-                }
-                else
-                {
-                    Vec2f cam_offset = getCamera().getInterpolationOffset();
+	if (buildtile > 0)
+	{
+		CMap@ map = getMap();
+		BlockCursor @bc;
+		blob.get("blockCursor", @bc);
 
-                    f32 halfTile = map.tilesize / 2.0f;
-                    Vec2f aimpos = blob.getAimPos() + cam_offset;
-                    Vec2f offset(-0.2f + 0.4f * (Maths::Sin(getGameTime() * 0.5f)), 0.0f);
-                    map.DrawTile(Vec2f(aimpos.x - halfTile, aimpos.y - halfTile) + offset, buildtile,
-                                 SColor(255, 255, 46, 50),
-                                 getCamera().targetDistance, false);
-                }
-            }
-        } 
-        else 
-        {
-            Vec2f held_tile_pos = blob.getPosition();
-            held_tile_pos.y -= 5.f;
-            if (blob.isFacingLeft()) {
-                held_tile_pos.x -= 8.f;
-            }
-            
-            SColor color; color.set(255, 255, 255, 255);
-            map.DrawTile(held_tile_pos, buildtile, color, getCamera().targetDistance, false);
-        }
-    }
-    else if (buildtile > 0)
-    {
-        CMap@ map = getMap();
-        CBlob@ localBlob = getLocalPlayerBlob();
-        if (localBlob is blob) 
-        {
-            BlockCursor @bc;
-            blob.get("blockCursor", @bc);
-            
-            if (bc !is null)
-            {
-                if (!bc.hasReqs)
-                {
-                    getHUD().SetCursorFrame(1);
-                }
-                else
-                {
-                    getHUD().SetCursorFrame(0);
-                }
+		if (bc !is null)
+		{
+			if (bc.cursorClose && bc.hasReqs && bc.buildable)
+			{
+				SColor color;
+				Vec2f aimpos = bc.tileAimPos;
 
-                if (bc.cursorClose && bc.hasReqs && bc.buildable)
-                {
-                    SColor color;
-                    Vec2f aimpos = bc.tileAimPos;
-                    
-                    if (bc.buildable && bc.supported)
-                    {
-                        color.set(255, 255, 255, 255);
-                        map.DrawTile(aimpos, buildtile, color, getCamera().targetDistance, false);
-                    }
-                    else
-                    {
-                        // no support
-                        color.set(255, 255, 46, 50);
-                        const u32 gametime = getGameTime();
-                        Vec2f offset(0.0f, -1.0f + 1.0f * ((gametime * 0.2f) % 8));
-                        map.DrawTile(aimpos + offset, buildtile, color, getCamera().targetDistance, false);
-                        
-                        if (gametime % 16 < 9)
-                        {
-                            Vec2f supportPos = aimpos + Vec2f(blob.isFacingLeft() ? map.tilesize : -map.tilesize, map.tilesize);
-                            Vec2f point;
-                            if (map.rayCastSolid(supportPos, supportPos + Vec2f(0.0f, map.tilesize * 32.0f), point))
-                            {
-                                const uint count = (point - supportPos).getLength() / map.tilesize;
-                                for (uint i = 0; i < count; i++)
-                                {
-                                    map.DrawTile(supportPos + Vec2f(0.0f, map.tilesize * i), buildtile,
-                                                 SColor(255, 205, 16, 10),
-                                                 getCamera().targetDistance, false);
-                                }
-                            }
-                        }
-                    }
-                }
-                else if (bc.hasReqs)
-                {
-                    Vec2f cam_offset = getCamera().getInterpolationOffset();
+				if (bc.buildable && bc.supported)
+				{
+					color.set(255, 255, 255, 255);
+					map.DrawTile(aimpos, buildtile, color, getCamera().targetDistance, false);
+				}
+				else
+				{
+					// no support
+					color.set(255, 255, 46, 50);
+					const u32 gametime = getGameTime();
+					Vec2f offset(0.0f, -1.0f + 1.0f * ((gametime * 0.2f) % 8));
+					map.DrawTile(aimpos + offset, buildtile, color, getCamera().targetDistance, false);
 
-                    f32 halfTile = map.tilesize / 2.0f;
-                    Vec2f aimpos = blob.getAimPos() + cam_offset;
-                    Vec2f offset(-0.2f + 0.4f * (Maths::Sin(getGameTime() * 0.5f)), 0.0f);
-                    map.DrawTile(Vec2f(aimpos.x - halfTile, aimpos.y - halfTile) + offset, buildtile,
-                                 SColor(255, 255, 46, 50),
-                                 getCamera().targetDistance, false);
-                }
-            }
-        } 
-        else 
-        {
-            Vec2f held_tile_pos = blob.getPosition();
-            held_tile_pos.y -= 5.f;
-
-            if (blob.isFacingLeft()) 
-            {
-                held_tile_pos.x -= 8.f;
-            }
-            
-            SColor color; color.set(255, 255, 255, 255);
-            map.DrawTile(held_tile_pos, buildtile, color, getCamera().targetDistance, false);
-        }
-    }
+					if (gametime % 16 < 9)
+					{
+						Vec2f supportPos = aimpos + Vec2f(blob.isFacingLeft() ? map.tilesize : -map.tilesize, map.tilesize);
+						Vec2f point;
+						if (map.rayCastSolid(supportPos, supportPos + Vec2f(0.0f, map.tilesize * 32.0f), point))
+						{
+							const uint count = (point - supportPos).getLength() / map.tilesize;
+							for (uint i = 0; i < count; i++)
+							{
+								map.DrawTile(supportPos + Vec2f(0.0f, map.tilesize * i), buildtile,
+								             SColor(255, 205, 16, 10),
+								             getCamera().targetDistance, false);
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				f32 halfTile = map.tilesize / 2.0f;
+				Vec2f aimpos = blob.getAimPos() + getCamera().getInterpolationOffset();
+				Vec2f offset(-0.2f + 0.4f * (Maths::Sin(getGameTime() * 0.5f)), 0.0f);
+				map.DrawTile(Vec2f(aimpos.x - halfTile, aimpos.y - halfTile) + offset, buildtile,
+				             SColor(255, 255, 46, 50),
+				             getCamera().targetDistance, false);
+			}
+		}
+	}
 }
 
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
@@ -449,7 +325,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		}
 
 		// out of range
-		if (mouseLen >= getMaxBuildDistance(this) + 16.0f)
+		if (mouseLen >= getMaxBuildDistance(this))
 		{
 			return;
 		} 

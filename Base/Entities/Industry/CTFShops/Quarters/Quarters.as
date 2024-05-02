@@ -1,4 +1,4 @@
-﻿// Quarters.as
+// Quarters.as
 
 #include "Requirements.as"
 #include "ShopCommon.as"
@@ -70,6 +70,9 @@ void onInit(CBlob@ this)
 		bed.SetKeysToTake(key_left | key_right | key_up | key_down | key_action1 | key_action2 | key_action3 | key_pickup | key_inventory);
 		bed.SetMouseTaken(true);
 	}
+
+	ShopMadeItem@ onMadeItem = @onShopMadeItem;
+	this.set("onShopMadeItem handle", @onMadeItem);
 
 	this.addCommandID("rest");
 	this.getCurrentScript().runFlags |= Script::tick_hasattached;
@@ -183,8 +186,6 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 	caller.getShape().getBoundingRect(c_tl, c_br);
 	bool isOverlapping = br.x - c_tl.x > 0.0f && br.y - c_tl.y > 0.0f && tl.x - c_br.x < 0.0f && tl.y - c_br.y < 0.0f;
 
-	this.set_Vec2f("shop offset", Vec2f_zero);
-
 	/*if (!isOverlapping || !bedAvailable(this) || !requiresTreatment(this, caller))
 	{
 		this.set_Vec2f("shop offset", Vec2f_zero);
@@ -192,30 +193,47 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 	else
 	{
 		this.set_Vec2f("shop offset", Vec2f(6, 0));
-		CBitStream params;
-		params.write_u16(caller.getNetworkID());
-		caller.CreateGenericButton("$rest$", Vec2f(-6, 0), this, this.getCommandID("rest"), getTranslatedString("Rest"), params);
+		caller.CreateGenericButton("$rest$", Vec2f(-6, 0), this, this.getCommandID("rest"), getTranslatedString("Rest"));
 	}*/
 
 	this.set_bool("shop available", isOverlapping);
 }
 
+void onShopMadeItem(CBitStream@ params)
+{
+	if (!isServer()) return;
+
+	u16 this_id, caller_id, item_id;
+	string name;
+
+	if (!params.saferead_u16(this_id) || !params.saferead_u16(caller_id) || !params.saferead_u16(item_id) || !params.saferead_string(name))
+	{
+		return;
+	}
+
+	CBlob@ caller = getBlobByNetworkID(caller_id);
+	if (caller is null) return;
+
+	if (name == "beer")
+	{
+		caller.server_Heal(beer_amount);
+	}
+	else if (name == "meal")
+	{
+		caller.server_SetHealth(caller.getInitialHealth());
+	}
+}
+
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
-	if (cmd == this.getCommandID("shop made item"))
+	if (cmd == this.getCommandID("shop made item client") && isClient())
 	{
 		this.getSprite().PlaySound("/ChaChing.ogg");
 
-		u16 caller, item;
+		u16 this_id, caller_id, item_id;
 		string name;
 
-		if (!params.saferead_netid(caller) || !params.saferead_netid(item) || !params.saferead_string(name))
-		{
-			return;
-		}
-
-		CBlob@ callerBlob = getBlobByNetworkID(caller);
-		if (callerBlob is null)
+		if (!params.saferead_u16(this_id) || !params.saferead_u16(caller_id) || !params.saferead_u16(item_id) || !params.saferead_string(name))
 		{
 			return;
 		}
@@ -223,54 +241,30 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		if (name == "beer")
 		{
 			this.getSprite().PlaySound("/Gulp.ogg");
-			if (isServer())
-			{
-				callerBlob.server_Heal(beer_amount);
-			}
 		}
 		else if (name == "meal")
 		{
 			this.getSprite().PlaySound("/Eat.ogg");
-			if (isServer())
-			{
-				callerBlob.server_SetHealth(callerBlob.getInitialHealth());
-			}
 		}
 		else if (name == "sleep")
 		{
-			AttachmentPoint@ bed = this.getAttachments().getAttachmentPointByName("BED");
-			if (bed !is null && bedAvailable(this))
-			{
-				CBlob@ carried = callerBlob.getCarriedBlob();
-				if (isServer())
-				{
-					if (carried !is null)
-					{
-						if (!callerBlob.server_PutInInventory(carried))
-						{
-							carried.server_DetachFrom(callerBlob);
-						}
-					}
-					this.server_AttachTo(callerBlob, "BED");
-				}
-			}
-		}
-	}
-	else if (cmd == this.getCommandID("rest"))
-	{
-		u16 caller_id;
-		if (!params.saferead_netid(caller_id))
-			return;
+			CPlayer@ player = getNet().getActiveCommandPlayer();
 
-		CBlob@ caller = getBlobByNetworkID(caller_id);
-		if (caller !is null && !caller.isAttached())
-		{
-			AttachmentPoint@ bed = this.getAttachments().getAttachmentPointByName("BED");
-			if (bed !is null && bedAvailable(this))
+			if (player is null)
 			{
-				CBlob@ carried = caller.getCarriedBlob();
-				if (isServer())
+				return;
+			}
+
+			CBlob@ caller = player.getBlob();
+
+			if (caller !is null && !caller.isAttached())
+			{
+
+				AttachmentPoint@ bed = this.getAttachments().getAttachmentPointByName("BED");
+				if (bed !is null && bedAvailable(this))
 				{
+					CBlob@ carried = caller.getCarriedBlob();
+
 					if (carried !is null)
 					{
 						if (!caller.server_PutInInventory(carried))
@@ -280,6 +274,40 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 					}
 					this.server_AttachTo(caller, "BED");
 				}
+			}
+		}
+	}
+	else if (cmd == this.getCommandID("rest") && isServer())
+	{
+		CPlayer@ player = getNet().getActiveCommandPlayer();
+
+		if (player is null) 
+		{
+			return;
+		}
+
+		CBlob@ caller = player.getBlob();
+
+		if (caller !is null && !caller.isAttached())
+		{
+			f32 distance = this.getDistanceTo(caller);
+
+			// range check: do not rest if more than 5 blocks away from quarter's center
+			if (distance > 40) return;
+
+			AttachmentPoint@ bed = this.getAttachments().getAttachmentPointByName("BED");
+			if (bed !is null && bedAvailable(this))
+			{
+				CBlob@ carried = caller.getCarriedBlob();
+
+				if (carried !is null)
+				{
+					if (!caller.server_PutInInventory(carried))
+					{
+						carried.server_DetachFrom(caller);
+					}
+				}
+				this.server_AttachTo(caller, "BED");
 			}
 		}
 	}

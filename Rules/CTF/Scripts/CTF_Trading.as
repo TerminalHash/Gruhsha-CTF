@@ -128,7 +128,7 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 
 	bool giveBuilderBonus = false;
 
-	if(customData == Hitters::drill || customData == Hitters::spikes || customData == Hitters::builder)
+	if(customData == Hitters::drill || customData == Hitters::spikes || customData == Hitters::builder) 
 	{
 		giveBuilderBonus = true;
 	}
@@ -150,8 +150,8 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 			}
 
 			CPlayer@ helper = getAssistPlayer (victim, killer);
-			if (helper !is null)
-			{
+			if (helper !is null) 
+			{ 
 				helper.server_setCoins(helper.getCoins() + (giveBuilderBonus ? coinsOnAssistAddBuilder : coinsOnAssistAdd));
 			}
 		}
@@ -266,7 +266,7 @@ void awardCoins(CBitStream@ params)
 	}
 	else if (event_id == CGameplayEvent_IDs::HitVehicle)
 	{
-		f32 damage;
+		f32 damage; 
 		if (!params.saferead_f32(damage)) return;
 
 		coins = coinsOnHitSiege * damage;

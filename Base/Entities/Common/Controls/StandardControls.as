@@ -20,9 +20,7 @@ void onInit(CBlob@ this)
 	this.addCommandID("putinheld");
 	this.addCommandID("getout");
 	this.addCommandID("detach");
-	this.addCommandID("cycle");
 	this.addCommandID("switch");
-	this.addCommandID("tap inventory key");
 	this.addCommandID("drill command");
 
 	this.getCurrentScript().runFlags |= Script::tick_myplayer;
@@ -38,94 +36,80 @@ void onInit(CBlob@ this)
 
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
-	if (!getNet().isServer())                                // server only!
-	{
-		return;
-	}
+	if (!isServer()) return;
 
 	if (cmd == this.getCommandID("putinheld"))
 	{
-		CBlob@ owner = getBlobByNetworkID(params.read_netid());
+		CPlayer@ callerp = getNet().getActiveCommandPlayer();
+		if (callerp is null) return;
 
-		putInHeld(owner);
-	}
-	else if (cmd == this.getCommandID("tap inventory key"))
-	{
-		CBlob@ owner = getBlobByNetworkID(params.read_netid());
+		CBlob@ caller = callerp.getBlob();
+		if (caller is null) return;
+		if (caller !is this) return;
+		if (caller.isInInventory()) return;
+		if (caller.isAttached()) return;
 
-		if (!putInHeld(owner))
-		{
-			this.SendCommand(this.getCommandID("cycle"));
-		}
-	}
-	else if (cmd == this.getCommandID("drill command"))
-	{
-		CBlob@ carried = this.getCarriedBlob();
+		CBlob@ held = this.getCarriedBlob();
+		if (held is null) return;
 
-		CInventory@ inventory = this.getInventory();
-		CBlob@ ourburga = null;
-
-		if (carried !is null && carried.getName() == "drill")
-		{
-			this.server_PutInInventory(carried);
-			return;
-		}
-
-		for(int i=0; i < inventory.getItemsCount(); ++i)
-		{
-			if (inventory.getItem(i) !is null)
-			{
-				if (inventory.getItem(i).getName() == "drill")
-				{
-					@ourburga = inventory.getItem(i);
-					this.server_PutOutInventory(ourburga);
-
-					if (carried !is null)
-					{
-						this.server_PutInInventory(carried);
-					}
-
-					this.server_Pickup(ourburga);
-					break;
-				}
-			}
-		}
-
-		/*if (!putInHeld(owner))
-		{
-			this.SendCommand(this.getCommandID("cycle"));
-		}*/
+		putInHeld(caller);
 	}
 	else if (cmd == this.getCommandID("pickup"))
 	{
-		CBlob@ owner = getBlobByNetworkID(params.read_netid());
-		CBlob@ pick = getBlobByNetworkID(params.read_netid());
+		CPlayer@ callerp = getNet().getActiveCommandPlayer();
+		if (callerp is null) return;
 
-		if (owner !is null 
-		    && !owner.isInInventory()
-		    && !owner.isAttached()
-		    && pick !is null 
-		    && !pick.isAttached()
-		    && pick.canBePickedUp(owner))
-		{
-			owner.server_Pickup(pick);
-		}
+		CBlob@ caller = callerp.getBlob();
+		if (caller is null) return;
+		if (caller !is this) return;
+		if (caller.isInInventory()) return;
+		if (caller.isAttached()) return;
+
+		u16 pickedup_id;
+		if (!params.saferead_u16(pickedup_id)) return;
+
+		CBlob@ pickedup = getBlobByNetworkID(pickedup_id);
+		if (pickedup is null) return;
+
+		if (!pickedup.canBePickedUp(caller)) return;
+
+		if (pickedup.isAttached()) return;
+
+		caller.server_Pickup(pickedup);
 	}
 	else if (cmd == this.getCommandID("detach"))
 	{
-		CBlob@ obj = getBlobByNetworkID(params.read_netid());
+		CPlayer@ callerp = getNet().getActiveCommandPlayer();
+		if (callerp is null) return;
 
-		if (obj !is null)
-		{
-			this.server_DetachFrom(obj);
-		}
+		CBlob@ caller = callerp.getBlob();
+		if (caller is null) return;
+		if (caller !is this) return;
+
+		u16 attached_id;
+		if (!params.saferead_u16(attached_id)) return;
+
+		CBlob@ attached = getBlobByNetworkID(attached_id);
+		if (attached is null) return;
+		
+		if (!this.isAttachedTo(attached)) return;
+
+		this.server_DetachFrom(attached);
 	}
 	else if (cmd == this.getCommandID("getout"))
 	{
-		if (this.getInventoryBlob() !is null)
-		{
-			this.getInventoryBlob().server_PutOutInventory(this);
-		}
+		CBlob@ inv = this.getInventoryBlob();
+		if (inv is null) return;
+
+		CPlayer@ callerp = getNet().getActiveCommandPlayer();
+		if (callerp is null) return;
+
+		CBlob@ caller = callerp.getBlob();
+		if (caller is null) return;
+
+		if (caller !is this) return;
+
+		inv.server_PutOutInventory(this);
 	}
 }
 
@@ -134,35 +118,62 @@ bool putInHeld(CBlob@ owner)
 	if (owner is null) return false;
 
 	CBlob@ held = owner.getCarriedBlob();
-
 	if (held is null) return false;
 
 	return owner.server_PutInInventory(held);
 }
 
-// press action1 to click buttons
-void HandleButtonClickKey(CBlob@ this, AttachmentPoint@ point = null)
+/*
+bool ClickGridMenu(CBlob@ this, int button)
 {
-	if (getHUD().hasButtons())
+	CGridMenu @gmenu;
+	CGridButton @gbutton;
+
+	if (this.ClickGridMenu(button, gmenu, gbutton))   // button gets pressed here - thing get picked up
 	{
-		if (point !is null)
+		if (gmenu !is null)
 		{
-			if ((point.isKeyJustPressed(key_action1)) && !point.isKeyPressed(key_pickup))
+			// if (gmenu.getName() == this.getInventory().getMenuName() && gmenu.getOwner() !is null)
 			{
-				ButtonOrMenuClick(this, this.getAimPos(), false, true);
-				this.set_bool("release click", false);
+				if (gbutton is null)    // carrying something, put it in
+				{
+					client_PutInHeld(this);
+				}
+				else // take something
+				{
+					// handled by button cmd   // hardcoded still :/
+				}
 			}
-		}
-		else
-		{
-			if ((this.isKeyJustPressed(key_action1)) && !this.isKeyPressed(key_pickup))
-			{
-				ButtonOrMenuClick(this, this.getAimPos(), false, true);
-				this.set_bool("release click", false);
-			}
+			return true;
 		}
 	}
+
+	return false;
 }
+
+void ButtonOrMenuClick(CBlob@ this, Vec2f pos, bool clear, bool doClosestClick)
+{
+	if (!ClickGridMenu(this, 0))
+		if (this.ClickInteractButton())
+		{
+			clear = false;
+		}
+		else if (doClosestClick)
+		{
+			if (this.ClickClosestInteractButton(pos, this.getRadius() * 1.0f))
+			{
+				this.ClearButtons();
+				clear = false;
+			}
+		}
+
+	if (clear)
+	{
+		this.ClearButtons();
+		this.ClearMenus();
+	}
+}
+*/
 
 void onTick(CBlob@ this)
 {
@@ -188,7 +199,9 @@ void onTick(CBlob@ this)
 	{
 		if (this.get_bool("release click"))
 		{
-			ButtonOrMenuClick(this, this.getPosition(), true, isTap(this) && this.get_bool("can button tap"));
+			CBlob@ carry = this.getCarriedBlob();
+			ButtonOrMenuClick(this, carry !is null? carry.getPosition() : this.getPosition(),
+							  true, isTap(this) && this.get_bool("can button tap"));
 		}
 
 		this.ClearButtons();
@@ -228,15 +241,13 @@ void onTick(CBlob@ this)
 
 	if (this.isInInventory())
 	{
-		if (this.isKeyJustPressed(key_pickup))
+		if (this.isKeyJustPressed(key_pickup) && isClient())
 		{
 			CBlob@ invblob = this.getInventoryBlob();
 			// Use the inventoryblob command if it has one (crate for example)
 			if (invblob.hasCommandID("getout"))
 			{
-				CBitStream params;
-				params.write_u16(this.getNetworkID());
-				invblob.SendCommand(invblob.getCommandID("getout"), params);
+				invblob.SendCommand(invblob.getCommandID("getout"));
 			}
 			else
 			{
@@ -274,11 +285,28 @@ void onTick(CBlob@ this)
 		}
 		else if (this.isKeyJustReleased(key_inventory))
 		{
-			if (isTap(this, 7))     // tap - put thing in inventory
+			u8 minimum_ticks = 5;
+			if (this.getName() == "builder") minimum_ticks = 3; // they have to switch blocks faaaaast
+
+			if (isTap(this, minimum_ticks))     // tap - put thing in inventory
 			{
-				CBitStream params;
-				params.write_netid(this.getNetworkID());
-				this.SendCommand(this.getCommandID("tap inventory key"), params);
+				CBlob@ held = this.getCarriedBlob();
+				if (held !is null)
+				{
+					this.SendCommand(this.getCommandID("putinheld"));
+				}
+				else
+				{
+					ControlsCycle@ onCycle;
+					if (this.get("onCycle handle", @onCycle))
+					{
+						CBitStream params;
+						params.write_u16(this.getNetworkID());
+						params.ResetBitIndex();
+
+						onCycle(params);
+					}
+				}
 
 				this.ClearMenus();
 				return;
@@ -303,6 +331,7 @@ void onTick(CBlob@ this)
 	}
 
 	// release action1 to click buttons
+
 	if (getHUD().hasButtons())
 	{
 		if ((this.isKeyJustPressed(key_action1) /*|| controls.isKeyJustPressed(KEY_LBUTTON)*/) && !this.isKeyPressed(key_pickup))
@@ -339,9 +368,16 @@ void onTick(CBlob@ this)
 		{
 			if (controls.isKeyJustPressed(keybinds[i]))
 			{
-				CBitStream params;
-				params.write_u8(i);
-				this.SendCommand(this.getCommandID("switch"), params);
+				ControlsSwitch@ onSwitch;
+				if (this.get("onSwitch handle", @onSwitch))
+				{
+					CBitStream params;
+					params.write_u16(this.getNetworkID());
+					params.write_u8(i);
+					params.ResetBitIndex();
+
+					onSwitch(params);
+				}
 			}
 		}
 	}
@@ -389,8 +425,10 @@ void AdjustCamera(CBlob@ this, bool is_in_render)
 
 	f32 zoom_target = 1.0f;
 
-	if (zoomModifier) {
-		switch (zoomModifierLevel) {
+	if (zoomModifier) 
+	{
+		switch (zoomModifierLevel) 
+		{
 			case 0:	zoom_target = 0.5f; zoomLevel = 0; break;
 			case 1: zoom_target = 0.5625f; zoomLevel = 0; break;
 			case 2: zoom_target = 0.625f; zoomLevel = 0; break;
@@ -399,8 +437,11 @@ void AdjustCamera(CBlob@ this, bool is_in_render)
 			case 5: zoom_target = 1.5f; zoomLevel = 1; break;
 			case 6: zoom_target = 2.0f; zoomLevel = 2; break;
 		}
-	} else {
-		switch (zoomLevel) {
+	} 
+	else 
+	{
+		switch (zoomLevel) 
+		{
 			case 0: zoom_target = 0.5f; zoomModifierLevel = 0; break;
 			case 1: zoom_target = 1.0f; zoomModifierLevel = 4; break;
 			case 2:	zoom_target = 2.0f; zoomModifierLevel = 6; break;

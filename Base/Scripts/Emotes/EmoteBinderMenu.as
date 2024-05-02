@@ -19,7 +19,6 @@ u8 selected_keybind = 0;
 void onInit(CRules@ this)
 {
 	this.addCommandID(EMOTE_CMD);
-	this.addCommandID("display taunt");
 }
 
 void NewEmotesMenu()
@@ -53,11 +52,47 @@ void LoadIcons(CPlayer@ player)
 		{
 			AddIconToken(getIconName(emote.token), getPath() + emote.pack.name + "Emoticons_smol.png", Vec2f(32, 32), emote.index, player.getTeamNum());
 		}
-
-		//AddIconToken(getIconName(emote.token), emote.pack.filePath, Vec2f(32, 32), emote.index, player.getTeamNum());
-
-		//printf("Token: " + emote.token + " File: " + emote.pack.filePath + " Index: " + emote.index);
 	}
+}
+
+void Callback_BindEmote(CBitStream@ params)
+{
+	CPlayer@ caller = getLocalPlayer();
+	if (caller is null) return;
+
+	string token;
+	if(!params.saferead_string(token)) return;
+
+	string key = "emote_" + (selected_keybind + 1);
+
+	//get emote bindings cfg file
+	ConfigFile@ cfg = openEmoteBindingsConfig();
+
+	//bind emote
+	cfg.add_string(key, token);
+	cfg.saveFile("EmoteBindings.cfg");
+
+	//update keybinds in menu
+	ShowEmotesMenu(caller);
+
+	getRules().Tag("reload emotes");
+}
+
+void Callback_SelectKeybind(CBitStream@ params)
+{
+	u8 emote;
+	if(!params.saferead_u8(emote)) return;
+
+	selected_keybind = emote;
+
+	getRules().Tag("reload emotes");
+}
+
+void Callback_CloseMenu(CBitStream@ params)
+{
+	getHUD().ClearMenus();
+
+	getRules().Tag("reload emotes");
 }
 
 void ShowEmotesMenu(CPlayer@ player)
@@ -85,11 +120,8 @@ void ShowEmotesMenu(CPlayer@ player)
 		//press escape to close
 		CBitStream params;
 
-		params.write_u8(CLOSE_MENU);
-		params.write_string(player.getUsername());
-
-		menu.AddKeyCommand(KEY_ESCAPE, rules.getCommandID(EMOTE_CMD), params);
-		menu.SetDefaultCommand(rules.getCommandID(EMOTE_CMD), params);
+		menu.AddKeyCallback(KEY_ESCAPE, "EmoteBinderMenu.as", "Callback_CloseMenu", params);
+		menu.SetDefaultCallback("EmoteBinderMenu.as", "Callback_CloseMenu", params);
 
 		dictionary@ packs;
 		rules.get("emote packs", @packs);
@@ -111,10 +143,8 @@ void ShowEmotesMenu(CPlayer@ player)
 				}
 
 				CBitStream params;
-				params.write_u8(BIND_EMOTE);
-				params.write_string(player.getUsername());
 				params.write_string(emote.token);
-				CGridButton@ button = menu.AddButton(getIconName(emote.token), getTranslatedString(emote.name), rules.getCommandID(EMOTE_CMD), Vec2f(1, 1), params);
+				CGridButton@ button = menu.AddButton(getIconName(emote.token), getTranslatedString(emote.name), "EmoteBinderMenu.as", "Callback_BindEmote", Vec2f(1, 1), params);
 			}
 		}
 
@@ -144,10 +174,8 @@ void ShowEmotesMenu(CPlayer@ player)
 			u8 keyNum = (i < 9 ? i : i - 9) + 1;
 
 			CBitStream params;
-			params.write_u8(SELECT_KEYBIND);
-			params.write_string(player.getUsername());
 			params.write_u8(i);
-			CGridButton@ button = menu.AddButton(getIconName(emoteBinds[i]), getTranslatedString(text).replace("{KEY_NUM}", keyNum + ""), rules.getCommandID(EMOTE_CMD), Vec2f(1, 1), params);
+			CGridButton@ button = menu.AddButton(getIconName(emoteBinds[i]), getTranslatedString(text).replace("{KEY_NUM}", keyNum + ""), "EmoteBinderMenu.as", "Callback_SelectKeybind", Vec2f(1, 1), params);
 			button.selectOneOnClick = true;
 			// button.hoverText = "     Key " + (i + 1) + "\n";
 
@@ -163,58 +191,6 @@ void ShowEmotesMenu(CPlayer@ player)
 				menu.AddTextButton("", Vec2f(rightPaddingWidth, 2));
 			}
 		}
-	}
-}
-
-void onCommand(CRules@ this, u8 cmd, CBitStream @params)
-{
-	if(cmd == this.getCommandID(EMOTE_CMD))
-	{
-		string name;
-		u8 subcmd;
-
-		if(!params.saferead_u8(subcmd)) return;
-		if(!params.saferead_string(name)) return;
-
-		CPlayer@ caller = getPlayerByUsername(name);
-
-		//check validity so far
-		if (caller is null || !caller.isMyPlayer() || subcmd >= EMOTE_SUBCMD_COUNT)
-		{
-			return;
-		}
-
-		if (subcmd == BIND_EMOTE)
-		{
-			string token;
-			if(!params.saferead_string(token)) return;
-
-			string key = "emote_" + (selected_keybind + 1);
-
-			//get emote bindings cfg file
-			ConfigFile@ cfg = openEmoteBindingsConfig();
-
-			//bind emote
-			cfg.add_string(key, token);
-			cfg.saveFile("EmoteBindings.cfg");
-
-			//update keybinds in menu
-			ShowEmotesMenu(caller);
-		}
-		else if (subcmd == SELECT_KEYBIND)
-		{
-			u8 emote;
-			if(!params.saferead_u8(emote)) return;
-
-			selected_keybind = emote;
-		}
-		else if (subcmd == CLOSE_MENU)
-		{
-			getHUD().ClearMenus(true);
-		}
-
-		//trigger a reload of our emote bindings either way
-		this.Tag("reload emotes");
 	}
 }
 

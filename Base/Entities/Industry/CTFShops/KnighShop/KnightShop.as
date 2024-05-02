@@ -114,20 +114,8 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
-	if (cmd == this.getCommandID("shop made item"))
+	if (cmd == this.getCommandID("shop made item client") && isClient())
 	{
 		this.getSprite().PlaySound("/ChaChing.ogg");
-	}
-	if (cmd == this.getCommandID("reset menu"))
-	{
-		if (this.exists("shop array"))
-		{
-			ShopItem[] @items;
-			this.get("shop array", @items);
-
-			items.clear();
-			this.set("shop array", @items);
-		}
-		onInit(this);
 	}
 }

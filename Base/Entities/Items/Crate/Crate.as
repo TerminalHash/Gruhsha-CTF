@@ -269,9 +269,7 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 	{
 		if (sneaky_player.getTeamNum() == caller.getTeamNum())
 		{
-			CBitStream params;
-			params.write_netid(caller.getNetworkID());
-			CButton@ button = caller.CreateGenericButton(6, buttonpos, this, this.getCommandID("getout"), getTranslatedString("Get out"), params);
+			CButton@ button = caller.CreateGenericButton(6, buttonpos, this, this.getCommandID("getout"), getTranslatedString("Get out"));
 			if (putting)
 			{
 				button.SetEnabled(false);
@@ -283,17 +281,15 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 		}
 		else // make fake buttons for enemy
 		{
-			CBitStream params;
-			params.write_netid(caller.getNetworkID());
 			if (carried is this)
 			{
 				// Fake get in button
-				caller.CreateGenericButton(4, buttonpos, this, this.getCommandID("getout"), getTranslatedString("Get inside"), params);
+				caller.CreateGenericButton(4, buttonpos, this, this.getCommandID("getout"), getTranslatedString("Get inside"));
 			}
 			else
 			{
 				// Fake inventory button
-				CButton@ button = caller.CreateGenericButton(13, buttonpos, this, this.getCommandID("getout"), getTranslatedString("Crate"), params);
+				CButton@ button = caller.CreateGenericButton(13, buttonpos, this, this.getCommandID("getout"), getTranslatedString("Crate"));
 				button.enableRadius = 20.0f;
 			}
 		}
@@ -320,19 +316,14 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 	}
 	else if (hasSomethingPacked(this))
 	{
-		CBitStream params;
-		params.write_netid(caller.getNetworkID());
-		
 		string text = getTranslatedString("Unpack {ITEM}").replace("{ITEM}", getTranslatedString(this.get_string("packed name")));
-		CButton@ button = caller.CreateGenericButton(12, buttonpos, this, this.getCommandID("unpack"), text, params);
+		CButton@ button = caller.CreateGenericButton(12, buttonpos, this, this.getCommandID("unpack"), text);
 		
 		button.enableRadius = 20.0f;
 	}
 	else if (carried is this)
 	{
-		CBitStream params;
-		params.write_netid(caller.getNetworkID());
-		caller.CreateGenericButton(4, buttonpos, this, this.getCommandID("getin"), getTranslatedString("Get inside"), params);
+		caller.CreateGenericButton(4, buttonpos, this, this.getCommandID("getin"), getTranslatedString("Get inside"));
 	}
 	else if (this.getTeamNum() != caller.getTeamNum() && !this.isOverlapping(caller))
 	{
@@ -375,8 +366,6 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 			{
 				CPlayer@ p = getNet().getActiveCommandPlayer();
 				if (p is null) return;
-
-				this.SetDamageOwnerPlayer(p);
 					
 				CBlob@ caller = p.getBlob();
 				if (caller is null) return;
@@ -491,7 +480,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 			this.server_PutOutInventory(sneaky_player);
 		}
 		// Attack self to pop out items
-		DumpOutItems(this, 5.0f, this.getVelocity(), false);
+		this.server_Hit(this, this.getPosition(), Vec2f(), 100.0f, Hitters::crush, true);
 		this.server_Die();
 	}
 	else if (cmd == this.getCommandID("boobytrap") && isServer())
@@ -562,11 +551,6 @@ void Unpack(CBlob@ this)
 	CBlob@ blob = server_CreateBlob(this.get_string("packed"), this.getTeamNum(), center);
 	if (blob !is null && blob.getShape() !is null)
 	{
-		CPlayer@ owner = this.getDamageOwnerPlayer();
-		if (owner !is null)
-		{
-			blob.SetDamageOwnerPlayer(owner);
-		}
 		// put on ground if not in water
 		//	if (!getMap().isInWater(this.getPosition() + Vec2f(0.0f, this.getRadius())))
 		//		blob.getShape().PutOnGround();
