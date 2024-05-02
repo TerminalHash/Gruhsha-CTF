@@ -47,13 +47,18 @@ void onTick(CBlob@ this)
 
 	ConfigFile file;
 
-	for (uint i = 0; i < 9; i++)
+	if (file.loadFile(BINDINGSDIR + BINDINGSFILE))
 	{
-		if (file.loadFile(BINDINGSDIR + BINDINGSFILE))
-		{
-			string customemotebind = "emote" + i + "$1";
+		string customemotebind;
 
-			if (file.exists(customemotebind) && file.read_s32(customemotebind) != -1) // Check custom bind first
+		for (uint i = 1; i < 10; i++)
+		{
+			customemotebind = "emote" + i + "$1";
+		}
+
+		if (file.exists(customemotebind) && file.read_s32(customemotebind) != -1) // Check custom bind first
+		{
+			for (uint i = 1; i < 10; i++)
 			{
 				if (b_KeyJustPressed("emote" + i) && emoteBinds.length >= i)
 				{
@@ -61,7 +66,10 @@ void onTick(CBlob@ this)
 					break;
 				}
 			}
-			else
+		}
+		else
+		{
+			for (uint i = 0; i < 9; i++)
 			{
 				if (controls.isKeyJustPressed(KEY_KEY_1 + i))
 				{

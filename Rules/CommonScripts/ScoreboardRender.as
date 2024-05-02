@@ -81,10 +81,12 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 	br.x -= stepheight;
 	tl.y += stepheight;
 
-	GUI::SetFont("menu");
+	GUI::SetFont("Balkara_Condensed");
 
 	//draw team info
 	GUI::DrawText(getTranslatedString(teamName), Vec2f(tl.x, tl.y), SColor(0xffffffff));
+
+	GUI::SetFont("menu");
 	GUI::DrawText(getTranslatedString("Players: {PLAYERCOUNT}").replace("{PLAYERCOUNT}", "" + players.length), Vec2f(br.x - 400, tl.y), SColor(0xffffffff));
 
 	tl.y += stepheight * 2;
