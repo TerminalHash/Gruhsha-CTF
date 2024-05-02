@@ -123,13 +123,13 @@ void onInit(CBlob@ this)
 		ShopItem@ s = addShopItem(this, Names::pearitem, "$quarters_pear$", "pear", Descriptions::pear, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::pear);
 	}
-	{
+	/*{
 		ShopItem@ s = addShopItem(this, Names::sleepaction, "$rest$", "sleep", Descriptions::sleeptext, true);
 		s.spawnNothing = true;
 		s.customButton = true;
 		s.buttonwidth = 1;
 		s.buttonheight = 1;
-	}
+	}*/
 }
 
 void onTick(CBlob@ this)
@@ -186,7 +186,7 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 	caller.getShape().getBoundingRect(c_tl, c_br);
 	bool isOverlapping = br.x - c_tl.x > 0.0f && br.y - c_tl.y > 0.0f && tl.x - c_br.x < 0.0f && tl.y - c_br.y < 0.0f;
 
-	/*if (!isOverlapping || !bedAvailable(this) || !requiresTreatment(this, caller))
+	if (!isOverlapping || !bedAvailable(this) || !requiresTreatment(this, caller))
 	{
 		this.set_Vec2f("shop offset", Vec2f_zero);
 	}
@@ -194,7 +194,7 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 	{
 		this.set_Vec2f("shop offset", Vec2f(6, 0));
 		caller.CreateGenericButton("$rest$", Vec2f(-6, 0), this, this.getCommandID("rest"), getTranslatedString("Rest"));
-	}*/
+	}
 
 	this.set_bool("shop available", isOverlapping);
 }
@@ -245,23 +245,6 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		else if (name == "meal")
 		{
 			this.getSprite().PlaySound("/Eat.ogg");
-		}
-		else if (name == "sleep")
-		{
-			AttachmentPoint@ bed = this.getAttachments().getAttachmentPointByName("BED");
-			if (bed !is null && bedAvailable(this))
-			{
-				CBlob@ carried = caller.getCarriedBlob();
-
-				if (carried !is null)
-				{
-					if (!caller.server_PutInInventory(carried))
-					{
-						carried.server_DetachFrom(caller);
-					}
-				}
-				this.server_AttachTo(caller, "BED");
-			}
 		}
 	}
 	else if (cmd == this.getCommandID("rest") && isServer())
