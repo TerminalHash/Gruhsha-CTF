@@ -246,34 +246,34 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		{
 			this.getSprite().PlaySound("/Eat.ogg");
 		}
-	}
-	else if (name == "sleep")
-	{
-		CPlayer@ player = getNet().getActiveCommandPlayer();
-
-		if (player is null)
+		else if (name == "sleep")
 		{
-			return;
-		}
+			CPlayer@ player = getNet().getActiveCommandPlayer();
 
-		CBlob@ caller = player.getBlob();
-
-		if (caller !is null && !caller.isAttached())
-		{
-
-			AttachmentPoint@ bed = this.getAttachments().getAttachmentPointByName("BED");
-			if (bed !is null && bedAvailable(this))
+			if (player is null)
 			{
-				CBlob@ carried = caller.getCarriedBlob();
+				return;
+			}
 
-				if (carried !is null)
+			CBlob@ caller = player.getBlob();
+
+			if (caller !is null && !caller.isAttached())
+			{
+
+				AttachmentPoint@ bed = this.getAttachments().getAttachmentPointByName("BED");
+				if (bed !is null && bedAvailable(this))
 				{
-					if (!caller.server_PutInInventory(carried))
+					CBlob@ carried = caller.getCarriedBlob();
+
+					if (carried !is null)
 					{
-						carried.server_DetachFrom(caller);
+						if (!caller.server_PutInInventory(carried))
+						{
+							carried.server_DetachFrom(caller);
+						}
 					}
+					this.server_AttachTo(caller, "BED");
 				}
-				this.server_AttachTo(caller, "BED");
 			}
 		}
 	}

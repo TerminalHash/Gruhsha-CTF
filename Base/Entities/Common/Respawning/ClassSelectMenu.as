@@ -64,6 +64,7 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 	{
 		for (uint i = 0 ; i < classes.length; i++)
 		{
+			CRules@ rules = getRules();
 			PlayerClass @pclass = classes[i];
 
 			CBitStream params;
@@ -74,6 +75,8 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 			builders_limit = rules.get_u8("builders_limit");
 
 			bool is_warmup = rules.get_bool("is_warmup");
+
+			CGridButton@ button = menu.AddButton(pclass.iconName, getTranslatedString(pclass.name), this.getCommandID("change class"), Vec2f(CLASS_BUTTON_SIZE, CLASS_BUTTON_SIZE), params);
 	
 			if(pclass.configFilename == "archer")
 			{
@@ -102,7 +105,6 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 				}
 			}
 
-			CGridButton@ button = menu.AddButton(pclass.iconName, getTranslatedString(pclass.name), this.getCommandID("change class"), Vec2f(CLASS_BUTTON_SIZE, CLASS_BUTTON_SIZE), params);
 //			button.SetHoverText( pclass.description + "\n");
 		}
 	}
