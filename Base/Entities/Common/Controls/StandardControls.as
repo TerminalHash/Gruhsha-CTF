@@ -111,6 +111,48 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 
 		inv.server_PutOutInventory(this);
 	}
+	else if (cmd == this.getCommandID("drill command"))
+	{
+		CBlob@ carried = this.getCarriedBlob();
+
+		CInventory@ inventory = this.getInventory();
+
+		CPlayer@ callerp = getNet().getActiveCommandPlayer();
+		if (callerp is null) return;
+
+		CBlob@ caller = callerp.getBlob();
+		if (caller is null) return;
+
+		if (caller !is this) return;
+
+		CBlob@ ourburga = null;
+
+		if (carried !is null && carried.getName() == "drill")
+		{
+			this.server_PutInInventory(carried);
+			return;
+		}
+
+		for (int i = 0; i < inventory.getItemsCount(); ++i)
+		{
+			if (inventory.getItem(i) !is null)
+			{
+				if (inventory.getItem(i).getName() == "drill")
+				{
+					@ourburga = inventory.getItem(i);
+					this.server_PutOutInventory(ourburga);
+
+					if (carried !is null)
+					{
+						this.server_PutInInventory(carried);
+					}
+
+					this.server_Pickup(ourburga);
+					break;
+				}
+			}
+		}
+	}
 }
 
 bool putInHeld(CBlob@ owner)
