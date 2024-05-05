@@ -45,16 +45,7 @@ void onTick(CBlob@ this)
 		return;
 	}
 
-	for (uint i = 1; i < 10; i++)
-	{
-		if (b_KeyJustPressed("emote" + i) && emoteBinds.length >= i)
-		{
-			set_emote(this, emoteBinds[i - 1]);
-			break;
-		}
-	}
-
-	/*ConfigFile file;
+	ConfigFile file;
 
 	for (uint i = 0; i < 9; i++)
 	{
@@ -79,5 +70,5 @@ void onTick(CBlob@ this)
 				}
 			}
 		}
-	}*/
+	}
 }
