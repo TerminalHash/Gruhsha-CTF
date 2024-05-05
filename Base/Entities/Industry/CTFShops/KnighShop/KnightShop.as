@@ -118,4 +118,17 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 	{
 		this.getSprite().PlaySound("/ChaChing.ogg");
 	}
+
+	if (cmd == this.getCommandID("reset menu"))
+	{
+		if (this.exists("shop array"))
+		{
+			ShopItem[] @items;
+			this.get("shop array", @items);
+
+			items.clear();
+			this.set("shop array", @items);
+		}
+		onInit(this);
+	}
 }
