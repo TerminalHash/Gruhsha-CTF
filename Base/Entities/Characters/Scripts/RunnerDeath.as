@@ -204,4 +204,9 @@ void onSetPlayer(CBlob@ this, CPlayer@ player)
 		this.set_string("death_sound", "th_long.ogg");
 		this.set_string("death_sound_short", "th_short.ogg");
 	}
+	else if (player.getUsername() == "vladkvs193")
+	{
+		this.set_string("death_sound", "vladkvs_death_long.ogg");
+		this.set_string("death_sound_short", "vladkvs_death_short.ogg");
+	}
 }
