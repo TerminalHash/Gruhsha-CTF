@@ -116,7 +116,23 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
 	if (cmd == this.getCommandID("shop made item client") && isClient())
 	{
-		this.getSprite().PlaySound("/ChaChing.ogg");
+		u16 this_id, caller_id, item_id;
+		string name;
+
+		if (!params.saferead_u16(this_id) || !params.saferead_u16(caller_id) || !params.saferead_u16(item_id) || !params.saferead_string(name))
+		{
+			return;
+		}
+
+		if (name == "keg")
+		{
+			this.getSprite().PlaySound("groovy.ogg", 3.5f);
+			this.getSprite().PlaySound("/ChaChing.ogg", 0.8f);
+		}
+		else
+		{
+			this.getSprite().PlaySound("/ChaChing.ogg");
+		}
 	}
 
 	if (cmd == this.getCommandID("reset menu"))
