@@ -199,4 +199,9 @@ void onSetPlayer(CBlob@ this, CPlayer@ player)
 		this.set_string("death_sound", "gg_sound_long.ogg");
 		this.set_string("death_sound_short", "gg_sound.ogg");
 	}
+	else if (player.getUsername() == "TerminalHash")
+	{
+		this.set_string("death_sound", "th_long.ogg");
+		this.set_string("death_sound_short", "th_short.ogg");
+	}
 }
