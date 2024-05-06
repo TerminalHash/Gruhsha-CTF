@@ -35,7 +35,13 @@ string getStatus(string &in username, u32 &out col, string &out portrait_name = 
 		{
 		
 		}
-		
+		case -339437251: //terminalhash
+		{
+			col = 0xffad7fa8;
+			portrait_name = "face_terminal";
+			return "GNU/Horse";
+		}
+
 		default: {
 			//people with no portrait are doomed as the portrait is binded to their hash which does NOT change
 			//unlike netID
@@ -47,5 +53,7 @@ string getStatus(string &in username, u32 &out col, string &out portrait_name = 
 			return "";
 		}
 	}
+
 	return "";
 }
+
