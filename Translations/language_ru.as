@@ -121,6 +121,7 @@ namespace ru
 	n_annoyingnature						= "Звук от кустов и листьев",
 	n_annoyingvoicelines					= "Звуки войслайнов",
 	n_annoyingtags							= "Звуки меток",
+	n_customdpsounds						= "Кастомные звуки смерти/боли",
 	n_switchclasschanginginshop				= "Выкл. смену класса в магазинах",
 
 		// Other

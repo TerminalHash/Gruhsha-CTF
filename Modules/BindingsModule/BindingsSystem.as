@@ -49,12 +49,15 @@ void onInit(CRules@ this)
 		else // default settings
 		{
 			sfile.add_string("blockbar_hud", "yes");
-			sfile.add_string("build_mode", "vanilla");
+			//sfile.add_string("build_mode", "vanilla"); // rip
 			sfile.add_string("camera_sway", "5");
 			sfile.add_string("body_tilting", "on");
 			sfile.add_string("head_rotating", "on");
 			sfile.add_string("drillzone_borders", "on");
 			sfile.add_string("annoying_nature", "on");
+			sfile.add_string("annoying_voicelines", "on");
+			sfile.add_string("annoying_tags", "on");
+			sfile.add_string("custom_death_and_pain_sounds", "on");
 			sfile.add_string("disable_class_change_in_shops", "no");
 
 			printf("Creating local settings file with default values for Gruhsha.");

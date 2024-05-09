@@ -121,6 +121,7 @@ namespace en
 	n_annoyingnature						= "Sounds from bushes and tree leafs",
 	n_annoyingvoicelines					= "Sounds from voicelines",
 	n_annoyingtags							= "Sounds from tags",
+	n_customdpsounds						= "Custom death/pain sounds",
 	n_switchclasschanginginshop				= "Disable class changing in shops",
 
 		// Other

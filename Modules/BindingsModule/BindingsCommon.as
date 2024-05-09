@@ -118,6 +118,7 @@ string[][] setting_texts =
 		Names::annoyingnature,
 		Names::annoyingvoicelines,
 		Names::annoyingtags,
+		Names::customdpsounds,
 		Names::switchclasschanginginshop
 	}
 };
@@ -134,6 +135,7 @@ string[][] setting_file_names =
 		"annoying_nature",
 		"annoying_voicelines",
 		"annoying_tags",
+		"custom_death_and_pain_sounds",
 		"disable_class_change_in_shops"
 	}
 };
@@ -178,6 +180,10 @@ string[][][] setting_options =
 		},
 		{
 			Descriptions::universaloff,       // TAGS
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // DEATH AND PAIN
 			Descriptions::universalon
 		},
 		{
@@ -227,6 +233,10 @@ string[][][] setting_option_names =
 		},
 		{
 			"off",       // TAGS
+			"on"
+		},
+		{
+			"off",       // DEATH AND PAIN
 			"on"
 		},
 		{
