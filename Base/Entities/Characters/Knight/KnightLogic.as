@@ -8,6 +8,7 @@
 #include "KnockedCommon.as"
 #include "Help.as";
 #include "Requirements.as"
+#include "ShieldHit.as";
 #include "StandardControlsCommon.as";
 
 //attacks limited to the one time per-actor before reset.
@@ -1517,10 +1518,15 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 					bool dirt_thick_stone = map.isTileThickStone(hi.tile);
 					bool gold = map.isTileGold(hi.tile);
 					bool wood = map.isTileWood(hi.tile);
-					if (ground || wood || dirt_stone || gold)
+					bool bedrock = map.isTileBedrock(hi.tile);
+					bool castle = map.isTileCastle(hi.tile);
+
+					if (ground || wood || dirt_stone || gold || bedrock || castle)
 					{
 						Vec2f tpos = map.getTileWorldPosition(hi.tileOffset) + Vec2f(4, 4);
 						Vec2f offset = (tpos - blobPos);
+						Vec2f velocity = hi.hitpos - this.getPosition();
+
 						f32 tileangle = offset.Angle();
 						f32 dif = Maths::Abs(exact_aimangle - tileangle);
 						if (dif > 180)
@@ -1558,53 +1564,65 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 							dontHitMoreMap = true;
 							if (canhit)
 							{
-								map.server_DestroyTile(hi.hitpos, 0.1f, this);
-								if (gold)
+								if (bedrock)
 								{
-									// Note: 0.1f damage doesn't harvest anything I guess
-									// This puts it in inventory - include MaterialCommon
-									//Material::fromTile(this, hi.tile, 1.f);
-									int quantity = 4;
-
-									/*if (isServer() && this.getPlayer() !is null)
-									{
-										getRules().add_s32("personalgold_" + this.getPlayer().getUsername(), quantity);
-										getRules().Sync("personalgold_" + this.getPlayer().getUsername(), true);
-									}*/
-
-									CBlob@ ore = server_CreateBlobNoInit("mat_gold");
-									if (ore !is null)
-									{
-										ore.Tag('custom quantity');
-										ore.Init();
-										ore.setPosition(hi.hitpos);
-										ore.server_SetQuantity(4);
-									}
+									shieldHit(0, velocity/2, hi.hitpos-velocity/4);
 								}
-								else if (dirt_stone)
+								else if (castle)
 								{
-									int quantity = 4;
-									if(dirt_thick_stone)
+									shieldHit(0, velocity/2, hi.hitpos-velocity/4);
+								}
+
+								if (ground || wood || dirt_stone || gold)
+								{
+									map.server_DestroyTile(hi.hitpos, 0.1f, this);
+									if (gold)
 									{
-										quantity = 6;
+										// Note: 0.1f damage doesn't harvest anything I guess
+										// This puts it in inventory - include MaterialCommon
+										//Material::fromTile(this, hi.tile, 1.f);
+										int quantity = 4;
+
+										/*if (isServer() && this.getPlayer() !is null)
+										{
+											getRules().add_s32("personalgold_" + this.getPlayer().getUsername(), quantity);
+											getRules().Sync("personalgold_" + this.getPlayer().getUsername(), true);
+										}*/
+
+										CBlob@ ore = server_CreateBlobNoInit("mat_gold");
+										if (ore !is null)
+										{
+											ore.Tag('custom quantity');
+											ore.Init();
+											ore.setPosition(hi.hitpos);
+											ore.server_SetQuantity(4);
+										}
 									}
-
-									if (isServer() && this.getPlayer() !is null)
+									else if (dirt_stone)
 									{
-										u8 team = this.getPlayer().getTeamNum();
+										int quantity = 4;
+										if(dirt_thick_stone)
+										{
+											quantity = 6;
+										}
 
-										getRules().add_s32("teamstone" + team, quantity);
-										getRules().Sync("teamstone" + team, true);
+										if (isServer() && this.getPlayer() !is null)
+										{
+											u8 team = this.getPlayer().getTeamNum();
+
+											getRules().add_s32("teamstone" + team, quantity);
+											getRules().Sync("teamstone" + team, true);
+										}
+
+										/*CBlob@ ore = server_CreateBlobNoInit("mat_stone");
+										if (ore !is null)
+										{
+											ore.Tag('custom quantity');
+											ore.Init();
+											ore.setPosition(hi.hitpos);
+											ore.server_SetQuantity(quantity);
+										}*/
 									}
-
-									/*CBlob@ ore = server_CreateBlobNoInit("mat_stone");
-									if (ore !is null)
-									{
-										ore.Tag('custom quantity');
-										ore.Init();
-										ore.setPosition(hi.hitpos);
-										ore.server_SetQuantity(quantity);
-									}*/
 								}
 							}
 						}
