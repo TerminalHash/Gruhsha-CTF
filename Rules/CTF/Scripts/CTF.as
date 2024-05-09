@@ -330,18 +330,21 @@ shared class CTFSpawns : RespawnSystem
 			tickspawndelay = s32(getTicksASecond() * 10);
 		}
 
+		if (getRules().hasTag("offi match"))
+		{
 		// Sudden Death Mode: increase respawn time, if we have stalemate
-		if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) // 20 min
-		{
-			tickspawndelay = s32(getTicksASecond() * 12);
-		}
-		else if (getGameTime() >= 1980 * getTicksASecond() && getGameTime() <= 3780 * getTicksASecond()) // 30 min
-		{
-			tickspawndelay = s32(getTicksASecond() * 14);
-		}
-		else if (getGameTime() >= 3780 * getTicksASecond()) // 40 min
-		{
-			tickspawndelay = s32(getTicksASecond() * 16);
+			if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) // 20 min
+			{
+				tickspawndelay = s32(getTicksASecond() * 12);
+			}
+			else if (getGameTime() >= 1980 * getTicksASecond() && getGameTime() <= 3780 * getTicksASecond()) // 30 min
+			{
+				tickspawndelay = s32(getTicksASecond() * 14);
+			}
+			else if (getGameTime() >= 3780 * getTicksASecond()) // 40 min
+			{
+				tickspawndelay = s32(getTicksASecond() * 16);
+			}
 		}
 
 		CTFPlayerInfo@ info = cast < CTFPlayerInfo@ > (core.getInfoFromPlayer(player));
