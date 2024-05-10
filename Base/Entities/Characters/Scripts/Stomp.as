@@ -40,7 +40,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 					{
 						if (old_pos.y < g.getPosition().y - 2)
 						{
-							if (g.getTeamNum() != this.getTeamNum() && !isCrouching(g) && !g.hasTag("dead"))
+							if (g.getTeamNum() != this.getTeamNum() && !isCrouching(g) && !g.hasTag("dead") && !this.hasTag("dead"))
 							{
 								float enemydam = 0.0f;
 								f32 vely = this.getOldVelocity().y;
