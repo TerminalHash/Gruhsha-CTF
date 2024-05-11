@@ -133,7 +133,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 			{
 				if(customData == Hitters::water_stun_force)
 				{
-					time = 16;
+					time = 22;
 				}
 				else
 				{
@@ -144,7 +144,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 			}
 			else
 			{
-				time = 20;
+				time = 45;
 			}
 
 			// Halve the stun if it was blocked
