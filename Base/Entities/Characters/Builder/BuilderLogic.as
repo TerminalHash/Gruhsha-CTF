@@ -45,6 +45,10 @@ void onInit(CBlob@ this)
 
 	this.getCurrentScript().runFlags |= Script::tick_not_attached;
 	this.getCurrentScript().removeIfTag = "dead";
+
+	this.push("names to activate", "keg"); 
+	this.push("names to activate", "satchel");
+	
 }
 
 void onSetPlayer(CBlob@ this, CPlayer@ player)
