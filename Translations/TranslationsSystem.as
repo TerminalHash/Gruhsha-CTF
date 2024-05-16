@@ -134,6 +134,7 @@ namespace Names
 	camerasw		  	      			 = Translate(en::n_camerasw+"\\"+ru::n_camerasw),
 	bodytilt		  	      			 = Translate(en::n_bodytilt+"\\"+ru::n_bodytilt),
 	headrotating		  	      		 = Translate(en::n_headrotating+"\\"+ru::n_headrotating),
+	clusterfuck	  	      				 = Translate(en::n_clusterfuck+"\\"+ru::n_clusterfuck),
 	drillzoneborders		  	      	 = Translate(en::n_drillzoneborders+"\\"+ru::n_drillzoneborders),
 	annoyingnature		 	 	      	 = Translate(en::n_annoyingnature+"\\"+ru::n_annoyingnature),
 	annoyingvoicelines		 	 	     = Translate(en::n_annoyingvoicelines+"\\"+ru::n_annoyingvoicelines),

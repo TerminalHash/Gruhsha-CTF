@@ -114,6 +114,7 @@ string[][] setting_texts =
 		Names::camerasw,
 		Names::bodytilt,
 		Names::headrotating,
+		Names::clusterfuck,
 		Names::drillzoneborders,
 		Names::annoyingnature,
 		Names::annoyingvoicelines,
@@ -131,6 +132,7 @@ string[][] setting_file_names =
 		"camera_sway",
 		"body_tilting",
 		"head_rotating",
+		"clusterfuck",
 		"drillzone_borders",
 		"annoying_nature",
 		"annoying_voicelines",
@@ -164,6 +166,10 @@ string[][][] setting_options =
 		},
 		{
 			Descriptions::universaloff,       // HEAD ROTATING
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // CLUSTERFUCK
 			Descriptions::universalon
 		},
 		{
@@ -217,6 +223,10 @@ string[][][] setting_option_names =
 		},
 		{
 			"off",       // HEAD ROTATING
+			"on"
+		},
+		{
+			"off",       // CLUSTERFUCK
 			"on"
 		},
 		{

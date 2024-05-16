@@ -117,6 +117,7 @@ namespace en
 	n_camerasw								= "Camera Sway (DEFAULT: 5)",
 	n_bodytilt								= "Immersive body behaviour",
 	n_headrotating							= "Turning head toward the cursor",
+	n_clusterfuck							= "Toggle particles and gibs",
 	n_drillzoneborders						= "Drill Zone Borders",
 	n_annoyingnature						= "Sounds from bushes and tree leafs",
 	n_annoyingvoicelines					= "Sounds from voicelines",

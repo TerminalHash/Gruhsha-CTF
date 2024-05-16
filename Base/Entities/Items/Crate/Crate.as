@@ -765,7 +765,10 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 void onDie(CBlob@ this)
 {
 	HideParachute(this);
+
+	if (getRules().get_string("clusterfuck") == "off") return;
 	this.getSprite().Gib();
+
 	Vec2f pos = this.getPosition();
 	Vec2f vel = this.getVelocity();
 	//custom gibs

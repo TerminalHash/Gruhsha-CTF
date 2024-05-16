@@ -454,6 +454,8 @@ void onGib(CSprite@ this)
 		return;
 	}
 
+	if (getRules().get_string("clusterfuck") == "off") return;
+
 	CBlob@ blob = this.getBlob();
 	Vec2f pos = blob.getPosition();
 	Vec2f vel = blob.getVelocity();

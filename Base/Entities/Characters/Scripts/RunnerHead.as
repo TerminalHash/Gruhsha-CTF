@@ -193,6 +193,8 @@ void onGib(CSprite@ this)
 		return;
 	}
 
+	if (getRules().get_string("clusterfuck") == "off") return;
+
 	CBlob@ blob = this.getBlob();
 	if (blob !is null && blob.getName() != "bed")
 	{
