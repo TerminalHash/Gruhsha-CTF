@@ -11,7 +11,7 @@
 #include "IdentifyPlayer.as";
 
 string soundsdir = getPath();
-string soundrandom = soundsdir + "Sounds/Random/";
+string soundrandom = soundsdir + "Sounds/Voicelines/";
 
 bool onClientProcessChat(CRules@ this, const string& in textIn, string& out textOut, CPlayer@ player)
 {
