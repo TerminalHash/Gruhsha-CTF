@@ -296,6 +296,8 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 		return;
 	}
 
+	bool ignore_spike = false;
+
 	////////////////////////////////////////////////
 	// special clause for knights
 	// most part of code picked from KnightLogic.as
@@ -320,7 +322,8 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 			((knight.state == KnightStates::shielding && direction == -1) || knight.state == KnightStates::shieldgliding)
 			)
 		{
-			return;
+			ignore_spike = true;
+			this.server_Die();
 		}
 	}
 	////////////////////////////////////////////////
@@ -328,13 +331,13 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 	if (state == falling)
 	{
 		float vellen = this.getVelocity().Length();
-		if (vellen < 4.0f) //slow, minimal dmg
+		if (vellen < 4.0f && !ignore_spike) //slow, minimal dmg
 			this.server_Hit(blob, point, Vec2f(0, 1), 1.0f, Hitters::spikes, true);
-		else if (vellen < 5.5f) //faster, kill archer
+		else if (vellen < 5.5f && !ignore_spike) //faster, kill archer
 			this.server_Hit(blob, point, Vec2f(0, 1), 2.0f, Hitters::spikes, true);
-		else if (vellen < 7.0f) //faster, kill builder
+		else if (vellen < 7.0f && !ignore_spike) //faster, kill builder
 			this.server_Hit(blob, point, Vec2f(0, 1), 3.0f, Hitters::spikes, true);
-		else			//fast, instakill
+		else if (vellen > 7.0f && !ignore_spike)			//fast, instakill
 			this.server_Hit(blob, point, Vec2f(0, 1), 4.0f, Hitters::spikes, true);
 		return;
 	}
