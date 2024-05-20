@@ -317,7 +317,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 			state == falling &&
 			blob.getConfig() == "knight" &&
 			shieldState &&
-			(knight.state == KnightStates::shielding && direction == -1) || knight.state == KnightStates::shieldgliding
+			((knight.state == KnightStates::shielding && direction == -1) || knight.state == KnightStates::shieldgliding)
 			)
 		{
 			return;
