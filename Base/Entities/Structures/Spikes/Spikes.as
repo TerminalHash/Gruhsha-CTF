@@ -298,7 +298,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 
 	////////////////////////////////////////////////
 	// special clause for knights
-	// most of code picked from KnightLogic.as
+	// most part of code picked from KnightLogic.as
 	if (blob !is null && blob.getConfig() == "knight")
 	{
 		KnightInfo@ knight;
@@ -311,7 +311,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 		const int direction = blob.getAimDirection(vec);
 		bool shieldState = isShieldState(knight.state);
 
-		// if player is knight and him shielding up (top direction) - spikes should ignore him
+		// if player is knight and him shield is upwards - spikes should ignore him
 		if (blob !is null &&
 			this !is null &&
 			state == falling &&
