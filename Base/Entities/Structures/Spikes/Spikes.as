@@ -311,7 +311,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 		const int direction = blob.getAimDirection(vec);
 		bool shieldState = isShieldState(knight.state);
 
-		// if player is knight and him shield is upwards - spikes should ignore him
+		// if player is knight and his shield is upwards - spikes should ignore him
 		if (blob !is null &&
 			this !is null &&
 			state == falling &&
