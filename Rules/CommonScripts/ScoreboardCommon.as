@@ -18,23 +18,26 @@ SColor getNameColour(CPlayer@ p)
 	SColor c;
 	CPlayer@ localplayer = getLocalPlayer();
 	bool showColor = (p !is localplayer && isSpecial(localplayer)) || coloredNameEnabled(getRules(), p);
+	bool customColor = false;
 
 	string username = p.getUsername();
 
 	// set custom color for rolas
-	if (p.isDev() && showColor) {
+	if (p.isDev() && showColor && !customColor) {
 		c = SColor(0xffb400ff); //dev
-	} else if (p.isGuard() && showColor) {
+	} else if (p.isGuard() && showColor && !customColor) {
 		c = SColor(0xffa0ffa0); //guard
-	} else if (isAdmin(p) && showColor) {
+	} else if (isAdmin(p) && showColor && !customColor) {
 		c = SColor(0xfffa5a00); //admin
-	} else if (p.getOldGold() && !p.isBot()) {
+	} else if (p.getOldGold() && !p.isBot() && !customColor) {
 		c = SColor(0xffffEE44); //my player
 	}
 	// set custom color for some players
 	else if (username == "TerminalHash") {
+		customColor = true;
 		c = SColor(0xff75507b);
 	} else if (username == "kusaka79") {
+		customColor = true;
 		c = SColor(0xff000000);
 	} 
 	// set default color for other
