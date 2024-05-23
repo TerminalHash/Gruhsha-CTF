@@ -127,6 +127,7 @@ namespace Names
 
 		// Actions
 	drillcommand		  	      		= Translate(en::n_drillcommand+"\\"+ru::n_drillcommand),
+	cancelarrowschargingcommand			= Translate(en::n_cancelarrowschargingcommand+"\\"+ru::n_cancelarrowschargingcommand),
 
 		// Settings
 	buildmode		  	      			 = Translate(en::n_buildmode+"\\"+ru::n_buildmode),

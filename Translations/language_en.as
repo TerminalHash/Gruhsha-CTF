@@ -110,6 +110,7 @@ namespace en
 
 		// Actions
 	n_drillcommand							= "Take out drill",
+	n_cancelarrowschargingcommand			= "Cancel bow charging",
 
 		// Settings
 	n_buildmode								= "Build Mode",

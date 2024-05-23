@@ -55,7 +55,8 @@ string[][] button_texts =
 		Names::emotewheelsecond
 	},
 	{
-		Names::drillcommand
+		Names::drillcommand,
+		Names::cancelarrowschargingcommand
 	}
 };
 
@@ -101,7 +102,8 @@ string[][] button_file_names =
 		"emote_wheel_two"
 	},
 	{
-		"take_out_drill"
+		"take_out_drill",
+		"cancel_charging"
 	}
 };
 
