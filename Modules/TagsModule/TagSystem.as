@@ -33,6 +33,7 @@ string tag_pos = " tag_pos";
 string tag_duration = " tag_time";
 string tag_variable = " tag_unit";
 string tag_cmd_id   = "add_tag";
+string tag_cmd_id_client   = "add_tag";
 
 string path_string = getPath();
 string soundsdir = path_string + "Sounds/Tags/";
@@ -78,32 +79,100 @@ bool shouldShowIndicator(CRules@ rules, CPlayer@ tag_initiator)
 
 void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
 {
-    if (cmd == rules.getCommandID(tag_cmd_id))
+    if (cmd == rules.getCommandID(tag_cmd_id) && isServer())
     {
         CPlayer@ player = getPlayerByNetworkId(params.read_netid());
+        if (player is null) return;
+
         CPlayer@ localplayer = getLocalPlayer();
         string name = player.getUsername();
 
         bool player_doesnt_see_tags   = rules.get_bool(player.getUsername() + "tag_hidden");
         if (player_doesnt_see_tags) return;
 
-        Vec2f pos  = params.read_Vec2f();
-        u32 time = params.read_u32();
-        s32 kind = params.read_s32();
+        Vec2f pos;
+        if (!params.saferead_Vec2f(pos)) { return; }
 
-        if (isClient())
+        u32 time;
+        if (!params.saferead_u32(time)) { return; }
+
+        s32 kind;
+        if (!params.saferead_s32(kind)) { return; }
+
+        if (shouldShowIndicator(rules, player))
         {
-            if (kind == 0)
-            {
-                rules.set_Vec2f(name + tag_pos, pos);
-                rules.set_u32(name + tag_duration, getGameTime());
-                rules.set_s32(name + tag_variable, kind);
-            }
 
+            CPlayer@ localplayer = getLocalPlayer();
+            bool player_is_muted_tags = rules.get_bool(player.getUsername() + "is_tag_muted");
+            bool localplayer_is_deaf = rules.get_bool(localplayer.getUsername() + "is_deaf");
+            u32 time_since_last_tag = getGameTime() - rules.get_u32(player.getUsername() + "last_tag");
+            u32 tag_cooldown = rules.get_u32(player.getUsername() + "tag_cooldown_time");
+
+            string annoying_tags_sounds = getRules().get_string("annoying_tags");
+
+            if (player_is_muted_tags == false)
+            {
+
+                if (time_since_last_tag >= tag_cooldown)
+                {
+                    rules.set_u32(player.getUsername() + "last_tag", getGameTime());
+                    int upd_cooldown = 40;
+
+                    if (player.isMod())
+                    {
+                        upd_cooldown = 25;
+                    }
+
+                    if (annoying_tags_sounds == "off") {
+                        rules.set_u32(player.getUsername() + "tag_cooldown_time", upd_cooldown);
+                    } else {
+                        if      (kind == 1) { Sound::Play(soundsdir + "tag_default", pos, 1.5f); }   // GO HERE
+                        else if (kind == 2) { Sound::Play(soundsdir + "tag_dig", pos, 1.5f); }       // DIG HERE
+                        else if (kind == 3) { Sound::Play(soundsdir + "tag_attack", pos, 1.5f); }    // ATTACK
+                        else if (kind == 4) { Sound::Play(soundsdir + "tag_danger", pos, 1.5f); }    // DANGER
+                        else if (kind == 5) { Sound::Play(soundsdir + "tag_retreat", pos, 1.5f); }   // RETREAT
+                        else if (kind == 6) { Sound::Play(soundsdir + "tag_help", pos, 1.5f); }      // HELP
+                        else if (kind == 7) { Sound::Play(soundsdir + "tag_keg", pos, 1.5f); }       // KEG
+                        else if (kind == 8) { Sound::Play(soundsdir + "tag_wit", pos, 1.5f); }       // WiT SENCE
+
+                        rules.set_u32(player.getUsername() + "tag_cooldown_time", upd_cooldown);
+                    }
+                }
+            }
+        }
+
+        rules.SendCommand(rules.getCommandID(tag_cmd_id_client), params);
+    }
+    else if (cmd == rules.getCommandID(tag_cmd_id_client) && isClient())
+    {
+        CPlayer@ player = getPlayerByNetworkId(params.read_netid());
+        if (player is null) return;
+
+        CPlayer@ localplayer = getLocalPlayer();
+        string name = player.getUsername();
+
+        bool player_doesnt_see_tags   = rules.get_bool(player.getUsername() + "tag_hidden");
+        if (player_doesnt_see_tags) return;
+
+        Vec2f pos;
+        if (!params.saferead_Vec2f(pos)) { return; }
+
+        u32 time;
+        if (!params.saferead_u32(time)) { return; }
+
+        s32 kind;
+        if (!params.saferead_s32(kind)) { return; }
+
+        if (kind == 0)
+        {
             rules.set_Vec2f(name + tag_pos, pos);
             rules.set_u32(name + tag_duration, getGameTime());
             rules.set_s32(name + tag_variable, kind);
         }
+
+        rules.set_Vec2f(name + tag_pos, pos);
+        rules.set_u32(name + tag_duration, getGameTime());
+        rules.set_s32(name + tag_variable, kind);
 
         if (shouldShowIndicator(rules, player))
         {
