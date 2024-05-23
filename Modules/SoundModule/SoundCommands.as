@@ -262,6 +262,14 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 				this.set_u32(player.getUsername() + "soundcooldown", 40);
+			} else if (textIn.toUpper() == "BAKA" || textIn.toUpper() == "DURAK" || textIn.toUpper() == "дурак" || textIn.toUpper() == "Дурак" || textIn.toUpper() == "ДУРАК") {
+				if (annoying_voicelines_sounds == "on")
+				{
+					Sound::Play(soundrandom + "baka.ogg", pos);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 40);
 
 			// russian sounds
 			} else if (textIn == "пенек" || textIn == "пенёк" || textIn == "косарь" || textIn == "penek" || textIn.find("на", 0) != -1 && textIn.find("пенек", 0) != -1 || textIn.find("на", 0) != -1 && textIn.find("пенёк", 0) != -1) {
@@ -460,6 +468,14 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 
 					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 					this.set_u32(player.getUsername() + "soundcooldown", 1800);
+			} else if (textIn == "хорошо но мало" || textIn.toUpper() == "хорошо, но мало" || textIn.toUpper() == "GOOD, BUT NOT ENOUGH") {
+					if (annoying_voicelines_sounds == "on")
+					{
+						Sound::Play(soundrandom + "goodbutnotenough.ogg", pos, 2.0f);
+					}
+
+					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+					this.set_u32(player.getUsername() + "soundcooldown", 60);
 
 			// MineCult sounds (he-he)
 			} else if (textIn.toUpper() == "SKILL ISSUE" || textIn == "скилл ишью") {
