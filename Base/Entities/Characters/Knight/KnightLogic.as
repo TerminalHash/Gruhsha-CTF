@@ -90,6 +90,8 @@ void onInit(CBlob@ this)
 	this.set("onCycle handle", @controls_cycle);
 
 	this.addCommandID("activate/throw bomb");
+	this.addCommandID("make sparks");
+	this.addCommandID("make sparks client");
 
 	this.push("names to activate", "keg");
 	this.push("names to activate", "satchel");
@@ -1252,6 +1254,47 @@ void onSwitch(CBitStream@ params)
 
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
+	if (cmd == this.getCommandID("make sparks") && isServer())
+	{
+		CPlayer@ callerp = getNet().getActiveCommandPlayer();
+		if (callerp is null) return;
+
+		CBlob@ caller = callerp.getBlob();
+		if (caller is null) return;
+
+		if (caller !is this) return;
+
+		Vec2f velocity;
+		if (!params.saferead_Vec2f(velocity)) return;
+
+		Vec2f hitpos;
+		if (!params.saferead_Vec2f(hitpos)) return;
+
+		shieldHit(0, velocity/2, hitpos - velocity/4);
+		//printf("ololo, im hitting block!_1");
+
+		this.SendCommand(this.getCommandID("make sparks client"), params);
+	}
+	else if (cmd == this.getCommandID("make sparks client") && isClient())
+	{
+		CPlayer@ callerp = getNet().getActiveCommandPlayer();
+		if (callerp is null) return;
+
+		CBlob@ caller = callerp.getBlob();
+		if (caller is null) return;
+
+		if (caller !is this) return;
+
+		Vec2f velocity;
+		if (!params.saferead_Vec2f(velocity)) return;
+
+		Vec2f hitpos;
+		if (!params.saferead_Vec2f(hitpos)) return;
+
+		shieldHit(0, velocity/2, hitpos - velocity/4);
+		//printf("ololo, im hitting block!_2");
+	}
+
 	if (cmd == this.getCommandID("switch") && isServer())
 	{
 		CPlayer@ callerp = getNet().getActiveCommandPlayer();
@@ -1526,6 +1569,11 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 						Vec2f tpos = map.getTileWorldPosition(hi.tileOffset) + Vec2f(4, 4);
 						Vec2f offset = (tpos - blobPos);
 						Vec2f velocity = hi.hitpos - this.getPosition();
+						Vec2f hitpos = hi.hitpos;
+
+						CBitStream params;
+						params.write_Vec2f(velocity);
+						params.write_Vec2f(hitpos);
 
 						f32 tileangle = offset.Angle();
 						f32 dif = Maths::Abs(exact_aimangle - tileangle);
@@ -1564,16 +1612,13 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 							dontHitMoreMap = true;
 							if (canhit)
 							{
-								if (bedrock)
+								if (bedrock || castle)
 								{
-									shieldHit(0, velocity/2, hi.hitpos-velocity/4);
+									//printf("ololo, im hitting block!_0");
+									shieldHit(0, velocity/2, hitpos - velocity/4);
+									this.SendCommand(this.getCommandID("make sparks"), params);
 								}
-								else if (castle)
-								{
-									shieldHit(0, velocity/2, hi.hitpos-velocity/4);
-								}
-
-								if (ground || wood || dirt_stone || gold)
+								else if (ground || wood || dirt_stone || gold)
 								{
 									map.server_DestroyTile(hi.hitpos, 0.1f, this);
 									if (gold)
