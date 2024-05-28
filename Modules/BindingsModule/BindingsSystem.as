@@ -45,6 +45,61 @@ void onInit(CRules@ this)
 		if (sfile.loadFile(BINDINGSDIR + SETTINGSFILE)) // file exists
 		{ 
 			printf("Settings file exists.");
+
+			if (!sfile.exists("camera_sway"))
+			{
+				sfile.add_string("camera_sway", "5");
+			}
+
+			if (!sfile.exists("blockbar_hud"))
+			{
+				sfile.add_string("blockbar_hud", "yes");
+			}
+
+			if (!sfile.exists("body_tilting"))
+			{
+				sfile.add_string("body_tilting", "on");
+			}
+
+			if (!sfile.exists("head_rotating"))
+			{
+				sfile.add_string("head_rotating", "on");
+			}
+
+			if (!sfile.exists("clusterfuck"))
+			{
+				sfile.add_string("clusterfuck", "on");
+			}
+
+			if (!sfile.exists("drillzone_borders"))
+			{
+				sfile.add_string("drillzone_borders", "on");
+			}
+
+			if (!sfile.exists("annoying_nature"))
+			{
+				sfile.add_string("annoying_nature", "on");
+			}
+
+			if (!sfile.exists("annoying_voicelines"))
+			{
+				sfile.add_string("annoying_voicelines", "on");
+			}
+
+			if (!sfile.exists("annoying_tags"))
+			{
+				sfile.add_string("annoying_tags", "on");
+			}
+
+			if (!sfile.exists("custom_death_and_pain_sounds"))
+			{
+				sfile.add_string("custom_death_and_pain_sounds", "on");
+			}
+
+			if (!sfile.exists("disable_class_change_in_shops"))
+			{
+				sfile.add_string("disable_class_change_in_shops", "no");
+			}
 		}
 		else // default settings
 		{
@@ -53,6 +108,7 @@ void onInit(CRules@ this)
 			sfile.add_string("camera_sway", "5");
 			sfile.add_string("body_tilting", "on");
 			sfile.add_string("head_rotating", "on");
+			sfile.add_string("clusterfuck", "on");
 			sfile.add_string("drillzone_borders", "on");
 			sfile.add_string("annoying_nature", "on");
 			sfile.add_string("annoying_voicelines", "on");
