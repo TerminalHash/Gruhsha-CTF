@@ -53,4 +53,5 @@ void RegisterDefaultChatCommands(ChatCommandManager@ manager)
 	manager.RegisterCommand(BotCommand());
 	manager.RegisterCommand(SpawnCommand());
 	manager.RegisterCommand(TimeCommand());
+	manager.RegisterCommand(GiveCirnu());
 }
