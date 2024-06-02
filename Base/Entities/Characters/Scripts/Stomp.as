@@ -40,7 +40,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 					{
 						if (old_pos.y < g.getPosition().y - 2)
 						{
-							if (g.getTeamNum() != this.getTeamNum() && !isCrouching(g) && !g.hasTag("dead") && !this.hasTag("dead"))
+							if (g.getTeamNum() != this.getTeamNum() && !isCrouching(g) && !g.hasTag("dead") && !this.hasTag("dead") && g.hasTag("player"))
 							{
 								float enemydam = 0.0f;
 								f32 vely = this.getOldVelocity().y;
@@ -56,6 +56,21 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 
 								if (enemydam > 0)
 								{
+									CPlayer@ gp = g.getPlayer();
+
+									if (gp !is null)
+									{
+										if (this.exists("laststompedplayer" + gp.getUsername()))
+										{
+											if (getGameTime() - this.get_u32("laststompedplayer" + gp.getUsername()) < 5)
+											{
+												return;
+											}
+										}
+
+										this.set_u32("laststompedplayer" + gp.getUsername(), getGameTime());
+									}
+
 									this.set_u32("laststomptime", getGameTime());
 									this.Sync("laststomptime", true);
 									this.server_Hit(g, old_pos, Vec2f(0, 1) , enemydam, Hitters::stomp);
@@ -99,6 +114,20 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 
 		if (enemydam > 0)
 		{
+			CPlayer@ gp = blob.getPlayer();
+
+			if (gp !is null)
+			{
+				if (this.exists("laststompedplayer" + gp.getUsername()))
+				{
+					if (getGameTime() - this.get_u32("laststompedplayer" + gp.getUsername()) < 5)
+					{
+						return;
+					}
+				}
+
+				this.set_u32("laststompedplayer" + gp.getUsername(), getGameTime());
+			}
 			this.set_u32("laststomptime", getGameTime());
 			this.Sync("laststomptime", true);
 			this.server_Hit(blob, this.getPosition(), Vec2f(0, 1) , enemydam, Hitters::stomp);
