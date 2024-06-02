@@ -1100,48 +1100,6 @@ void onRestart(CRules@ this)
 	}
 }
 
-// Sync old stats with new players
-void onNewPlayerJoin(CRules@ this, CPlayer@ player)
-{
-	OldPlayerStatsCore@ old_player_stats_core;
-	this.get(OLD_PLAYER_STATS_CORE, @old_player_stats_core);
-
-	for (u8 i = 0; i < getPlayerCount(); i++)
-	{
-		CPlayer@ pl = getPlayer(i);
-		if (pl is null)
-		{
-			continue;
-		}
-
-		// Cache previous game
-		if (old_player_stats_core !is null)
-		{
-			string player_name = pl.getUsername();
-			OldPlayerStats@ old_player_stats;
-
-			if (old_player_stats_core.stats.exists(player_name))
-			{
-				old_player_stats_core.stats.get(player_name, @old_player_stats);
-			}
-			else
-			{
-				@old_player_stats = OldPlayerStats();
-				old_player_stats_core.stats.set(player_name, @old_player_stats);
-			}
-
-			old_player_stats.kills    = pl.getKills();
-			old_player_stats.deaths   = pl.getDeaths();
-			old_player_stats.assists = pl.getAssists();
-		}
-
-		// Reset for next game
-		pl.setKills(0);
-		pl.setDeaths(0);
-		pl.setAssists(0);
-	}
-}
-
 void getMapName(CRules@ this)
 {
 	CMap@ map = getMap();
