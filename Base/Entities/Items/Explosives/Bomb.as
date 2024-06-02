@@ -100,7 +100,7 @@ bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
 
 	string name = blob.getName();
 
-	if (name == "fishy" || name == "food" || name == "steak" || name == "grain" || name == "heart" || name == "saw")
+	if (name == "fishy" || name == "food" || name == "steak" || name == "grain" || name == "heart")
 	{
 		return false;
 	}

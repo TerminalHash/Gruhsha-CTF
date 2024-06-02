@@ -1,8 +1,8 @@
 // Bomb logic
 
 #include "Hitters.as"
-
-
+#include "MakeDustParticle.as"
+#include "KnockedCommon.as"
 
 void SetupBomb(CBlob@ this, const int fuseTicks, const f32 explRadius, const f32 explosive_damage, const f32 map_damage_radius, const f32 map_damage_ratio, const bool map_damage_raycast)
 {

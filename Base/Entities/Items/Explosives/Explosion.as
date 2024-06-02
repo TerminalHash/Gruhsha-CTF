@@ -632,23 +632,14 @@ bool HitBlob(CBlob@ this, Vec2f mapPos, CBlob@ hit_blob, f32 radius, f32 damage,
 	}
 
 	f32 scale;
-	Vec2f bombforce = getBombForce2(this, radius, hit_blob_pos, pos, hit_blob.getMass(), scale);
-	f32 dam = damage * scale;
-
-	bombforce = getBombForce3(this, radius, hit_blob_pos, pos, hit_blob.getMass(), scale);
-
-	//printf("Force1: " + bombforce);
+	Vec2f bombforce = hit_blob.hasTag("invincible") ? Vec2f_zero : getBombForce(this, radius, hit_blob_pos, pos, hit_blob.getMass());
+	f32 dam = damage * getBombDamageScale(this, radius, hit_blob_pos, pos);
 
 	//explosion particle
 	makeSmallExplosionParticle(hit_blob_pos);
 
-	//printf("Hello, hitting blob: " + hit_blob.getHealth() + ", " + dam);
-
-	bool easy_bombjump = false;
-
-	if (!easy_bombjump)
-	{
-			this.server_Hit(hit_blob, hit_blob_pos,
+	//hit the object
+	this.server_Hit(hit_blob, hit_blob_pos,
 	                bombforce, dam,
 	                hitter, hitter == Hitters::water || //hit with water
 	                isOwnerBlob(this, hit_blob) ||	//allow selfkill with bombs
@@ -656,155 +647,5 @@ bool HitBlob(CBlob@ this, Vec2f mapPos, CBlob@ hit_blob, f32 radius, f32 damage,
 					hit_blob.hasTag("explosion always teamkill") || // check for override with tag
 					(this.isInInventory() && this.getInventoryBlob() is hit_blob) //is the inventory container
 	               );
-	}
-
-	if (hit_blob.getHealth() <= 0)
-	{
-		map.server_DestroyTile(hit_blob_pos, 100.0f, this);
-	}
-
 	return true;
-
-	if (hit_blob.getCarriedBlob() !is null)
-	{
-		if (hit_blob.getCarriedBlob() is this)
-		{
-			ShieldVars@ vars = getShieldVars(hit_blob);
-
-			if (vars !is null)
-			{
-				if (vars.enabled)
-				{
-					Vec2f offsetg = hit_blob.getAimPos() - hit_blob.getPosition();
-					//offsetg.RotateByDegrees(180);
-					offsetg.Normalize();
-
-					Vec2f new_pos = hit_blob.getPosition() + (offsetg * 2);
-					f32 scale2;
-					Vec2f bombforce2 = getBombForce2(this, radius, hit_blob_pos, new_pos, hit_blob.getMass(), scale2);
-
-					/*printf("mouse pos: " + hit_blob.getAimPos());
-					printf("Pos: " + hit_blob.getPosition());
-					printf("Bombpos: " + new_pos);
-					printf("Force2: " + bombforce2);*/
-
-					easy_bombjump = true;
-
-					/*if (isServer())
-					{
-
-					}*/
-					this.set_u16("TESTGE", hit_blob.getNetworkID());
-					this.Sync("TESTGE", true);
-					//this.Sync
-
-					this.server_Hit(hit_blob, new_pos,
-	                bombforce2, dam,
-	                hitter, hitter == Hitters::water || //hit with water
-	                isOwnerBlob(this, hit_blob) ||	//allow selfkill with bombs
-	                should_teamkill || hit_blob.hasTag("dead") || //hit all corpses ("dead" tag)
-					hit_blob.hasTag("explosion always teamkill") // check for override with tag
-	               );
-
-					/*Vec2f vel = hit_blob.getVelocity();
-					hit_blob.setVelocity(Vec2f(0.0f, Maths::Min(0.0f, vel.y)));
-
-					Vec2f new_bombforce = Vec2f(0.0f, ((bombforce.y > 0) ? 0.7f : -1.3f));
-
-					new_bombforce.Normalize();
-					new_bombforce *= 2.0f * Maths::Sqrt(dam) * hit_blob.getMass();
-					new_bombforce.y -= 2;
-
-					if (!hit_blob.isOnGround() && !hit_blob.isOnLadder())
-					{
-						if (hit_blob.isFacingLeft() && vel.x > 0)
-						{
-							new_bombforce.x += 50;
-							new_bombforce.y -= 80;
-						}
-						else if (!hit_blob.isFacingLeft() && vel.x < 0)
-						{
-							new_bombforce.x -= 50;
-							new_bombforce.y -= 80;
-						}
-					}
-					else if (hit_blob.isFacingLeft() && vel.x > 0)
-					{
-						new_bombforce.x += 5;
-					}
-					else if (!hit_blob.isFacingLeft() && vel.x < 0)
-					{
-						new_bombforce.x -= 5;
-					}
-
-					hit_blob.AddForce(new_bombforce);
-					hit_blob.Tag("dont stop til ground");*/
-				}
-			}
-
-			/*//zero direction = bypass shield
-			if (direction.LengthSquared() < 0.001f) return false;
-
-			//shield isn't blocking/strong enough
-			f32 angle = Maths::Abs(vars.direction.AngleWith(direction));
-			f32 angle_difference = 180.0f - angle;*/
-		}
-	}
-}
-
-Vec2f getBombForce2(CBlob@ this, f32 radius, Vec2f hit_blob_pos, Vec2f pos, f32 hit_blob_mass, f32 &out scale)
-{
-	Vec2f offset = hit_blob_pos - pos;
-	f32 distance = offset.Length();
-	//set the scale (2 step)
-
-	//printf("GETBOMBFORCE offset " + offset);
-
-	scale = (distance > (radius * 0.7)) ? 0.5f : 1.0f;
-	//the force, copy across
-	Vec2f bombforce = offset;
-	bombforce.Normalize();
-	bombforce *= 2.0f;
-	bombforce.y -= 0.2f; // push up for greater cinematic effect
-	/*if (bombforce.x <= 0) bombforce.x = -2;
-	if (bombforce.x > 0) bombforce.x = 2;*/
-	//bombforce.x = _round(bombforce.x);
-	//printf("g " + bombforce.x);
-	//bombforce.y = _round(bombforce.y);
-	bombforce /= 2.0f;
-	bombforce *= hit_blob_mass * (3.0f) * scale;
-
-	//printf("GETBOMBFORCE bombforce: " + bombforce);
-	return bombforce;
-}
-
-Vec2f getBombForce3(CBlob@ this, f32 radius, Vec2f hit_blob_pos, Vec2f pos, f32 hit_blob_mass, f32 &out scale)
-{
-	Vec2f offset = hit_blob_pos - pos;
-	f32 distance = offset.Length();
-	//set the scale (2 step)
-
-	//printf("GETBOMBFORCE offset " + offset);
-
-	scale = 1.0f;
-	//the force, copy across
-	Vec2f bombforce = offset;
-	bombforce.Normalize();
-	bombforce *= 2.0f;
-	bombforce.y -= 0.2f; // push up for greater cinematic effect
-	/*if (bombforce.x <= 0) bombforce.x = -2;
-	if (bombforce.x > 0) bombforce.x = 2;*/
-	//bombforce.x = _round(bombforce.x);
-	//printf("g " + bombforce.x);
-	//bombforce.y = _round(bombforce.y);
-	bombforce /= 2.0f;
-	bombforce *= hit_blob_mass * (3.0f) * scale;
-
-	//printf("GETBOMBFORCE bombforce: " + bombforce);
-	return bombforce;
-}
-
-float _round(float x)
-{
-    return Maths::Floor(x + 0.5);
 }
