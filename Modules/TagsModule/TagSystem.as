@@ -103,8 +103,12 @@ void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
         {
 
             CPlayer@ localplayer = getLocalPlayer();
+            u8 teamNum = player.getTeamNum();
+
             bool player_is_muted_tags = rules.get_bool(player.getUsername() + "is_tag_muted");
+            bool isCaptain = player !is null && player.getUsername() == rules.get_string("team_" + teamNum + "_leader");
             bool localplayer_is_deaf = rules.get_bool(localplayer.getUsername() + "is_deaf");
+
             u32 time_since_last_tag = getGameTime() - rules.get_u32(player.getUsername() + "last_tag");
             u32 tag_cooldown = rules.get_u32(player.getUsername() + "tag_cooldown_time");
 
@@ -121,6 +125,11 @@ void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
                     if (player.isMod())
                     {
                         upd_cooldown = 25;
+                    }
+
+                    if (isCaptain == true)
+                    {
+                        upd_cooldown = 15;
                     }
 
                     if (annoying_tags_sounds == "off") {
@@ -178,8 +187,12 @@ void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
         {
 
             CPlayer@ localplayer = getLocalPlayer();
+            u8 teamNum = player.getTeamNum();
+
             bool player_is_muted_tags = rules.get_bool(player.getUsername() + "is_tag_muted");
+            bool isCaptain = player !is null && player.getUsername() == rules.get_string("team_" + teamNum + "_leader");
             bool localplayer_is_deaf = rules.get_bool(localplayer.getUsername() + "is_deaf");
+
             u32 time_since_last_tag = getGameTime() - rules.get_u32(player.getUsername() + "last_tag");
             u32 tag_cooldown = rules.get_u32(player.getUsername() + "tag_cooldown_time");
 
@@ -196,6 +209,11 @@ void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
                     if (player.isMod())
                     {
                         upd_cooldown = 25;
+                    }
+
+                    if (isCaptain == true)
+                    {
+                        upd_cooldown = 15;
                     }
 
                     if (annoying_tags_sounds == "off") {
@@ -266,10 +284,12 @@ void onTick(CRules@ this)
 
     if (true)
     {
-         u32 time_since_last_tag = getGameTime() - getRules().get_u32(p.getUsername() + "last_tag");
-         u32 tag_cooldown = getRules().get_u32(p.getUsername() + "tag_cooldown_time");
+        u8 teamNum = p.getTeamNum();
+        bool isCaptain = p !is null && p.getUsername() == this.get_string("team_" + teamNum + "_leader");
+        u32 time_since_last_tag = getGameTime() - getRules().get_u32(p.getUsername() + "last_tag");
+        u32 tag_cooldown = getRules().get_u32(p.getUsername() + "tag_cooldown_time");
 
-        if ( (time_since_last_tag >= tag_cooldown && !getRules().get_bool(p.getUsername() + "is_tag_muted")) || p.isMod())
+        if ( (time_since_last_tag >= tag_cooldown && !getRules().get_bool(p.getUsername() + "is_tag_muted")) || p.isMod() || isCaptain == true)
         {
                 if (b_KeyJustPressed("tag1")) { SendTag(this, controls, p, 1); } // DANGER
                 if (b_KeyJustPressed("tag2")) { SendTag(this, controls, p, 2); } // GO
