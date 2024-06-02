@@ -101,6 +101,64 @@ void onInit(CSprite@ this)
 	this.getCurrentScript().tickIfTag = "exploding";
 }
 
+void MakeFireCross(CBlob@ this, Vec2f burnpos)
+{
+	/*
+	fire starting pattern
+	X -> fire | O -> not fire
+
+	[O] [X] [O]
+	[X] [X] [X]
+	[O] [X] [O]
+	*/
+
+	CMap@ map = getMap();
+
+	const float ts = map.tilesize;
+
+	//align to grid
+	burnpos = Vec2f(
+		(Maths::Floor(burnpos.x / ts) + 0.5f) * ts,
+		(Maths::Floor(burnpos.y / ts) + 0.5f) * ts
+	);
+
+	Vec2f[] positions = {
+		burnpos, // center
+		burnpos - Vec2f(ts, 0.0f), // left
+		burnpos - Vec2f(ts * 2, 0.0f), // left 2
+		burnpos + Vec2f(ts, 0.0f), // right
+		burnpos + Vec2f(ts * 2, 0.0f), // right 2
+		burnpos - Vec2f(0.0f, ts), // up
+		burnpos - Vec2f(0.0f, ts * 2), // up 2
+		burnpos + Vec2f(0.0f, ts), // down
+		burnpos + Vec2f(0.0f, ts * 2), // down
+		burnpos + Vec2f(ts, ts),
+		burnpos + Vec2f(ts, -ts),
+		burnpos + Vec2f(-ts, ts),
+		burnpos + Vec2f(-ts, -ts)
+
+	};
+
+	for (int i = 0; i < positions.length; i++)
+	{
+		Vec2f pos = positions[i];
+		//set map on fire
+		map.server_setFireWorldspace(pos, true);
+
+		//set blob on fire
+		CBlob@ b = map.getBlobAtPosition(pos);
+		//skip self or nothing there
+		if (b is null || b is this) continue;
+
+		//only hit static blobs
+		CShape@ s = b.getShape();
+		if (s !is null && s.isStatic())
+		{
+			this.server_Hit(b, this.getPosition(), this.getVelocity(), 0.5f, Hitters::fire);
+		}
+	}
+}
+
 void onTick(CSprite@ this)
 {
 	CBlob@ blob = this.getBlob();
@@ -151,8 +209,9 @@ void onDie(CBlob@ this)
 
 		if (getNet().isServer())
 		{
-			CMap@ map = getMap();
 			Vec2f pos = this.getPosition();
+
+			/*CMap@ map = getMap();
 			// hit all in radius with burn hitter, needed for some things to catch alight!
 			HitInfo@[] hitInfos;
 
@@ -186,7 +245,9 @@ void onDie(CBlob@ this)
 				map.server_setFireWorldspace(pos + Vec2f(8, -8), true);
 				map.server_setFireWorldspace(pos + Vec2f(8, 8), true);
 				map.server_setFireWorldspace(pos + Vec2f(-8, -8), true);
-			}
+			}*/
+
+			MakeFireCross(this, pos);
 		}
 	}
 }
