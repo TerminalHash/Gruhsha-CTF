@@ -13,7 +13,7 @@ void onTick(CSprite@ this)
 	const uint SPRITES = this.getSpriteLayerCount();
 	
 	f32 max_airtime = 30;
-	f32 body_angle = blob.getVelocity().x*4.3f*float(Maths::Max(0, max_airtime-blob.getAirTime())/max_airtime);
+	f32 body_angle = blob.getVelocity().x*2.8f*float(Maths::Max(0, max_airtime-blob.getAirTime())/max_airtime);
 	
 	this.ResetTransform();
 	if (blob.isKeyPressed(key_down)&&!(blob.isKeyPressed(key_right)||blob.isKeyPressed(key_left))) return;
