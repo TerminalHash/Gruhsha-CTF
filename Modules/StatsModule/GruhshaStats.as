@@ -14,7 +14,7 @@ bool onServerProcessChat( CRules@ this, const string& in text_in, string& out te
 	if (player is null)
 		return true;
 
-    if (text_in == "*statson" && (player.getUsername() == "TerminalHash" || player.getUsername() == "Pnext" || player.getUsername() == "egor0928931" || player.getUsername() == "kusaka79"))
+    if (text_in == "*offi" && (player.getUsername() == "TerminalHash" || player.getUsername() == "Pnext" || player.getUsername() == "egor0928931" || player.getUsername() == "kusaka79"))
 	{
 		if(!this.hasTag("track_stats"))
 		{
