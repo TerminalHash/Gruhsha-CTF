@@ -476,6 +476,14 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 
 					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 					this.set_u32(player.getUsername() + "soundcooldown", 60);
+			} else if (textIn == "NOT COOL" || textIn.toUpper() == "не прикольно" || textIn.toUpper() == "Не прикольно") {
+					if (annoying_voicelines_sounds == "on")
+					{
+						Sound::Play(soundrandom + "neprikolno.ogg", pos, 2.0f);
+					}
+
+					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+					this.set_u32(player.getUsername() + "soundcooldown", 60);
 
 			// MineCult sounds (he-he)
 			} else if (textIn.toUpper() == "SKILL ISSUE" || textIn == "скилл ишью") {
