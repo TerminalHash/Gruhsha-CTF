@@ -460,10 +460,10 @@ void drawAgeIcon(int age, Vec2f position)
 
 	if (age >= 10)
 	{
-		position.x -= number_gap - 4 * 0.5;
+		position.x -= number_gap - 2;
 		GUI::DrawIcon("AccoladeBadges", years_frame_start + (age / 10), Vec2f(16, 16), position, 1.0f, 0);
 		age = age % 10;
-		position.x += number_gap;
+		position.x += number_gap + 4;
 	}
 
 	GUI::DrawIcon("AccoladeBadges", years_frame_start + age, Vec2f(16, 16), position, 1.0f, 0);
