@@ -75,8 +75,8 @@ class TagMenuEntry
         float screen_size_y = getDriver().getScreenHeight();
 
         float resolution_scale = (screen_size_y / 720.f);
-        string font = get_font("AveriaSerif-Regular", s32(10.f * resolution_scale));
-        GUI::SetFont(font);
+
+        GUI::SetFont("AveriaSerif-tagwheel");
         GUI::DrawTextCentered(visible_name, position, get_color());
     }
 }

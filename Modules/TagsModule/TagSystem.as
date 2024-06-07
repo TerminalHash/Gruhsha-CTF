@@ -21,13 +21,12 @@
 
 */
 
-#include "pathway.as";
 #include "TagCommon.as";
 #include "BindingsCommon.as"
 
 // Utility
 #include "IdentifyPlayer.as";
-#include "GetFont.as";
+#include "pathway.as";
 
 string tag_pos = " tag_pos";
 string tag_duration = " tag_time";
@@ -503,13 +502,10 @@ void onRender(CRules@ rules)
             }
         }
 
-        string tag_quote_font = get_font("AveriaSerif-Regular", s32(16.f * (screen_size_y / 720.f)));
-        string player_display_name_font = get_font("DejaVuSans-Bold", s32(12.f * (screen_size_y / 720.f)));
-
         player_display_name = "<" + player_display_name + ">";
 
         // draw tag text
-        GUI::SetFont(tag_quote_font);
+        GUI::SetFont("AveriaSerif-tag");
         Vec2f text_dimensions_0;
         GUI::GetTextDimensions(tag_quote, text_dimensions_0);
 
@@ -541,12 +537,12 @@ void onRender(CRules@ rules)
             tag_screen_pos.y  = screen_size_y - text_dimensions_0.y * .5f;
         }
 
-        GUI::SetFont(tag_quote_font);
+        GUI::SetFont("AveriaSerif-tag");
         GUI::DrawText(tag_quote, tag_screen_pos - text_dimensions_0 * .5f - Vec2f(0.f, text_dimensions_0.y - 2 * resolution_scale) + Vec2f(2, 2) + Vec2f(0, Maths::Sin(getGameTime() / 3.0f) * 4), SColor(255, 0, 0, 0));
         GUI::DrawText(tag_quote, tag_screen_pos - text_dimensions_0 * .5f - Vec2f(0.f, text_dimensions_0.y - 2 * resolution_scale) + Vec2f(0, Maths::Sin(getGameTime() / 3.0f) * 4), tag_quote_color);
 
         //draw player name
-        GUI::SetFont(player_display_name_font);
+        GUI::SetFont("DejaVuSans-pltag");
         Vec2f text_dimensions_1;
         GUI::GetTextDimensions(player_display_name, text_dimensions_1);
         GUI::DrawText(player_display_name, tag_screen_pos - text_dimensions_1 * .5f + Vec2f(0.f, text_dimensions_0.y - 8 * resolution_scale) + Vec2f(0, Maths::Sin(getGameTime() / 3.0f) * 4), name_color);
