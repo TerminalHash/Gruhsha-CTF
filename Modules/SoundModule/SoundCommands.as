@@ -65,7 +65,7 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 			} else if (textIn.toUpper() == "KURWA" || textIn == "курва") {
 				if (annoying_voicelines_sounds == "on")
 				{
-					int random = XORRandom(9) + 1;
+					int random = XORRandom(11) + 1;
 					Sound::Play(soundrandom + "kurwa" + random + ".ogg", pos, 2.0f);
 				}
 
