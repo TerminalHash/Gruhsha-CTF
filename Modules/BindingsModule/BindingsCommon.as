@@ -56,7 +56,8 @@ string[][] button_texts =
 	},
 	{
 		Names::drillcommand,
-		Names::cancelarrowschargingcommand
+		Names::cancelarrowschargingcommand,
+		Names::markbuildercommand
 	}
 };
 
@@ -103,7 +104,8 @@ string[][] button_file_names =
 	},
 	{
 		"take_out_drill",
-		"cancel_charging"
+		"cancel_charging",
+		"mark_team_builder"
 	}
 };
 

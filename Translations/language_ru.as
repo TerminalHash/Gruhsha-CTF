@@ -111,6 +111,7 @@ namespace ru
 		// Actions
 	n_drillcommand							= "Достать/Убрать дрель",
 	n_cancelarrowschargingcommand			= "Перестать заряжать лук",
+	n_markbuildercommand					= "Отмечать позицию строителя",
 
 		// Settings
 	n_buildmode								= "Режим строительства",
