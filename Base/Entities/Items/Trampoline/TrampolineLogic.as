@@ -1,6 +1,8 @@
 #include "Hitters.as";
 #include "Help.as";
 
+//const string jump_prop = "trampoline jumps";
+
 namespace Trampoline
 {
 	const string TIMER = "trampoline_timer";
@@ -22,6 +24,7 @@ void onInit(CBlob@ this)
 	this.set(Trampoline::TIMER, cooldowns);
 	this.getShape().getConsts().collideWhenAttached = true;
 
+	this.set_s32("jump_prop", 40);
 	this.Tag("no falldamage");
 	this.Tag("medium weight");
 	// Because BlobPlacement.as is *AMAZING*
@@ -140,7 +143,27 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 			
 			f32 force_modifier = 1.07f;
 			f32 force_value = Maths::Max(6, velocity_old.Length()*force_modifier);
+			//printf("max vellen " + force_value);
+
 			blob.setVelocity(Vec2f(force_value,0).RotateBy(angle-90));
+
+			if (force_value >= 17) {
+				this.sub_s32("jump_prop", 25); 						// 3 jumps
+			} else if (force_value >= 14 && force_value <= 17) {
+				this.sub_s32("jump_prop", 12.5); 						// 6 jumps
+			} else if (force_value >= 10 && force_value <= 14) {
+				this.sub_s32("jump_prop", 7.5); 						// 10 jumps
+			} else if (force_value >= 7 && force_value <= 10) {
+				this.sub_s32("jump_prop", 5); 							// 15 jumps
+			}
+
+			//printf("Trampoline prop is: " + this.get_s32("jump_prop"));
+
+			// Destroy trampoline, if jump prop is zero and lower
+			if (this.get_s32("jump_prop") <= 0)
+			{
+				this.server_Die();
+			}
 
 			CSprite@ sprite = this.getSprite();
 			if (sprite !is null)
