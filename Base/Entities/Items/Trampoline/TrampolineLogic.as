@@ -23,6 +23,8 @@ void onInit(CBlob@ this)
 	this.getShape().getConsts().collideWhenAttached = true;
 
 	this.set_s32("jump_prop", 75);
+	this.Sync("jump_prop", true);
+
 	this.Tag("no falldamage");
 	this.Tag("medium weight");
 	// Because BlobPlacement.as is *AMAZING*
@@ -147,12 +149,16 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 
 			if (force_value >= 17) {
 				this.sub_s32("jump_prop", 25); 						// 3 jumps
+				this.Sync("jump_prop", true);
 			} else if (force_value >= 14 && force_value <= 17) {
 				this.sub_s32("jump_prop", 12.5); 						// 6 jumps
+				this.Sync("jump_prop", true);
 			} else if (force_value >= 10 && force_value <= 14) {
 				this.sub_s32("jump_prop", 7.5); 						// 10 jumps
+				this.Sync("jump_prop", true);
 			} else if (force_value >= 7 && force_value <= 10) {
 				this.sub_s32("jump_prop", 5); 							// 15 jumps
+				this.Sync("jump_prop", true);
 			}
 
 			//printf("Trampoline prop is: " + this.get_s32("jump_prop"));
