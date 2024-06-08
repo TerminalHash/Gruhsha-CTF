@@ -336,6 +336,11 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customdata)
 						bs.write_u8(kill_count);
 						this.SendCommand(this.getCommandID("interrupt message"), bs);
 
+						if (this.hasTag("track_stats"))
+						{
+							tcpr("MultiKillInterrupt " + killer.getUsername() + " " + victim.getUsername() + " " + kill_count + " " + getGameTime());
+						}
+
 						victim.set_u8("killstreak", 0);
 					}
 				}
@@ -386,6 +391,11 @@ void onTick(CRules@ this)
 					bs.write_u16(player_netid);
 					bs.write_u8(kill_count);
 					this.SendCommand(this.getCommandID("killstreak message"), bs);
+
+					if (this.hasTag("track_stats"))
+					{
+						tcpr("MultiKill " + player.getUsername() + " " + kill_count + " " + getGameTime());
+					}
 
 					player.set_u8("killstreak", 0);
 				}
