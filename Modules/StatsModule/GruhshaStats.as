@@ -57,7 +57,7 @@ bool onServerProcessChat( CRules@ this, const string& in text_in, string& out te
 
 void onRestart(CRules@ this)
 {
-	if(this.hasTag("track_stats"))
+	if (this.hasTag("track_stats"))
 	{
 		tcpr("EMERGENCYCLEAN");
 	}
@@ -73,17 +73,17 @@ void onNewPlayerJoin( CRules@ this, CPlayer@ player )
 
 void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 {
-	if(!this.hasTag("track_stats"))
+	if (!this.hasTag("track_stats"))
 	{
 		return;
 	}
 
-	if(this.getCurrentState() != GAME)
+	if (this.getCurrentState() != GAME)
 	{
 		return;
 	}
 
-	if(sv_tcpr && victim !is null )
+	if (sv_tcpr && victim !is null )
 	{
 		string hitter_string;
 
@@ -137,7 +137,7 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 		string killer_class = victim_class;
 		int killer_team = victim.getTeamNum();
 
-		if(killer !is null)
+		if (killer !is null)
 		{
 			killer_name = killer.getUsername();
 			killer_class = killer.lastBlobName;
@@ -165,7 +165,7 @@ void onPlayerChangedTeam( CRules@ this, CPlayer@ player, u8 old_team, u8 newteam
 
 void onPlayerLeave( CRules@ this, CPlayer@ player )
 {
-	if(!this.hasTag("track_stats") || player is null) return;
+	if (!this.hasTag("track_stats") || player is null) return;
 
 	if (player.getTeamNum() != 0 && player.getTeamNum() != 1) return;
 

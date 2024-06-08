@@ -136,7 +136,11 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 
 			if (sv_tcpr && blob.getPlayer() !is null)
 			{
-				//tcpr("FlagCaptured {\"player\":\"" + blob.getPlayer().getUsername() + "\",\"ticks\":" + getGameTime() + "}");
+				tcpr("FlagCaptured {\"player\":\"" + blob.getPlayer().getUsername() + "\",\"ticks\":" + getGameTime() + "}");
+			}
+
+			if (getRules().hasTag("track_stats") && blob.getPlayer() !is null)
+			{
 				tcpr("FlagCapture" + " " + blob.getPlayer().getUsername() + " " + blob.getPlayer().getTeamNum() + " " + getGameTime());
 			}
 
