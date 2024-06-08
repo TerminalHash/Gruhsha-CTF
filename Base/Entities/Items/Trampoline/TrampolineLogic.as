@@ -1,8 +1,6 @@
 #include "Hitters.as";
 #include "Help.as";
 
-//const string jump_prop = "trampoline jumps";
-
 namespace Trampoline
 {
 	const string TIMER = "trampoline_timer";
@@ -24,7 +22,7 @@ void onInit(CBlob@ this)
 	this.set(Trampoline::TIMER, cooldowns);
 	this.getShape().getConsts().collideWhenAttached = true;
 
-	this.set_s32("jump_prop", 40);
+	this.set_s32("jump_prop", 75);
 	this.Tag("no falldamage");
 	this.Tag("medium weight");
 	// Because BlobPlacement.as is *AMAZING*
