@@ -36,7 +36,7 @@ void onInit(CBlob@ this)
 
 	// ICONS
 	AddIconToken("$_buildershop_filled_bucket$", "Bucket.png", Vec2f(16, 16), 1);
-	AddIconToken("builderfleximage", "builderfleximage.png", Vec2f(17, 15), 0, team_num);
+	AddIconToken("builderfleximage", "builderfleximage.png", Vec2f(17, 15), 0, 255);
 
 	{
 		ShopItem@ s = addShopItem(this, "Drill", getTeamIcon("drill", "Drill.png", team_num, Vec2f(32, 16), 0), "drill", Descriptions::drill, false);
