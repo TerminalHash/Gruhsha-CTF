@@ -55,7 +55,7 @@ string getButtonRequirementsText(CBitStream& inout bs, bool missing)
 		}
 		else if (requiredType == "coin")
 		{
-			text += getTranslatedString("{COINS_QUANTITY} $COIN$ required\n").replace("{COINS_QUANTITY}", "" + quantity);
+			text += getTranslatedString("{COINS_QUANTITY} $COIN$ required\n\n").replace("{COINS_QUANTITY}", "" + quantity);
 		}
 		else if (requiredType == "hurt")
 		{
@@ -77,7 +77,8 @@ string getButtonRequirementsText(CBitStream& inout bs, bool missing)
 		{
 			text += quantityColor;
 			text += "You should be a builder ";
-			text += "builderfleximage" + getLocalPlayer().getTeamNum(); text += " \n\n";
+			text += "builderfleximage";
+			text += " \n\n";
 			text += quantityColor;
 		}
 	}
