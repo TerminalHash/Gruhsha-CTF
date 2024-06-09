@@ -1,4 +1,5 @@
 #include "ResearchCommon.as"
+#include "TeamIconToken.as"
 
 string getButtonRequirementsText(CBitStream& inout bs, bool missing)
 {
@@ -35,7 +36,7 @@ string getButtonRequirementsText(CBitStream& inout bs, bool missing)
 			text += getTranslatedString(friendlyName);
 			text += quantityColor;
 			// text += " required.";
-			text += "\n";
+			text += "\n\n";
 		}
 		else if (requiredType == "tech" && missing)
 		{
@@ -73,7 +74,13 @@ string getButtonRequirementsText(CBitStream& inout bs, bool missing)
 			text += "At least " + quantity + " " + friendlyName + " required. \n";
 			text += quantityColor;
 		}
-
+		else if (requiredType == "builder")
+		{
+			text += quantityColor;
+			text += "You should be a builder ";
+			text += "builderfleximage" + getLocalPlayer().getTeamNum(); text += " \n\n";
+			text += quantityColor;
+		}
 	}
 
 	return text;
@@ -254,8 +261,21 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 				has = false;
 			}
 		}
-	}
+		else if(req == "builder")
+		{
+			CPlayer@ player1 = inv1 !is null ? inv1.getBlob().getPlayer() : null;
+			if (player1 !is null)
+			{
+				if (player1.getBlob().getName() != "builder" && player1.getUsername() != getRules().get_string("team_" + player1.getTeamNum() + "_leader"))
+				{
+					AddRequirement(missingBs, req, blobName, friendlyName, quantity);
+					has = false;
+				}
 
+			}
+
+		}
+	}
 	missingBs.ResetBitIndex();
 	bs.ResetBitIndex();
 	return has;

@@ -19,9 +19,6 @@ void onInit(CBlob@ this)
 	this.getSprite().SetZ(-50); //background
 	this.getShape().getConsts().mapCollisions = false;
 
-	ShopMadeItem@ onMadeItem = @onShopMadeItem;
-	this.set("onShopMadeItem handle", @onMadeItem);
-
 	this.Tag("has window");
 
 	// SHOP
@@ -70,6 +67,9 @@ void onInit(CBlob@ this)
 		ShopItem@ s = addShopItem(this, "Trampoline", getTeamIcon("trampoline", "Trampoline.png", team_num, Vec2f(32, 16), 3), "trampoline", Descriptions::trampoline, false);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::trampoline_coins);
 		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", CTFCosts::trampoline_wood);
+		AddIconToken("builderfleximage0", "builderfleximage.png", Vec2f(17, 15), 0, 0);
+		AddIconToken("builderfleximage1", "builderfleximage.png", Vec2f(17, 15), 0, 1);
+		AddRequirement(s.requirements, "builder", "builder", "You should be a builder", 0);
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Saw", getTeamIcon("saw", "VehicleIcons.png", team_num, Vec2f(32, 32), 3), "saw", Descriptions::saw, false);
@@ -78,7 +78,6 @@ void onInit(CBlob@ this)
 		s.buttonheight = 1;
 		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", CTFCosts::saw_wood);
 		AddRequirement(s.requirements, "blob", "mat_stone", "Stone", CTFCosts::saw_stone);
-		AddRequirement(s.requirements, "no more", "saw", "Saw", 3);
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Crate (wood)", getTeamIcon("crate", "Crate.png", team_num, Vec2f(32, 16), 5), "crate", Descriptions::crate, false);
@@ -92,21 +91,12 @@ void onInit(CBlob@ this)
 
 void GetButtonsFor(CBlob@ this, CBlob@ caller)
 {
-	int P_Builders = 0;
-
-	for (u32 i = 0; i < getPlayersCount(); i++)
-	{
-		if (getPlayer(i).getScoreboardFrame() == 1 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
-	}
-
 	CRules@ rules = getRules();
 	bool disallow_class_change_on_shops = rules.get_bool("no_class_change_on_shop");
-	string disabled_class_changing_in_shops = getRules().get_string("disable_class_change_in_shops");
-	bool is_warmup = rules.get_bool("is_warmup");
 
 	if (!canSeeButtons(this, caller)) return;
 
-	if (caller.getConfig() == this.get_string("required class") || disallow_class_change_on_shops == true || disabled_class_changing_in_shops == "yes" || P_Builders >= rules.get_u8("builders_limit") && !is_warmup)
+	if (caller.getConfig() == this.get_string("required class") || disallow_class_change_on_shops == true)
 	{
 		this.set_Vec2f("shop offset", Vec2f_zero);
 	}
@@ -117,36 +107,34 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 	this.set_bool("shop available", this.isOverlapping(caller));
 }
 
-void onShopMadeItem(CBitStream@ params)
-{
-	if (!isServer()) return;
-
-	u16 this_id, caller_id, item_id;
-	string name;
-
-	if (!params.saferead_u16(this_id) || !params.saferead_u16(caller_id) || !params.saferead_u16(item_id) || !params.saferead_string(name))
-	{
-		return;
-	}
-
-	CBlob@ caller = getBlobByNetworkID(caller_id);
-	if (caller is null) return;
-
-	if (name == "filled_bucket")
-	{
-		CBlob@ b = server_CreateBlobNoInit("bucket");
-		b.setPosition(caller.getPosition());
-		b.server_setTeamNum(caller.getTeamNum());
-		b.Tag("_start_filled");
-		b.Init();
-		caller.server_Pickup(b);
-	}
-}
-
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
-	if (cmd == this.getCommandID("shop made item client") && isClient())
+	if (cmd == this.getCommandID("shop made item"))
 	{
 		this.getSprite().PlaySound("/ChaChing.ogg");
+
+		u16 caller, item;
+		string name;
+
+		if (!params.saferead_netid(caller) || !params.saferead_netid(item) || !params.saferead_string(name))
+		{
+			return;
+		}
+
+		CBlob@ callerBlob = getBlobByNetworkID(caller);
+		if (callerBlob is null)
+		{
+			return;
+		}
+
+		if (name == "filled_bucket" && isServer())
+		{
+			CBlob@ b = server_CreateBlobNoInit("bucket");
+			b.setPosition(callerBlob.getPosition());
+			b.server_setTeamNum(callerBlob.getTeamNum());
+			b.Tag("_start_filled");
+			b.Init();
+			callerBlob.server_Pickup(b);
+		}
 	}
 }
