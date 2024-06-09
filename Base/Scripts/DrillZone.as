@@ -41,12 +41,12 @@ void onRender(CRules@ rules)
 
 	if (getRules().get_string("drillzone_borders") == "off") return;
 
-    Vec2f leftzone_u = driver.getScreenPosFromWorldPos(Vec2f(left - 1, 0));
-    Vec2f leftzone_l = driver.getScreenPosFromWorldPos(Vec2f(left + 1, driver.getScreenHeight()));
+    Vec2f leftzone_u = driver.getScreenPosFromWorldPos(Vec2f(left - 0.5, 0));
+    Vec2f leftzone_l = driver.getScreenPosFromWorldPos(Vec2f(left + 0.5, driver.getScreenHeight()));
 	GUI::DrawRectangle(leftzone_u, leftzone_l, white);
 
-    Vec2f rightzone_u = driver.getScreenPosFromWorldPos(Vec2f(right - 1, 0));
-    Vec2f rightzone_l = driver.getScreenPosFromWorldPos(Vec2f(right + 1, driver.getScreenHeight()));
+    Vec2f rightzone_u = driver.getScreenPosFromWorldPos(Vec2f(right - 0.5, 0));
+    Vec2f rightzone_l = driver.getScreenPosFromWorldPos(Vec2f(right + 0.5, driver.getScreenHeight()));
 	GUI::DrawRectangle(rightzone_u,rightzone_l, white);
 
 	//printf("Oaoaoaoaoa");
