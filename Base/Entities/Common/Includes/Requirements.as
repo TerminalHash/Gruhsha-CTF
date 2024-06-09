@@ -1,5 +1,4 @@
 #include "ResearchCommon.as"
-#include "TeamIconToken.as"
 
 string getButtonRequirementsText(CBitStream& inout bs, bool missing)
 {
