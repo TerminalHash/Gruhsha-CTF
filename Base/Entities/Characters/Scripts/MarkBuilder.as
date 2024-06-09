@@ -30,7 +30,7 @@ void onRender(CRules@ this)
 					CBlob@ player = me.getBlob();
 
 					if (player !is null) {
-						//GUI::DrawArrow2D(player.getInterpolatedScreenPos(), builder.getInterpolatedScreenPos(), SColor(255, 235,  0,  0));
+						GUI::DrawArrow2D(player.getInterpolatedScreenPos(), builder.getInterpolatedScreenPos(), SColor(255, 235,  0,  0));
 						GUI::DrawIcon("Characters/Sprites/MarkArrow.png", 0, Vec2f(32, 16), Vec2f(builder.getInterpolatedScreenPos().x - 30, builder.getInterpolatedScreenPos().y - 55), 1.0f, 255);
 						builder.RenderForHUD(RenderStyle::outline);
 						builder.RenderForHUD(RenderStyle::normal);
