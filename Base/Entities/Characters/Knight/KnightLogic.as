@@ -8,7 +8,6 @@
 #include "KnockedCommon.as"
 #include "Help.as";
 #include "Requirements.as"
-#include "ShieldHit.as";
 #include "StandardControlsCommon.as";
 
 //attacks limited to the one time per-actor before reset.
@@ -119,6 +118,11 @@ void onSetPlayer(CBlob@ this, CPlayer@ player)
 	if (player !is null)
 	{
 		player.SetScoreboardVars("ScoreboardIcons.png", 3, Vec2f(16, 16));
+	}
+
+	if (getRules().hasTag("track_stats") && player !is null)
+	{
+		tcpr("SwitchClass " + player.getUsername() + " " + this.getName() + " " + getGameTime());
 	}
 }
 
@@ -303,6 +307,7 @@ void onTick(CBlob@ this)
 		knight.slideTime = 0;
 		knight.doubleslash = false;
 		this.set_s32("currentKnightState", 0);
+		this.set_s32("serverKnightState", -1);
 
 		pressed_a1 = false;
 		pressed_a2 = false;
@@ -1254,47 +1259,6 @@ void onSwitch(CBitStream@ params)
 
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
-	if (cmd == this.getCommandID("make sparks") && isServer())
-	{
-		CPlayer@ callerp = getNet().getActiveCommandPlayer();
-		if (callerp is null) return;
-
-		CBlob@ caller = callerp.getBlob();
-		if (caller is null) return;
-
-		if (caller !is this) return;
-
-		Vec2f velocity;
-		if (!params.saferead_Vec2f(velocity)) return;
-
-		Vec2f hitpos;
-		if (!params.saferead_Vec2f(hitpos)) return;
-
-		shieldHit(0, velocity/2, hitpos - velocity/4);
-		//printf("ololo, im hitting block!_1");
-
-		this.SendCommand(this.getCommandID("make sparks client"), params);
-	}
-	else if (cmd == this.getCommandID("make sparks client") && isClient())
-	{
-		CPlayer@ callerp = getNet().getActiveCommandPlayer();
-		if (callerp is null) return;
-
-		CBlob@ caller = callerp.getBlob();
-		if (caller is null) return;
-
-		if (caller !is this) return;
-
-		Vec2f velocity;
-		if (!params.saferead_Vec2f(velocity)) return;
-
-		Vec2f hitpos;
-		if (!params.saferead_Vec2f(hitpos)) return;
-
-		shieldHit(0, velocity/2, hitpos - velocity/4);
-		//printf("ololo, im hitting block!_2");
-	}
-
 	if (cmd == this.getCommandID("switch") && isServer())
 	{
 		CPlayer@ callerp = getNet().getActiveCommandPlayer();
@@ -1454,12 +1418,9 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 
 			if (b !is null)
 			{
-				if (b.hasTag("ignore sword") 
-				    || !canHit(this, b)
-				    || knight_has_hit_actor(this, b)) 
-				{
-					continue;
-				}
+				if (b.hasTag("ignore sword")) continue;
+				if (!canHit(this, b)) continue;
+				if (knight_has_hit_actor(this, b)) continue;
 
 				Vec2f hitvec = hi.hitpos - pos;
 
@@ -1487,6 +1448,7 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 						}
 						continue;
 					}
+					if (!canHit(this, rayb)) continue;
 
 					f32 temp_damage = damage;
 					
@@ -1561,10 +1523,8 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 					bool dirt_thick_stone = map.isTileThickStone(hi.tile);
 					bool gold = map.isTileGold(hi.tile);
 					bool wood = map.isTileWood(hi.tile);
-					bool bedrock = map.isTileBedrock(hi.tile);
-					bool castle = map.isTileCastle(hi.tile);
 
-					if (ground || wood || dirt_stone || gold || bedrock || castle)
+					if (ground || wood || dirt_stone || gold)
 					{
 						Vec2f tpos = map.getTileWorldPosition(hi.tileOffset) + Vec2f(4, 4);
 						Vec2f offset = (tpos - blobPos);
@@ -1612,13 +1572,7 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 							dontHitMoreMap = true;
 							if (canhit)
 							{
-								if (bedrock || castle)
-								{
-									//printf("ololo, im hitting block!_0");
-									shieldHit(0, velocity/2, hitpos - velocity/4);
-									this.SendCommand(this.getCommandID("make sparks"), params);
-								}
-								else if (ground || wood || dirt_stone || gold)
+								if (ground || wood || dirt_stone || gold)
 								{
 									map.server_DestroyTile(hi.hitpos, 0.1f, this);
 									if (gold)

@@ -165,7 +165,6 @@ bool putInHeld(CBlob@ owner)
 	return owner.server_PutInInventory(held);
 }
 
-/*
 bool ClickGridMenu(CBlob@ this, int button)
 {
 	CGridMenu @gmenu;
@@ -215,7 +214,6 @@ void ButtonOrMenuClick(CBlob@ this, Vec2f pos, bool clear, bool doClosestClick)
 		this.ClearMenus();
 	}
 }
-*/
 
 void onTick(CBlob@ this)
 {
