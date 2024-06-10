@@ -7,9 +7,6 @@
 #include "RulesCore.as";
 #include "pathway.as";
 
-// Utility
-#include "IdentifyPlayer.as";
-
 string soundsdir = getPath();
 string soundrandom = soundsdir + "Sounds/Voicelines/";
 

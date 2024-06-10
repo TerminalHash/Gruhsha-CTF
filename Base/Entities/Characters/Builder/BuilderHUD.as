@@ -37,7 +37,7 @@ void ManageCursors(CBlob@ this)
 		}
 		if (carried !is null && carried.getName() == "drill")
 		{
-			getHUD().SetCursorImage(getPath() + "Items/Drill/Sprites/DrillCursor.png", Vec2f(32, 32));
+			getHUD().SetCursorImage(getPath() + "Sprites/HUD/Cursors/DrillCursor.png", Vec2f(32, 32));
 			getHUD().SetCursorOffset(Vec2f(-11, -11) * cl_mouse_scale);
 		}
 		else

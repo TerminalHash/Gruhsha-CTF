@@ -9,9 +9,6 @@
 #include "RulesCore.as";
 #include "pathway.as";
 
-// Utility
-#include "GetFont.as";
-
 string soundsdir = getPath();
 string sound = soundsdir + "Sounds/";
 
@@ -83,8 +80,7 @@ void onRender(CRules@ this)
     float screen_size_y = getDriver().getScreenHeight();
 	float resolution_scale = screen_size_y / 720.f;
 
-	string announce_text_font = get_font("SourceHanSansCN-Bold", s32(24.f * resolution_scale));
-	GUI::SetFont(announce_text_font);
+	GUI::SetFont("SourceHanSansCN-Bold");
 	if (getGameTime() - this.get_u32("announce time") < 30 * 5)
 	{
 		string alert = this.get_string("announce text");

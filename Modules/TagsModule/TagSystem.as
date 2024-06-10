@@ -25,7 +25,6 @@
 #include "BindingsCommon.as"
 
 // Utility
-#include "IdentifyPlayer.as";
 #include "pathway.as";
 
 string tag_pos = " tag_pos";

@@ -10,7 +10,7 @@ void onInit(CRules@ this)
 
 	if (!GUI::isFontLoaded("AveriaSerif-tag"))
 	{
-		string Averia_tag = CFileMatcher("AveriaSerif-Bold.ttf").getFirst();
+		string Averia_tag = CFileMatcher("AveriaSerif-tag.ttf").getFirst();
 		GUI::LoadFont("AveriaSerif-tag", Averia_tag, 16, true);
 	}
 
@@ -22,8 +22,14 @@ void onInit(CRules@ this)
 
 	if (!GUI::isFontLoaded("AveriaSerif-tagwheel"))
 	{
-		string Averia_wheel = CFileMatcher("AveriaSerif-Regular.ttf").getFirst();
+		string Averia_wheel = CFileMatcher("AveriaSerif-tagwheel.ttf").getFirst();
 		GUI::LoadFont("AveriaSerif-tagwheel", Averia_wheel, 18, true);
+	}
+
+	if (!GUI::isFontLoaded("SourceHanSansCN-Bold"))
+	{
+		string SourceSans = CFileMatcher("SourceHanSansCN-Bold.ttf").getFirst();
+		GUI::LoadFont("SourceHanSansCN-Bold", SourceSans, 34, true);
 	}
 }
 
@@ -39,7 +45,7 @@ void onRestart(CRules@ this)
 
         if (!GUI::isFontLoaded("AveriaSerif-tag"))
         {
-            string Averia_tag = CFileMatcher("AveriaSerif-Bold.ttf").getFirst();
+            string Averia_tag = CFileMatcher("AveriaSerif-tag.ttf").getFirst();
             GUI::LoadFont("AveriaSerif-tag", Averia_tag, 16, true);
         }
 
@@ -51,8 +57,14 @@ void onRestart(CRules@ this)
 
         if (!GUI::isFontLoaded("AveriaSerif-tagwheel"))
         {
-            string Averia_wheel = CFileMatcher("AveriaSerif-Regular.ttf").getFirst();
+            string Averia_wheel = CFileMatcher("AveriaSerif-tagwheel.ttf").getFirst();
             GUI::LoadFont("AveriaSerif-tagwheel", Averia_wheel, 18, true);
+        }
+
+        if (!GUI::isFontLoaded("SourceHanSansCN-Bold"))
+        {
+            string SourceSans = CFileMatcher("SourceHanSansCN-Bold.ttf").getFirst();
+            GUI::LoadFont("SourceHanSansCN-Bold", SourceSans, 34, true);
         }
 	}
 }
