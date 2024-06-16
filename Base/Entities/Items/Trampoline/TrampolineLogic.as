@@ -48,20 +48,15 @@ void onTick(CBlob@ this)
 	
 	f32 angle = ray.Angle();
 
-	if (point.isKeyPressed(key_action2))
-	{
+	if (point.isKeyPressed(key_action2)) {
 		// set angle to what was on previous tick
 		angle = this.get_f32("old angle");
 		this.setAngleDegrees(angle);
-	}
-	else if (point.isKeyPressed(key_action1))
-	{
+	} else if (point.isKeyPressed(key_action1)) {
 		// rotate in 45 degree steps
 		angle = Maths::Floor((angle - 67.5f) / 45) * 45;
 		this.setAngleDegrees(-angle);
-	}
-	else
-	{
+	} else {
 		// follow cursor normally
 		this.setAngleDegrees(-angle + 90);
 	}
@@ -90,13 +85,13 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 	//get angle difference between entry angle and the facing angle
 	Vec2f pos_delta = (blob.getPosition() - this.getPosition()).RotateBy(90);
 	float delta_angle = Maths::Abs(-pos_delta.Angle() - this.getAngleDegrees());
-	if (delta_angle > 180)
-	{
+
+	if (delta_angle > 180) {
 		delta_angle = 360 - delta_angle;
 	}
+
 	//if more than 90 degrees out, no bounce
-	if (delta_angle > 90)
-	{
+	if (delta_angle > 90) {
 		return;
 	}
 
@@ -108,8 +103,8 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 
 	u16 netid = blob.getNetworkID();
 	bool block = false;
-	for(int i = 0; i < cooldowns.length; i++)
-	{
+
+	for(int i = 0; i < cooldowns.length; i++) {
 		if (cooldowns[i].timer < getGameTime())
 		{
 			cooldowns.removeAt(i);
@@ -121,8 +116,8 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 			break;
 		}
 	}
-	if (!block)
-	{
+
+	if (!block) {
 		Vec2f velocity_old = blob.getOldVelocity();
 		if (velocity_old.Length() < 1.0f) return;
 
@@ -133,8 +128,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 
 		float velocity_angle = direction.AngleWith(velocity_old);
 
-		if (Maths::Abs(velocity_angle) > 90)
-		{
+		if (Maths::Abs(velocity_angle) > 90) {
 			TrampolineCooldown cooldown(netid, getGameTime() + Trampoline::COOLDOWN);
 			cooldowns.push_back(cooldown);
 
@@ -147,8 +141,11 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 
 			blob.setVelocity(Vec2f(force_value,0).RotateBy(angle-90));
 
-			if (force_value >= 17) {
-				this.sub_s32("jump_prop", 25); 						// 3 jumps
+			if (force_value >= 19) {
+				this.sub_s32("jump_prop", 50); 							// 2 jumps
+				this.Sync("jump_prop", true);
+			} else if (force_value >= 17 && force_value <= 19) {
+				this.sub_s32("jump_prop", 25); 							// 3 jumps
 				this.Sync("jump_prop", true);
 			} else if (force_value >= 14 && force_value <= 17) {
 				this.sub_s32("jump_prop", 12.5); 						// 6 jumps
@@ -164,14 +161,12 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 			//printf("Trampoline prop is: " + this.get_s32("jump_prop"));
 
 			// Destroy trampoline, if jump prop is zero and lower
-			if (this.get_s32("jump_prop") <= 0)
-			{
+			if (this.get_s32("jump_prop") <= 0) {
 				this.server_Die();
 			}
 
 			CSprite@ sprite = this.getSprite();
-			if (sprite !is null)
-			{
+			if (sprite !is null) {
 				sprite.SetAnimation("default");
 				sprite.SetAnimation("bounce");
 				sprite.PlaySound("TrampolineJump.ogg");
