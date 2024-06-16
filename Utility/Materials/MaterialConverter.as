@@ -30,11 +30,13 @@ void onTick(CBlob@ this)
 
             if (name == "mat_stone" && getGameTime() > convert_time_inventory * getTicksASecond() + item.get_s32("pickup time")) {
                 getRules().add_s32("teamstone" + this.getTeamNum(), stone_count);
+                getRules().Sync("teamstone" + this.getTeamNum(), true);
                 inv.server_RemoveItems("mat_stone", stone_count);
 
                 this.getSprite().PlaySound("/mat_converted.ogg");
             } else if (name == "mat_wood" && getGameTime() > convert_time_inventory * getTicksASecond() + item.get_s32("pickup time")) {
                 getRules().add_s32("teamwood" + this.getTeamNum(), wood_count);
+                getRules().Sync("teamwood" + this.getTeamNum(), true);
                 inv.server_RemoveItems("mat_wood", wood_count);
 
                 this.getSprite().PlaySound("/mat_converted.ogg");
@@ -50,6 +52,7 @@ void onTick(CBlob@ this)
 
             if (getGameTime() > convert_time_carried * getTicksASecond() + carried.get_s32("attach time")) {
                 getRules().add_s32("teamstone" + this.getTeamNum(), stone_count);
+                getRules().Sync("teamstone" + this.getTeamNum(), true);
                 carried.server_Die();
 
                 this.getSprite().PlaySound("/mat_converted.ogg");
@@ -60,6 +63,7 @@ void onTick(CBlob@ this)
 
             if (getGameTime() > convert_time_carried * getTicksASecond() + carried.get_s32("attach time")) {
                 getRules().add_s32("teamwood" + this.getTeamNum(), wood_count);
+                getRules().Sync("teamwood" + this.getTeamNum(), true);
                 carried.server_Die();
 
                 this.getSprite().PlaySound("/mat_converted.ogg");
@@ -131,6 +135,7 @@ void onDie(CBlob@ this)
             }
 
             getRules().sub_s32("teamstone" + this.getTeamNum(), stone.getQuantity());
+            getRules().Sync("teamstone" + this.getTeamNum(), true);
         }
         else if (this.hasTag("dead") && getRules().get_s32("teamstone" + this.getTeamNum()) <= 0) { return; } // we dont have material to spawn, lol
 
@@ -149,6 +154,7 @@ void onDie(CBlob@ this)
             }
 
             getRules().sub_s32("teamwood" + this.getTeamNum(), wood.getQuantity());
+            getRules().Sync("teamwood" + this.getTeamNum(), true);
         }
         else if (this.hasTag("dead") && getRules().get_s32("teamwood" + this.getTeamNum()) <= 0) { return; } // we dont have material to spawn, lol
 	}

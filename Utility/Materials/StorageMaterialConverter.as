@@ -28,11 +28,13 @@ void onTick(CBlob@ this)
 
             if (name == "mat_stone" && getGameTime() > convert_time_inventory * getTicksASecond() + item.get_s32("storage pickup time")) {
                 getRules().add_s32("teamstone" + this.getTeamNum(), stone_count);
+                getRules().Sync("teamstone" + this.getTeamNum(), true);
                 inv.server_RemoveItems("mat_stone", stone_count);
 
                 this.getSprite().PlaySound("/mat_converted.ogg");
             } else if (name == "mat_wood" && getGameTime() > convert_time_inventory * getTicksASecond() + item.get_s32("storage pickup time")) {
                 getRules().add_s32("teamwood" + this.getTeamNum(), wood_count);
+                getRules().Sync("teamwood" + this.getTeamNum(), true);
                 inv.server_RemoveItems("mat_wood", wood_count);
 
                 this.getSprite().PlaySound("/mat_converted.ogg");
