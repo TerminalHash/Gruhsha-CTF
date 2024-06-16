@@ -126,21 +126,20 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 
 		if (eligible_ammo_names[0] == "mat_stone")
 		{
-
+			CInventory@ inv = this.getInventory();
 			CBlob@ stone = server_CreateBlobNoInit("mat_stone");
 			stone.Tag('custom quantity');
 			stone.Init();
-			if (getRules().get_s32("teamstone" + callerTeamNum) >= 250)
+			if (getRules().get_s32("teamstone" + callerTeamNum) >= 250 && !inv.isFull())
 			{
-
-				stone.server_SetQuantity(250);
-				getRules().add_s32("teamstone" + callerTeamNum, -250);
+				stone.server_SetQuantity(50);
+				getRules().sub_s32("teamstone" + callerTeamNum, 50);
 				getRules().Sync("teamstone" + callerTeamNum, true);
 			}
-			else
+			else if (!inv.isFull())
 			{
 				stone.server_SetQuantity(getRules().get_s32("teamstone" + callerTeamNum));
-				getRules().add_s32("teamstone" + callerTeamNum, -(getRules().get_s32("teamstone" + callerTeamNum)));
+				getRules().sub_s32("teamstone" + callerTeamNum, (getRules().get_s32("teamstone" + callerTeamNum)));
 				getRules().Sync("teamstone" + callerTeamNum, true);
 			}
 			ammos.push_back(stone);

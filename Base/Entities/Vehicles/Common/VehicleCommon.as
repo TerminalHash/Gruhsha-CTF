@@ -230,6 +230,9 @@ bool Vehicle_AddLoadAmmoButton(CBlob@ this, CBlob@ caller, Vec2f &in offset = Ve
 	CInventory@ inv = caller.getInventory();
 	if (inv is null) return false;
 
+	CInventory@ catainv = this.getInventory();
+	if (catainv is null) return false;
+
 	for (int i = 0; i < v.ammo_types.size(); i++)
 	{
 		const string ammo = v.ammo_types[i].ammo_name;
@@ -251,9 +254,10 @@ bool Vehicle_AddLoadAmmoButton(CBlob@ this, CBlob@ caller, Vec2f &in offset = Ve
 			caller.CreateGenericButton("$" + ammoBlob.getName() + "$", offset, this, this.getCommandID("load_ammo"), msg, params);
 			return true;
 		}
-		if(ammo == "mat_stone")
+
+		if (ammo == "mat_stone")
 		{
-			if(getRules().get_s32("teamstone" + caller.getTeamNum()) != 0)
+			if (getRules().get_s32("teamstone" + caller.getTeamNum()) != 0 && !catainv.isFull())
 			{
 				CBitStream params;
 				const string msg = getTranslatedString("Load {ITEM}").replace("{ITEM}", "Stone");
