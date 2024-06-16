@@ -34,6 +34,7 @@ void onInit(CBlob@ this)
 	this.set("spi", SPI);
 
 	this.addCommandID("pickaxe");
+	this.addCommandID("play convert sound");
 
 	CShape@ shape = this.getShape();
 	shape.SetRotationsAllowed(false);

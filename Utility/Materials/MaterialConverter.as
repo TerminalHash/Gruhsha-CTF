@@ -33,13 +33,13 @@ void onTick(CBlob@ this)
                 getRules().Sync("teamstone" + this.getTeamNum(), true);
                 inv.server_RemoveItems("mat_stone", stone_count);
 
-                this.getSprite().PlaySound("/mat_converted.ogg");
+                this.SendCommand(this.getCommandID("play convert sound"));
             } else if (name == "mat_wood" && getGameTime() > convert_time_inventory * getTicksASecond() + item.get_s32("pickup time")) {
                 getRules().add_s32("teamwood" + this.getTeamNum(), wood_count);
                 getRules().Sync("teamwood" + this.getTeamNum(), true);
                 inv.server_RemoveItems("mat_wood", wood_count);
 
-                this.getSprite().PlaySound("/mat_converted.ogg");
+                this.SendCommand(this.getCommandID("play convert sound"));
             }
         }
     }
@@ -55,7 +55,7 @@ void onTick(CBlob@ this)
                 getRules().Sync("teamstone" + this.getTeamNum(), true);
                 carried.server_Die();
 
-                this.getSprite().PlaySound("/mat_converted.ogg");
+                this.SendCommand(this.getCommandID("play convert sound"));
             }
         } else if (carried.getConfig() == "mat_wood") {
             u16 wood_count = carried.getQuantity();
@@ -66,13 +66,20 @@ void onTick(CBlob@ this)
                 getRules().Sync("teamwood" + this.getTeamNum(), true);
                 carried.server_Die();
 
-                this.getSprite().PlaySound("/mat_converted.ogg");
+                this.SendCommand(this.getCommandID("play convert sound"));
             }
         }
     }
 }
 ///////////////////////////////////////////////
 ///////////////////////////////////////////////
+
+void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
+{
+    if (cmd == this.getCommandID("play convert sound") && isClient()) {
+        this.getSprite().PlaySound("/mat_converted.ogg");
+    }
+}
 
 // Set attach timer
 void onAttach(CBlob@ this, CBlob@ attached, AttachmentPoint @attachedPoint )
