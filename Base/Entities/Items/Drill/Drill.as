@@ -254,7 +254,7 @@ void onTick(CBlob@ this)
 			sprite.PlaySound("DrillOverheat.ogg");
 		}
 
-		if (holder.getConfig() != "archer")
+		if (holder.getConfig() == "builder" || holder.getConfig() == "knight" || holder.getConfig() == "archer")
 		{
 			f32 left = getRules().get_u16("barrier_x1");
 			f32 right = getRules().get_u16("barrier_x2");
@@ -268,7 +268,7 @@ void onTick(CBlob@ this)
 			}
 
 			// disallow to use drill, when knight out of drill zone
-			if (holder.getConfig() == "knight" && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0) ))
+			if ((holder.getConfig() == "knight" || holder.getConfig() == "archer") && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0) ))
 			{
 				this.set_bool(buzz_prop, false);
 				//printf("Go away!");
@@ -589,7 +589,7 @@ void onRender(CSprite@ this)
 		f32 holder_x = holder.getBlob().getPosition().x;
 
 		// Change cursor and play sound, when you can't drill outside zone
-		if (holder.getBlob().getConfig() == "knight" && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0) ) && holder.getBlob().isKeyJustPressed(key_action1) && isClient())
+		if ((holder.getBlob().getConfig() == "knight" || holder.getBlob().getConfig() == "archer") && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0)  && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0) ) && holder.getBlob().isKeyJustPressed(key_action1) && isClient())
 		{
 			Sound::Play("NoAmmo.ogg");
 		}

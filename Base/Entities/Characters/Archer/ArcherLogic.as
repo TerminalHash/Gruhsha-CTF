@@ -731,6 +731,22 @@ void onTick(CBlob@ this)
 		return;
 	}
 
+	CBlob@ carried = this.getCarriedBlob();
+	bool magicdrill = false;
+
+	if (carried !is null)
+	{
+		if (carried.getName() == "drill") magicdrill = true;
+	}
+
+	if (magicdrill)
+	{
+		archer.charge_state = 0;
+		archer.charge_time = 0;
+		this.getSprite().SetEmitSoundPaused(true);
+		getHUD().SetCursorFrame(0);
+	}
+
 	if (isKnocked(this) || this.isInInventory())
 	{
 		archer.grappling = false;
