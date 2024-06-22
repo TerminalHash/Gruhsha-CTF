@@ -589,7 +589,7 @@ void onRender(CSprite@ this)
 		f32 holder_x = holder.getBlob().getPosition().x;
 
 		// Change cursor and play sound, when you can't drill outside zone
-		if ((holder.getBlob().getConfig() == "knight" || holder.getBlob().getConfig() == "archer") && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0)  && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0) ) && holder.getBlob().isKeyJustPressed(key_action1) && isClient())
+		if ((holder.getBlob().getConfig() == "knight" || holder.getBlob().getConfig() == "archer") && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0)  && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0) ) && holder.getBlob().isKeyJustPressed(key_action1) && isClient()))
 		{
 			Sound::Play("NoAmmo.ogg");
 		}
