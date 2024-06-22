@@ -1,6 +1,6 @@
 // StorageMaterialConverter.as
 
-s32 convert_time_inventory = 45;
+s32 convert_time_inventory = 10;
 
 ///////////////////////////////////////////////
 // Converter heart
