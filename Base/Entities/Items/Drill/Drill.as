@@ -623,7 +623,7 @@ void onRender(CSprite@ this)
 	Vec2f ul(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12);
 	Vec2f new_ul = ul + Vec2f(-10, -15);
 
-	if (holder !is null && holder.isLocal() && holder.getBlob().getConfig() != "archer")
+	if (holder !is null && holder.isLocal())
 	{
 		DrawDrillHeat(blob, new_ul);
 	}

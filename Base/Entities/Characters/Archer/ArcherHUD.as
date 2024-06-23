@@ -4,6 +4,7 @@
 #include "ActorHUDStartPos.as";
 #include "ArcherResupplyHUD.as";
 #include "MaterialIndicatorHUD.as";
+#include "pathway.as";
 
 const string iconsFilename = "Entities/Characters/Archer/ArcherIcons.png";
 const int slotsSize = 6;
@@ -17,6 +18,8 @@ void onInit(CSprite@ this)
 
 void ManageCursors(CBlob@ this)
 {
+	CBlob@ carried = this.getCarriedBlob();
+
 	// set cursor
 	if (getHUD().hasButtons())
 	{
@@ -24,10 +27,35 @@ void ManageCursors(CBlob@ this)
 	}
 	else
 	{
-		// set cursor
-		getHUD().SetCursorImage("Entities/Characters/Archer/ArcherCursor.png", Vec2f(32, 32));
-		getHUD().SetCursorOffset(Vec2f(-16, -16) * cl_mouse_scale);
-		// frame set in logic
+		if (carried !is null && carried.getName() == "drill")
+		{
+			/////////////////////////////////////////////////////
+			// drill shit
+			f32 left = getRules().get_u16("barrier_x1");
+			f32 right = getRules().get_u16("barrier_x2");
+
+			AttachmentPoint@ point = this.getAttachments().getAttachmentPointByName("PICKUP");
+
+			CBlob@ holder = point.getOccupied();
+			if (holder is null) return;
+
+			f32 holder_x = holder.getPosition().x;
+			/////////////////////////////////////////////////////
+
+			getHUD().SetCursorImage(getPath() + "Sprites/HUD/Cursors/DrillCursor.png", Vec2f(32, 32));
+			getHUD().SetCursorOffset(Vec2f(-11, -11) * cl_mouse_scale);
+
+			if ((holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0))
+			{
+				getHUD().SetCursorImage(getPath() + "Sprites/HUD/Cursors/CantDrillCursor.png", Vec2f(32, 32));
+				getHUD().SetCursorOffset(Vec2f(-11, -11) * cl_mouse_scale);
+			}
+		} else {
+			// set cursor
+			getHUD().SetCursorImage("Entities/Characters/Archer/ArcherCursor.png", Vec2f(32, 32));
+			getHUD().SetCursorOffset(Vec2f(-16, -16) * cl_mouse_scale);
+			// frame set in logic
+		}
 	}
 }
 
