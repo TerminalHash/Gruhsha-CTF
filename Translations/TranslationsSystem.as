@@ -138,6 +138,7 @@ namespace Names
 	headrotating		  	      		 = Translate(en::n_headrotating+"\\"+ru::n_headrotating),
 	clusterfuck	  	      				 = Translate(en::n_clusterfuck+"\\"+ru::n_clusterfuck),
 	drillzoneborders		  	      	 = Translate(en::n_drillzoneborders+"\\"+ru::n_drillzoneborders),
+	grapplewhilecharging	  	      				 = Translate(en::n_grapplewhilecharging+"\\"+ru::n_grapplewhilecharging),
 	annoyingnature		 	 	      	 = Translate(en::n_annoyingnature+"\\"+ru::n_annoyingnature),
 	annoyingvoicelines		 	 	     = Translate(en::n_annoyingvoicelines+"\\"+ru::n_annoyingvoicelines),
 	annoyingtags		 	 	      	 = Translate(en::n_annoyingtags+"\\"+ru::n_annoyingtags),

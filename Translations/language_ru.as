@@ -121,6 +121,7 @@ namespace ru
 	n_headrotating							= "Поворот головы в сторону курсора",
 	n_clusterfuck							= "Отображение частиц и кусков",
 	n_drillzoneborders						= "Границы зоны дриллинга",
+	n_grapplewhilecharging					= "Использовать крюк при стрельбе",
 	n_annoyingnature						= "Звук от кустов и листьев",
 	n_annoyingvoicelines					= "Звуки войслайнов",
 	n_annoyingtags							= "Звуки меток",

@@ -120,6 +120,7 @@ string[][] setting_texts =
 		Names::headrotating,
 		Names::clusterfuck,
 		Names::drillzoneborders,
+		Names::grapplewhilecharging,
 		Names::annoyingnature,
 		Names::annoyingvoicelines,
 		Names::annoyingtags,
@@ -138,6 +139,7 @@ string[][] setting_file_names =
 		"head_rotating",
 		"clusterfuck",
 		"drillzone_borders",
+		"grapple_with_charging",
 		"annoying_nature",
 		"annoying_voicelines",
 		"annoying_tags",
@@ -178,6 +180,10 @@ string[][][] setting_options =
 		},
 		{
 			Descriptions::universaloff,       // DRILLZONE BORDERS
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // GRAPPLE WHILE CHARGING
 			Descriptions::universalon
 		},
 		{
@@ -235,6 +241,10 @@ string[][][] setting_option_names =
 		},
 		{
 			"off",       // DRILLZONE BORDERS
+			"on"
+		},
+		{
+			"off",       // GRAPPLE WHILE CHARGING
 			"on"
 		},
 		{

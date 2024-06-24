@@ -91,6 +91,7 @@ void ManageGrapple(CBlob@ this, ArcherInfo@ archer)
 	Vec2f pos = this.getPosition();
 
 	const bool right_click = this.isKeyJustPressed(key_action2);
+	string use_grapple_with_charging = getRules().get_string("grapple_with_charging");
 
 	// fletch arrows from tree
 	if(this.isKeyPressed(key_action2)
@@ -126,7 +127,7 @@ void ManageGrapple(CBlob@ this, ArcherInfo@ archer)
 		}
 	}
 
-	if (b_KeyJustPressed("cancel_charging") && charge_state != ArcherParams::stabbing)
+	if (b_KeyJustPressed("cancel_charging") && charge_state != ArcherParams::stabbing && use_grapple_with_charging == "on")
 	{
 		if (charge_state != ArcherParams::not_aiming && charge_state != ArcherParams::fired)
 		{
@@ -141,15 +142,15 @@ void ManageGrapple(CBlob@ this, ArcherInfo@ archer)
 	if (right_click && charge_state != ArcherParams::stabbing)
 	{
 		// cancel charging
-		/*if (charge_state != ArcherParams::not_aiming &&
-		    charge_state != ArcherParams::fired) // allow grapple right after firing
+		if (charge_state != ArcherParams::not_aiming &&
+		    charge_state != ArcherParams::fired && use_grapple_with_charging == "off") // allow grapple right after firing
 		{
 			charge_state = ArcherParams::not_aiming;
 			archer.charge_time = 0;
 			sprite.SetEmitSoundPaused(true);
 			sprite.PlaySound("PopIn.ogg");
-		}*/
-		if (canSend(this) || isServer()) //otherwise grapple
+		}
+		else if (canSend(this) || isServer()) //otherwise grapple
 		{
 			archer.grappling = true;
 			archer.grapple_id = 0xffff;
