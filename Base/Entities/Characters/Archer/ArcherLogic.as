@@ -136,7 +136,10 @@ void ManageGrapple(CBlob@ this, ArcherInfo@ archer)
 			sprite.SetEmitSoundPaused(true);
 			sprite.PlaySound("PopIn.ogg");
 			this.SendCommand(this.getCommandID("cancel arrow charge"));
+			//printf("Charging canceled on server/client");
 		}
+
+		archer.charge_state = charge_state;
 	}
 
 	if (right_click && charge_state != ArcherParams::stabbing)
@@ -1105,6 +1108,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		archer.charge_state = ArcherParams::readying;
 		archer.charge_time = 0;
 		this.SendCommand(this.getCommandID("cancel arrow charge client"));
+		//printf("Charging canceled on server");
 	}
 	else if (cmd == this.getCommandID("cancel arrow charge client") && isClient())
 	{
@@ -1123,6 +1127,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		archer.charge_time = 0;
 		this.getSprite().SetEmitSoundPaused(true);
 		this.getSprite().PlaySound("PopIn.ogg");
+		//printf("Charging canceled on client");
 	}
 
 	if (cmd == this.getCommandID("play fire sound") && isClient())
