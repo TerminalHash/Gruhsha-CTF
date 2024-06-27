@@ -725,7 +725,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 					DrawPickButton(
 						Vec2f(tl.x + 400, br.y - 24),
 						Vec2f(tl.x + 450, br.y),
-						"spec", "spec", username
+						"SPEC", "spec", username
 					);
 				}
 			}
