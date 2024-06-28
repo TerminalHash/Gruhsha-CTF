@@ -154,7 +154,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 				} else if (force_value >= 10 && force_value <= 14) {
 					this.sub_s32("jump_prop", 7.5); 						// 10 jumps
 					this.Sync("jump_prop", true);
-				} else if (force_value >= 7 && force_value <= 10) {
+				} else if (force_value >= 8.5 && force_value <= 10) {
 					this.sub_s32("jump_prop", 5); 							// 15 jumps
 					this.Sync("jump_prop", true);
 				}
