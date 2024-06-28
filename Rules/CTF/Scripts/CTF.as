@@ -289,9 +289,9 @@ shared class CTFSpawns : RespawnSystem
 		//s32 tickspawndelay = s32(CTF_core.spawnTime);
 
 		// Dynamic respawn shit
-		s32 tickspawndelay = s32(getTicksASecond() * 7);
+		s32 tickspawndelay = s32(getTicksASecond() * 6);
 
-		u32 counteg = 0;
+		/*u32 counteg = 0;
 		for (int i=0; i<getPlayersCount(); ++i)
 		{
 			CPlayer@ p = getPlayer(i);
@@ -328,7 +328,7 @@ shared class CTFSpawns : RespawnSystem
 		else if (counteg >= 16)
 		{
 			tickspawndelay = s32(getTicksASecond() * 10);
-		}
+		}*/
 
 		if (getRules().hasTag("offi match"))
 		{
