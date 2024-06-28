@@ -29,13 +29,19 @@ void onTick(CBlob@ this)
             if (name == "mat_stone" && getGameTime() > convert_time_inventory * getTicksASecond() + item.get_s32("storage pickup time")) {
                 getRules().add_s32("teamstone" + this.getTeamNum(), stone_count);
                 getRules().Sync("teamstone" + this.getTeamNum(), true);
-                inv.server_RemoveItems("mat_stone", stone_count);
+                //inv.server_RemoveItems("mat_stone", stone_count); // dont working with onRemoveFromInventory hook???
+
+                this.server_PutOutInventory(item);
+                item.server_Die();
 
                 this.SendCommand(this.getCommandID("play convert sound"));
             } else if (name == "mat_wood" && getGameTime() > convert_time_inventory * getTicksASecond() + item.get_s32("storage pickup time")) {
                 getRules().add_s32("teamwood" + this.getTeamNum(), wood_count);
                 getRules().Sync("teamwood" + this.getTeamNum(), true);
-                inv.server_RemoveItems("mat_wood", wood_count);
+                //inv.server_RemoveItems("mat_wood", wood_count); // dont working with onRemoveFromInventory hook???
+
+                this.server_PutOutInventory(item);
+                item.server_Die();
 
                 this.SendCommand(this.getCommandID("play convert sound"));
             }
