@@ -22,7 +22,7 @@ void onInit(CBlob@ this)
 	this.set(Trampoline::TIMER, cooldowns);
 	this.getShape().getConsts().collideWhenAttached = true;
 
-	this.set_s32("jump_prop", 75);
+	this.set_s32("jump_prop", 100);
 	this.Sync("jump_prop", true);
 
 	this.Tag("no falldamage");
@@ -146,16 +146,16 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 					this.sub_s32("jump_prop", 50); 							// 2 jumps
 					this.Sync("jump_prop", true);
 				} else if (force_value >= 17 && force_value <= 19) {
-					this.sub_s32("jump_prop", 25); 							// 3 jumps
+					this.sub_s32("jump_prop", 25); 							// 4 jumps
 					this.Sync("jump_prop", true);
 				} else if (force_value >= 14 && force_value <= 17) {
-					this.sub_s32("jump_prop", 12.5); 						// 6 jumps
+					this.sub_s32("jump_prop", 12.5); 						// 8 jumps
 					this.Sync("jump_prop", true);
 				} else if (force_value >= 10 && force_value <= 14) {
-					this.sub_s32("jump_prop", 7.5); 						// 10 jumps
+					this.sub_s32("jump_prop", 7.5); 						// ~13 jumps
 					this.Sync("jump_prop", true);
 				} else if (force_value >= 8.5 && force_value <= 10) {
-					this.sub_s32("jump_prop", 5); 							// 15 jumps
+					this.sub_s32("jump_prop", 5); 							// 20 jumps
 					this.Sync("jump_prop", true);
 				}
 
