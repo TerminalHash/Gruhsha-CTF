@@ -3,7 +3,7 @@
 #include "HeadCommon.as"
 #include "TranslationsSystem.as"
 
-Vec2f playerCardDims(256, 198+26);
+Vec2f playerCardDims(256, 198+60);
 
 int hovered_accolade = -1;
 int hovered_age = -1;
@@ -14,10 +14,10 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 {
 	CControls@ controls = getControls();
 	Vec2f mousePos = controls.getMouseScreenPos();
-	
+
 	CPlayer@ localplayer = getLocalPlayer();
 	if (localplayer is null) return;
-	
+
 	//colors
 	u32 col_white = 0xffffffff;
 	u32 col_gold = 0xffe0e050;
@@ -25,31 +25,31 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 	u32 col_darkgrey = 0xff404040;
 	u32 col_middlegrey = 0xff808080;
 	u32 col_lightgrey = 0xffcccccc;
-	
+
 	//some bools idk
 	bool draw_age = true;
 	bool draw_tier = true;
-	
+
 	//name stuff
 	string username = player.getUsername();
 	string charname = player.getCharacterName();
 	string clantag = player.getClantag();
-	
+
 	//main pane
 	Vec2f paneDims = playerCardDims;
 	Vec2f topLeft = pos;//-Vec2f(paneDims.x/2+32,-8);
 	Vec2f botRight = topLeft+Vec2f(paneDims.x,paneDims.y);
 	GUI::DrawPane(topLeft, botRight);
-	
+
 	Vec2f paneGap(0, 2);
 	Vec2f sideGap(6, 6);
-	
+
 	//charname stuff
 	Vec2f charnameTopLeft(sideGap.x, sideGap.y);
 	Vec2f charnamePaneDims(paneDims.x-charnameTopLeft.x*2, 28);
 	Vec2f charnameBotRight = Vec2f(botRight.x-charnameTopLeft.x, topLeft.y+charnameTopLeft.y+charnamePaneDims.y);
 	GUI::DrawPane(topLeft+charnameTopLeft, charnameBotRight, SColor(0xff777777));
-	
+
 	//username stuff
 	SColor nameColor = getNameColour(player);
 	Vec2f usernameTopLeft(charnameTopLeft.x, charnamePaneDims.y+sideGap.y-2);
@@ -60,6 +60,7 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 	GUI::GetTextDimensions(USR_PREFIX, prefix_dims);
 	GUI::DrawShadowedText(USR_PREFIX, topLeft+usernameTopLeft+Vec2f(4,charnamePaneDims.y/6), col_middlegrey);
 	GUI::DrawShadowedText(username, topLeft+usernameTopLeft+Vec2f(4+prefix_dims.x,charnamePaneDims.y/6), nameColor);
+
 	/* if (mousePos.x > usernameTopLeft.x && mousePos.x < usernameBotRight.x && mousePos.y < usernameBotRight.y && mousePos.y > usernameTopLeft.y && controls.mousePressed2)
 	{
 		// reason for this is because this is called multiple per click (since its onRender, and clicking is updated per tick)
@@ -72,12 +73,12 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 			getRules().set_Vec2f("client_copy_pos", mousePos + Vec2f(0, -10));
 		}
 	} */
-	
+
 	//how much room to leave for names and clantags
 	Vec2f clantagDims(0, 0);
 	Vec2f charnameDims(0, 0);
 	GUI::GetTextDimensions(charname, charnameDims);
-	
+
 	//drawing name + clantag
 	if (clantag != "") {
 		GUI::GetTextDimensions(clantag, clantagDims);
@@ -87,36 +88,36 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 	else {
 		GUI::DrawShadowedText(charname, topLeft+charnameTopLeft+Vec2f(4,charnamePaneDims.y/6), color_white);
 	}
-	
+
 	//accolades stuff
 	Vec2f accoladeShift(80, 0);
 	Vec2f accoladePaneTopLeft(sideGap.x+accoladeShift.x-2, usernameTopLeft.y+charnamePaneDims.y+paneGap.y);
-	Vec2f accoladePaneBotRight(botRight.x-sideGap.x, topLeft.y+accoladePaneTopLeft.y+156);
+	Vec2f accoladePaneBotRight(botRight.x-sideGap.x, topLeft.y+accoladePaneTopLeft.y+190);
 	Vec2f accoladePaneDims(paneDims.x-sideGap.x*2, paneDims.x-sideGap.x*2+10);
-	
+
 	//potrait tl br
 	Vec2f portraitTopLeft = topLeft+Vec2f(usernameTopLeft.x, accoladePaneTopLeft.y);
 	Vec2f portraitBotRight = portraitTopLeft+Vec2f(76, 76);
-	
+
 	//frame behind the portrat
 	GUI::DrawFramedPane(portraitTopLeft, portraitBotRight);
-	
+
 	//making the portrait
 	string portrait_name = "face_knight.png";
 	CBlob@ blob = player.getBlob();
-		
+
 	//for the cool guys
 	string title = getStatus(username, 0, portrait_name);
 
 	GUI::DrawIcon(portrait_name, 0, Vec2f(32, 32), portraitTopLeft+Vec2f(6,6), 1.0f, player.getTeamNum());
-	
+
 	//pane for accolades
 	GUI::DrawPane(topLeft+accoladePaneTopLeft, accoladePaneBotRight);
-	
+
 	//pane for crown/tier and age
 	Vec2f agePaneTopLeft = Vec2f(portraitTopLeft.x, portraitBotRight.y+2);
 	GUI::DrawPane(agePaneTopLeft, Vec2f(topLeft.x+accoladePaneTopLeft.x-2, accoladePaneBotRight.y));
-	
+
 	//render player accolades
 	Accolades@ acc = getPlayerAccolades(username);
 	int accolades_start = -accoladePaneTopLeft.x;
@@ -124,7 +125,7 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 	GUI::DrawShadowedText(getTranslatedString("Accolades"), topLeft+accoladePaneTopLeft+Vec2f(4,charnameDims.y/4), SColor(0xffffffff));
 	GUI::DrawShadowedText(Names::medalsn, topLeft+accoladePaneTopLeft+Vec2f(4,charnameDims.y/4+48), SColor(0xffffffff));
 	GUI::DrawShadowedText(Names::partipin, topLeft+accoladePaneTopLeft+Vec2f(4,charnameDims.y/4+96), SColor(0xffffffff));
-	
+
 	//draw support tier
 	int tier = player.getSupportTier();
 	if(draw_tier && !player.isBot())
@@ -144,7 +145,7 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 		}
 
 	}
-	
+
 	if (acc !is null)
 	{
 		//(remove crazy amount of duplicate code)
@@ -178,7 +179,7 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 			acc.gold,               0,     1,         1,
 			acc.silver,             1,     1,         1,
 			acc.bronze,             2,     1,         1,
-			
+
 			//participation
 			acc.participation,      3,     1,         2,
 
@@ -203,7 +204,7 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 			int group     = badges_encode[bi+3];
 
 			int group_idx = group * 2;
-			
+
 			int group_y = group_idx*24;
 
 			if(
@@ -218,7 +219,7 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 			int group_step = group_encode[group_idx+1];
 
 			float x = topLeft.x + 8 - group_x;
-			
+
 			Vec2f icon_pos = Vec2f(x, topLeft.y+accolades_y+2+group_y);
 			GUI::DrawIcon("AccoladeBadges", icon, Vec2f(16, 16), icon_pos, 1.0f, player.getTeamNum());
 			if (show_text > 0)
@@ -231,12 +232,12 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 					SColor(0xffffffff)
 				);
 			}
-			
+
 			if (mousePos.x > x -4 && mousePos.x < x + 24 && mousePos.y < icon_pos.y + 24 && mousePos.y > icon_pos.y -4)
 			{
 				hovered_accolade = icon;
 			}
-			
+
 			//handle repositioning
 			group_encode[group_idx] -= group_step;
 		}
@@ -379,25 +380,25 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 				hovered_accolade = membership_type;
 			}
 		}
-		
+
 		string head_file;
 		int head_frame;
-		
+
 		if (player.getBlob() is null) {
 			head_frame = getHeadSpecs(player, head_file);
 		} else {
 			head_frame = player.getBlob().get_s32("head index");
 			head_file = player.getBlob().get_string("head texture");
 		}
-		
+
 		Vec2f head_dims(16,16);
 		f32 head_icon_scale = 1.0f;
 		Vec2f head_icon_pos = Vec2f(portraitTopLeft.x,portraitBotRight.y)+Vec2f(38, 40);
 		GUI::DrawIcon(head_file, head_frame+(getGameTime()%90<60?(getGameTime()%90<40?1:2):0), head_dims, head_icon_pos, head_icon_scale, head_icon_scale, player.getTeamNum(), SColor(0xaaffffff));
 
 		// TODO: need more space for clan badges
-		/*f32 clan_badge_icon_scale = 1.0f;
-		Vec2f clan_badge_icon_pos = Vec2f(portraitTopLeft.x,portraitBotRight.y)+Vec2f(40, 8);
+		f32 clan_badge_icon_scale = 1.0f;
+		Vec2f clan_badge_icon_pos = Vec2f(portraitTopLeft.x,portraitBotRight.y)+Vec2f(8, 76);
 		if (clantag.toUpper() == "MINECULT") {
 			GUI::DrawIcon("Sprites/clan_badges.png", 0, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, player.getTeamNum());
 		} else if (clantag.toUpper() == "TTOGAD") {
@@ -412,8 +413,8 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 			GUI::DrawIcon("Sprites/clan_badges.png", 5, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, 0);
 		} else if (clantag.toUpper() == "BUTTERMINA" || clantag.toUpper() == "BUTTERCULT") {
 			GUI::DrawIcon("Sprites/clan_badges.png", 6, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, player.getTeamNum());
-		}*/
-		
+		}
+
 	drawHoverExplanation(hovered_accolade, hovered_age, hovered_tier, Vec2f(mousePos.x, mousePos.y+32));
 }
 
@@ -463,7 +464,7 @@ void drawAgeIcon(int age, Vec2f position)
 		position.x -= number_gap - 2;
 		GUI::DrawIcon("AccoladeBadges", years_frame_start + (age / 10), Vec2f(16, 16), position, 1.0f, 0);
 		age = age % 10;
-		position.x += number_gap + 4;
+		position.x += number_gap + 7;
 	}
 
 	GUI::DrawIcon("AccoladeBadges", years_frame_start + age, Vec2f(16, 16), position, 1.0f, 0);
