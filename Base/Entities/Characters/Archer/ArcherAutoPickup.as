@@ -64,6 +64,20 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 		}
 	}
 
+	if (blobName == "drill") {
+		CPlayer@ p = this.getPlayer();
+
+		if (p !is null) {
+			string username = p.getUsername();
+
+			if (blob.canBePickedUp(this) && blob.canBePutInInventory(this) && getRules().get_string(username + "pickdrill_archer") != "no") {
+				if (this.server_PutInInventory(blob)) {
+					return;
+				}
+			}
+		}
+	}
+
 	CBlob@ carryblob = this.getCarriedBlob(); // For crate detection
 	if (carryblob !is null && carryblob.getName() == "crate")
 	{

@@ -127,6 +127,9 @@ namespace en
 	n_annoyingtags							= "Sounds from tags",
 	n_customdpsounds						= "Custom death/pain sounds",
 	n_switchclasschanginginshop				= "Disable class changing in shops",
+	n_drillknight							= "Drill autopickup (Knight)",
+	n_drillbuilder							= "Drill autopickup (Builder)",
+	n_drillarcher							= "Drill autopickup (Archer)",
 
 		// Other
 	n_pressdelete							= "Choose a bind and press [DELETE] to remove key",

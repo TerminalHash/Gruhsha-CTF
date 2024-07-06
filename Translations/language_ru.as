@@ -127,6 +127,9 @@ namespace ru
 	n_annoyingtags							= "Звуки меток",
 	n_customdpsounds						= "Кастомные звуки смерти/боли",
 	n_switchclasschanginginshop				= "Выкл. смену класса в магазинах",
+	n_drillknight							= "Автоподбор дрели (Рыцарь)",
+	n_drillbuilder							= "Автоподбор дрели (Строитель)",
+	n_drillarcher							= "Автоподбор дрели (Лучник)",
 
 		// Other
 	n_pressdelete							= "Выбери клавишу и нажми [DELETE] для очистки хоткея!",

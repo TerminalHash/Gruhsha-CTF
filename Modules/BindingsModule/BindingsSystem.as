@@ -12,6 +12,7 @@ void onInit(CRules@ this)
 	this.addCommandID("b buttonclick");
 	this.addCommandID("p buttonclick");
 	this.addCommandID("s buttonclick");
+	this.addCommandID("sync drill autopickup");
 
 	ResetRuleBindings();
 	ResetRuleSettings();
@@ -100,11 +101,25 @@ void onInit(CRules@ this)
 			{
 				sfile.add_string("disable_class_change_in_shops", "no");
 			}
+
+			if (!sfile.exists("pickdrill_knight"))
+			{
+				sfile.add_string("pickdrill_knight", "yes");
+			}
+
+			if (!sfile.exists("pickdrill_builder"))
+			{
+				sfile.add_string("pickdrill_builder", "yes");
+			}
+
+			if (!sfile.exists("pickdrill_archer"))
+			{
+				sfile.add_string("pickdrill_archer", "yes");
+			}
 		}
 		else // default settings
 		{
 			sfile.add_string("blockbar_hud", "yes");
-			//sfile.add_string("build_mode", "vanilla"); // rip
 			sfile.add_string("camera_sway", "5");
 			sfile.add_string("body_tilting", "on");
 			sfile.add_string("head_rotating", "on");
@@ -115,6 +130,9 @@ void onInit(CRules@ this)
 			sfile.add_string("annoying_tags", "on");
 			sfile.add_string("custom_death_and_pain_sounds", "on");
 			sfile.add_string("disable_class_change_in_shops", "no");
+			sfile.add_string("pickdrill_knight", "yes");
+			sfile.add_string("pickdrill_builder", "yes");
+			sfile.add_string("pickdrill_archer", "yes");
 
 			printf("Creating local settings file with default values for Gruhsha.");
 		}
@@ -400,4 +418,87 @@ void InitMenu()
 	}
 
 	@BindingGUI = GUI;
+}
+
+void onCommand( CRules@ this, u8 cmd, CBitStream @params )
+{
+	if (cmd == this.getCommandID("p buttonclick"))
+	{
+		return;
+		bool selected = params.read_bool();
+		u16 id = params.read_u16();
+		string username = params.read_string();
+
+		if (getLocalPlayer().getUsername() != username) return;
+
+		for (int i=0; i<BindingGUI.page_buttons.length; ++i)
+		{
+			if (i != id)
+				BindingGUI.page_buttons[i].m_selected = false;
+		}
+
+		for (int i=0; i<BindingGUI.buttons.length; ++i)
+		{
+			for (int g=0; g<BindingGUI.buttons[i].length; ++g)
+			{
+				BindingGUI.buttons[i][g].m_selected = false;
+			}
+		}
+
+		BindingGUI.current_page = id;
+
+		//printf("hi, id: " + id);
+	}
+
+	if (cmd == this.getCommandID("b buttonclick"))
+	{
+		bool selected = params.read_bool();
+		u16 id = params.read_u16();
+		string username = params.read_string();
+
+		if (getLocalPlayer().getUsername() != username) return;
+
+		u16 binding_index = 0;
+
+		for (int i=0; i<BindingGUI.buttons.length; ++i)
+		{
+			for (int g=0; g<BindingGUI.buttons[i].length; ++g)
+			{
+				if (binding_index != id)
+					BindingGUI.buttons[i][g].m_selected = false;
+
+				binding_index++;
+			}
+		}
+
+		//printf("hi, id: " + id);
+	}
+
+	if (cmd == this.getCommandID("sync drill autopickup") && isServer())
+	{
+		u8 action; // class: 1 knight 2 builder 3 archer
+		if (!params.saferead_u8(action)) return;
+
+		bool yes;
+		if (!params.saferead_bool(yes)) return;
+
+		string autopick = "yes";
+		if (!yes) autopick = "no";
+
+		CPlayer@ player = getNet().getActiveCommandPlayer();
+		if (player is null) return;
+
+		if (action == 1)
+		{
+			getRules().set_string(player.getUsername() + "pickdrill_knight", autopick);
+		}
+		else if (action == 2)
+		{
+			getRules().set_string(player.getUsername() + "pickdrill_builder", autopick);
+		}
+		else if (action == 3)
+		{
+			getRules().set_string(player.getUsername() + "pickdrill_archer", autopick);
+		}
+	}
 }

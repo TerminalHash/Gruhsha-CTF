@@ -113,7 +113,6 @@ string[][] button_file_names =
 string[][] setting_texts =
 {
 	{
-		//Names::buildmode,           // rip
 		Names::blockbar,
 		Names::camerasw,
 		Names::bodytilt,
@@ -125,14 +124,16 @@ string[][] setting_texts =
 		Names::annoyingvoicelines,
 		Names::annoyingtags,
 		Names::customdpsounds,
-		Names::switchclasschanginginshop
+		Names::switchclasschanginginshop,
+		Names::drillknight,
+		Names::drillbuilder,
+		Names::drillarcher
 	}
 };
 
 string[][] setting_file_names =
 {
 	{
-		//"build_mode",                 // rip
 		"blockbar_hud",
 		"camera_sway",
 		"body_tilting",
@@ -144,23 +145,22 @@ string[][] setting_file_names =
 		"annoying_voicelines",
 		"annoying_tags",
 		"custom_death_and_pain_sounds",
-		"disable_class_change_in_shops"
+		"disable_class_change_in_shops",
+		"pickdrill_knight",
+		"pickdrill_builder",
+		"pickdrill_archer"
 	}
 };
 
 string[][][] setting_options =
 {
 	{
-		//{                              // rip
-		//	Descriptions::bmoptvan, // 10
-		//	Descriptions::bmoptlag // 20
-		//},
 		{
-			Descriptions::universalno, // 10
+			Descriptions::universalno, // 10	BLOCKBAR ON HUD
 			Descriptions::universalyes // 20
 		},
 		{
-			"1", // 1
+			"1", // 1							CAMERA SWAY
 			"2", // 2
 			"3", // 3
 			"4", // 4
@@ -203,7 +203,19 @@ string[][][] setting_options =
 			Descriptions::universalon
 		},
 		{
-			Descriptions::universalno, // 10
+			Descriptions::universalno, // 10	CLASS CHANGING IN SHOPS
+			Descriptions::universalyes // 20
+		},
+		{
+			Descriptions::universalno, // 10	DRILL AUTOPICKUP FOR KNIGHT
+			Descriptions::universalyes // 20
+		},
+		{
+			Descriptions::universalno, // 10	DRILL AUTOPICKUP FOR BUILDER
+			Descriptions::universalyes // 20
+		},
+		{
+			Descriptions::universalno, // 10	DRILL AUTOPICKUP FOR ARCHER
 			Descriptions::universalyes // 20
 		}
 	}
@@ -212,16 +224,12 @@ string[][][] setting_options =
 string[][][] setting_option_names =
 {
 	{
-		//{                              // rip
-		//	"vanilla", // 10
-		//	"lagfriendly" // 20
-		//},
 		{
 			"no", // 10    BLOCKBAR
 			"yes" // 20
 		},
 		{
-			"1", // 1
+			"1", // 1	   CAMERA SWAY
 			"2", // 2
 			"3", // 3
 			"4", // 4
@@ -265,6 +273,18 @@ string[][][] setting_option_names =
 		},
 		{
 			"no", // 10    CLASS CHANGING IN SHOPS
+			"yes" // 20
+		},
+		{
+			"no", // 10    DRILL AUTOPICKUP FOR KNIGHT
+			"yes" // 20
+		},
+		{
+			"no", // 10    DRILL AUTOPICKUP FOR BUILDER
+			"yes" // 20
+		},
+		{
+			"no", // 10    DRILL AUTOPICKUP FOR ARCHER
 			"yes" // 20
 		}
 	}
@@ -373,26 +393,62 @@ void LoadFileSettings()
 	
 	ConfigFile file;
 
-	if (file.loadFile(BINDINGSDIR + SETTINGSFILE)) 
-	{ 
-		for (int i=0; i<setting_texts.length; ++i)
-		{
-			for (int g=0; g<setting_texts[i].length; ++g)
-			{
+	if (file.loadFile(BINDINGSDIR + SETTINGSFILE)) {
+		for (int i=0; i<setting_texts.length; ++i) {
+			for (int g=0; g<setting_texts[i].length; ++g) {
 				string file_entry = setting_file_names[i][g];
 
-				if (file.exists(file_entry))
-				{
-					if (file_entry == "camera_sway")
-					{
+				if (file.exists(file_entry)) {
+					if (file_entry == "camera_sway") {
 						CCamera@ camera = getCamera();
-						if (camera !is null)
-						{
+
+						if (camera !is null) {
 							camera.posLag = Maths::Max(1.0, f32(parseInt(file.read_string(file_entry))));
 						}
 					}
 
 					getRules().set_string(file_entry, file.read_string(file_entry));
+
+					if (isClient()) {
+						if (file_entry == "pickdrill_knight") {
+							CBitStream params;
+							params.write_u8(1);
+
+							if (file.read_string(file_entry) == "yes") {
+								params.write_bool(true);
+							} else {
+								params.write_bool(false);
+							}
+
+							getRules().SendCommand(getRules().getCommandID("sync drill autopickup"), params);
+						}
+
+						if (file_entry == "pickdrill_builder") {
+							CBitStream params;
+							params.write_u8(2);
+
+							if (file.read_string(file_entry) == "yes") {
+								params.write_bool(true);
+							} else {
+								params.write_bool(false);
+							}
+
+							getRules().SendCommand(getRules().getCommandID("sync drill autopickup"), params);
+						}
+
+						if (file_entry == "pickdrill_archer") {
+							CBitStream params;
+							params.write_u8(3);
+
+							if (file.read_string(file_entry) == "yes") {
+								params.write_bool(true);
+							} else {
+								params.write_bool(false);
+							}
+
+							getRules().SendCommand(getRules().getCommandID("sync drill autopickup"), params);
+						}
+					}
 				}
 			}
 		}
@@ -1173,6 +1229,8 @@ u8 magic_number = 4;
 Vec2f ENTRY_SIZE2 = Vec2f(900, 23);
 Vec2f ENTRY_SIZE3 = Vec2f(900, 23);
 
+ClickableButtonGUI@ BindingGUI;
+
 class ClickableButtonGUI
 {
 	Vec2f m_clickable_size;
@@ -1481,5 +1539,3 @@ void fakeCommand(CRules@ this, u8 cmd, CBitStream@ params)
 		//printf("hi, id: " + id);
 	}
 }
-
-ClickableButtonGUI@ BindingGUI;

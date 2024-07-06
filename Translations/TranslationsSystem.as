@@ -144,6 +144,9 @@ namespace Names
 	annoyingtags		 	 	      	 = Translate(en::n_annoyingtags+"\\"+ru::n_annoyingtags),
 	customdpsounds		 	 	      	 = Translate(en::n_customdpsounds+"\\"+ru::n_customdpsounds),
 	switchclasschanginginshop			 = Translate(en::n_switchclasschanginginshop+"\\"+ru::n_switchclasschanginginshop),
+	drillknight							 = Translate(en::n_drillknight+"\\"+ru::n_drillknight),
+	drillbuilder			 			 = Translate(en::n_drillbuilder+"\\"+ru::n_drillbuilder),
+	drillarcher							 = Translate(en::n_drillarcher+"\\"+ru::n_drillarcher),
 
 		// Other
 	pressdelete		  	       			= Translate(en::n_pressdelete+"\\"+ru::n_pressdelete),
