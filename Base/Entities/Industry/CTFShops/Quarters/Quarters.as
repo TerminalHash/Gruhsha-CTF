@@ -92,7 +92,7 @@ void onInit(CBlob@ this)
 
 	// SHOP
 	this.set_Vec2f("shop offset", Vec2f_zero);
-	this.set_Vec2f("shop menu size", Vec2f(6, 1));
+	this.set_Vec2f("shop menu size", Vec2f(7, 1));
 	this.set_string("shop description", "Buy");
 	this.set_u8("shop icon", 25);
 
@@ -123,13 +123,13 @@ void onInit(CBlob@ this)
 		ShopItem@ s = addShopItem(this, Names::pearitem, "$quarters_pear$", "pear", Descriptions::pear, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::pear);
 	}
-	/*{
+	{
 		ShopItem@ s = addShopItem(this, Names::sleepaction, "$rest$", "sleep", Descriptions::sleeptext, true);
 		s.spawnNothing = true;
 		s.customButton = true;
 		s.buttonwidth = 1;
 		s.buttonheight = 1;
-	}*/
+	}
 }
 
 void onTick(CBlob@ this)
@@ -190,11 +190,11 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 	{
 		this.set_Vec2f("shop offset", Vec2f_zero);
 	}
-	else
+	/*else
 	{
 		this.set_Vec2f("shop offset", Vec2f(6, 0));
 		caller.CreateGenericButton("$rest$", Vec2f(-6, 0), this, this.getCommandID("rest"), getTranslatedString("Rest"));
-	}
+	}*/
 
 	this.set_bool("shop available", isOverlapping);
 }
@@ -211,6 +211,9 @@ void onShopMadeItem(CBitStream@ params)
 		return;
 	}
 
+	CBlob@ this = getBlobByNetworkID(this_id);
+	if (this is null) return;
+
 	CBlob@ caller = getBlobByNetworkID(caller_id);
 	if (caller is null) return;
 
@@ -221,6 +224,23 @@ void onShopMadeItem(CBitStream@ params)
 	else if (name == "meal")
 	{
 		caller.server_SetHealth(caller.getInitialHealth());
+	}
+	else if (name == "sleep") {
+		AttachmentPoint@ bed = this.getAttachments().getAttachmentPointByName("BED");
+
+		if (bed !is null && bedAvailable(this)) {
+			CBlob@ carried = caller.getCarriedBlob();
+
+			if (isServer()) {
+				if (carried !is null) {
+					if (!caller.server_PutInInventory(carried)) {
+						carried.server_DetachFrom(caller);
+					}
+				}
+
+				this.server_AttachTo(caller, "BED");
+			}
+		}
 	}
 }
 
