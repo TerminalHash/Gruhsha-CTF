@@ -434,9 +434,9 @@ void onRender(CRules@ rules)
 
         float resolution_modifier_big = resolution_scale * 0.155f;
 
-        if (time_elapsed == 0) resolution_modifier_big *= 5.5;
-        if (time_elapsed == 1) resolution_modifier_big *= 5;
-        if (time_elapsed == 2) resolution_modifier_big *= 4;
+        if (time_elapsed == 0) resolution_modifier_big *= 4;
+        if (time_elapsed == 1) resolution_modifier_big *= 3.5;
+        if (time_elapsed == 2) resolution_modifier_big *= 3;
 
         if (time_elapsed <= time_without_fade)
         {
