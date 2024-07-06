@@ -132,7 +132,7 @@ string[][] setting_file_names =
 		"pickdrill_builder",
 		"pickdrill_archer",
 		"pickbomb_builder",
-		"pickbomb_archer",
+		"pickbomb_archer"
 	}
 };
 
