@@ -106,7 +106,7 @@ void onInit(CRules@ this)
 		}
 
 		// VISUAL/SOUND SETTINGS
-		if (sfile.loadFile(BINDINGSDIR + VSETTINGSFILE)) // file exists
+		if (sfile2.loadFile(BINDINGSDIR + VSETTINGSFILE)) // file exists
 		{
 			printf("Settings file exists.");
 
@@ -176,7 +176,7 @@ void onInit(CRules@ this)
 			printf("Creating local visual and sound settings file with default values for Gruhsha.");
 		}
 
-		if(!sfile.saveFile(VSETTINGSFILE + ".cfg"))
+		if (!sfile2.saveFile(VSETTINGSFILE + ".cfg"))
 		{
 			print("Failed to save GRUHSHA_visualandsoundsettings.cfg");
 		}
@@ -461,7 +461,7 @@ void InitMenu()
 				button.cmd_id = getRules().getCommandID("s buttonclick");
 				button.cmd_subid = vsetting_index;
 
-				++setting_index;
+				++vsetting_index;
 
 				button.m_text = vsetting_texts[i][g];
 				button.m_i = i;
