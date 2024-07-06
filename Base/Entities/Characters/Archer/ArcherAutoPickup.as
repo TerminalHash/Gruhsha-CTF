@@ -64,6 +64,21 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 		}
 	}
 
+    if (blobName == "mat_bombs" || (blobName == "satchel" && !blob.hasTag("exploding")) || blobName == "mat_waterbombs")
+    {
+		CPlayer@ p = this.getPlayer();
+
+		if (p !is null) {
+			string username = p.getUsername();
+
+			if (blob.canBePickedUp(this) && blob.canBePutInInventory(this) && getRules().get_string(username + "pickbomb_archer") != "no") {
+				if (this.server_PutInInventory(blob)) {
+					return;
+				}
+			}
+		}
+    }
+
 	if (blobName == "drill") {
 		CPlayer@ p = this.getPlayer();
 

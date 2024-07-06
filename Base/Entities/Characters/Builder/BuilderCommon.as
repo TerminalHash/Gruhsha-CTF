@@ -7,6 +7,28 @@
 
 const f32 allow_overlap = 2.0f;
 
+namespace BombType
+{
+    enum type
+    {
+        bomb = 0,
+        water,
+        count
+    };
+}
+
+const string[] bombNames = { "Bomb",
+                             "Water Bomb"
+                           };
+
+const string[] bombIcons = { "$Bomb$",
+                             "$WaterBomb$"
+                           };
+
+const string[] bombTypeNames = { "mat_bombs",
+                                 "mat_waterbombs"
+                               };
+
 shared class HitData
 {
 	u16 blobID;
@@ -224,4 +246,9 @@ void ClearCarriedBlock(CBlob@ this)
 		carried.Untag("temp blob");
 		carried.server_Die();
 	}
+}
+
+bool hasBombs(CBlob@ this, u8 bombType)
+{
+    return bombType < BombType::count && this.getBlobCount(bombTypeNames[bombType]) > 0;
 }

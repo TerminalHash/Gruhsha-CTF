@@ -53,6 +53,33 @@ namespace ArrowType
 	};
 }
 
+namespace BombType
+{
+	enum type
+	{
+		bomb = 0,
+		water,
+		count
+	};
+}
+
+const string[] bombNames = { "Bomb",
+                             "Water Bomb"
+                           };
+
+const string[] bombIcons = { "$Bomb$",
+                             "$WaterBomb$"
+                           };
+
+const string[] bombTypeNames = { "mat_bombs",
+                                 "mat_waterbombs"
+                               };
+
+bool hasBombs(CBlob@ this, u8 bombType)
+{
+	return bombType < BombType::count && this.getBlobCount(bombTypeNames[bombType]) > 0;
+}
+
 shared class ArcherInfo
 {
 	s8 charge_time;

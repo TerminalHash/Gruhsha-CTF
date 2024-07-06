@@ -13,6 +13,7 @@ void onInit(CRules@ this)
 	this.addCommandID("p buttonclick");
 	this.addCommandID("s buttonclick");
 	this.addCommandID("sync drill autopickup");
+	this.addCommandID("sync bomb autopickup");
 
 	ResetRuleBindings();
 	ResetRuleSettings();
@@ -116,6 +117,16 @@ void onInit(CRules@ this)
 			{
 				sfile.add_string("pickdrill_archer", "yes");
 			}
+
+			if (!sfile.exists("pickbomb_builder"))
+			{
+				sfile.add_string("pickdrill_builder", "yes");
+			}
+
+			if (!sfile.exists("pickbomb_archer"))
+			{
+				sfile.add_string("pickdrill_archer", "yes");
+			}
 		}
 		else // default settings
 		{
@@ -133,6 +144,8 @@ void onInit(CRules@ this)
 			sfile.add_string("pickdrill_knight", "yes");
 			sfile.add_string("pickdrill_builder", "yes");
 			sfile.add_string("pickdrill_archer", "yes");
+			sfile.add_string("pickbomb_builder", "yes");
+			sfile.add_string("pickbomb_archer", "yes");
 
 			printf("Creating local settings file with default values for Gruhsha.");
 		}
@@ -288,7 +301,7 @@ void onTick(CRules@ this)
 
 Vec2f MENU_SIZE = Vec2f(1000, 700);
 Vec2f ENTRY_SIZE = Vec2f(900, 30);
-Vec2f PAGE_BUTTON_SIZE = Vec2f(150, 60);
+Vec2f PAGE_BUTTON_SIZE = Vec2f(150, 40);
 
 void InitMenu()
 {
@@ -474,8 +487,7 @@ void onCommand( CRules@ this, u8 cmd, CBitStream @params )
 		//printf("hi, id: " + id);
 	}
 
-	if (cmd == this.getCommandID("sync drill autopickup") && isServer())
-	{
+	if (cmd == this.getCommandID("sync drill autopickup") && isServer()) {
 		u8 action; // class: 1 knight 2 builder 3 archer
 		if (!params.saferead_u8(action)) return;
 
@@ -488,17 +500,30 @@ void onCommand( CRules@ this, u8 cmd, CBitStream @params )
 		CPlayer@ player = getNet().getActiveCommandPlayer();
 		if (player is null) return;
 
-		if (action == 1)
-		{
+		if (action == 1) {
 			getRules().set_string(player.getUsername() + "pickdrill_knight", autopick);
-		}
-		else if (action == 2)
-		{
+		} else if (action == 2) {
 			getRules().set_string(player.getUsername() + "pickdrill_builder", autopick);
-		}
-		else if (action == 3)
-		{
+		} else if (action == 3) {
 			getRules().set_string(player.getUsername() + "pickdrill_archer", autopick);
+		}
+	} else if (cmd == this.getCommandID("sync bomb autopickup") && isServer()) {
+		u8 action; // class: 1 knight 2 builder 3 archer
+		if (!params.saferead_u8(action)) return;
+
+		bool yes;
+		if (!params.saferead_bool(yes)) return;
+
+		string autopick = "yes";
+		if (!yes) autopick = "no";
+
+		CPlayer@ player = getNet().getActiveCommandPlayer();
+		if (player is null) return;
+
+		if (action == 2) {
+			getRules().set_string(player.getUsername() + "pickbomb_builder", autopick);
+		} else if (action == 3) {
+			getRules().set_string(player.getUsername() + "pickbomb_archer", autopick);
 		}
 	}
 }

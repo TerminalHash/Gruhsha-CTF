@@ -10,6 +10,7 @@
 #include "PlacementCommon.as";
 #include "ParticleSparks.as";
 #include "MaterialCommon.as";
+#include "StandardControlsCommon.as";
 
 const f32 hit_damage = 0.5f;
 
@@ -24,6 +25,12 @@ void onInit(CBlob@ this)
 	this.Tag("player");
 	this.Tag("flesh");
 
+	ControlsSwitch@ controls_switch = @onSwitch;
+	this.set("onSwitch handle", @controls_switch);
+
+	ControlsCycle@ controls_cycle = @onCycle;
+	this.set("onCycle handle", @controls_cycle);
+
 	HitData hitdata;
 	this.set("hitdata", hitdata);
 
@@ -35,19 +42,32 @@ void onInit(CBlob@ this)
 
 	this.addCommandID("pickaxe");
 	this.addCommandID("play convert sound");
+	this.addCommandID("activate/throw bomb");
 
 	CShape@ shape = this.getShape();
 	shape.SetRotationsAllowed(false);
 	shape.getConsts().net_threshold_multiplier = 0.5f;
 
-	this.set_Vec2f("inventory offset", Vec2f(0.0f, 160.0f));
+	this.set_u8("bomb type", 255);
+	for (uint i = 0; i < bombTypeNames.length; i++)
+	{
+		this.addCommandID("pick " + bombTypeNames[i]);
+	}
+
+	this.addCommandID("get bomb");
+
+	// center on blocks
+	//this.set_Vec2f("inventory offset", Vec2f(0.0f, 160.0f));
+
+	// center on inventory
+	this.set_Vec2f("inventory offset", Vec2f(0.0f, 0.0f));
 
 	SetHelp(this, "help self action2", "builder", getTranslatedString("$Pick$Dig/Chop  $KEY_HOLD$$RMB$"), "", 3);
 
 	this.getCurrentScript().runFlags |= Script::tick_not_attached;
 	this.getCurrentScript().removeIfTag = "dead";
 
-	this.push("names to activate", "keg"); 
+	this.push("names to activate", "keg");
 	this.push("names to activate", "satchel");
 	
 }
@@ -57,6 +77,11 @@ void onSetPlayer(CBlob@ this, CPlayer@ player)
 	if (player !is null)
 	{
 		player.SetScoreboardVars("ScoreboardIcons.png", 1, Vec2f(16, 16));
+	}
+
+	if (getRules().hasTag("track_stats") && player !is null)
+	{
+		tcpr("SwitchClass " + player.getUsername() + " " + this.getName() + " " + getGameTime());
 	}
 }
 
@@ -79,9 +104,52 @@ void onTick(CBlob@ this)
 		if (this.isKeyJustPressed(key_action3))
 		{
 			CBlob@ carried = this.getCarriedBlob();
-			if (carried is null || !carried.hasTag("temp blob"))
+			bool holding = carried !is null;// && carried.hasTag("exploding");
+
+			if (carried !is null)
+			{
+				if (carried.getName() == "structure_crate") return;
+				if (carried.getName() == "grapplinghook") return;
+			}
+
+			CInventory@ inv = this.getInventory();
+			bool thrown = false;
+			u8 bombType = this.get_u8("bomb type");
+			if (bombType == 255)
+			{
+				SetFirstAvailableBomb(this);
+				bombType = this.get_u8("bomb type");
+			}
+			if (bombType < bombTypeNames.length)
+			{
+				for (int i = 0; i < inv.getItemsCount(); i++)
+				{
+					CBlob@ item = inv.getItem(i);
+					const string itemname = item.getName();
+					if (!holding && bombTypeNames[bombType] == itemname)
+					{
+						if (bombType >= 3)
+						{
+							this.server_Pickup(item);
+							client_SendThrowOrActivateCommand(this);
+							thrown = true;
+						}
+						else
+						{
+							CBitStream params;
+							params.write_u8(bombType);
+							this.SendCommand(this.getCommandID("get bomb"), params);
+							thrown = true;
+						}
+						break;
+					}
+				}
+			}
+
+			if (!thrown)
 			{
 				client_SendThrowOrActivateCommand(this);
+				SetFirstAvailableBomb(this);
 			}
 		}
 	}
@@ -140,6 +208,127 @@ void onTick(CBlob@ this)
 			blob.server_Die();
 		}
 	}
+}
+
+//bomb management
+
+bool hasItem(CBlob@ this, const string &in name)
+{
+	CBitStream reqs, missing;
+	AddRequirement(reqs, "blob", name, "Bombs", 1);
+	CInventory@ inv = this.getInventory();
+
+	if (inv !is null)
+	{
+		return hasRequirements(inv, reqs, missing);
+	}
+	else
+	{
+		warn("our inventory was null! KnightLogic.as");
+	}
+
+	return false;
+}
+
+void TakeItem(CBlob@ this, const string &in name)
+{
+	CBlob@ carried = this.getCarriedBlob();
+	if (carried !is null)
+	{
+		if (carried.getName() == name)
+		{
+			carried.server_Die();
+			return;
+		}
+	}
+
+	CBitStream reqs, missing;
+	AddRequirement(reqs, "blob", name, "Bombs", 1);
+	CInventory@ inv = this.getInventory();
+
+	if (inv !is null)
+	{
+		if (hasRequirements(inv, reqs, missing))
+		{
+			server_TakeRequirements(inv, reqs);
+		}
+		else
+		{
+			warn("took a bomb even though we dont have one! KnightLogic.as");
+		}
+	}
+	else
+	{
+		warn("our inventory was null! KnightLogic.as");
+	}
+}
+
+void onCreateInventoryMenu(CBlob@ this, CBlob@ forBlob, CGridMenu @gridmenu)
+{
+	if (bombTypeNames.length == 0)
+	{
+		return;
+	}
+
+	Vec2f pos(gridmenu.getUpperLeftPosition().x + 0.5f * (gridmenu.getLowerRightPosition().x - gridmenu.getUpperLeftPosition().x),
+	          gridmenu.getUpperLeftPosition().y - 350);
+	CGridMenu@ menu = CreateGridMenu(pos, this, Vec2f(bombTypeNames.length, 2), getTranslatedString("Current bomb"));
+	u8 weaponSel = this.get_u8("bomb type");
+
+	if (menu !is null)
+	{
+		menu.deleteAfterClick = false;
+
+		for (uint i = 0; i < bombTypeNames.length; i++)
+		{
+			string matname = bombTypeNames[i];
+			CBitStream params;
+			params.write_u8(i);
+			CGridButton @button = menu.AddButton(bombIcons[i], getTranslatedString(bombNames[i]), "KnightLogic.as", "Callback_PickBomb", params);
+
+			if (button !is null)
+			{
+				bool enabled = this.getBlobCount(bombTypeNames[i]) > 0;
+				button.SetEnabled(enabled);
+				button.selectOneOnClick = true;
+				if (weaponSel == i)
+				{
+					button.SetSelected(1);
+				}
+			}
+		}
+	}
+}
+
+void SetFirstAvailableBomb(CBlob@ this)
+{
+	u8 type = 255;
+	if (this.exists("bomb type"))
+		type = this.get_u8("bomb type");
+
+	CInventory@ inv = this.getInventory();
+
+	bool typeReal = (uint(type) < bombTypeNames.length);
+	if (typeReal && inv.getItem(bombTypeNames[type]) !is null)
+		return;
+
+	for (int i = 0; i < inv.getItemsCount(); i++)
+	{
+		const string itemname = inv.getItem(i).getName();
+		for (uint j = 0; j < bombTypeNames.length; j++)
+		{
+			if (itemname == bombTypeNames[j])
+			{
+				type = j;
+				break;
+			}
+		}
+
+		if (type != 255)
+			break;
+	}
+
+	this.set_u8("bomb type", type);
 }
 
 //helper class to reduce function definition cancer
@@ -642,6 +831,59 @@ void HandlePickaxeCommand(CBlob@ this, CBitStream@ params)
 	SPI.last_pickaxed = getGameTime();
 }
 
+// clientside
+void onCycle(CBitStream@ params)
+{
+	u16 this_id;
+	if (!params.saferead_u16(this_id)) return;
+
+	CBlob@ this = getBlobByNetworkID(this_id);
+	if (this is null) return;
+
+	if (bombTypeNames.length == 0) return;
+
+	// cycle bombs
+	u8 type = this.get_u8("bomb type");
+	int count = 0;
+	while (count < bombTypeNames.length)
+	{
+		type++;
+		count++;
+		if (type >= bombTypeNames.length)
+			type = 0;
+		if (hasBombs(this, type))
+		{
+			CycleToBombType(this, type);
+			CBitStream sparams;
+			sparams.write_u8(type);
+			this.SendCommand(this.getCommandID("switch"), sparams);
+			break;
+		}
+	}
+}
+
+void onSwitch(CBitStream@ params)
+{
+	u16 this_id;
+	if (!params.saferead_u16(this_id)) return;
+
+	CBlob@ this = getBlobByNetworkID(this_id);
+	if (this is null) return;
+
+	if (bombTypeNames.length == 0) return;
+
+	u8 type;
+	if (!params.saferead_u8(type)) return;
+
+	if (hasBombs(this, type))
+	{
+		CycleToBombType(this, type);
+		CBitStream sparams;
+		sparams.write_u8(type);
+		this.SendCommand(this.getCommandID("switch"), sparams);
+	}
+}
+
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
 	if (cmd == this.getCommandID("pickaxe") && isServer())
@@ -675,6 +917,163 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 
 		HandlePickaxeCommand(this, @params);
 	}
+
+	if (cmd == this.getCommandID("get bomb"))
+	{
+		const u8 bombType = params.read_u8();
+		if (bombType >= bombTypeNames.length)
+			return;
+
+		const string bombTypeName = bombTypeNames[bombType];
+		this.Tag(bombTypeName + " done activate");
+		if (hasItem(this, bombTypeName))
+		{
+			if (bombType == 0)
+			{
+				if (getNet().isServer())
+				{
+					CBlob @blob = server_CreateBlob("bomb", this.getTeamNum(), this.getPosition());
+					if (blob !is null)
+					{
+						TakeItem(this, bombTypeName);
+						this.server_Pickup(blob);
+					}
+				}
+			}
+			else if (bombType == 1)
+			{
+				if (getNet().isServer())
+				{
+					CBlob @blob = server_CreateBlob("waterbomb", this.getTeamNum(), this.getPosition());
+					if (blob !is null)
+					{
+						TakeItem(this, bombTypeName);
+						this.server_Pickup(blob);
+						blob.set_f32("map_damage_ratio", 0.0f);
+						blob.set_f32("explosive_damage", 0.0f);
+						blob.set_f32("explosive_radius", 92.0f);
+						blob.set_bool("map_damage_raycast", false);
+						blob.set_string("custom_explosion_sound", "/GlassBreak");
+						blob.set_u8("custom_hitter", Hitters::water);
+                        blob.Tag("splash ray cast");
+
+					}
+				}
+			}
+			else { }
+
+			SetFirstAvailableBomb(this);
+		}
+	}
+
+	if (cmd == this.getCommandID("switch") && isServer())
+	{
+		CPlayer@ callerp = getNet().getActiveCommandPlayer();
+		if (callerp is null) return;
+
+		CBlob@ caller = callerp.getBlob();
+		if (caller is null) return;
+
+		if (caller !is this) return;
+		// cycle bombs
+		u8 type;
+		if (!params.saferead_u8(type)) return;
+
+		CycleToBombType(this, type);
+	} else if (cmd == this.getCommandID("activate/throw") && isServer()) {
+		SetFirstAvailableBomb(this);
+	} else if (cmd == this.getCommandID("activate/throw bomb") && isServer()) {
+		Vec2f pos = this.getVelocity();
+		Vec2f vector = this.getAimPos() - this.getPosition();
+		Vec2f vel = this.getVelocity();
+
+		u8 bombType;
+		if (!params.saferead_u8(bombType)) return;
+
+		CBlob @carried = this.getCarriedBlob();
+
+		if (carried !is null)
+		{
+			bool holding_bomb = false;
+			// are we actually holding a bomb or something else?
+			for (uint i = 0; i < bombNames.length; i++)
+			{
+				if(carried.getName() == bombNames[i])
+				{
+					holding_bomb = true;
+					DoThrow(this, carried, pos, vector, vel);
+				}
+			}
+
+			if (!holding_bomb)
+			{
+				ActivateBlob(this, carried, pos, vector, vel);
+			}
+		}
+		else
+		{
+			if (bombType >= bombTypeNames.length)
+				return;
+
+			const string bombTypeName = bombTypeNames[bombType];
+			this.Tag(bombTypeName + " done activate");
+			if (hasItem(this, bombTypeName))
+			{
+				if (bombType == 0)
+				{
+					CBlob @blob = server_CreateBlob("bomb", this.getTeamNum(), this.getPosition());
+					if (blob !is null)
+					{
+						TakeItem(this, bombTypeName);
+						this.server_Pickup(blob);
+					}
+				}
+				else if (bombType == 1)
+				{
+					CBlob @blob = server_CreateBlob("waterbomb", this.getTeamNum(), this.getPosition());
+					if (blob !is null)
+					{
+						TakeItem(this, bombTypeName);
+						this.server_Pickup(blob);
+						blob.set_f32("map_damage_ratio", 0.0f);
+						blob.set_f32("explosive_damage", 0.0f);
+						blob.set_f32("explosive_radius", 92.0f);
+						blob.set_bool("map_damage_raycast", false);
+						blob.set_string("custom_explosion_sound", "/GlassBreak");
+						blob.set_u8("custom_hitter", Hitters::water);
+						blob.Tag("splash ray cast");
+					}
+				}
+			}
+		}
+		SetFirstAvailableBomb(this);
+	} else if (isServer()) {
+		for (uint i = 0; i < bombTypeNames.length; i++)
+		{
+			if (cmd == this.getCommandID("pick " + bombTypeNames[i]))
+			{
+				this.set_u8("bomb type", i);
+				break;
+			}
+		}
+	}
+}
+
+void Callback_PickBomb(CBitStream@ params)
+{
+	CPlayer@ player = getLocalPlayer();
+	if (player is null) return;
+
+	CBlob@ blob = player.getBlob();
+	if (blob is null) return;
+
+	u8 bomb_id;
+	if (!params.saferead_u8(bomb_id)) return;
+
+	string matname = bombTypeNames[bomb_id];
+	blob.set_u8("bomb type", bomb_id);
+
+	blob.SendCommand(blob.getCommandID("pick " + matname));
 }
 
 void onDetach(CBlob@ this, CBlob@ detached, AttachmentPoint@ attachedPoint)
@@ -755,5 +1154,28 @@ void onAddToInventory(CBlob@ this, CBlob@ blob)
 	if (this.isMyPlayer() && blob.hasTag("material"))
 	{
 		SetHelp(this, "help inventory", "builder", "$Help_Block1$$Swap$$Help_Block2$           $KEY_HOLD$$KEY_F$", "", 3);
+	}
+
+	const string itemname = blob.getName();
+
+	if (this.getInventory().getItemsCount() == 0 || itemname == "mat_bombs")
+	{
+		for (uint j = 0; j < bombTypeNames.length; j++)
+		{
+			if (itemname == bombTypeNames[j])
+			{
+				this.set_u8("bomb type", j);
+				return;
+			}
+		}
+	}
+}
+
+void CycleToBombType(CBlob@ this, u8 bombType)
+{
+	this.set_u8("bomb type", bombType);
+	if (this.isMyPlayer())
+	{
+		Sound::Play("/CycleInventory.ogg");
 	}
 }

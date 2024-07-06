@@ -147,6 +147,8 @@ namespace Names
 	drillknight							 = Translate(en::n_drillknight+"\\"+ru::n_drillknight),
 	drillbuilder			 			 = Translate(en::n_drillbuilder+"\\"+ru::n_drillbuilder),
 	drillarcher							 = Translate(en::n_drillarcher+"\\"+ru::n_drillarcher),
+	bombbuilder							 = Translate(en::n_bombbuilder+"\\"+ru::n_bombbuilder),
+	bombarcher							 = Translate(en::n_bombarcher+"\\"+ru::n_bombarcher),
 
 		// Other
 	pressdelete		  	       			= Translate(en::n_pressdelete+"\\"+ru::n_pressdelete),

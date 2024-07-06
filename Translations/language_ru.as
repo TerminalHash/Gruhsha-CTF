@@ -130,6 +130,8 @@ namespace ru
 	n_drillknight							= "Автоподбор дрели (Рыцарь)",
 	n_drillbuilder							= "Автоподбор дрели (Строитель)",
 	n_drillarcher							= "Автоподбор дрели (Лучник)",
+	n_bombbuilder							= "Автоподбор бомб (Строитель)",
+	n_bombarcher							= "Автоподбор бомб (Лучник)",
 
 		// Other
 	n_pressdelete							= "Выбери клавишу и нажми [DELETE] для очистки хоткея!",

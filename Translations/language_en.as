@@ -130,6 +130,8 @@ namespace en
 	n_drillknight							= "Drill autopickup (Knight)",
 	n_drillbuilder							= "Drill autopickup (Builder)",
 	n_drillarcher							= "Drill autopickup (Archer)",
+	n_bombbuilder							= "Bomb autopickup (Builder)",
+	n_bombarcher							= "Bomb autopickup (Archer)",
 
 		// Other
 	n_pressdelete							= "Choose a bind and press [DELETE] to remove key",

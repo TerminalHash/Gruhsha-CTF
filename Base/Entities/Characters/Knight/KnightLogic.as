@@ -89,8 +89,6 @@ void onInit(CBlob@ this)
 	this.set("onCycle handle", @controls_cycle);
 
 	this.addCommandID("activate/throw bomb");
-	this.addCommandID("make sparks");
-	this.addCommandID("make sparks client");
 
 	this.push("names to activate", "keg");
 	this.push("names to activate", "satchel");

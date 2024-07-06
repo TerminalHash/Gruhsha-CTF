@@ -26,6 +26,21 @@ void Take(CBlob@ this, CBlob@ blob)
 		}
 	}
 
+    if (blobName == "mat_bombs" || (blobName == "satchel" && !blob.hasTag("exploding")) || blobName == "mat_waterbombs")
+    {
+		CPlayer@ p = this.getPlayer();
+
+		if (p !is null) {
+			string username = p.getUsername();
+
+			if (blob.canBePickedUp(this) && blob.canBePutInInventory(this) && getRules().get_string(username + "pickbomb_builder") != "no") {
+				if (this.server_PutInInventory(blob)) {
+					return;
+				}
+			}
+		}
+    }
+
 	if (blobName == "drill") {
 		CPlayer@ p = this.getPlayer();
 

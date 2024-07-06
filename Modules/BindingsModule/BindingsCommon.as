@@ -127,7 +127,9 @@ string[][] setting_texts =
 		Names::switchclasschanginginshop,
 		Names::drillknight,
 		Names::drillbuilder,
-		Names::drillarcher
+		Names::drillarcher,
+		Names::bombbuilder,
+		Names::bombarcher
 	}
 };
 
@@ -148,7 +150,9 @@ string[][] setting_file_names =
 		"disable_class_change_in_shops",
 		"pickdrill_knight",
 		"pickdrill_builder",
-		"pickdrill_archer"
+		"pickdrill_archer",
+		"pickbomb_builder",
+		"pickbomb_archer",
 	}
 };
 
@@ -216,6 +220,14 @@ string[][][] setting_options =
 		},
 		{
 			Descriptions::universalno, // 10	DRILL AUTOPICKUP FOR ARCHER
+			Descriptions::universalyes // 20
+		},
+		{
+			Descriptions::universalno, // 10	BOMB AUTOPICKUP FOR BUILDER
+			Descriptions::universalyes // 20
+		},
+		{
+			Descriptions::universalno, // 10	BOMB AUTOPICKUP FOR ARCHER
 			Descriptions::universalyes // 20
 		}
 	}
@@ -285,6 +297,14 @@ string[][][] setting_option_names =
 		},
 		{
 			"no", // 10    DRILL AUTOPICKUP FOR ARCHER
+			"yes" // 20
+		},
+		{
+			"no", // 10    BOMB AUTOPICKUP FOR BUILDER
+			"yes" // 20
+		},
+		{
+			"no", // 10    BOMB AUTOPICKUP FOR ARCHER
 			"yes" // 20
 		}
 	}
@@ -447,6 +467,32 @@ void LoadFileSettings()
 							}
 
 							getRules().SendCommand(getRules().getCommandID("sync drill autopickup"), params);
+						}
+
+						if (file_entry == "pickbomb_builder") {
+							CBitStream params;
+							params.write_u8(2);
+
+							if (file.read_string(file_entry) == "yes") {
+								params.write_bool(true);
+							} else {
+								params.write_bool(false);
+							}
+
+							getRules().SendCommand(getRules().getCommandID("sync bomb autopickup"), params);
+						}
+
+						if (file_entry == "pickbomb_archer") {
+							CBitStream params;
+							params.write_u8(3);
+
+							if (file.read_string(file_entry) == "yes") {
+								params.write_bool(true);
+							} else {
+								params.write_bool(false);
+							}
+
+							getRules().SendCommand(getRules().getCommandID("sync bomb autopickup"), params);
 						}
 					}
 				}
@@ -1261,7 +1307,7 @@ class ClickableButtonGUI
 		GUI::SetFont("big score font");
 		GUI::SetFont("menu");
 
-		Vec2f start_offset = Vec2f(50, 540);
+		Vec2f start_offset = Vec2f(50, 600);
 
 		closebutton.Render(m_clickable_origin + Vec2f(1000 - 40, 0), Vec2f(40, 40));
 
@@ -1317,7 +1363,7 @@ class ClickableButtonGUI
 		f32 screen_height = getDriver().getScreenHeight();
 		u8 scale = screen_height / 720.0;
 
-		Vec2f start_offset = Vec2f(50, 540);
+		Vec2f start_offset = Vec2f(50, 600);
 
 		closebutton.Update(m_clickable_origin + Vec2f(1000 - 40, 0), Vec2f(40, 40));
 
