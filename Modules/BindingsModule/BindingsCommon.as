@@ -3,6 +3,7 @@
 string BINDINGSDIR = "../Cache/";
 string BINDINGSFILE = "GRUHSHA_playerbindings";
 string SETTINGSFILE = "GRUHSHA_customizableplayersettings";
+string VSETTINGSFILE = "GRUHSHA_visualandsoundsettings";
 
 string[] page_texts =
 {
@@ -10,7 +11,8 @@ string[] page_texts =
 	Names::blocksmenu,
 	Names::emotemenu,
 	Names::actionsmenu,
-	Names::settingsmenu
+	Names::settingsmenu,
+	Names::vsettingsmenu
 };
 
 string[][] button_texts =
@@ -25,8 +27,6 @@ string[][] button_texts =
 		"KEG",
 		"WiT SENCE",
 		Names::tagwheel
-		//Names::emotewheelvanilla,
-		//Names::emotewheelsecond
 	},
 	{
 		Names::stonebl,
@@ -113,17 +113,7 @@ string[][] button_file_names =
 string[][] setting_texts =
 {
 	{
-		Names::blockbar,
-		Names::camerasw,
-		Names::bodytilt,
-		Names::headrotating,
-		Names::clusterfuck,
-		Names::drillzoneborders,
 		Names::grapplewhilecharging,
-		Names::annoyingnature,
-		Names::annoyingvoicelines,
-		Names::annoyingtags,
-		Names::customdpsounds,
 		Names::switchclasschanginginshop,
 		Names::drillknight,
 		Names::drillbuilder,
@@ -136,17 +126,7 @@ string[][] setting_texts =
 string[][] setting_file_names =
 {
 	{
-		"blockbar_hud",
-		"camera_sway",
-		"body_tilting",
-		"head_rotating",
-		"clusterfuck",
-		"drillzone_borders",
 		"grapple_with_charging",
-		"annoying_nature",
-		"annoying_voicelines",
-		"annoying_tags",
-		"custom_death_and_pain_sounds",
 		"disable_class_change_in_shops",
 		"pickdrill_knight",
 		"pickdrill_builder",
@@ -160,50 +140,7 @@ string[][][] setting_options =
 {
 	{
 		{
-			Descriptions::universalno, // 10	BLOCKBAR ON HUD
-			Descriptions::universalyes // 20
-		},
-		{
-			"1", // 1							CAMERA SWAY
-			"2", // 2
-			"3", // 3
-			"4", // 4
-			"5" // 5
-		},
-		{
-			Descriptions::universaloff,       // BODY TILTING
-			Descriptions::universalon
-		},
-		{
-			Descriptions::universaloff,       // HEAD ROTATING
-			Descriptions::universalon
-		},
-		{
-			Descriptions::universaloff,       // CLUSTERFUCK
-			Descriptions::universalon
-		},
-		{
-			Descriptions::universaloff,       // DRILLZONE BORDERS
-			Descriptions::universalon
-		},
-		{
 			Descriptions::universaloff,       // GRAPPLE WHILE CHARGING
-			Descriptions::universalon
-		},
-		{
-			Descriptions::universaloff,       // BUSHES & LEAFS MUTE
-			Descriptions::universalon
-		},
-		{
-			Descriptions::universaloff,       // VOICELINES
-			Descriptions::universalon
-		},
-		{
-			Descriptions::universaloff,       // TAGS
-			Descriptions::universalon
-		},
-		{
-			Descriptions::universaloff,       // DEATH AND PAIN
 			Descriptions::universalon
 		},
 		{
@@ -237,6 +174,122 @@ string[][][] setting_option_names =
 {
 	{
 		{
+			"off",       // GRAPPLE WHILE CHARGING
+			"on"
+		},
+		{
+			"no", // 10    CLASS CHANGING IN SHOPS
+			"yes" // 20
+		},
+		{
+			"no", // 10    DRILL AUTOPICKUP FOR KNIGHT
+			"yes" // 20
+		},
+		{
+			"no", // 10    DRILL AUTOPICKUP FOR BUILDER
+			"yes" // 20
+		},
+		{
+			"no", // 10    DRILL AUTOPICKUP FOR ARCHER
+			"yes" // 20
+		},
+		{
+			"no", // 10    BOMB AUTOPICKUP FOR BUILDER
+			"yes" // 20
+		},
+		{
+			"no", // 10    BOMB AUTOPICKUP FOR ARCHER
+			"yes" // 20
+		}
+	}
+};
+
+// Visual Settings
+string[][] vsetting_texts =
+{
+	{
+		Names::blockbar,
+		Names::camerasw,
+		Names::bodytilt,
+		Names::headrotating,
+		Names::clusterfuck,
+		Names::drillzoneborders,
+		Names::annoyingnature,
+		Names::annoyingvoicelines,
+		Names::annoyingtags,
+		Names::customdpsounds
+	}
+};
+
+string[][] vsetting_file_names =
+{
+	{
+		"blockbar_hud",
+		"camera_sway",
+		"body_tilting",
+		"head_rotating",
+		"clusterfuck",
+		"drillzone_borders",
+		"annoying_nature",
+		"annoying_voicelines",
+		"annoying_tags",
+		"custom_death_and_pain_sounds"
+	}
+};
+
+string[][][] vsetting_options =
+{
+	{
+		{
+			Descriptions::universalno, // 10	BLOCKBAR ON HUD
+			Descriptions::universalyes // 20
+		},
+		{
+			"1", // 1							CAMERA SWAY
+			"2", // 2
+			"3", // 3
+			"4", // 4
+			"5" // 5
+		},
+		{
+			Descriptions::universaloff,       // BODY TILTING
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // HEAD ROTATING
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // CLUSTERFUCK
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // DRILLZONE BORDERS
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // BUSHES & LEAFS MUTE
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // VOICELINES
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // TAGS
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // DEATH AND PAIN
+			Descriptions::universalon
+		}
+	}
+};
+
+string[][][] vsetting_option_names =
+{
+	{
+		{
 			"no", // 10    BLOCKBAR
 			"yes" // 20
 		},
@@ -264,10 +317,6 @@ string[][][] setting_option_names =
 			"on"
 		},
 		{
-			"off",       // GRAPPLE WHILE CHARGING
-			"on"
-		},
-		{
 			"off",       // BUSHES & LEAFS MUTE
 			"on"
 		},
@@ -282,30 +331,6 @@ string[][][] setting_option_names =
 		{
 			"off",       // DEATH AND PAIN
 			"on"
-		},
-		{
-			"no", // 10    CLASS CHANGING IN SHOPS
-			"yes" // 20
-		},
-		{
-			"no", // 10    DRILL AUTOPICKUP FOR KNIGHT
-			"yes" // 20
-		},
-		{
-			"no", // 10    DRILL AUTOPICKUP FOR BUILDER
-			"yes" // 20
-		},
-		{
-			"no", // 10    DRILL AUTOPICKUP FOR ARCHER
-			"yes" // 20
-		},
-		{
-			"no", // 10    BOMB AUTOPICKUP FOR BUILDER
-			"yes" // 20
-		},
-		{
-			"no", // 10    BOMB AUTOPICKUP FOR ARCHER
-			"yes" // 20
 		}
 	}
 };
@@ -419,14 +444,6 @@ void LoadFileSettings()
 				string file_entry = setting_file_names[i][g];
 
 				if (file.exists(file_entry)) {
-					if (file_entry == "camera_sway") {
-						CCamera@ camera = getCamera();
-
-						if (camera !is null) {
-							camera.posLag = Maths::Max(1.0, f32(parseInt(file.read_string(file_entry))));
-						}
-					}
-
 					getRules().set_string(file_entry, file.read_string(file_entry));
 
 					if (isClient()) {
@@ -510,6 +527,71 @@ void ResetRuleSettings()
 		for (int g=0; g<setting_texts[i].length; ++g)
 		{
 			rules.set_string(setting_file_names[i][g], "null");
+		}
+	}
+}
+
+// visual settings
+
+void UpdateVSetting(int i, int g, string h)
+{
+	ConfigFile file;
+
+	if (file.loadFile(BINDINGSDIR + VSETTINGSFILE))
+	{
+		file.add_string(vsetting_file_names[i][g], h);
+		printf("Updating visual and sound settings file");
+	}
+
+	if(!file.saveFile(VSETTINGSFILE + ".cfg"))
+	{
+		print("Failed to save GRUHSHA_visualandsoundsettings.cfg");
+	}
+	else
+	{
+		print("Successfully saved GRUHSHA_visualandsoundsettings.cfg");
+	}
+
+	ResetRuleVSettings();
+	LoadFileVSettings();
+}
+
+void LoadFileVSettings()
+{
+	getRules().set_bool("loadedvsettings", true);
+
+	ConfigFile file;
+
+	if (file.loadFile(BINDINGSDIR + VSETTINGSFILE)) {
+		for (int i=0; i<vsetting_texts.length; ++i) {
+			for (int g=0; g<vsetting_texts[i].length; ++g) {
+				string file_entry = vsetting_file_names[i][g];
+
+				if (file.exists(file_entry)) {
+					if (file_entry == "camera_sway") {
+						CCamera@ camera = getCamera();
+
+						if (camera !is null) {
+							camera.posLag = Maths::Max(1.0, f32(parseInt(file.read_string(file_entry))));
+						}
+					}
+
+					getRules().set_string(file_entry, file.read_string(file_entry));
+				}
+			}
+		}
+	}
+}
+
+void ResetRuleVSettings()
+{
+	CRules@ rules = getRules();
+
+	for (int i=0; i<vsetting_texts.length; ++i)
+	{
+		for (int g=0; g<vsetting_texts[i].length; ++g)
+		{
+			rules.set_string(vsetting_file_names[i][g], "null");
 		}
 	}
 }
@@ -1270,7 +1352,205 @@ class ClickableButtonTwo
 	}
 }
 
+class ClickableButtonFive
+{
+	bool use_own_pos;
+	SColor m_custom_color;
+	// Draw text, if applies
+	bool m_center_text;
+	string m_text;
+	Vec2f m_text_position;
+	string m_font;
+
+	string[] bindings;
+
+	string[] possible_options;
+
+	// Clickable stuff
+	Vec2f m_clickable_origin, m_clickable_size;
+
+	// Bools for sounds and stuff
+	bool[] m_selecteds;
+	bool[] m_hovereds;
+
+	// State: none/hovered/selected/s&h
+	int[] m_state;
+
+	// Rules cmd_id
+	u16 cmd_id;
+	u16 cmd_subid;
+
+	// uhhh
+	s32 m_i;
+	s32 m_g;
+
+	bool deselect_instantly;
+	bool m_clickable;
+
+	ClickableButtonFive()
+	{
+		this.use_own_pos = false;
+		this.m_custom_color = SColor(255, 255, 255, 255);
+		this.m_center_text = false;
+		this.m_clickable = true;
+		this.deselect_instantly = false;
+		this.bindings.push_back(Descriptions::modbindnull);
+		//printf("Init button");
+	}
+
+	bool isHovered(Vec2f mouse_pos, Vec2f clickable_origin, Vec2f clickable_size)
+	{
+		Vec2f tl = clickable_origin;
+		Vec2f br = clickable_origin + clickable_size;
+
+		if (mouse_pos.x > tl.x && mouse_pos.y > tl.y &&
+			 mouse_pos.x < br.x && mouse_pos.y < br.y)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	void Render(Vec2f clickable_origin = Vec2f_zero, Vec2f clickable_size = Vec2f_zero)
+	{
+		CPlayer@ player = getLocalPlayer();
+		if (player is null) return;
+		CControls@ controls = player.getControls();
+		if (controls is null) return;
+		Vec2f mouse_pos = controls.getMouseScreenPos();
+
+		if (this.use_own_pos)
+		{
+			clickable_origin = this.m_clickable_origin;
+			clickable_size = this.m_clickable_size;
+		}
+
+		f32 button_percentage = 0.3;
+		f32 anti_button_percentage = 1.0 - button_percentage;
+
+		Vec2f tl = clickable_origin;
+		Vec2f br = clickable_origin + Vec2f(clickable_size.x * anti_button_percentage, clickable_size.y);
+
+		GUI::DrawText(m_text, tl + Vec2f(10, 10), color_white);
+
+		Vec2f tl_2 = clickable_origin + Vec2f(clickable_size.x * button_percentage, 0);
+		Vec2f br_2 = tl_2 + Vec2f(clickable_size.x * anti_button_percentage, clickable_size.y);
+
+		GUI::DrawLine2D(clickable_origin + Vec2f(-10, clickable_size.y + 3), clickable_origin + Vec2f(clickable_size.x + 10, clickable_size.y + 3), SColor(125, 100, 100, 100));
+
+		f32 allbuttonwidth = br_2.x - tl_2.x;
+
+		f32 onebuttonwidth = allbuttonwidth / possible_options.length;
+
+		Vec2f current_tl = tl_2;
+
+		for (int i=0; i<possible_options.length; ++i)
+		{
+			Vec2f itl = current_tl;
+			Vec2f ibr = itl + Vec2f(onebuttonwidth, br_2.y - tl_2.y);
+
+			bool is_hovered = this.isHovered(mouse_pos, itl, Vec2f(ibr - itl));
+
+			SColor color = color_white;
+			if (m_custom_color != color_white) color = m_custom_color;
+
+			if (this.m_selecteds[i] && !is_hovered) color = SColor(255, 100, 255, 100);
+			else if (!this.m_selecteds[i] && is_hovered) color = SColor(255, 220, 220, 220);
+			else if (this.m_selecteds[i] && is_hovered) color = SColor(255, 45, 200, 45);
+
+			GUI::DrawPane(itl, ibr, color);
+			GUI::DrawTextCentered(possible_options[i], itl + Vec2f((ibr.x - itl.x) * 0.5, (ibr.y - itl.y) * 0.5), color_white);
+
+			current_tl += Vec2f(onebuttonwidth, 0);
+		}
+	}
+
+	void Update(Vec2f clickable_origin = Vec2f_zero, Vec2f clickable_size = Vec2f_zero)
+	{
+		CPlayer@ player = getLocalPlayer();
+		if(player is null) return;
+		CControls@ controls = player.getControls();
+		if(controls is null) return;
+		Vec2f mouse_pos = controls.getMouseScreenPos();
+
+		f32 button_percentage = 0.3;
+		f32 anti_button_percentage = 1.0 - button_percentage;
+
+		Vec2f tl = clickable_origin + Vec2f(clickable_size.x * button_percentage, 0);
+		Vec2f cs = Vec2f(clickable_size.x * anti_button_percentage, clickable_size.y);
+
+		const bool mousePressed = controls.isKeyPressed(KEY_LBUTTON);
+		const bool mouseJustReleased = controls.isKeyJustReleased(KEY_LBUTTON);
+
+		Vec2f tl_2 = clickable_origin + Vec2f(clickable_size.x * button_percentage, 0);
+		Vec2f br_2 = tl_2 + Vec2f(clickable_size.x * anti_button_percentage, clickable_size.y);
+
+		f32 allbuttonwidth = br_2.x - tl_2.x;
+
+		f32 onebuttonwidth = allbuttonwidth / possible_options.length;
+
+		Vec2f current_tl = tl_2;
+
+		for (int i=0; i<possible_options.length; ++i)
+		{
+			if (getRules().get_string(vsetting_file_names[this.m_i][this.m_g]) == vsetting_option_names[this.m_i][this.m_g][i])
+			{
+				this.m_selecteds[i] = true;
+				this.m_state[i] == ClickableButtonStates::Selected;
+			}
+
+			Vec2f itl = current_tl;
+			Vec2f ibr = itl + Vec2f(onebuttonwidth, br_2.y - tl_2.y);
+
+			bool is_hovered = this.isHovered(mouse_pos, itl, Vec2f(ibr - itl));
+
+			m_hovereds[i] = is_hovered;
+
+			if (is_hovered)
+			{
+				if (this.m_state[i] == ClickableButtonStates::None)
+				{
+					this.m_state[i] = ClickableButtonStates::Hovered;
+					Sound::Play("select.ogg");
+				}
+				else if (this.m_state[i] == ClickableButtonStates::Selected)
+				{
+					this.m_state[i] = ClickableButtonStates::SelectedHovered;
+					Sound::Play("select.ogg");
+				}
+
+				// On click
+				if (mouseJustReleased)
+				{
+					if (this.m_state[i] == ClickableButtonStates::Selected || this.m_state[i] == ClickableButtonStates::SelectedHovered) this.m_state[i] = ClickableButtonStates::Hovered;
+					if (this.m_state[i] == ClickableButtonStates::Hovered || this.m_state[i] == ClickableButtonStates::None) this.m_state[i] = ClickableButtonStates::SelectedHovered;
+
+					Sound::Play("buttonclick.ogg");
+
+
+					this.m_selecteds[i] = true;
+
+					// deselect other buttons
+					for (int g=0; g<possible_options.length; ++g)
+					{
+						if (g != i) this.m_selecteds[g] = false;
+					}
+
+					UpdateVSetting(this.m_i, this.m_g, vsetting_option_names[this.m_i][this.m_g][i]);
+				}
+			}
+			else
+			{
+				this.m_state[i] = (m_selecteds[i] ? ClickableButtonStates::Selected : ClickableButtonStates::None);
+			}
+
+			current_tl += Vec2f(onebuttonwidth, 0);
+		}
+	}
+}
+
 u8 magic_number = 4;
+u8 magic_number_v = 5;
 
 Vec2f ENTRY_SIZE2 = Vec2f(900, 23);
 Vec2f ENTRY_SIZE3 = Vec2f(900, 23);
@@ -1291,6 +1571,7 @@ class ClickableButtonGUI
 	ClickableButton[][] buttons;
 	ClickableButtonThree[][] settings;
 	ClickableButtonTwo[] page_buttons;
+	ClickableButtonFive[][] vsettings;
 
 	ClickableButtonGUI()
 	{
@@ -1308,6 +1589,7 @@ class ClickableButtonGUI
 		GUI::SetFont("menu");
 
 		Vec2f start_offset = Vec2f(50, 600);
+		Vec2f start_offset_p = Vec2f(30, 600);
 
 		closebutton.Render(m_clickable_origin + Vec2f(1000 - 40, 0), Vec2f(40, 40));
 
@@ -1324,12 +1606,19 @@ class ClickableButtonGUI
 
 		for (int i=0; i<page_buttons.length; ++i)
 		{
-			page_buttons[i].Render(m_clickable_origin + start_offset, page_button_size);
+			page_buttons[i].Render(m_clickable_origin + start_offset_p, page_button_size);
 
-			start_offset += Vec2f(page_button_size.x + 35, 0);
+			start_offset_p += Vec2f(page_button_size.x + 10, 0);
 		}
 
-		if (current_page != magic_number)
+		if (current_page == magic_number_v)
+		{
+			for (int i=0; i<vsettings[magic_number_v - current_page].length; ++i)
+			{
+				vsettings[magic_number_v - current_page][i].Render(m_clickable_origin + Vec2f(0, 50) + Vec2f((m_clickable_size.x - localbuttonsize.x) * 0.5, 0) + Vec2f(0, i * (localbuttonsize.y + 6)), localbuttonsize);
+			}
+		}
+		else if (current_page != magic_number)
 		{
 			for (int i=0; i<buttons[current_page].length; ++i)
 			{
@@ -1355,6 +1644,8 @@ class ClickableButtonGUI
 				settings[magic_number - current_page][i].Render(m_clickable_origin + Vec2f(0, 50) + Vec2f((m_clickable_size.x - localbuttonsize.x) * 0.5, 0) + Vec2f(0, i * (localbuttonsize.y + 6)), localbuttonsize);
 			}
 		}
+
+
 	}
 
 	void Update()
@@ -1364,6 +1655,7 @@ class ClickableButtonGUI
 		u8 scale = screen_height / 720.0;
 
 		Vec2f start_offset = Vec2f(50, 600);
+		Vec2f start_offset_p = Vec2f(30, 600);
 
 		closebutton.Update(m_clickable_origin + Vec2f(1000 - 40, 0), Vec2f(40, 40));
 
@@ -1380,12 +1672,19 @@ class ClickableButtonGUI
 
 		for (int i=0; i<page_buttons.length; ++i)
 		{
-			page_buttons[i].Update(m_clickable_origin + start_offset, page_button_size);
+			page_buttons[i].Update(m_clickable_origin + start_offset_p, page_button_size);
 
-			start_offset += Vec2f(page_button_size.x + 35, 0);
+			start_offset_p += Vec2f(page_button_size.x + 10, 0);
 		}
 
-		if (current_page != magic_number)
+		if (current_page == magic_number_v)
+		{
+			for (int i=0; i<vsettings[magic_number_v - current_page].length; ++i)
+			{
+				vsettings[magic_number_v - current_page][i].Update(m_clickable_origin + Vec2f(0, 50) + Vec2f((m_clickable_size.x - localbuttonsize.x) * 0.5, 0) + Vec2f(0, i * (localbuttonsize.y + 6)), localbuttonsize);
+			}
+		}
+		else if (current_page != magic_number)
 		{
 			for (int i=0; i<buttons[current_page].length; ++i)
 			{

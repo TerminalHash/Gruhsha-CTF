@@ -15,6 +15,7 @@ void onInit(CRules@ this)
 
 	ResetRuleBindings();
 	ResetRuleSettings();
+	ResetRuleVSettings();
 
 	if (isClient())
 	{
@@ -42,8 +43,71 @@ void onInit(CRules@ this)
 		ConfigFile sfile;
 		ConfigFile sfile2;
 
+		// FUNCTIONAL SETTINGS
 		if (sfile.loadFile(BINDINGSDIR + SETTINGSFILE)) // file exists
-		{ 
+		{
+			printf("Settings file exists.");
+
+			if (!sfile.exists("grapple_with_charging"))
+			{
+				sfile.add_string("grapple_with_charging", "yes");
+			}
+
+			if (!sfile.exists("disable_class_change_in_shops"))
+			{
+				sfile.add_string("disable_class_change_in_shops", "no");
+			}
+
+			if (!sfile.exists("pickdrill_knight"))
+			{
+				sfile.add_string("pickdrill_knight", "yes");
+			}
+
+			if (!sfile.exists("pickdrill_builder"))
+			{
+				sfile.add_string("pickdrill_builder", "yes");
+			}
+
+			if (!sfile.exists("pickdrill_archer"))
+			{
+				sfile.add_string("pickdrill_archer", "yes");
+			}
+
+			if (!sfile.exists("pickbomb_builder"))
+			{
+				sfile.add_string("pickdrill_builder", "yes");
+			}
+
+			if (!sfile.exists("pickbomb_archer"))
+			{
+				sfile.add_string("pickdrill_archer", "yes");
+			}
+		}
+		else // default settings
+		{
+			sfile.add_string("grapple_with_charging", "yes");
+			sfile.add_string("disable_class_change_in_shops", "no");
+			sfile.add_string("pickdrill_knight", "yes");
+			sfile.add_string("pickdrill_builder", "yes");
+			sfile.add_string("pickdrill_archer", "yes");
+			sfile.add_string("pickbomb_builder", "yes");
+			sfile.add_string("pickbomb_archer", "yes");
+
+			printf("Creating local settings file with default values for Gruhsha.");
+		}
+
+		if(!sfile.saveFile(SETTINGSFILE + ".cfg"))
+		{	
+			print("Failed to save GRUHSHA_customizableplayersettings.cfg");
+		}
+		else
+		{
+			print("Successfully saved GRUHSHA_customizableplayersettings.cfg");
+		}
+
+		// VISUAL/SOUND SETTINGS
+		if (sfile.loadFile(BINDINGSDIR + VSETTINGSFILE)) // file exists
+		{
 			printf("Settings file exists.");
 
 			if (!sfile.exists("camera_sway"))
@@ -95,36 +159,6 @@ void onInit(CRules@ this)
 			{
 				sfile.add_string("custom_death_and_pain_sounds", "on");
 			}
-
-			if (!sfile.exists("disable_class_change_in_shops"))
-			{
-				sfile.add_string("disable_class_change_in_shops", "no");
-			}
-
-			if (!sfile.exists("pickdrill_knight"))
-			{
-				sfile.add_string("pickdrill_knight", "yes");
-			}
-
-			if (!sfile.exists("pickdrill_builder"))
-			{
-				sfile.add_string("pickdrill_builder", "yes");
-			}
-
-			if (!sfile.exists("pickdrill_archer"))
-			{
-				sfile.add_string("pickdrill_archer", "yes");
-			}
-
-			if (!sfile.exists("pickbomb_builder"))
-			{
-				sfile.add_string("pickdrill_builder", "yes");
-			}
-
-			if (!sfile.exists("pickbomb_archer"))
-			{
-				sfile.add_string("pickdrill_archer", "yes");
-			}
 		}
 		else // default settings
 		{
@@ -138,28 +172,23 @@ void onInit(CRules@ this)
 			sfile.add_string("annoying_voicelines", "on");
 			sfile.add_string("annoying_tags", "on");
 			sfile.add_string("custom_death_and_pain_sounds", "on");
-			sfile.add_string("disable_class_change_in_shops", "no");
-			sfile.add_string("pickdrill_knight", "yes");
-			sfile.add_string("pickdrill_builder", "yes");
-			sfile.add_string("pickdrill_archer", "yes");
-			sfile.add_string("pickbomb_builder", "yes");
-			sfile.add_string("pickbomb_archer", "yes");
 
-			printf("Creating local settings file with default values for Gruhsha.");
+			printf("Creating local visual and sound settings file with default values for Gruhsha.");
 		}
 
-		if(!sfile.saveFile(SETTINGSFILE + ".cfg"))
-		{	
-			print("Failed to save GRUHSHA_customizableplayersettings.cfg");
+		if(!sfile.saveFile(VSETTINGSFILE + ".cfg"))
+		{
+			print("Failed to save GRUHSHA_visualandsoundsettings.cfg");
 		}
 		else
 		{
-			print("Successfully saved GRUHSHA_customizableplayersettings.cfg");
+			print("Successfully saved GRUHSHA_visualandsoundsettings.cfg");
 		}
 	}
 
 	LoadFileBindings();
 	LoadFileSettings();
+	LoadFileVSettings();
 
 	InitMenu();
 }
@@ -204,6 +233,12 @@ void onTick(CRules@ this)
 		ResetRuleSettings();
 		LoadFileSettings();
 	} 
+
+	if (getGameTime() % 30 == 0 && !this.get_bool("loadedvsettings"))
+	{
+		ResetRuleVSettings();
+		LoadFileVSettings();
+	}
 
 	if (controls !is null)
 	{
@@ -408,6 +443,56 @@ void InitMenu()
 		}
 
 		GUI.settings.push_back(bts);
+	}
+
+	u16 vsetting_index = 0;
+
+	for (int i=0; i<vsetting_texts.length; ++i)
+	{
+		ClickableButtonFive[] bts;
+
+		for (int g=0; g<vsetting_texts[i].length; ++g)
+		{
+			ClickableButtonFive button;
+			{
+				//button.m_clickable_origin = center + Vec2f(5, i * 40);
+				//button.m_clickable_size = Vec2f(200, 40);
+
+				button.cmd_id = getRules().getCommandID("s buttonclick");
+				button.cmd_subid = vsetting_index;
+
+				++setting_index;
+
+				button.m_text = vsetting_texts[i][g];
+				button.m_i = i;
+				button.m_g = g;
+				button.m_text_position = button.m_clickable_origin + Vec2f(4, 0);
+
+				for (int h=0; h<vsetting_options[i][g].length; ++h)
+				{
+					button.m_hovereds.push_back(false);
+
+					//if (getRules().get_string(setting_file_names[i][g]) == setting_option_names[i][g][h])
+					if (false)
+					{
+						button.m_selecteds.push_back(true);
+						button.m_state.push_back(ClickableButtonStates::Selected);
+					}
+					else
+					{
+						button.m_selecteds.push_back(false);
+						button.m_state.push_back(ClickableButtonStates::None);
+					}
+
+
+					button.possible_options.push_back(vsetting_options[i][g][h]);
+				}
+			}
+
+			bts.push_back(button);
+		}
+
+		GUI.vsettings.push_back(bts);
 	}
 
 	// Page Buttons

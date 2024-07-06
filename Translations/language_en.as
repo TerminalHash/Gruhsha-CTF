@@ -91,6 +91,7 @@ namespace en
 	n_blocksmenu							= "Blocks",
 	n_actionsmenu							= "Actions",
 	n_settingsmenu							= "Settings",
+	n_vsettingsmenu							= "Visual/Sound\n Settings",
 	n_tagwheel								= "Tag Wheel",
 	n_emotewheelvanilla						= "Vanilla Emote Wheel",
 	n_emotewheelsecond						= "Mod Emote Wheel",

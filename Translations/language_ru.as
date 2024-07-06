@@ -91,6 +91,7 @@ namespace ru
 	n_blocksmenu							= "Блоки",
 	n_actionsmenu							= "Действия",
 	n_settingsmenu							= "Настройки",
+	n_vsettingsmenu							= "Настройки визуала\n и звуков",
 	n_tagwheel								= "Колесо меток",
 	n_emotewheelvanilla						= "Ванильное колесо эмоций",
 	n_emotewheelsecond						= "Модовое колесо эмоций",
