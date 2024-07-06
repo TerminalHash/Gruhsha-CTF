@@ -1170,6 +1170,9 @@ class ClickableButtonTwo
 
 u8 magic_number = 4;
 
+Vec2f ENTRY_SIZE2 = Vec2f(900, 23);
+Vec2f ENTRY_SIZE3 = Vec2f(900, 23);
+
 class ClickableButtonGUI
 {
 	Vec2f m_clickable_size;
@@ -1204,6 +1207,17 @@ class ClickableButtonGUI
 
 		closebutton.Render(m_clickable_origin + Vec2f(1000 - 40, 0), Vec2f(40, 40));
 
+		Vec2f localbuttonsize = ENTRY_SIZE3;
+
+		if (current_page < 9)
+		{
+			localbuttonsize = ENTRY_SIZE3;
+		}
+		else
+		{
+			localbuttonsize = ENTRY_SIZE2;
+		}
+
 		for (int i=0; i<page_buttons.length; ++i)
 		{
 			page_buttons[i].Render(m_clickable_origin + start_offset, page_button_size);
@@ -1211,11 +1225,11 @@ class ClickableButtonGUI
 			start_offset += Vec2f(page_button_size.x + 35, 0);
 		}
 
-		if (current_page < magic_number)
+		if (current_page != magic_number)
 		{
 			for (int i=0; i<buttons[current_page].length; ++i)
 			{
-				buttons[current_page][i].Render(m_clickable_origin + Vec2f(0, 50) + Vec2f((m_clickable_size.x - button_size.x) * 0.5, 0) + Vec2f(0, i * (button_size.y + 6)), button_size);
+				buttons[current_page][i].Render(m_clickable_origin + Vec2f(0, 50) + Vec2f((m_clickable_size.x - localbuttonsize.x) * 0.5, 0) + Vec2f(0, i * (localbuttonsize.y + 6)), localbuttonsize);
 			}
 
 			CControls@ controls = getControls();
@@ -1234,7 +1248,7 @@ class ClickableButtonGUI
 		{
 			for (int i=0; i<settings[magic_number - current_page].length; ++i)
 			{
-				settings[magic_number - current_page][i].Render(m_clickable_origin + Vec2f(0, 50) + Vec2f((m_clickable_size.x - button_size.x) * 0.5, 0) + Vec2f(0, i * (button_size.y + 6)), button_size);
+				settings[magic_number - current_page][i].Render(m_clickable_origin + Vec2f(0, 50) + Vec2f((m_clickable_size.x - localbuttonsize.x) * 0.5, 0) + Vec2f(0, i * (localbuttonsize.y + 6)), localbuttonsize);
 			}
 		}
 	}
@@ -1249,6 +1263,17 @@ class ClickableButtonGUI
 
 		closebutton.Update(m_clickable_origin + Vec2f(1000 - 40, 0), Vec2f(40, 40));
 
+		Vec2f localbuttonsize = ENTRY_SIZE3;
+
+		if (current_page < 9)
+		{
+			localbuttonsize = ENTRY_SIZE3;
+		}
+		else
+		{
+			localbuttonsize = ENTRY_SIZE2;
+		}
+
 		for (int i=0; i<page_buttons.length; ++i)
 		{
 			page_buttons[i].Update(m_clickable_origin + start_offset, page_button_size);
@@ -1256,18 +1281,18 @@ class ClickableButtonGUI
 			start_offset += Vec2f(page_button_size.x + 35, 0);
 		}
 
-		if (current_page < magic_number)
+		if (current_page != magic_number)
 		{
 			for (int i=0; i<buttons[current_page].length; ++i)
 			{
-				buttons[current_page][i].Update(m_clickable_origin + Vec2f(0, 50) + Vec2f((m_clickable_size.x - button_size.x) * 0.5, 0) + Vec2f(0, i * (button_size.y + 6)), button_size);
+				buttons[current_page][i].Update(m_clickable_origin + Vec2f(0, 50) + Vec2f((m_clickable_size.x - localbuttonsize.x) * 0.5, 0) + Vec2f(0, i * (localbuttonsize.y + 6)), localbuttonsize);
 			}
 		}
 		else
 		{
 			for (int i=0; i<settings[magic_number - current_page].length; ++i)
 			{
-				settings[magic_number - current_page][i].Update(m_clickable_origin + Vec2f(0, 50) + Vec2f((m_clickable_size.x - button_size.x) * 0.5, 0) + Vec2f(0, i * (button_size.y + 6)), button_size);
+				settings[magic_number - current_page][i].Update(m_clickable_origin + Vec2f(0, 50) + Vec2f((m_clickable_size.x - localbuttonsize.x) * 0.5, 0) + Vec2f(0, i * (localbuttonsize.y + 6)), localbuttonsize);
 			}
 		}
 	}
