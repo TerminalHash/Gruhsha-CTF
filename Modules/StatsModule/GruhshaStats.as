@@ -20,6 +20,11 @@ bool onServerProcessChat( CRules@ this, const string& in text_in, string& out te
 		{
 			this.Tag("track_stats");
 			this.Sync("track_stats", true);
+			printf("[INFO] Statistic tracking enabled on this match!");
+
+			this.Tag("offi match");
+			this.Sync("offi match", true);
+			printf("[INFO] This match tagged as offi by " + player.getUsername());
 
 			tcpr("MatchBegin" + " " + getGameTime());
 
@@ -64,6 +69,9 @@ void onRestart(CRules@ this)
 
 	this.Untag("track_stats");
 	this.Sync("track_stats", true);
+
+	this.Untag("offi match");
+	this.Sync("offi match", true);
 }
 
 void onNewPlayerJoin( CRules@ this, CPlayer@ player ) 
