@@ -57,10 +57,10 @@ void onInit(CBlob@ this)
 	this.addCommandID("get bomb");
 
 	// center on blocks
-	//this.set_Vec2f("inventory offset", Vec2f(0.0f, 160.0f));
+	this.set_Vec2f("inventory offset", Vec2f(0.0f, 160.0f));
 
 	// center on inventory
-	this.set_Vec2f("inventory offset", Vec2f(0.0f, 0.0f));
+	//this.set_Vec2f("inventory offset", Vec2f(0.0f, 0.0f));
 
 	SetHelp(this, "help self action2", "builder", getTranslatedString("$Pick$Dig/Chop  $KEY_HOLD$$RMB$"), "", 3);
 
