@@ -910,22 +910,22 @@ void onRenderScoreboard(CRules@ this)
 	// matetials section
 
 	// BLUE TEAM
-	GUI::DrawText(getRules().get_s32("teamwood" + 0) + " ", Vec2f(bluz_pane_br.x - 1032, bluz_pane_tl.y + 22), SColor(0xffffffff));
-	GUI::DrawText("" " | ", Vec2f(bluz_pane_br.x - 1065, bluz_pane_tl.y + 20), SColor(0xffffffff));
-	GUI::DrawText(getRules().get_s32("teamstone" + 0) + " ", Vec2f(bluz_pane_br.x - 1100, bluz_pane_tl.y + 22), SColor(0xffffffff));
+	GUI::DrawText(getRules().get_s32("teamwood" + 0) + " ", Vec2f(bluz_pane_tl.x + 368, bluz_pane_br.y - 121), SColor(0xffffffff));
+	GUI::DrawText("" " | ", Vec2f(bluz_pane_tl.x + 335, bluz_pane_br.y - 122), SColor(0xffffffff));
+	GUI::DrawText(getRules().get_s32("teamstone" + 0) + " ", Vec2f(bluz_pane_tl.x + 290, bluz_pane_br.y - 121), SColor(0xffffffff));
 
 		// icons for mats
-	GUI::DrawIcon("Materials.png", 25, Vec2f(16, 16), Vec2f(bluz_pane_br.x - 1050, bluz_pane_tl.y + 20), 0.50f, 0); // wood
-	GUI::DrawIcon("Materials.png", 24, Vec2f(16, 16), Vec2f(bluz_pane_br.x - 1118, bluz_pane_tl.y + 20), 0.50f, 0); // stone
+	GUI::DrawIcon("Materials.png", 25, Vec2f(16, 16), Vec2f(bluz_pane_tl.x + 350, bluz_pane_br.y - 121), 0.50f, 0); // wood
+	GUI::DrawIcon("Materials.png", 24, Vec2f(16, 16), Vec2f(bluz_pane_tl.x + 272, bluz_pane_br.y - 121), 0.50f, 0); // stone
 
 	// RED TEAM
-	GUI::DrawText(getRules().get_s32("teamwood" + 1) + " ", Vec2f(redz_pane_br.x - 1032, redz_pane_tl.y + 22), SColor(0xffffffff));
-	GUI::DrawText("" " | ", Vec2f(redz_pane_br.x - 1065, redz_pane_tl.y + 20), SColor(0xffffffff));
-	GUI::DrawText(getRules().get_s32("teamstone" + 1) + " ", Vec2f(redz_pane_br.x - 1100, redz_pane_tl.y + 22), SColor(0xffffffff));
+	GUI::DrawText(getRules().get_s32("teamwood" + 1) + " ", Vec2f(redz_pane_tl.x + 368, redz_pane_br.y - 121), SColor(0xffffffff));
+	GUI::DrawText("" " | ", Vec2f(redz_pane_tl.x + 335, redz_pane_br.y - 122), SColor(0xffffffff));
+	GUI::DrawText(getRules().get_s32("teamstone" + 1) + " ", Vec2f(redz_pane_tl.x + 290, redz_pane_br.y - 121), SColor(0xffffffff));
 
 		// icons for mats
-	GUI::DrawIcon("Materials.png", 25, Vec2f(16, 16), Vec2f(redz_pane_br.x - 1050, redz_pane_tl.y + 20), 0.50f, 0); // wood
-	GUI::DrawIcon("Materials.png", 24, Vec2f(16, 16), Vec2f(redz_pane_br.x - 1118, redz_pane_tl.y + 20), 0.50f, 0); // stone
+	GUI::DrawIcon("Materials.png", 25, Vec2f(16, 16), Vec2f(redz_pane_tl.x + 350, redz_pane_br.y - 121), 0.50f, 0); // wood
+	GUI::DrawIcon("Materials.png", 24, Vec2f(16, 16), Vec2f(redz_pane_tl.x + 272, redz_pane_br.y - 121), 0.50f, 0); // stone
 	///////////////////////////////////////////////
 
 
