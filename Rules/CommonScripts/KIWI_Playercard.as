@@ -3,7 +3,7 @@
 #include "HeadCommon.as"
 #include "TranslationsSystem.as"
 
-Vec2f playerCardDims(256, 198+60);
+Vec2f playerCardDims(256, 198+102);
 Vec2f hovered_icon_pos();
 
 int hovered_accolade = -1;
@@ -37,13 +37,24 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 	string charname = player.getCharacterName();
 	string clantag = player.getClantag();
 
+	string head_file;
+	int head_frame;
+
+	// head stuff
+	if (player.getBlob() is null) {
+		head_frame = getHeadSpecs(player, head_file);
+	} else {
+		head_frame = player.getBlob().get_s32("head index");
+		head_file = player.getBlob().get_string("head texture");
+	}
+
 	//main pane
 	Vec2f paneDims = playerCardDims;
 	Vec2f topLeft = pos;//-Vec2f(paneDims.x/2+32,-8);
 	Vec2f botRight = topLeft+Vec2f(paneDims.x,paneDims.y);
 	GUI::DrawPane(topLeft, botRight);
 
-	Vec2f paneGap(0, 2);
+	Vec2f paneGap(0, 3);
 	Vec2f sideGap(6, 6);
 
 	//charname stuff
@@ -55,6 +66,7 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 	//username stuff
 	SColor nameColor = getNameColour(player);
 	Vec2f usernameTopLeft(charnameTopLeft.x, charnamePaneDims.y+sideGap.y-2);
+	Vec2f usernamePaneDims(paneDims.x-usernameTopLeft.x*2, 28);
 	Vec2f usernameBotRight = Vec2f(botRight.x-usernameTopLeft.x, topLeft.y+usernameTopLeft.y+charnamePaneDims.y);
 	GUI::DrawPane(topLeft+usernameTopLeft, usernameBotRight, SColor(0xff777777));
 	const string USR_PREFIX = "usr: ";
@@ -376,86 +388,80 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 	}
 		//making golden crown for those who paid the game
 		//making bronze coin for those who's f2p
-		if (!player.isBot()) {
-			Vec2f paid_icon_pos = Vec2f(portraitTopLeft.x,portraitBotRight.y)+Vec2f(4, 8);
-			u8 membership_type = player.getOldGold()?8:10;
-			GUI::DrawIcon("AccoladeBadges", membership_type, Vec2f(16, 16), paid_icon_pos, 1.0f);
-			if (mousePos.x > paid_icon_pos.x -4 && mousePos.x < paid_icon_pos.x + 24 && mousePos.y < paid_icon_pos.y + 24 && mousePos.y > paid_icon_pos.y -4)
-			{
-				hovered_accolade = membership_type;
-				hovered_icon_pos = paid_icon_pos;
-			}
+	if (!player.isBot()) {
+		Vec2f paid_icon_pos = Vec2f(portraitTopLeft.x,portraitBotRight.y)+Vec2f(4, 8);
+		u8 membership_type = player.getOldGold()?8:10;
+		GUI::DrawIcon("AccoladeBadges", membership_type, Vec2f(16, 16), paid_icon_pos, 1.0f);
+		if (mousePos.x > paid_icon_pos.x -4 && mousePos.x < paid_icon_pos.x + 24 && mousePos.y < paid_icon_pos.y + 24 && mousePos.y > paid_icon_pos.y -4)
+		{
+			hovered_accolade = membership_type;
+			hovered_icon_pos = paid_icon_pos;
+		}
+	}
+
+	// head panel
+	f32 head_icon_scale = 1.0f;
+	Vec2f headFrameTopLeft(usernameTopLeft.x, usernamePaneDims.y+sideGap.y+24);
+	Vec2f headFrameBotRight = Vec2f(botRight.x-headFrameTopLeft.x, topLeft.y+headFrameTopLeft.y+usernamePaneDims.y+16);
+	Vec2f head_icon_pos = Vec2f(agePaneTopLeft.x+70, portraitBotRight.y+120);
+	//GUI::DrawPane(topLeft+headFrameTopLeft, headFrameBotRight, SColor(0xff777777));
+	//GUI::DrawIcon(head_file, 0, Vec2f(64,16), head_icon_pos, head_icon_scale, head_icon_scale, SColor(0xaaffffff));
+	GUI::DrawIcon(head_file, head_icon_pos, head_icon_scale);
+
+	// Clan Badges
+	f32 clan_badge_icon_scale = 1.0f;
+	Vec2f clan_badge_icon_pos = Vec2f(portraitTopLeft.x,portraitBotRight.y)+Vec2f(8, 76);
+
+	float x = topLeft.x + 8;
+
+	if (clantag.toUpper() == "MINECULT") {
+		GUI::DrawIcon("Sprites/clan_badges.png", 0, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, player.getTeamNum());
+	} else if (clantag.toUpper() == "TTOGAD") {
+		GUI::DrawIcon("Sprites/clan_badges.png", 1, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, 0);
+	} else if (clantag.toUpper() == "MAGMUS") {
+		GUI::DrawIcon("Sprites/clan_badges.png", 2, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, player.getTeamNum());
+	} else if (clantag.toUpper() == "HOMEK") {
+		GUI::DrawIcon("Sprites/clan_badges.png", 3, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, 0);
+	} else if (clantag.toUpper() == "BUTTER") {
+		GUI::DrawIcon("Sprites/clan_badges.png", 4, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, 0);
+	} else if (clantag.toUpper() == "GRUHSHA") {
+		GUI::DrawIcon("Sprites/clan_badges.png", 5, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, 0);
+	} else if (clantag.toUpper() == "BUTTERMINA" || clantag.toUpper() == "BUTTERCULT") {
+		GUI::DrawIcon("Sprites/clan_badges.png", 6, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, player.getTeamNum());
+	}
+
+	if (mousePos.x > x -4 && mousePos.x < x + 24 && mousePos.y < clan_badge_icon_pos.y + 24 && mousePos.y > clan_badge_icon_pos.y -4 && clantag != "") {
+		Vec2f centre_top = Vec2f(x, clan_badge_icon_pos.y + 40);
+
+		string desc = Names::clanbadgetext + " " + clantag + ".";
+
+		Vec2f size(0, 0);
+		GUI::GetTextDimensions(desc, size);
+
+		Vec2f tl = centre_top - Vec2f(size.x / 2, 0);
+		Vec2f br = tl + size;
+
+		//don't let the pane go outside the screen borders
+		f32 outbounds_x_difference = br.x-getDriver().getScreenWidth()+16.0f/704*getDriver().getScreenWidth();
+		if (outbounds_x_difference>0) {
+			tl = Vec2f(tl.x-outbounds_x_difference, tl.y);
+			br = tl + size;
 		}
 
-		string head_file;
-		int head_frame;
-
-		if (player.getBlob() is null) {
-			head_frame = getHeadSpecs(player, head_file);
-		} else {
-			head_frame = player.getBlob().get_s32("head index");
-			head_file = player.getBlob().get_string("head texture");
+		f32 outbounds_y_difference = br.y-getDriver().getScreenHeight()+16.0f/704*getDriver().getScreenHeight();
+		if (outbounds_y_difference>0) {
+			tl = Vec2f(tl.x, tl.y-outbounds_y_difference);
+			br = tl + size;
 		}
 
-		Vec2f head_dims(16,16);
-		f32 head_icon_scale = 1.0f;
-		Vec2f head_icon_pos = Vec2f(portraitTopLeft.x,portraitBotRight.y)+Vec2f(38, 40);
-		GUI::DrawIcon(head_file, head_frame+(getGameTime()%90<60?(getGameTime()%90<40?1:2):0), head_dims, head_icon_pos, head_icon_scale, head_icon_scale, player.getTeamNum(), SColor(0xaaffffff));
+		//margin
+		Vec2f expand(8, 8);
+		tl -= expand;
+		br += expand;
 
-		// Clan Badges
-		f32 clan_badge_icon_scale = 1.0f;
-		Vec2f clan_badge_icon_pos = Vec2f(portraitTopLeft.x,portraitBotRight.y)+Vec2f(8, 76);
-
-		float x = topLeft.x + 8;
-
-		if (clantag.toUpper() == "MINECULT") {
-			GUI::DrawIcon("Sprites/clan_badges.png", 0, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, player.getTeamNum());
-		} else if (clantag.toUpper() == "TTOGAD") {
-			GUI::DrawIcon("Sprites/clan_badges.png", 1, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, 0);
-		} else if (clantag.toUpper() == "MAGMUS") {
-			GUI::DrawIcon("Sprites/clan_badges.png", 2, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, player.getTeamNum());
-		} else if (clantag.toUpper() == "HOMEK") {
-			GUI::DrawIcon("Sprites/clan_badges.png", 3, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, 0);
-		} else if (clantag.toUpper() == "BUTTER") {
-			GUI::DrawIcon("Sprites/clan_badges.png", 4, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, 0);
-		} else if (clantag.toUpper() == "GRUHSHA") {
-			GUI::DrawIcon("Sprites/clan_badges.png", 5, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, 0);
-		} else if (clantag.toUpper() == "BUTTERMINA" || clantag.toUpper() == "BUTTERCULT") {
-			GUI::DrawIcon("Sprites/clan_badges.png", 6, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, player.getTeamNum());
-		}
-
-		if (mousePos.x > x -4 && mousePos.x < x + 24 && mousePos.y < clan_badge_icon_pos.y + 24 && mousePos.y > clan_badge_icon_pos.y -4 && clantag != "") {
-			Vec2f centre_top = Vec2f(x, clan_badge_icon_pos.y + 40);
-
-			string desc = Names::clanbadgetext + " " + clantag + ".";
-
-			Vec2f size(0, 0);
-			GUI::GetTextDimensions(desc, size);
-
-			Vec2f tl = centre_top - Vec2f(size.x / 2, 0);
-			Vec2f br = tl + size;
-
-			//don't let the pane go outside the screen borders
-			f32 outbounds_x_difference = br.x-getDriver().getScreenWidth()+16.0f/704*getDriver().getScreenWidth();
-			if (outbounds_x_difference>0) {
-				tl = Vec2f(tl.x-outbounds_x_difference, tl.y);
-				br = tl + size;
-			}
-
-			f32 outbounds_y_difference = br.y-getDriver().getScreenHeight()+16.0f/704*getDriver().getScreenHeight();
-			if (outbounds_y_difference>0) {
-				tl = Vec2f(tl.x, tl.y-outbounds_y_difference);
-				br = tl + size;
-			}
-
-			//margin
-			Vec2f expand(8, 8);
-			tl -= expand;
-			br += expand;
-
-			GUI::DrawPane(tl, br, SColor(0xffffffff));
-			GUI::DrawText(desc, tl + expand, SColor(0xffffffff));
-		}
+		GUI::DrawPane(tl, br, SColor(0xffffffff));
+		GUI::DrawText(desc, tl + expand, SColor(0xffffffff));
+	}
 
 	drawHoverExplanation(hovered_accolade, hovered_age, hovered_tier, hovered_icon_pos+Vec2f(0, 40));
 }
