@@ -142,15 +142,15 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 
 	//draw support tier
 	int tier = player.getSupportTier();
-	if(draw_tier && !player.isBot())
+	if (draw_tier && !player.isBot())
 	{
 
-		if(tier > 0)
+		if (tier > 0)
 		{
-			int tier_icon_start = 15;
+			int tier_icon_start = -1;
 			Vec2f icon_pos = topLeft+Vec2f(charnameDims.x+16, usernameTopLeft.y+4);
-			Vec2f tier_icon_pos = Vec2f(portraitTopLeft.x,portraitBotRight.y)+Vec2f(38, 8);
-			GUI::DrawIcon("AccoladeBadges", tier_icon_start + tier, Vec2f(16, 16), tier_icon_pos, 1.0f, player.getTeamNum());
+			Vec2f tier_icon_pos = Vec2f(portraitTopLeft.x,portraitBotRight.y)+Vec2f(4, 8);
+			GUI::DrawIcon("TierBadges", tier_icon_start + tier, Vec2f(16, 16), tier_icon_pos, 1.0f, player.getTeamNum());
 
 			if (mousePos.x > tier_icon_pos.x -4 && mousePos.x < tier_icon_pos.x + 24 && mousePos.y < tier_icon_pos.y + 24 && mousePos.y > tier_icon_pos.y -4)
 			{
@@ -270,7 +270,7 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 
 			int days = Time_DaysSince(regtime);
 
-			int age_icon_start = 32;
+			int age_icon_start = 0;
 			int icon = 0;
 			bool show_years = false;
 			int age = 0;
@@ -367,21 +367,48 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 				}
 			}
 
-			float extra = 8;
-			Vec2f age_icon_pos = Vec2f(portraitTopLeft.x, portraitBotRight.y)+Vec2f(4, 40);
+			Vec2f age_icon_pos = Vec2f(portraitTopLeft.x, portraitBotRight.y)+Vec2f(24, 40);
+			int outline_frame_shift = 10;
 
-			if (show_years)
+			int years_frame_start = 10;
+
+			if(show_years)
 			{
-				drawAgeIcon(age, age_icon_pos);
+				f32 scale = 1.0f;
+				int number_gap = 16*scale;
+				int tens_frame = 0;
+				int units_frame = 0;
+				int decimal_frame_shift = 20;
+
+				int weird_shift = age==10?2:0;
+				if ((age / 10) == 5 || age == 35)
+					weird_shift = -2;
+				int units_epic_y_offset = 2;
+
+				tens_frame = years_frame_start + (age / 10) + decimal_frame_shift;
+				units_frame = years_frame_start + (age % 10);
+
+				Vec2f tens_icon_pos = Vec2f(age_icon_pos.x - (number_gap - 8*scale), age_icon_pos.y);
+				Vec2f units_icon_pos = Vec2f(tens_icon_pos.x + number_gap, tens_icon_pos.y);
+				//if (age>=10)
+				//	tens_icon_pos.y += units_epic_y_offset;
+
+				if (age>=10)
+					GUI::DrawIcon("AgeBadges", tens_frame+outline_frame_shift, Vec2f(16, 16), tens_icon_pos, scale, 0);
+				GUI::DrawIcon("AgeBadges", units_frame+outline_frame_shift, Vec2f(16, 16), units_icon_pos, scale, 0);
+
+				if (age>=10)
+					GUI::DrawIcon("AgeBadges", tens_frame, Vec2f(16, 16), tens_icon_pos, scale, 0);
+				GUI::DrawIcon("AgeBadges", units_frame, Vec2f(16, 16), units_icon_pos, scale, 0);
 			}
 			else
 			{
-				GUI::DrawIcon("AccoladeBadges", age_icon_start + icon, Vec2f(16, 16), age_icon_pos, 1.0f);
+				GUI::DrawIcon("AgeBadges", age_icon_start + icon, Vec2f(16, 16), age_icon_pos+Vec2f(8, 0), 1.0f, player.getTeamNum());
 			}
 
 			if (mousePos.x > age_icon_pos.x -4 && mousePos.x < age_icon_pos.x + 24 && mousePos.y < age_icon_pos.y + 24 && mousePos.y > age_icon_pos.y -4)
 			{
-				hovered_age = icon;
+				hovered_age = Maths::Min(25, show_years?age+15:icon);
 				hovered_icon_pos = age_icon_pos;
 			}
 		}
@@ -514,27 +541,6 @@ void drawHoverExplanation(int hovered_accolade, int hovered_age, int hovered_tie
 
 	GUI::DrawPane(tl, br, SColor(0xffffffff));
 	GUI::DrawText(desc, tl + expand, SColor(0xffffffff));
-}
-
-void drawAgeIcon(int age, Vec2f position)
-{
-	int number_gap = 8;
-	int years_frame_start = 48;
-
-	if (age >= 10)
-	{
-		position.x -= number_gap - 2;
-		GUI::DrawIcon("AccoladeBadges", years_frame_start + (age / 10), Vec2f(16, 16), position, 1.0f, 0);
-		age = age % 10;
-		position.x += number_gap + 7;
-	}
-
-	GUI::DrawIcon("AccoladeBadges", years_frame_start + age, Vec2f(16, 16), position, 1.0f, 0);
-	position.x += 5;
-	position.y += 2;
-
-	if(age == 1) position.x -= 1; // fix y letter offset for number 1
-	GUI::DrawIcon("AccoladeBadges", 58, Vec2f(16, 16), position, 1.0f, 0); // y letter
 }
 
 string[] age_description = {
