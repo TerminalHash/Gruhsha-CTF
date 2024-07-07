@@ -524,7 +524,8 @@ void drawAgeIcon(int age, Vec2f position)
 	}
 
 	GUI::DrawIcon("AccoladeBadges", years_frame_start + age, Vec2f(16, 16), position, 1.0f, 0);
-	position.x += 4;
+	position.x += 5;
+	position.y += 2;
 
 	if(age == 1) position.x -= 1; // fix y letter offset for number 1
 	GUI::DrawIcon("AccoladeBadges", 58, Vec2f(16, 16), position, 1.0f, 0); // y letter
