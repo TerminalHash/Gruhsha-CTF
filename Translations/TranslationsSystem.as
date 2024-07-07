@@ -76,6 +76,9 @@ namespace Descriptions
 	togglesoundschattexton			= Translate(en::d_togglesoundschattexton+"\\"+ru::d_togglesoundschattexton),
 	togglesoundschattextoff			= Translate(en::d_togglesoundschattextoff+"\\"+ru::d_togglesoundschattextoff),
 
+	// ScoreboardCommon.as
+	oldstatstooltip					= Translate(en::d_oldstatstooltip+"\\"+ru::d_oldstatstooltip),
+
 	// ScoreboardRender.as
 	currentversiontext				= Translate(en::d_currentversiontext+"\\"+ru::d_currentversiontext),
 

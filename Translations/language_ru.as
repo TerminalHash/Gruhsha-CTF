@@ -61,6 +61,9 @@ namespace ru
 	d_togglesoundschattexton				= "Надоедливые звуки войслайнов выключены, ",
 	d_togglesoundschattextoff				= "Надоедливые звуки войслайнов включены, ",
 
+	// ScoreboardCommon.as
+	d_oldstatstooltip						= "Зажми клавишу \"Shift\", чтобы увидеть статистику прошлого матча",
+
 	// ScoreboardRender.as
 	d_currentversiontext					= "Текущая версия: ",
 

@@ -89,7 +89,7 @@ float drawServerInfo(float y)
 
 	Vec2f pos(getScreenWidth()/2, y);
 	// Waffle: Add extra tooltip for old stats
-	float width = 333;
+	float width = 533;
 
 
 	CNet@ net = getNet();
@@ -121,7 +121,7 @@ float drawServerInfo(float y)
 	Vec2f mid(getScreenWidth()/2, y);
 
 
-	GUI::DrawPane(pos, bot, SColor(0xffcccccc));
+	GUI::DrawFramedPane(pos, bot);
 
 	mid.y += 15;
 	GUI::DrawTextCentered(net.joined_servername, mid, white);
@@ -136,11 +136,11 @@ float drawServerInfo(float y)
 
 	// Waffle: Add extra tooltip for old stats
 	mid.y += 17;
-	GUI::DrawTextCentered(OLD_STATS_TOOLTIP, mid, OLD_STATS_COLOR);
+	GUI::DrawTextCentered(Descriptions::oldstatstooltip, mid, OLD_STATS_COLOR);
 
 	// Draw grusha icons
-	GUI::DrawIcon("grusha.png", 0, Vec2f(64, 64), Vec2f(getScreenWidth()/2 - width/2 - 32, y - 32), 0.5f, 0);
-	GUI::DrawIcon("grusha_flip.png", 0, Vec2f(64, 64), Vec2f(getScreenWidth()/2 + width/2 - 64 + 32, y - 32), 0.5f, 0);
+	GUI::DrawIcon("grusha.png", 0, Vec2f(64, 64), Vec2f(getScreenWidth()/2 - width/2 + 34, y + 16), 0.5f, 0);
+	GUI::DrawIcon("grusha_flip.png", 0, Vec2f(64, 64), Vec2f(getScreenWidth()/2 + width/2 - 130 + 32, y + 16), 0.5f, 0);
 
 	return bot.y;
 
@@ -150,7 +150,7 @@ void drawSettingsButton()
 {
 	GUI::SetFont("menu");
 
-	Vec2f startpos(getScreenWidth()/2 - 300, 120);
+	Vec2f startpos(getScreenWidth()/2 - 400, 120);
 
 	CControls@ controls = getControls();
 	if (controls is null) return;

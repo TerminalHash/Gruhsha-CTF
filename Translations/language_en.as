@@ -61,6 +61,9 @@ namespace en
 	d_togglesoundschattexton				= "Annoying sounds is muted for you, ",
 	d_togglesoundschattextoff				= "Annoying sounds is unmuted for you, ",
 
+	// ScoreboardCommon.as
+	d_oldstatstooltip						= "Hold \"Shift\" to see stats from previous match",
+
 	// ScoreboardRender.as
 	d_currentversiontext					= "Current version: ",
 
