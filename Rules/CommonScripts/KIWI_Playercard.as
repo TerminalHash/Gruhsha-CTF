@@ -402,9 +402,12 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 		Vec2f head_icon_pos = Vec2f(portraitTopLeft.x,portraitBotRight.y)+Vec2f(38, 40);
 		GUI::DrawIcon(head_file, head_frame+(getGameTime()%90<60?(getGameTime()%90<40?1:2):0), head_dims, head_icon_pos, head_icon_scale, head_icon_scale, player.getTeamNum(), SColor(0xaaffffff));
 
-		// TODO: need more space for clan badges
+		// Clan Badges
 		f32 clan_badge_icon_scale = 1.0f;
 		Vec2f clan_badge_icon_pos = Vec2f(portraitTopLeft.x,portraitBotRight.y)+Vec2f(8, 76);
+
+		float x = topLeft.x + 8;
+
 		if (clantag.toUpper() == "MINECULT") {
 			GUI::DrawIcon("Sprites/clan_badges.png", 0, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, player.getTeamNum());
 		} else if (clantag.toUpper() == "TTOGAD") {
@@ -421,12 +424,45 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 			GUI::DrawIcon("Sprites/clan_badges.png", 6, Vec2f(16, 16), clan_badge_icon_pos, clan_badge_icon_scale, player.getTeamNum());
 		}
 
+		if (mousePos.x > x -4 && mousePos.x < x + 24 && mousePos.y < clan_badge_icon_pos.y + 24 && mousePos.y > clan_badge_icon_pos.y -4 && clantag != "") {
+			Vec2f centre_top = Vec2f(x, clan_badge_icon_pos.y + 40);
+
+			string desc = Names::clanbadgetext + " " + clantag + ".";
+
+			Vec2f size(0, 0);
+			GUI::GetTextDimensions(desc, size);
+
+			Vec2f tl = centre_top - Vec2f(size.x / 2, 0);
+			Vec2f br = tl + size;
+
+			//don't let the pane go outside the screen borders
+			f32 outbounds_x_difference = br.x-getDriver().getScreenWidth()+16.0f/704*getDriver().getScreenWidth();
+			if (outbounds_x_difference>0) {
+				tl = Vec2f(tl.x-outbounds_x_difference, tl.y);
+				br = tl + size;
+			}
+
+			f32 outbounds_y_difference = br.y-getDriver().getScreenHeight()+16.0f/704*getDriver().getScreenHeight();
+			if (outbounds_y_difference>0) {
+				tl = Vec2f(tl.x, tl.y-outbounds_y_difference);
+				br = tl + size;
+			}
+
+			//margin
+			Vec2f expand(8, 8);
+			tl -= expand;
+			br += expand;
+
+			GUI::DrawPane(tl, br, SColor(0xffffffff));
+			GUI::DrawText(desc, tl + expand, SColor(0xffffffff));
+		}
+
 	drawHoverExplanation(hovered_accolade, hovered_age, hovered_tier, hovered_icon_pos+Vec2f(0, 40));
 }
 
 void drawHoverExplanation(int hovered_accolade, int hovered_age, int hovered_tier, Vec2f centre_top)
 {
-	if (centre_top==Vec2f()) return;
+	if (centre_top == Vec2f()) return;
 
 	if( //(invalid/"unset" hover)
 		(hovered_accolade < 0
