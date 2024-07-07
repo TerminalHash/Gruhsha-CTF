@@ -143,7 +143,7 @@ namespace ru
 	// KIWI_Playercard.as
 	n_medalsn								= "Медали",
 	n_partipin								= "Участие",
-	n_clanbadgetext							= "Этот игрок состоит в клане",
+	n_clanbadgetext							= "Этот игрок состоит в гильдии",
 
 	// ScoreboardCommon.as
 	n_modsettingsbutton						= "Настройки",

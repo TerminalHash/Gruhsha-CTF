@@ -143,7 +143,7 @@ namespace en
 	// KIWI_Playercard.as
 	n_medalsn								= "Medals",
 	n_partipin								= "Participation",
-	n_clanbadgetext							= "This player consist in clan",
+	n_clanbadgetext							= "This player consist in guild",
 
 	// ScoreboardCommon.as
 	n_modsettingsbutton						= " Settings",
