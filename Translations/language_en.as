@@ -116,6 +116,7 @@ namespace en
 	n_drillcommand							= "Take out drill",
 	n_cancelarrowschargingcommand			= "Cancel bow charging",
 	n_markbuildercommand					= "Mark builder position",
+	n_activateorthrowbomb					= "Activate/throw bomb (Builder)",
 
 		// Settings
 	n_buildmode								= "Build Mode",

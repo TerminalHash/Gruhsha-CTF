@@ -61,7 +61,6 @@ void onInit(CBlob@ this)
 	this.getShape().getConsts().net_threshold_multiplier = 0.5f;
 
 	this.addCommandID(grapple_sync_cmd);
-	this.addCommandID("get bomb");
 
 	SetHelp(this, "help self hide", "archer", getTranslatedString("Hide    $KEY_S$"), "", 1);
 	SetHelp(this, "help self action2", "archer", getTranslatedString("$Grapple$ Grappling hook    $RMB$"), "", 3);
@@ -708,60 +707,6 @@ void ManageBow(CBlob@ this, ArcherInfo@ archer, RunnerMoveVars@ moveVars)
 			getHUD().SetCursorFrame(frame);
 		}
 
-		// activate/throw
-
-		if (this.isKeyJustPressed(key_action3))
-		{
-			CBlob@ carried = this.getCarriedBlob();
-			bool holding = carried !is null;// && carried.hasTag("exploding");
-
-			if (carried !is null)
-			{
-				if (carried.getName() == "structure_crate") return;
-				if (carried.getName() == "grapplinghook") return;
-			}
-
-			CInventory@ inv = this.getInventory();
-			bool thrown = false;
-			u8 bombType = this.get_u8("bomb type");
-			if (bombType == 255)
-			{
-				SetFirstAvailableBomb(this);
-				bombType = this.get_u8("bomb type");
-			}
-			if (bombType < bombTypeNames.length)
-			{
-				for (int i = 0; i < inv.getItemsCount(); i++)
-				{
-					CBlob@ item = inv.getItem(i);
-					const string itemname = item.getName();
-					if (!holding && bombTypeNames[bombType] == itemname)
-					{
-						if (bombType >= 3)
-						{
-							this.server_Pickup(item);
-							client_SendThrowOrActivateCommand(this);
-							thrown = true;
-						}
-						else
-						{
-							CBitStream params;
-							params.write_u8(bombType);
-							this.SendCommand(this.getCommandID("get bomb"), params);
-							thrown = true;
-						}
-						break;
-					}
-				}
-			}
-
-			if (!thrown)
-			{
-				client_SendThrowOrActivateCommand(this);
-				SetFirstAvailableBomb(this);
-			}
-		}
-
 		// pick up arrow
 
 		if (archer.fletch_cooldown > 0)
@@ -791,6 +736,16 @@ void ManageBow(CBlob@ this, ArcherInfo@ archer, RunnerMoveVars@ moveVars)
 
 void onTick(CBlob@ this)
 {
+	if (this.isInInventory())
+		return;
+
+	const bool ismyplayer = this.isMyPlayer();
+
+	if (ismyplayer && getHUD().hasMenus())
+	{
+		return;
+	}
+
 	ArcherInfo@ archer;
 	if (!this.get("archerInfo", @archer))
 	{
@@ -836,6 +791,56 @@ void onTick(CBlob@ this)
 	ManageBow(this, archer, moveVars);
 
 	//print("state after: " + archer.charge_state);
+
+	// activate/throw
+	if (ismyplayer)
+	{
+		if (this.isKeyJustPressed(key_action3))
+		{
+			CBlob@ carried = this.getCarriedBlob();
+			bool holding = carried !is null;// && carried.hasTag("exploding");
+
+			CInventory@ inv = this.getInventory();
+			bool thrown = false;
+			u8 bombType = this.get_u8("bomb type");
+
+			if (bombType == 255)
+			{
+				SetFirstAvailableBomb(this);
+				bombType = this.get_u8("bomb type");
+			}
+
+			if (bombType < bombTypeNames.length)
+			{
+				for (int i = 0; i < inv.getItemsCount(); i++)
+				{
+					CBlob@ item = inv.getItem(i);
+					const string itemname = item.getName();
+					if (!holding && bombTypeNames[bombType] == itemname)
+					{
+						if (bombType >= 2)
+						{
+							this.server_Pickup(item);
+							client_SendThrowOrActivateCommand(this);
+							thrown = true;
+						}
+						else
+						{
+							client_SendThrowOrActivateCommandBomb(this, bombType);
+							thrown = true;
+						}
+						break;
+					}
+				}
+			}
+
+			if (!thrown)
+			{
+				client_SendThrowOrActivateCommand(this);
+				SetFirstAvailableBomb(this);
+			}
+		}
+	}
 }
 
 bool checkGrappleBarrier(Vec2f pos)
@@ -1342,57 +1347,6 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		}
 	}
 
-	if (cmd == this.getCommandID("get bomb"))
-	{
-		u8 type_b;
-		if (!params.saferead_u8(type_b)) return;
-
-		const u8 bombType = type_b;
-		if (bombType >= bombTypeNames.length)
-			return;
-
-		const string bombTypeName = bombTypeNames[bombType];
-		this.Tag(bombTypeName + " done activate");
-		if (hasItem(this, bombTypeName))
-		{
-			if (bombType == 0)
-			{
-				if (getNet().isServer())
-				{
-					CBlob @blob = server_CreateBlob("bomb", this.getTeamNum(), this.getPosition());
-					if (blob !is null)
-					{
-						TakeItem(this, bombTypeName);
-						this.server_Pickup(blob);
-					}
-				}
-			}
-			else if (bombType == 1)
-			{
-				if (getNet().isServer())
-				{
-					CBlob @blob = server_CreateBlob("waterbomb", this.getTeamNum(), this.getPosition());
-					if (blob !is null)
-					{
-						TakeItem(this, bombTypeName);
-						this.server_Pickup(blob);
-						blob.set_f32("map_damage_ratio", 0.0f);
-						blob.set_f32("explosive_damage", 0.0f);
-						blob.set_f32("explosive_radius", 92.0f);
-						blob.set_bool("map_damage_raycast", false);
-						blob.set_string("custom_explosion_sound", "/GlassBreak");
-						blob.set_u8("custom_hitter", Hitters::water);
-                        blob.Tag("splash ray cast");
-
-					}
-				}
-			}
-			else { }
-
-			SetFirstAvailableBomb(this);
-		}
-	}
-
 	if (cmd == this.getCommandID("switch") && isServer())
 	{
 		CPlayer@ callerp = getNet().getActiveCommandPlayer();
@@ -1425,7 +1379,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 			// are we actually holding a bomb or something else?
 			for (uint i = 0; i < bombNames.length; i++)
 			{
-				if(carried.getName() == bombNames[i])
+				if (carried.getName() == bombNames[i])
 				{
 					holding_bomb = true;
 					DoThrow(this, carried, pos, vector, vel);

@@ -11,6 +11,7 @@
 #include "ParticleSparks.as";
 #include "MaterialCommon.as";
 #include "StandardControlsCommon.as";
+#include "BindingsCommon.as";
 
 const f32 hit_damage = 0.5f;
 
@@ -53,8 +54,6 @@ void onInit(CBlob@ this)
 	{
 		this.addCommandID("pick " + bombTypeNames[i]);
 	}
-
-	this.addCommandID("get bomb");
 
 	// center on blocks
 	this.set_Vec2f("inventory offset", Vec2f(0.0f, 160.0f));
@@ -101,25 +100,28 @@ void onTick(CBlob@ this)
 	if (ismyplayer)
 	{
 		Pickaxe(this);
-		if (this.isKeyJustPressed(key_action3))
-		{
+		if (this.isKeyJustPressed(key_action3)) {
+			CBlob@ carried = this.getCarriedBlob();
+
+			if (carried is null || !carried.hasTag("temp blob")) {
+				client_SendThrowOrActivateCommand(this);
+			}
+		}
+
+		if (b_KeyJustPressed("activate_or_throw_bomb")) {
 			CBlob@ carried = this.getCarriedBlob();
 			bool holding = carried !is null;// && carried.hasTag("exploding");
-
-			if (carried !is null)
-			{
-				if (carried.getName() == "structure_crate") return;
-				if (carried.getName() == "grapplinghook") return;
-			}
 
 			CInventory@ inv = this.getInventory();
 			bool thrown = false;
 			u8 bombType = this.get_u8("bomb type");
+
 			if (bombType == 255)
 			{
 				SetFirstAvailableBomb(this);
 				bombType = this.get_u8("bomb type");
 			}
+
 			if (bombType < bombTypeNames.length)
 			{
 				for (int i = 0; i < inv.getItemsCount(); i++)
@@ -128,7 +130,7 @@ void onTick(CBlob@ this)
 					const string itemname = item.getName();
 					if (!holding && bombTypeNames[bombType] == itemname)
 					{
-						if (bombType >= 3)
+						if (bombType >= 2)
 						{
 							this.server_Pickup(item);
 							client_SendThrowOrActivateCommand(this);
@@ -136,9 +138,7 @@ void onTick(CBlob@ this)
 						}
 						else
 						{
-							CBitStream params;
-							params.write_u8(bombType);
-							this.SendCommand(this.getCommandID("get bomb"), params);
+							client_SendThrowOrActivateCommandBomb(this, bombType);
 							thrown = true;
 						}
 						break;
@@ -916,54 +916,6 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		}
 
 		HandlePickaxeCommand(this, @params);
-	}
-
-	if (cmd == this.getCommandID("get bomb"))
-	{
-		const u8 bombType = params.read_u8();
-		if (bombType >= bombTypeNames.length)
-			return;
-
-		const string bombTypeName = bombTypeNames[bombType];
-		this.Tag(bombTypeName + " done activate");
-		if (hasItem(this, bombTypeName))
-		{
-			if (bombType == 0)
-			{
-				if (getNet().isServer())
-				{
-					CBlob @blob = server_CreateBlob("bomb", this.getTeamNum(), this.getPosition());
-					if (blob !is null)
-					{
-						TakeItem(this, bombTypeName);
-						this.server_Pickup(blob);
-					}
-				}
-			}
-			else if (bombType == 1)
-			{
-				if (getNet().isServer())
-				{
-					CBlob @blob = server_CreateBlob("waterbomb", this.getTeamNum(), this.getPosition());
-					if (blob !is null)
-					{
-						TakeItem(this, bombTypeName);
-						this.server_Pickup(blob);
-						blob.set_f32("map_damage_ratio", 0.0f);
-						blob.set_f32("explosive_damage", 0.0f);
-						blob.set_f32("explosive_radius", 92.0f);
-						blob.set_bool("map_damage_raycast", false);
-						blob.set_string("custom_explosion_sound", "/GlassBreak");
-						blob.set_u8("custom_hitter", Hitters::water);
-                        blob.Tag("splash ray cast");
-
-					}
-				}
-			}
-			else { }
-
-			SetFirstAvailableBomb(this);
-		}
 	}
 
 	if (cmd == this.getCommandID("switch") && isServer())
