@@ -32,7 +32,7 @@ void onRestart(CRules@ this) {
     list.SetSpacing(2, 2); // отступы между элементами
     list.SetAlignment(0.5,0.5); // выравнивание всего списка по центру экрана
     list.SetComponents({button, slider}); // добавление кнопки и ползунка в список
-    
+
     ui.AddComponent(list);
 }
 
