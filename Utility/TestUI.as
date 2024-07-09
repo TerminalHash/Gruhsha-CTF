@@ -3,6 +3,8 @@
 #define CLIENT_ONLY
 
 EasyUI@ ui;
+Pane@ blue_team;
+Pane@ red_team;
 
 void onInit(CRules@ this) {
     onRestart(this);
@@ -11,29 +13,11 @@ void onInit(CRules@ this) {
 void onRestart(CRules@ this) {
     @ui = EasyUI();
 
-    // текст для кнопки
-    Label@ label = StandardLabel();
-    label.SetText("Пень лох");
-    label.SetAlignment(0.5, 0.5);
-
-    // кнопка
-    Button@ button = StandardButton(ui);
-    button.SetMinSize(200, 30);
-    button.AddComponent(label);
-
-    // ползунок в списке
-    Slider@ slider = StandardHorizontalSlider(ui);
-    slider.SetMinSize(200, 30);
-
-    // список
-    List@ list = StandardList(ui);
-    list.SetCellWrap(1); // количество столбцов
-    list.SetMaxLines(10); // количество колонок
-    list.SetSpacing(2, 2); // отступы между элементами
-    list.SetAlignment(0.5,0.5); // выравнивание всего списка по центру экрана
-    list.SetComponents({button, slider}); // добавление кнопки и ползунка в список
-
-    ui.AddComponent(list);
+    Pane@ pane = StandardPane(ui, StandardPaneType::Framed);
+    pane.SetMinSize(500, 500);
+    pane.SetAlignment(0.5,0.5);
+    
+    ui.AddComponent(pane);
 }
 
 void onTick(CRules@ this) {
@@ -54,7 +38,5 @@ class HideComponentHandler : EventHandler {
         @this.component = component;
     }
 
-    void Handle() {
-        component.SetVisible(!component.isVisible());
-    }
+    void Handle() {}
 }

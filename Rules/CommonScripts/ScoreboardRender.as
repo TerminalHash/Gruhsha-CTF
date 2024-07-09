@@ -48,8 +48,7 @@ class OldPlayerStats {
 }
 
 //returns the bottom
-float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ team, Vec2f &out pane_tl, Vec2f &out pane_br, Vec2f emblem)
-{
+float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ team, Vec2f &out pane_tl, Vec2f &out pane_br, Vec2f emblem) {
 	if (players.size() <= 0)
 		return tl.y;
 
@@ -758,8 +757,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 
 }
 
-void onRenderScoreboard(CRules@ this)
-{
+void onRenderScoreboard(CRules@ this) {
 	if (this.get_bool("bindings_open")) return;
 
 	//sort players
@@ -1083,8 +1081,8 @@ void onRestart(CRules@ this)
 				old_player_stats_core.stats.set(player_name, @old_player_stats);
 			}
 
-			old_player_stats.kills    = player.getKills();
-			old_player_stats.deaths   = player.getDeaths();
+			old_player_stats.kills = player.getKills();
+			old_player_stats.deaths = player.getDeaths();
 			old_player_stats.assists = player.getAssists();
 		}
 
