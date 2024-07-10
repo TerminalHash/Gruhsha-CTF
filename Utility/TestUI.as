@@ -4,26 +4,11 @@
 
 EasyUI@ ui;
 
-// BLUE
-const SColor blue_color = SColor(0xFF1A6F9E);
+const SColor BLUE = SColor(0xFF1A6F9E);
+const SColor RED = SColor(0xFFBA2721);
 
-Label@ blue_name_label;
-List@ blue_scoreboard;
-Pane@ blue_pane;
-
-// RED
-const SColor red_color = SColor(0xFFBA2721);
-
-Label@ red_name_label;
-List@ red_scoreboard;
-Pane@ red_pane;
-
-// SPEC
-Label@ spec_name_label;
-List@ spec_scoreboard;
-Pane@ spec_pane;
-
-List@ scoreboards;
+List@ scoreboard;
+[]Components@ components;
 
 void onInit(CRules@ this) {
     onRestart(this);
@@ -31,78 +16,95 @@ void onInit(CRules@ this) {
 
 void onRestart(CRules@ this) {
     @ui = EasyUI();
+    @scoreboard = StandardList();
+    scoreboard.SetCellWrap(7);
+    scoreboard.SetAlignment(0.5, 0.5);
 
-    @blue_name_label = StandardLabel();
-    blue_name_label.SetFont("Balkara_Condensed");
-    blue_name_label.SetText("ЯЩЕРЫ");
+    // NICKNAME COLUMN
+    Label@ nickname_label = StandardLabel();
+    nickname_label.SetText("NICKNAME");
+    nickname_label.SetAlignment(0.5, 0.5);
+    Pane@ nickname_pane = StandardPane(ui);
+    nickname_pane.SetMinSize(100, 32);
+    nickname_pane.AddComponent(nickname_label);
 
-    @blue_scoreboard = StandardList(ui);
-    blue_scoreboard.SetScrollIndex(1);
-    blue_scoreboard.SetCellWrap(1);
-    blue_scoreboard.AddComponent(blue_name_label);
+    // USERNAME COLUMN
+    Label@ username_label = StandardLabel();
+    username_label.SetText("USERNAME");
+    username_label.SetAlignment(0.5, 0.5);
+    Pane@ username_pane = StandardPane(ui);
+    username_pane.SetMinSize(100, 32);
+    username_pane.AddComponent(username_label);
 
-    @blue_pane = StandardPane(ui, blue_color);
-    blue_pane.SetMinSize(1200, 100);
-    blue_pane.SetAlignment(0.5,0.0);
-    blue_pane.AddComponent(blue_scoreboard);
+    // INFO COLUMN
+    Label@ info_label = StandardLabel();
+    info_label.SetText("INFO");
+    info_label.SetAlignment(0.5, 0.5);
+    Pane@ info_pane = StandardPane(ui);
+    info_pane.SetMinSize(100, 32);
+    info_pane.AddComponent(info_label);
+
+    // PING COLUMN
+    Label@ ping_label = StandardLabel();
+    ping_label.SetText("PING");
+    ping_label.SetAlignment(0.5, 0.5);
+    Pane@ ping_pane = StandardPane(ui);
+    ping_pane.SetMinSize(100, 32);
+    ping_pane.AddComponent(ping_label);
+
+    // DEATHS COLUMN
+    Label@ deaths_label = StandardLabel();
+    deaths_label.SetText("DEATHS");
+    deaths_label.SetAlignment(0.5, 0.5);
+    Pane@ deaths_pane = StandardPane(ui);
+    deaths_pane.SetMinSize(100, 32);
+    deaths_pane.AddComponent(deaths_label);
+
+    // KILLS COLUMN
+    Label@ kills_label = StandardLabel();
+    kills_label.SetText("KILLS");
+    kills_label.SetAlignment(0.5, 0.5);
+    Pane@ kills_pane = StandardPane(ui);
+    kills_pane.SetMinSize(100, 32);
+    kills_pane.AddComponent(kills_label);
+
+    // KDR COLUMN
+    Label@ kdr_label = StandardLabel();
+    kdr_label.SetText("KDR");
+    kdr_label.SetAlignment(0.5, 0.5);
+    Pane@ kdr_pane = StandardPane(ui);
+    kdr_pane.SetMinSize(100, 32);
+    kdr_pane.AddComponent(kdr_label);
+  
+    // LOCALPLAYER NICKNAME
+    CPlayer@ lp = getLocalPlayer();
+
+    //Label@ lp_nickname_label = StandardLabel();
+    //lp_nickname_label.SetText(lp.getCharacterName());
+    //lp_nickname_label.SetAlignment(0.5, 0.5);
+    //Pane@ lp_nickname_pane = StandardPane(ui);
+    //lp_nickname_pane.SetMinSize(100, 32);
+    //lp_nickname_pane.AddComponent(lp_nickname_label);
+
+    scoreboard.SetComponents({
+	nickname_pane,
+	username_pane,
+	info_pane,
+	ping_pane,
+	deaths_pane,
+	kills_pane,
+	kdr_pane});
     
-    @red_name_label = StandardLabel();
-    red_name_label.SetFont("Balkara_Condensed");
-    red_name_label.SetText("РУСЫ");
-
-    @red_scoreboard = StandardList(ui);
-    red_scoreboard.SetScrollIndex(1);
-    red_scoreboard.SetCellWrap(1);
-    red_scoreboard.AddComponent(red_name_label);
-
-    @red_pane = StandardPane(ui, red_color);
-    red_pane.SetMinSize(1200, 100);
-    red_pane.SetAlignment(0.5,0.0);
-    red_pane.AddComponent(red_scoreboard);
-        
-    @spec_name_label = StandardLabel();
-    spec_name_label.SetFont("Balkara_Condensed");
-    spec_name_label.SetText("ЛОХИ");
-
-    @spec_scoreboard = StandardList(ui);
-    spec_scoreboard.SetScrollIndex(1);
-    spec_scoreboard.SetCellWrap(1);
-    spec_scoreboard.AddComponent(spec_name_label);
-
-    @spec_pane = StandardPane(ui);
-    spec_pane.SetMinSize(1200, 100);
-    spec_pane.SetAlignment(0.5,0.0);
-    spec_pane.AddComponent(spec_scoreboard);
-
-    @scoreboards = StandardList();
-    scoreboards.SetScrollIndex(1);
-    scoreboards.SetMaxLines(3);
-    scoreboards.SetCellWrap(1);
-    scoreboards.SetAlignment(0.5,0.5);
-    scoreboards.SetSpacing(0, 20);
-    scoreboards.SetComponents({blue_pane, red_pane, spec_pane});
-    
-    ui.AddComponent(scoreboards);
-
+    ui.AddComponent(scoreboard);
 }
 
 void onTick(CRules@ this) {
-    ui.Update(); 
+    ui.Update();
 }
 
 void onRender(CRules@ this) {
     if (ui is null) return;
+
     ui.Render();
-   
-}
-
-// Пример обработки событий
-class HideComponentHandler : EventHandler {
-    private Component@ component;
-
-    HideComponentHandler(Component@ component) {
-        @this.component = component;
-    }
-
-    void Handle() {}
+    ui.Debug(getControls().isKeyPressed(KEY_LSHIFT));
 }
