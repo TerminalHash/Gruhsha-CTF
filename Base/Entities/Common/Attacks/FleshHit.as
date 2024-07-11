@@ -22,7 +22,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 	//printf("gibHealth " + gibHealth + " health " + this.getHealth() );
 	if (this.getHealth() <= gibHealth)
 	{
-		if (getRules().get_string("clusterfuck_blood") != "off") {
+		if (getRules().get_string("clusterfuck") != "off") {
 			this.getSprite().Gib();
 		}
 
