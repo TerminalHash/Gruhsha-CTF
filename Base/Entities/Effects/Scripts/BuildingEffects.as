@@ -7,11 +7,13 @@ void onDie(CBlob@ this)
 		this.getSprite().PlaySound("/BuildingExplosion");
 	}
 
-	if (getRules().get_string("clusterfuck") == "off") return;
-
 	// gib no matter what
-	this.getSprite().Gib();
-	// effects
-	MakeDustParticle(this.getPosition(), "Smoke.png");
+	if (getRules().get_string("clusterfuck") != "off") {
+		this.getSprite().Gib();
+	}
 
+	// effects
+	if (getRules().get_string("clusterfuck_smoke") != "off") {
+		MakeDustParticle(this.getPosition(), "Smoke.png");
+	}
 }

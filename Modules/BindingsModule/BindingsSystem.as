@@ -135,6 +135,16 @@ void onInit(CRules@ this)
 				sfile.add_string("clusterfuck", "on");
 			}
 
+			if (!sfile.exists("clusterfuck_blood"))
+			{
+				sfile.add_string("clusterfuck_blood", "on");
+			}
+
+			if (!sfile.exists("clusterfuck_smoke"))
+			{
+				sfile.add_string("clusterfuck_smoke", "on");
+			}
+
 			if (!sfile.exists("drillzone_borders"))
 			{
 				sfile.add_string("drillzone_borders", "on");
@@ -167,6 +177,8 @@ void onInit(CRules@ this)
 			sfile.add_string("body_tilting", "on");
 			sfile.add_string("head_rotating", "on");
 			sfile.add_string("clusterfuck", "on");
+			sfile.add_string("clusterfuck_blood", "on");
+			sfile.add_string("clusterfuck_smoke", "on");
 			sfile.add_string("drillzone_borders", "on");
 			sfile.add_string("annoying_nature", "on");
 			sfile.add_string("annoying_voicelines", "on");

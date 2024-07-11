@@ -45,11 +45,11 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 
 void onDie(CBlob@ this)
 {
-	if (getRules().get_string("clusterfuck") == "off") return;
-
 	// Gib if health below 0.0f
 	if (this.getSprite() !is null && this.getHealth() <= 0.0f)
 	{
-		this.getSprite().Gib();
+		if (getRules().get_string("clusterfuck") != "off") {
+			this.getSprite().Gib();
+		}
 	}
 }

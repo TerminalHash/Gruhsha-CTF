@@ -58,7 +58,10 @@ void Explode(CBlob@ this)
 	this.getCurrentScript().runFlags |= Script::remove_after_this;
 	if (this.getHealth() < 2.5f || this.hasTag("player"))
 	{
-		this.getSprite().Gib();
+		if (getRules().get_string("clusterfuck") != "off") {
+			this.getSprite().Gib();
+		}
+
 		this.server_Die();
 	}
 	else

@@ -125,6 +125,8 @@ namespace en
 	n_bodytilt								= "Immersive body behaviour",
 	n_headrotating							= "Turning head toward the cursor",
 	n_clusterfuck							= "Toggle particles and gibs",
+	n_clusterfuck_blood						= "Toggle blood",
+	n_clusterfuck_smoke						= "Toggle smoke",
 	n_drillzoneborders						= "Drill Zone Borders",
 	n_grapplewhilecharging					= "Use grapple while charging",
 	n_annoyingnature						= "Sounds from bushes and tree leafs",

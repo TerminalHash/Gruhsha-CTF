@@ -19,7 +19,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 			angle = 90.0f; // self-hit. spawn gibs upwards
 		}
 
-		if (getRules().get_string("clusterfuck") == "on")
+		if (getRules().get_string("clusterfuck") != "off")
 		{
 			makeGibParticle("/GenericGibs", worldPoint, getRandomVelocity(angle, 1.0f + damage, 90.0f) + Vec2f(0.0f, -2.0f),
 							1, 4 + XORRandom(4), Vec2f(8, 8), 2.0f, 0, "", 0);

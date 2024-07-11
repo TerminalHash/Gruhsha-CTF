@@ -63,7 +63,9 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 			CSprite@ s = tobeblended.getSprite();
 			if (s !is null)
 			{
-				s.Gib();
+				if (getRules().get_string("clusterfuck") != "off") {
+					s.Gib();
+				}
 			}
 		}
 
@@ -158,7 +160,9 @@ void Blend(CBlob@ this, CBlob@ tobeblended)
 	CSprite@ s = tobeblended.getSprite();
 	if (s !is null)
 	{
-		s.Gib();
+		if (getRules().get_string("clusterfuck") != "off") {
+			s.Gib();
+		}
 	}
 
 	//give no fucks about teamkilling

@@ -797,7 +797,7 @@ bool isFlammableAt(Vec2f worldPos)
 Random _gib_r(0xa7c3a);
 void onDie(CBlob@ this)
 {
-	if (getNet().isClient() && getRules().get_string("clusterfuck") == "on")
+	if (getNet().isClient() && getRules().get_string("clusterfuck") != "off")
 	{
 		Vec2f pos = this.getPosition();
 		if (pos.x >= 1 && pos.y >= 1)

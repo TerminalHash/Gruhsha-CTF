@@ -125,6 +125,8 @@ namespace ru
 	n_bodytilt								= "Иммерсивное поведение тела",
 	n_headrotating							= "Поворот головы в сторону курсора",
 	n_clusterfuck							= "Отображение частиц и кусков",
+	n_clusterfuck_blood						= "Отображение крови",
+	n_clusterfuck_smoke						= "Отображение дыма",
 	n_drillzoneborders						= "Границы зоны дриллинга",
 	n_grapplewhilecharging					= "Использовать крюк при стрельбе",
 	n_annoyingnature						= "Звук от кустов и листьев",

@@ -2,8 +2,6 @@
 
 void makeFireParticle(Vec2f pos, int smokeRandom = 1)
 {
-	if (getRules().get_string("clusterfuck") == "off") return;
-
 	string texture;
 
 	switch (XORRandom(XORRandom(smokeRandom) == 0 ? 4 : 2))
@@ -17,12 +15,13 @@ void makeFireParticle(Vec2f pos, int smokeRandom = 1)
 		case 3: texture = "Entities/Effects/Sprites/SmallSmoke2.png"; break;
 	}
 
+	if (getRules().get_string("clusterfuck_smoke") == "off") return;
+
 	ParticleAnimated(texture, pos, Vec2f(0, 0), 0.0f, 1.0f, 5, -0.1, true);
 }
 
 void makeSmokeParticle(Vec2f pos, f32 gravity = -0.06f)
 {
-	if (getRules().get_string("clusterfuck") == "off") return;
 
 	string texture;
 
@@ -32,6 +31,8 @@ void makeSmokeParticle(Vec2f pos, f32 gravity = -0.06f)
 
 		case 1: texture = "Entities/Effects/Sprites/SmallSmoke2.png"; break;
 	}
+
+	if (getRules().get_string("clusterfuck_smoke") == "off") return;
 
 	ParticleAnimated(texture, pos, Vec2f(0, 0), 0.0f, 1.0f, 5, gravity, true);
 }

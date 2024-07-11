@@ -34,7 +34,7 @@ bool isOwnerBlob(CBlob@ this, CBlob@ that)
 
 void makeSmallExplosionParticle(Vec2f pos)
 {
-	if (getRules().get_string("clusterfuck") == "off") return;
+	if (getRules().get_string("clusterfuck_smoke") == "off") return;
 	ParticleAnimated("Entities/Effects/Sprites/SmallExplosion" + (XORRandom(3) + 1) + ".png",
 	                 pos, Vec2f(0, 0.5f), 0.0f, 1.0f,
 	                 3 + XORRandom(3),
@@ -43,7 +43,7 @@ void makeSmallExplosionParticle(Vec2f pos)
 
 void makeLargeExplosionParticle(Vec2f pos)
 {
-	if (getRules().get_string("clusterfuck") == "off") return;
+	if (getRules().get_string("clusterfuck_smoke") == "off") return;
 	ParticleAnimated("Entities/Effects/Sprites/Explosion.png",
 	                 pos, Vec2f(0, 0.5f), 0.0f, 1.0f,
 	                 3 + XORRandom(3),

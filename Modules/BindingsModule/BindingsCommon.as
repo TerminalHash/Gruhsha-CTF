@@ -215,6 +215,8 @@ string[][] vsetting_texts =
 		Names::bodytilt,
 		Names::headrotating,
 		Names::clusterfuck,
+		Names::clusterfuck_blood,
+		Names::clusterfuck_smoke,
 		Names::drillzoneborders,
 		Names::annoyingnature,
 		Names::annoyingvoicelines,
@@ -231,6 +233,8 @@ string[][] vsetting_file_names =
 		"body_tilting",
 		"head_rotating",
 		"clusterfuck",
+		"clusterfuck_blood",
+		"clusterfuck_smoke",
 		"drillzone_borders",
 		"annoying_nature",
 		"annoying_voicelines",
@@ -263,6 +267,14 @@ string[][][] vsetting_options =
 		},
 		{
 			Descriptions::universaloff,       // CLUSTERFUCK
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // CLUSTERFUCK BLOOD
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // CLUSTERFUCK SMOKE
 			Descriptions::universalon
 		},
 		{
@@ -312,6 +324,14 @@ string[][][] vsetting_option_names =
 		},
 		{
 			"off",       // CLUSTERFUCK
+			"on"
+		},
+		{
+			"off",       // CLUSTERFUCK BLOOD
+			"on"
+		},
+		{
+			"off",       // CLUSTERFUCK SMOKE
 			"on"
 		},
 		{
