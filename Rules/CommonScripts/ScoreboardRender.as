@@ -664,8 +664,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 
 
 		// picking buttons for captains/admins
-		if (controls.isKeyPressed(KEY_LSHIFT) &&
-			controls.isKeyPressed(KEY_LCONTROL)) {
+		if (controls.isKeyPressed(KEY_LSHIFT) && controls.isKeyPressed(KEY_LCONTROL)) {
 			if (isAdmin(localPlayer)) {
 				if(teamIndex == teamIndexSpectators) {
 					DrawPickButton(
