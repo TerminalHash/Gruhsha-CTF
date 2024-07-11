@@ -160,7 +160,7 @@ void onTick(CRules@ this)
 			this.Sync("teamstone" + 1, true);
 		}
 
-		u32 pog = 30 * 177;
+		u32 pog = 30 * 179;
 
 		if (getGameTime() == pog && this.hasTag("offi match"))
 		{
