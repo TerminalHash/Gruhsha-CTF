@@ -224,8 +224,7 @@ shared class CTFSpawns : RespawnSystem
 	CBlob@ getSpawnBlob(PlayerInfo@ p_info)
 	{
 		CTFPlayerInfo@ c_info = cast < CTFPlayerInfo@ > (p_info);
-		if (c_info !is null)
-		{
+		if (c_info !is null) {
 			CBlob@ pickSpawn = getBlobByNetworkID(c_info.spawn_point);
 			if (pickSpawn !is null &&
 			        pickSpawn.hasTag("respawn") && 
@@ -233,16 +232,12 @@ shared class CTFSpawns : RespawnSystem
 			        pickSpawn.getTeamNum() == p_info.team)
 			{
 				return pickSpawn;
-			}
-			else
-			{
+			} else {
 				CBlob@[] spawns;
 				PopulateSpawnList(spawns, p_info.team);
 
-				for (uint step = 0; step < spawns.length; ++step)
-				{
-					if (spawns[step].getTeamNum() == s32(p_info.team))
-					{
+				for (uint step = 0; step < spawns.length; ++step) {
+					if (spawns[step].getTeamNum() == s32(p_info.team)) {
 						return spawns[step];
 					}
 				}
@@ -265,13 +260,11 @@ shared class CTFSpawns : RespawnSystem
 
 		string propname = "ctf spawn time " + info.username;
 
-		for (uint i = 0; i < CTF_core.teams.length; i++)
-		{
+		for (uint i = 0; i < CTF_core.teams.length; i++) {
 			CTFTeamInfo@ team = cast < CTFTeamInfo@ > (CTF_core.teams[i]);
 			int pos = team.spawns.find(info);
 
-			if (pos != -1)
-			{
+			if (pos != -1) {
 				team.spawns.erase(pos);
 				break;
 			}
@@ -287,62 +280,43 @@ shared class CTFSpawns : RespawnSystem
 	void AddPlayerToSpawn(CPlayer@ player)
 	{
 		//s32 tickspawndelay = s32(CTF_core.spawnTime);
-
-		// Dynamic respawn shit
 		s32 tickspawndelay = s32(getTicksASecond() * 6);
 
-		/*u32 counteg = 0;
-		for (int i=0; i<getPlayersCount(); ++i)
-		{
+		// Dynamic respawn shit
+		/*s32 tickspawndelay = s32(getTicksASecond() * 7);
+
+		u32 counteg = 0;
+		for (int i=0; i<getPlayersCount(); ++i) {
 			CPlayer@ p = getPlayer(i);
 
-			if (p !is null)
-			{
-				if (p.getTeamNum() == 0 || p.getTeamNum() == 1)
-				{
+			if (p !is null) {
+				if (p.getTeamNum() == 0 || p.getTeamNum() == 1) {
 					counteg++;
 				}
 			}
 		}
 
-		if (counteg <= 8)
-		{
+		if (counteg <= 8) {
 			tickspawndelay = s32(getTicksASecond() * 2);
-		}
-		else if (counteg <= 10)
-		{
+		} else if (counteg <= 10) {
 			tickspawndelay = s32(getTicksASecond() * 4);
-		}
-		else if (counteg <= 12)
-		{
+		} else if (counteg <= 12) {
 			tickspawndelay = s32(getTicksASecond() * 5);
-		}
-		else if (counteg <= 14)
-		{
+		} else if (counteg <= 14) {
 			tickspawndelay = s32(getTicksASecond() * 7);
-		}
-		else if (counteg <= 16)
-		{
+		} else if (counteg <= 16) {
 			tickspawndelay = s32(getTicksASecond() * 9);
-		}
-		else if (counteg >= 16)
-		{
+		} else if (counteg >= 16) {
 			tickspawndelay = s32(getTicksASecond() * 10);
 		}*/
 
-		if (getRules().hasTag("offi match"))
-		{
 		// Sudden Death Mode: increase respawn time, if we have stalemate
-			if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) // 20 min
-			{
+		if (getRules().hasTag("offi match")) {
+			if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) {			// 20 min
 				tickspawndelay = s32(getTicksASecond() * 12);
-			}
-			else if (getGameTime() >= 1980 * getTicksASecond() && getGameTime() <= 3780 * getTicksASecond()) // 30 min
-			{
+			} else if (getGameTime() >= 1980 * getTicksASecond() && getGameTime() <= 3780 * getTicksASecond()) {	// 30 min
 				tickspawndelay = s32(getTicksASecond() * 14);
-			}
-			else if (getGameTime() >= 3780 * getTicksASecond()) // 40 min
-			{
+			} else if (getGameTime() >= 3780 * getTicksASecond()) {													// 40 min
 				tickspawndelay = s32(getTicksASecond() * 16);
 			}
 		}
@@ -358,17 +332,14 @@ shared class CTFSpawns : RespawnSystem
 		if (player.getTeamNum() == core.rules.getSpectatorTeamNum())
 			return;
 
-		if (info.team < CTF_core.teams.length)
-		{
+		if (info.team < CTF_core.teams.length) {
 			CTFTeamInfo@ team = cast < CTFTeamInfo@ > (CTF_core.teams[info.team]);
 
 			info.can_spawn_time = ((old_spawn_time > 30) ? old_spawn_time : tickspawndelay);
 
 			info.spawn_point = player.getSpawnPoint();
 			team.spawns.push_back(info);
-		}
-		else
-		{
+		} else {
 			error("PLAYER TEAM NOT SET CORRECTLY! " + info.team + " / " + CTF_core.teams.length + " for player " + player.getUsername());
 		}
 	}
