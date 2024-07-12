@@ -313,11 +313,11 @@ shared class CTFSpawns : RespawnSystem
 		// Sudden Death Mode: increase respawn time, if we have stalemate
 		if (getRules().hasTag("offi match")) {
 			if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) {			// 20 min
-				tickspawndelay = s32(getTicksASecond() * 12);
+				tickspawndelay = s32(getTicksASecond() * 11);
 			} else if (getGameTime() >= 1980 * getTicksASecond() && getGameTime() <= 3780 * getTicksASecond()) {	// 30 min
-				tickspawndelay = s32(getTicksASecond() * 14);
+				tickspawndelay = s32(getTicksASecond() * 13);
 			} else if (getGameTime() >= 3780 * getTicksASecond()) {													// 40 min
-				tickspawndelay = s32(getTicksASecond() * 16);
+				tickspawndelay = s32(getTicksASecond() * 15);
 			}
 		}
 
