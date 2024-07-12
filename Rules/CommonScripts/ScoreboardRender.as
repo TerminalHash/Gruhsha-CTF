@@ -1227,5 +1227,5 @@ void LinkButton(Vec2f tl, Vec2f br, const string&in text, const string&in websit
 void ScoreboardField(Vec2f tl, Vec2f br, const string&in text)
 {
 	GUI::DrawPane(tl, br, 0xffcfcfcf);
-	GUI::DrawTextCentered(text, Vec2f(tl.x + ((br.x - tl.x) * 0.50f), tl.y + ((br.y - tl.y) * 0.50f)), 0xffffffff);
+ 	GUI::DrawTextCentered(text, Vec2f(tl.x + ((br.x - tl.x) * 0.50f), tl.y + ((br.y - tl.y) * 0.50f)), 0xffffffff);
 }
