@@ -280,7 +280,7 @@ shared class CTFSpawns : RespawnSystem
 	void AddPlayerToSpawn(CPlayer@ player)
 	{
 		//s32 tickspawndelay = s32(CTF_core.spawnTime);
-		s32 tickspawndelay = s32(getTicksASecond() * 6);
+		s32 tickspawndelay = s32(getTicksASecond() * 5);
 
 		// Dynamic respawn shit
 		/*s32 tickspawndelay = s32(getTicksASecond() * 7);
