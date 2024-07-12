@@ -11,8 +11,29 @@ void Text(const string text, Vec2f pos, SColor color) {
 void Icon(const string icon, Vec2f pos) {}
 
 void TextButton(const string text, Vec2f tl, Vec2f br) {
-    GUI::DrawPane(tl, br, GRAY);
-    GUI::DrawTextCentered(text, Vec2f(tl.x + ((br.x - tl.x) * 0.50f), tl.y + ((br.y - tl.y) * 0.50f)), WHITE);
+    CControls@ controls = getControls();
+    Vec2f mouse_pos = controls.getMouseScreenPos();
+    bool hover = mouse_pos.x > tl.x && mouse_pos.x < br.x && mouse_pos.y > tl.y && mouse_pos.y < br.y;
+    bool press = controls.mousePressed1;
+
+    Vec2f text_pos = Vec2f(tl.x + ((br.x - tl.x) * 0.50f), tl.y + ((br.y - tl.y) * 0.50f));
+
+    if (!hover && !press) {
+        GUI::DrawPane(tl, br, GRAY);
+        GUI::DrawTextCentered(text, text_pos, WHITE);
+	return;
+    }
+    if (hover && !press) {
+        GUI::DrawPane(tl, br, WHITE);
+	GUI::DrawTextCentered(text, text_pos, WHITE);
+        return;
+    }
+    if (hover && press) {
+        GUI::DrawPane(tl, br, GRAY);
+        GUI::DrawTextCentered(text, text_pos, WHITE);
+	Sound::Play("option");
+	return;
+    }
 }
 
 void IconButton() {}
