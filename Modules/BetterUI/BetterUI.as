@@ -23,12 +23,3 @@ void TextPanel(const string text, Vec2f tl, Vec2f br) {
 }
 
 void IconPanel() {}
-
-//void onInit(CRules@ this) {}
-//
-//void onTick(CRules@ this) {}
-//
-//void onRender(CRules@ this) {
-//    const Vec2f screenSize = Vec2f(getScreenWidth(), getScreenHeight());
-//    TextPanel("Hello", Vec2f(100,100), Vec2f(200, 150));
-//}
