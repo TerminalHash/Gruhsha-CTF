@@ -642,8 +642,18 @@ shared class CTFCore : RulesCore
 		if (!rules.isMatchRunning()) { return; }
 
 		// get all the flags
-		CBlob@[] flags;
+		CBlob@[] flags;			// Total flags
+		CBlob@[] flags_red;		// Red flags
+		CBlob@[] flags_blue;	// Blue flags
 		getBlobsByName(flag_name(), @flags);
+
+		for (uint i = 0; i < flags.length; i++) {
+			if (flags[i].getTeamNum() == 0) {
+				flags_blue.push_back(flags[i]);
+			} else if (flags[i].getTeamNum() == 1) {
+				flags_red.push_back(flags[i]);
+			}
+		}
 
 		int winteamIndex = -1;
 		CTFTeamInfo@ winteam = null;
@@ -654,6 +664,7 @@ shared class CTFCore : RulesCore
 			CTFTeamInfo@ team = cast < CTFTeamInfo@ > (teams[team_num]);
 
 			bool win = true;
+
 			for (uint i = 0; i < flags.length; i++)
 			{
 				//if there exists an enemy flag, we didn't win yet
@@ -664,12 +675,17 @@ shared class CTFCore : RulesCore
 				}
 			}
 
+			if (team_num == 0 && flags_red.length < flags_blue.length) {
+				team_wins_on_end = 0;
+			} else if (team_num == 1 && flags_blue.length < flags_red.length) {
+				team_wins_on_end = 1;
+			}
+
 			if (win)
 			{
 				winteamIndex = team_num;
 				@winteam = team;
 			}
-
 		}
 
 		rules.set_s8("team_wins_on_end", team_wins_on_end);
