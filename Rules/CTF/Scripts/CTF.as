@@ -30,7 +30,7 @@ void Config(CTFCore@ this)
 	this.stalemateTime = (getTicksASecond() * stalemateTimeSeconds);
 
 	//how long for the game to play out?
-	s32 gameDurationMinutes = 80; // 1 hour 20 minutes
+	s32 gameDurationMinutes = 60; // 1 hour
 	if (gameDurationMinutes <= 0)
 	{
 		this.gameDuration = 0;
