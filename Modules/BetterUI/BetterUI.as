@@ -1,5 +1,3 @@
-#include "ScoreboardCommon.as"
-
 const SColor BLACK = SColor(0xFF000000);
 const SColor GRAY = SColor(0xFFCFCFCF);
 const SColor WHITE = SColor(0xFFFFFFFF);
@@ -26,11 +24,11 @@ void TextPanel(const string text, Vec2f tl, Vec2f br) {
 
 void IconPanel() {}
 
-void onInit(CRules@ this) {}
-
-void onTick(CRules@ this) {}
-
-void onRender(CRules@ this) {
-    const Vec2f screenSize = Vec2f(getScreenWidth(), getScreenHeight());
-    TextPanel("Hello", Vec2f(100,100), Vec2f(200, 150));
-}
+//void onInit(CRules@ this) {}
+//
+//void onTick(CRules@ this) {}
+//
+//void onRender(CRules@ this) {
+//    const Vec2f screenSize = Vec2f(getScreenWidth(), getScreenHeight());
+//    TextPanel("Hello", Vec2f(100,100), Vec2f(200, 150));
+//}
