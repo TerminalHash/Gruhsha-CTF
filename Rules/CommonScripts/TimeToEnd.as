@@ -31,8 +31,7 @@ void onTick(CRules@ this)
 		bool hasWinner = false;
 		s8 teamWonNumber = -1;
 
-		if (this.exists("team_wins_on_end"))
-		{
+		if (this.exists("team_wins_on_end")) {
 			teamWonNumber = this.get_s8("team_wins_on_end");
 		}
 

@@ -679,6 +679,8 @@ shared class CTFCore : RulesCore
 				team_wins_on_end = 0;
 			} else if (team_num == 1 && flags_blue.length < flags_red.length) {
 				team_wins_on_end = 1;
+			} else if (flags_blue.length == flags_red.length) {
+				team_wins_on_end = -1;
 			}
 
 			if (win)
