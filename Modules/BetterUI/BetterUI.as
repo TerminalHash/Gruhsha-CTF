@@ -18,7 +18,7 @@ void TextButton(const string text, Vec2f tl, Vec2f br) {
 
     Vec2f text_pos = Vec2f(tl.x + ((br.x - tl.x) * 0.50f), tl.y + ((br.y - tl.y) * 0.50f));
 
-    if (!hover && !press) {
+    if (!hover) {
         GUI::DrawPane(tl, br, GRAY);
         GUI::DrawTextCentered(text, text_pos, WHITE);
 	return;
