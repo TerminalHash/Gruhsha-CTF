@@ -22,8 +22,8 @@ void onInit(CBlob@ this)
 	this.set(Trampoline::TIMER, cooldowns);
 	this.getShape().getConsts().collideWhenAttached = true;
 
-	this.set_s32("jump_prop", 75);
-	this.Sync("jump_prop", true);
+	//this.set_s32("jump_prop", 75);
+	//this.Sync("jump_prop", true);
 
 	this.Tag("no falldamage");
 	this.Tag("medium weight");
@@ -142,7 +142,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 
 			blob.setVelocity(Vec2f(force_value,0).RotateBy(angle-90));
 
-			if (isServer()) {
+			/*if (isServer()) {
 				if (force_value >= 19) {
 					this.sub_s32("jump_prop", 50); 							// 2 jumps
 					this.Sync("jump_prop", true);
@@ -166,7 +166,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 				if (this.get_s32("jump_prop") <= 0) {
 					this.server_Die();
 				}
-			}
+			}*/
 
 			CSprite@ sprite = this.getSprite();
 			if (sprite !is null) {
