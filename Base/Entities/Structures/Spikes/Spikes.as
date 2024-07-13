@@ -301,7 +301,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 	////////////////////////////////////////////////
 	// special clause for knights
 	// most part of code picked from KnightLogic.as
-	if (blob !is null && blob.getConfig() == "knight")
+	/*if (blob !is null && blob.getConfig() == "knight")
 	{
 		KnightInfo@ knight;
 		if (!blob.get("knightInfo", @knight))
@@ -325,7 +325,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 			ignore_spike = true;
 			this.server_Die();
 		}
-	}
+	}*/
 	////////////////////////////////////////////////
 
 	if (state == falling)
