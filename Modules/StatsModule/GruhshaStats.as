@@ -72,6 +72,9 @@ void onRestart(CRules@ this)
 
 	this.Untag("offi match");
 	this.Sync("offi match", true);
+
+	this.Untag("sudden death");
+	this.Sync("sudden death", true);
 }
 
 void onNewPlayerJoin( CRules@ this, CPlayer@ player ) 
