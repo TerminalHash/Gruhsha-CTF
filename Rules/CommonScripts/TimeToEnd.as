@@ -32,7 +32,7 @@ void onTick(CRules@ this)
 	s32 end_in = this.get_s32("end_in");
 
 	// Special tag for buffs
-	if (end_in == 1200) {
+	if (end_in == 600) {
 		this.Tag("sudden death");
 		this.Sync("sudden death", true);
 
