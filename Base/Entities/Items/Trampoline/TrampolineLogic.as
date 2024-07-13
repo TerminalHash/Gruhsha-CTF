@@ -38,6 +38,7 @@ void onInit(CBlob@ this)
 
 void onTick(CBlob@ this)
 {
+	CRules@ rules = getRules();
 	AttachmentPoint@ point = this.getAttachments().getAttachmentPointByName("PICKUP");
 
 	CBlob@ holder = point.getOccupied();
@@ -62,6 +63,10 @@ void onTick(CBlob@ this)
 	}
 	
 	this.set_f32("old angle", this.getAngleDegrees());
+
+	if (rules.hasTag("sudden death")) {
+		this.set_s32("jump_prop", 500);
+	}
 }
 
 void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point1, Vec2f point2)
