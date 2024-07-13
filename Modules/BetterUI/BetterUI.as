@@ -14,7 +14,7 @@ bool textButton(const string text, Vec2f tl, Vec2f br) {
 
     if (hover) {
 	if (press) {
-	    TextPanel(text, tl, br, WHITE);
+	    TextPanel(text, tl, br, GRAY);
             if (!pressed) {
 	        Sound::Play("option");
                 pressed = true;
