@@ -3,7 +3,8 @@
 #include "HeadCommon.as"
 #include "TranslationsSystem.as"
 
-Vec2f playerCardDims(256, 198+102);
+//Vec2f playerCardDims(256, 198+102);
+Vec2f playerCardDims(256, 198+62);
 Vec2f hovered_icon_pos();
 
 int hovered_accolade = -1;
@@ -432,8 +433,8 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 	Vec2f headFrameBotRight = Vec2f(botRight.x-headFrameTopLeft.x, topLeft.y+headFrameTopLeft.y+usernamePaneDims.y+16);
 	Vec2f head_icon_pos = Vec2f(agePaneTopLeft.x+70, portraitBotRight.y+120);
 	//GUI::DrawPane(topLeft+headFrameTopLeft, headFrameBotRight, SColor(0xff777777));
-	//GUI::DrawIcon(head_file, 0, Vec2f(64,16), head_icon_pos, head_icon_scale, head_icon_scale, SColor(0xaaffffff));
-	GUI::DrawIcon(head_file, head_icon_pos, head_icon_scale);
+	//GUI::DrawIcon(head_file, head_frame, Vec2f(64,16), head_icon_pos, head_icon_scale, head_icon_scale, player.getTeamNum(), SColor(0xFFFFFFFF));
+	//GUI::DrawIcon(head_file, head_icon_pos, head_icon_scale);
 
 	// Clan Badges
 	f32 clan_badge_icon_scale = 1.0f;
