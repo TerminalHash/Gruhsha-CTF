@@ -22,11 +22,14 @@ const u8 high_damage_window = 40; // at how much heat before max drill deals inc
 const string last_drill_prop = "drill last active";
 
 const u8 heat_add = 7;
-const f32 heat_add_k = 8;
+const u8 heat_add_k = 8;
+const u8 heat_add_low = 5;
 const u8 heat_add_constructed = 2;
-const f32 heat_add_constructed_k = 2.3;
+const u8 heat_add_constructed_k = 2.3;
+const u8 heat_add_constructed_low = 1;
 const u8 heat_add_blob = 6;
-const f32 heat_add_blob_k = 6.9;
+const u8 heat_add_blob_k = 6.9;
+const u8 heat_add_blob_low = 4;
 const u8 heat_cool_amount = 2;
 
 const f32 heat_reduction_water = 0.5f;
@@ -210,6 +213,7 @@ void onTick(CSprite@ this)
 
 void onTick(CBlob@ this)
 {
+	CRules@ rules = getRules();
 	u8 heat = this.get_u8(heat_prop);
 	const u32 gametime = getGameTime();
 	bool inwater = this.isInWater();
@@ -457,9 +461,14 @@ void onTick(CBlob@ this)
 									{
 										u8 adding = heat_add_constructed;
 
-										if (holder.getConfig() != "builder")
-										{
+										if (holder.getConfig() != "builder") {
 											adding = heat_add_constructed_k;
+										}
+
+										if (holder.getConfig() == "builder" && rules.hasTag("sudden death")) {
+											adding = heat_add_constructed_low;
+										} else if (holder.getConfig() != "builder" && rules.hasTag("sudden death")) {
+											adding = heat_add_constructed;
 										}
 
 										heat += adding;
@@ -468,9 +477,14 @@ void onTick(CBlob@ this)
 									{
 										u8 adding = heat_add_blob;
 
-										if (holder.getConfig() != "builder")
-										{
+										if (holder.getConfig() != "builder") {
 											adding = heat_add_blob_k;
+										}
+
+										if (holder.getConfig() == "builder" && rules.hasTag("sudden death")) {
+											adding = heat_add_blob_low;
+										} else if (holder.getConfig() != "builder" && rules.hasTag("sudden death")) {
+											adding = heat_add_blob;
 										}
 
 										heat += adding;
@@ -479,9 +493,14 @@ void onTick(CBlob@ this)
 									{
 										u8 adding = heat_add;
 
-										if (holder.getConfig() != "builder")
-										{
+										if (holder.getConfig() != "builder") {
 											adding = heat_add_k;
+										}
+
+										if (holder.getConfig() == "builder" && rules.hasTag("sudden death")) {
+											adding = heat_add_low;
+										} else if (holder.getConfig() != "builder" && rules.hasTag("sudden death")) {
+											adding = heat_add;
 										}
 
 										heat += adding;
@@ -615,7 +634,7 @@ void onRender(CSprite@ this)
 		// Change cursor and play sound, when you can't drill outside zone
 		if ((holder.getBlob().getConfig() == "knight" || holder.getBlob().getConfig() == "archer") && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0)  && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0) ) && holder.getBlob().isKeyJustPressed(key_action1) && isClient()))
 		{
-			Sound::Play("NoAmmo.ogg");
+			holderBlob.getSprite().PlaySound("NoAmmo.ogg", 0.5);
 		}
 	}
 

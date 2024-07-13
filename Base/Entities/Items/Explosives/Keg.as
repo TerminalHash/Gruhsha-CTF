@@ -61,9 +61,16 @@ void onTick(CSprite@ this)
 
 void onTick(CBlob@ this)
 {
+	CRules@ rules = getRules();
+
 	if (this.isInFlames() && !this.hasTag("exploding") && isServer())
 	{
 		server_Activate(this);
+	}
+
+	if (rules.hasTag("sudden death")) {
+		this.set_f32("explosive_radius", 72.0f);
+		this.set_f32("map_damage_radius", 72.0f);
 	}
 }
 
