@@ -1,4 +1,4 @@
-#include "BetterUI.as"
+#include "IMGUI.as"
 
 void onInit(CRules@ this) {}
 
