@@ -2,6 +2,9 @@
 
 // Requires game_end_time set originally
 
+#include "TranslationsSystem.as"
+#include "ActorHUDStartPos.as"
+
 void onInit(CRules@ this)
 {
 	if (!this.exists("no timer"))
@@ -25,6 +28,16 @@ void onTick(CRules@ this)
 
 	this.set_s32("end_in", (s32(gameEndTime) - s32(getGameTime())) / 30);
 	this.Sync("end_in", true);
+
+	s32 end_in = this.get_s32("end_in");
+
+	// Special tag for buffs
+	if (end_in == 1200) {
+		this.Tag("sudden death");
+		this.Sync("sudden death", true);
+
+		//printf("[INFO] Sudded Death Mode activated!");
+	}
 
 	if (getGameTime() > gameEndTime)
 	{
@@ -80,5 +93,20 @@ void onRender(CRules@ this)
 						.replace("{MIN}", "" + ((MinutesToEnd < 10) ? "0" + MinutesToEnd : "" + MinutesToEnd))
 						.replace("{SEC}", "" + ((secondsToEnd < 10) ? "0" + secondsToEnd : "" + secondsToEnd)),
 		              SColor(255, 255, 255, 255), Vec2f(10, 157), Vec2f(150, 180), true, false);
+	}
+
+	// Notification
+	if (end_in > 1190 && end_in < 1210) {
+		Vec2f dim = Vec2f(342, 155);
+		Vec2f ul(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12);
+		Vec2f tl = ul + Vec2f(-10, -10);
+
+		if (g_locale == "ru") {
+			GUI::DrawSunkenPane(tl, tl + Vec2f(400, 30));
+		} else {
+			GUI::DrawSunkenPane(tl, tl + Vec2f(210, 30));
+		}
+
+		GUI::DrawText(Descriptions::thirtyminutesleft, Vec2f(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 7), color_white);
 	}
 }

@@ -92,6 +92,9 @@ namespace Descriptions
 	peartext						= Translate(en::d_peartext+"\\"+ru::d_peartext),
 	sleeptext						= Translate(en::d_sleeptext+"\\"+ru::d_sleeptext),
 
+	// TimeToEnd.as
+	thirtyminutesleft				= Translate(en::d_thirtyminutesleft+"\\"+ru::d_thirtyminutesleft),
+
 	empty 					= "";
 }
 

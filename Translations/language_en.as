@@ -77,6 +77,9 @@ namespace en
 	d_peartext								= "A juicy and sweet pear.",
 	d_sleeptext								= "Sleep. Free!",
 
+	// TimeToEnd.as
+	d_thirtyminutesleft						= "20 minutes left, hurry up!",
+
 	//////////////////////////////////////////////////////////
 	// Names
 	//////////////////////////////////////////////////////////
