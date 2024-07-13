@@ -7,7 +7,7 @@ void onTick (CBlob@ this) {
     if (rules.getCurrentState() == GAME) {
         if (end_in <= 10) {
             if (this.hasTag("has attached to player")) {
-                rules.add_u32("game_end_time", (30 * 30)); // add additional 30 sec for cap
+                rules.add_u32("game_end_time", (60 * 30)); // add additional 60 sec for cap
                 rules.Sync("game_end_time", true);
 
                 this.SendCommand(this.getCommandID("overtime sound"));
