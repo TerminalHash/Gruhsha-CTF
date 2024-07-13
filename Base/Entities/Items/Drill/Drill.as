@@ -275,7 +275,7 @@ void onTick(CBlob@ this)
 			}
 
 			// disallow to use drill, when knight out of drill zone
-			if ((holder.getConfig() == "knight" || holder.getConfig() == "archer") && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0) ))
+			if ((holder.getConfig() == "knight" || holder.getConfig() == "archer") && ( (holder_x <= left && holder.getTeamNum() == 1) || (holder_x >= right && holder.getTeamNum() == 0) ) && !rules.hasTag("sudden death"))
 			{
 				this.set_bool(buzz_prop, false);
 				//printf("Go away!");
