@@ -4,42 +4,36 @@ const SColor WHITE = SColor(0xFFFFFFFF);
 const SColor BLUE = SColor(0xFF1A6F9E);
 const SColor RED = SColor(0xFFBA2721);
 
-void Text(const string text, Vec2f pos, SColor color) {
-    GUI::DrawText(text, pos, color);
-}
+bool pressed = false;
 
-void Icon(const string icon, Vec2f pos) {}
-
-void TextButton(const string text, Vec2f tl, Vec2f br) {
+bool textButton(const string text, Vec2f tl, Vec2f br) {
     CControls@ controls = getControls();
     Vec2f mouse_pos = controls.getMouseScreenPos();
     bool hover = mouse_pos.x > tl.x && mouse_pos.x < br.x && mouse_pos.y > tl.y && mouse_pos.y < br.y;
     bool press = controls.mousePressed1;
 
-    Vec2f text_pos = Vec2f(tl.x + ((br.x - tl.x) * 0.50f), tl.y + ((br.y - tl.y) * 0.50f));
-
-    if (!hover) {
-        GUI::DrawPane(tl, br, GRAY);
-        GUI::DrawTextCentered(text, text_pos, WHITE);
-	return;
+    if (hover) {
+	if (press) {
+	    TextPanel(text, tl, br, WHITE);
+            if (!pressed) {
+	        Sound::Play("option");
+                pressed = true;
+		return true;
+	    }
+        } else {
+	    TextPanel(text, tl, br, WHITE);
+	    pressed = false;
+	}
+    } else {
+        TextPanel(text, tl, br, GRAY);
     }
-    if (hover && !press) {
-        GUI::DrawPane(tl, br, WHITE);
-	GUI::DrawTextCentered(text, text_pos, WHITE);
-        return;
-    }
-    if (hover && press) {
-        GUI::DrawPane(tl, br, GRAY);
-        GUI::DrawTextCentered(text, text_pos, WHITE);
-	Sound::Play("option");
-	return;
-    }
+    return false;
 }
 
 void IconButton() {}
 
-void TextPanel(const string text, Vec2f tl, Vec2f br) {
-    GUI::DrawPane(tl, br, GRAY);
+void TextPanel(const string text, Vec2f tl, Vec2f br, SColor color) {
+    GUI::DrawPane(tl, br, color);
     GUI::DrawTextCentered(text, Vec2f(tl.x + ((br.x - tl.x) * 0.50f), tl.y + ((br.y - tl.y) * 0.50f)), WHITE);
 }
 
