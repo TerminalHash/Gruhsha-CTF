@@ -39,7 +39,8 @@ void onRender(CRules@ rules)
 	const u16 left = rules.get_u16("barrier_x1");
 	const u16 right = rules.get_u16("barrier_x2");
 
-	if (getRules().get_string("drillzone_borders") == "off") return;
+	if (rules.hasTag("sudden death")) return;
+	if (rules.get_string("drillzone_borders") == "off") return;
 
     Vec2f leftzone_u = driver.getScreenPosFromWorldPos(Vec2f(left - 0.5, 0));
     Vec2f leftzone_l = driver.getScreenPosFromWorldPos(Vec2f(left + 0.5, driver.getScreenHeight()));
