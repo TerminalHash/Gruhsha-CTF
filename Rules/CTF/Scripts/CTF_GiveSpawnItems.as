@@ -90,10 +90,10 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 			}
 
 			// check amount of builders and give mats depending on the number of builders
-			if (builders_limit >= 2) {
+			if (builders_limit > 1) {
 				wood_amount = matchtime_wood_amount * builders_limit;
 				stone_amount = matchtime_stone_amount * builders_limit;
-			} else if (builders_limit >= 2 && getGameTime() > lower_mats_timer * getTicksASecond()) {
+			} else if (builders_limit > 1 && getGameTime() > lower_mats_timer * getTicksASecond()) {
 				wood_amount = lower_wood * builders_limit;
 				stone_amount = lower_stone * builders_limit;
 			}
