@@ -180,10 +180,16 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 					// dynamic requirements for building
 					if (player1.getBlob().getPosition().x >= left && player1.getBlob().getPosition().x <= right)
 					{
-						if (getRules().get_s32(needed + team) < quantity * 1.15)
-						{
-							AddRequirement(missingBs, req, blobName, friendlyName, quantity);
-							has = false;
+						if (getRules().hasTag("sudden death")) {
+							if (getRules().get_s32(needed + team) < quantity * 1.35) {
+								AddRequirement(missingBs, req, blobName, friendlyName, quantity);
+								has = false;
+							}
+						} else {
+							if (getRules().get_s32(needed + team) < quantity * 1.2) {
+								AddRequirement(missingBs, req, blobName, friendlyName, quantity);
+								has = false;
+							}
 						}
 					}
 					else
@@ -317,13 +323,13 @@ void server_TakeRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &ino
 					if (blobName == "mat_stone") needed = "teamstone";
 
 					// dynamic requirements for building
-					if (player1.getBlob().getPosition().x >= left && player1.getBlob().getPosition().x <= right)
-					{
+					if (player1.getBlob().getPosition().x >= left && player1.getBlob().getPosition().x <= right && !getRules().hasTag("sudden death")) {
 						getRules().sub_s32(needed + team, quantity * 1.2);
 						getRules().Sync(needed + team, true);
-					}
-					else
-					{
+					} else if (player1.getBlob().getPosition().x >= left && player1.getBlob().getPosition().x <= right && getRules().hasTag("sudden death")) {
+						getRules().sub_s32(needed + team, quantity * 1.35);
+						getRules().Sync(needed + team, true);
+					} else {
 						getRules().sub_s32(needed + team, quantity);
 						getRules().Sync(needed + team, true);
 					}
