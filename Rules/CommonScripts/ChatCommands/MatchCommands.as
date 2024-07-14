@@ -77,8 +77,10 @@ class ToggleSuddenDeath : ChatCommand
 
 		if (!rules.hasTag("sudden death")) {
 			rules.Tag("sudden death");
+			rules.Sync("sudden death", true);
 		} else {
 			rules.Untag("sudden death");
+			rules.Sync("sudden death", true);
 		}
 
 		if (isServer()) {

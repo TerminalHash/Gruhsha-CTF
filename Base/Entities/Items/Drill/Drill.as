@@ -600,6 +600,8 @@ void onThisAddToInventory(CBlob@ this, CBlob@ blob)
 
 void onRender(CSprite@ this)
 {
+	CRules@ rules = getRules();
+
 	CPlayer@ local = getLocalPlayer();
 	CBlob@ localBlob = local.getBlob();
 
