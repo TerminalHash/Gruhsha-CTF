@@ -55,3 +55,38 @@ class AddMatchTimeMinutes : ChatCommand
 		if (isServer()) server_AddToChat("Added " + args[0] + " minutes to match time", SColor(0xff474ac6));
 	}
 }
+
+class ToggleSuddenDeath : ChatCommand
+{
+	ToggleSuddenDeath()
+	{
+		super("togglesud", "Toggle sudden death mode");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		if (!rules.hasTag("sudden death")) {
+			rules.Tag("sudden death");
+		} else {
+			rules.Untag("sudden death");
+		}
+
+		if (isServer()) {
+			if (!rules.hasTag("sudden death")) {
+				server_AddToChat("Sudden Death mode is disabled!", SColor(0xff474ac6));
+			} else {
+				server_AddToChat("Sudden Death mode is enabled!", SColor(0xff474ac6));
+			}
+		}
+	}
+}
