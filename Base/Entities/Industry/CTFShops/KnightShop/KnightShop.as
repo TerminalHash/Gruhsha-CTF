@@ -48,7 +48,7 @@ void onInit(CBlob@ this)
 		dynamic_bomb_cost = 35;
 		dynamic_water_bomb_cost = 45;
 	}
-	else if (player_amount >= 16 && player_amount < 17)
+	else if (player_amount >= 16 && player_amount < 18)
 	{
 		dynamic_bomb_cost = 40;
 		dynamic_water_bomb_cost = 50;
