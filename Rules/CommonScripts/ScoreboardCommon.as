@@ -91,7 +91,6 @@ float drawServerInfo(float y)
 	// Waffle: Add extra tooltip for old stats
 	float width = 533;
 
-
 	CNet@ net = getNet();
 	CMap@ map = getMap();
 	CRules@ rules = getRules();
