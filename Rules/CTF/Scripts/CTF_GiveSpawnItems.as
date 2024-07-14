@@ -4,6 +4,9 @@
 #include "CTF_Structs.as";
 #include "CTF_Common.as"; // resupply stuff
 
+// Limit stuff
+int builders_limit;
+
 bool SetMaterials(CBlob@ blob,  const string &in name, const int quantity, bool drop = false)
 {
 	CInventory@ inv = blob.getInventory();
@@ -59,36 +62,40 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 {
 	s32 gametime = getGameTime();
 	string name = b.getName();
+	builders_limit = this.get_u8("builders_limit");
 
-	if (name == "archer") 
-	{
-		if (gametime > getCTFTimer(this, p, "archer")) 
-		{
+	if (name == "archer")  {
+		if (gametime > getCTFTimer(this, p, "archer"))  {
 			CInventory@ inv = b.getInventory();
-			if (inv.isInInventory("mat_arrows", 30)) 
-			{
+
+			if (inv.isInInventory("mat_arrows", 30))  {
 				return; // don't give arrows if they have 30 already
 			}
-			else if (SetMaterials(b, "mat_arrows", 30)) 
-			{
+			else if (SetMaterials(b, "mat_arrows", 30))  {
 				SetCTFTimer(this, p, gametime + (this.isWarmup() ? materials_wait_warmup : materials_wait)*getTicksASecond(), "archer");
 			}
 		}
 	}
 
-	if (name == "builder" && !this.get_bool("is_warmup"))
-	{
-		if (gametime > getCTFTimer(this, p, "builder"))
-		{
+	if (name == "builder" && !this.get_bool("is_warmup")) {
+		if (gametime > getCTFTimer(this, p, "builder")) {
 			u8 team = p.getTeamNum();
 
 			int wood_amount = matchtime_wood_amount;
 			int stone_amount = matchtime_stone_amount;
 
-			if (getGameTime() > lower_mats_timer * getTicksASecond())
-			{
+			if (getGameTime() > lower_mats_timer * getTicksASecond()) {
 				wood_amount = lower_wood;
 				stone_amount = lower_stone;
+			}
+
+			// check amount of builders and give mats depending on the number of builders
+			if (builders_limit == 2) {
+				wood_amount = matchtime_wood_amount * builders_limit;
+				stone_amount = matchtime_stone_amount * builders_limit;
+			} else if (builders_limit == 2 && getGameTime() > lower_mats_timer * getTicksASecond()) {
+				wood_amount = lower_wood * builders_limit;
+				stone_amount = lower_stone * builders_limit;
 			}
 
 			this.add_s32("teamwood" + team, wood_amount);
