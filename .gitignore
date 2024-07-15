@@ -1,3 +1,6 @@
+### VSCode ###
+.VSCodeCounter
+
 ### Emacs ###
 # -*- mode: gitignore; -*-
 *~
