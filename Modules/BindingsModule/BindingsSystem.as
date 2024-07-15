@@ -30,6 +30,66 @@ void onInit(CRules@ this)
 			printf("Creating local bindings file for Gruhsha.");
 		}
 
+		// default values for binds:
+		// knight shop
+		if (!file.exists("k_bomb$1")) file.add_s32("k_bomb$1", 49);
+		if (!file.exists("k_bomb$2")) file.add_s32("k_bomb$2", -1);
+		if (!file.exists("k_waterbomb$1")) file.add_s32("k_waterbomb$1", 50);
+		if (!file.exists("k_waterbomb$2")) file.add_s32("k_waterbomb$2", -1);
+		if (!file.exists("k_mine$1")) file.add_s32("k_mine$1", 51);
+		if (!file.exists("k_mine$2")) file.add_s32("k_mine$2", -1);
+		if (!file.exists("k_keg$1")) file.add_s32("k_keg$1", 52);
+		if (!file.exists("k_keg$2")) file.add_s32("k_keg$2", -1);
+		if (!file.exists("k_drill$1")) file.add_s32("k_drill$1", 53);
+		if (!file.exists("k_drill$2")) file.add_s32("k_drill$2", -1);
+		if (!file.exists("k_satchel$1")) file.add_s32("k_satchel$1", 54);
+		if (!file.exists("k_satchel$2")) file.add_s32("k_satchel$2", -1);
+		// builder shop
+		if (!file.exists("b_drill$1")) file.add_s32("b_drill$1", 49);
+		if (!file.exists("b_drill$2")) file.add_s32("b_drill$2", -1);
+		if (!file.exists("b_sponge$1")) file.add_s32("b_sponge$1", 50);
+		if (!file.exists("b_sponge$2")) file.add_s32("b_sponge$2", -1);
+		if (!file.exists("b_bucketw$1")) file.add_s32("b_bucketw$1", 51);
+		if (!file.exists("b_bucketw$2")) file.add_s32("b_bucketw$2", -1);
+		if (!file.exists("b_boulder$1")) file.add_s32("b_boulder$1", 52);
+		if (!file.exists("b_boulder$2")) file.add_s32("b_boulder$2", -1);
+		if (!file.exists("b_lantern$1")) file.add_s32("b_lantern$1", 53);
+		if (!file.exists("b_lantern$2")) file.add_s32("b_lantern$2", -1);
+		if (!file.exists("b_bucketn$1")) file.add_s32("b_bucketn$1", 54);
+		if (!file.exists("b_bucketn$2")) file.add_s32("b_bucketn$2", -1);
+		if (!file.exists("b_trampoline$1")) file.add_s32("b_trampoline$1", 55);
+		if (!file.exists("b_trampoline$2")) file.add_s32("b_trampoline$2", -1);
+		if (!file.exists("b_saw$1")) file.add_s32("b_saw$1", 56);
+		if (!file.exists("b_saw$2")) file.add_s32("b_saw$2", -1);
+		if (!file.exists("b_crate_wood$1")) file.add_s32("b_crate_wood$1", 57);
+		if (!file.exists("b_crate_wood$1")) file.add_s32("b_crate_wood$2", -1);
+		if (!file.exists("b_crate_coins$1")) file.add_s32("b_crate_coins$1", 48);
+		if (!file.exists("b_crate_coins$1")) file.add_s32("b_crate_coins$2", -1);
+		// archer shop
+		if (!file.exists("a_arrows$1")) file.add_s32("a_arrows$1", 49);
+		if (!file.exists("a_arrows$2")) file.add_s32("a_arrows$2", -1);
+		if (!file.exists("a_waterarrows$1")) file.add_s32("a_waterarrows$1", 50);
+		if (!file.exists("a_waterarrows$2")) file.add_s32("a_waterarrows$2", -1);
+		if (!file.exists("a_firearrows$1")) file.add_s32("a_firearrows$1", 51);
+		if (!file.exists("a_firearrows$2")) file.add_s32("a_firearrows$2", -1);
+		if (!file.exists("a_bombarrows$1")) file.add_s32("a_bombarrows$1", 52);
+		if (!file.exists("a_bombarrows$2")) file.add_s32("a_bombarrows$2", -1);
+		if (!file.exists("a_blockarrows$1")) file.add_s32("a_blockarrows$1", 53);
+		if (!file.exists("a_blockarrows$2")) file.add_s32("a_blockarrows$2", -1);
+		// kfc
+		if (!file.exists("kfc_beer$1")) file.add_s32("kfc_beer$1", 49);
+		if (!file.exists("kfc_beer$2")) file.add_s32("kfc_beer$2", -1);
+		if (!file.exists("kfc_meal$1")) file.add_s32("kfc_meal$1", 50);
+		if (!file.exists("kfc_meal$2")) file.add_s32("kfc_meal$2", -1);
+		if (!file.exists("kfc_egg$1")) file.add_s32("kfc_egg$1", 51);
+		if (!file.exists("kfc_egg$2")) file.add_s32("kfc_egg$2", -1);
+		if (!file.exists("kfc_burger$1")) file.add_s32("kfc_burger$1", 52);
+		if (!file.exists("kfc_burger$2")) file.add_s32("kfc_burger$2", -1);
+		if (!file.exists("kfc_pear$1")) file.add_s32("kfc_pear$1", 53);
+		if (!file.exists("kfc_pear$2")) file.add_s32("kfc_pear$2", -1);
+		if (!file.exists("kfc_sleep$1")) file.add_s32("kfc_sleep$1", 54);
+		if (!file.exists("kfc_sleep$2")) file.add_s32("kfc_sleep$2", -1);
+
 		if(!file.saveFile(BINDINGSFILE + ".cfg"))
 		{
 			print("Failed to save GRUHSHA_playerbindings.cfg");
@@ -346,7 +406,7 @@ void onTick(CRules@ this)
 
 Vec2f MENU_SIZE = Vec2f(1000, 700);
 Vec2f ENTRY_SIZE = Vec2f(900, 30);
-Vec2f PAGE_BUTTON_SIZE = Vec2f(150, 40);
+Vec2f PAGE_BUTTON_SIZE = Vec2f(130, 40);
 
 void InitMenu()
 {

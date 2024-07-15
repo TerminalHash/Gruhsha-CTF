@@ -29,6 +29,11 @@ void onTick(CBlob@ this)
 		return;
 	}
 
+    if (getGameTime() - this.get_u32("boughtitemx") < 3)
+    {
+        return;
+    }
+
 	CControls@ controls = getControls();
 
 	for (uint i = 0; i < 9; i++)

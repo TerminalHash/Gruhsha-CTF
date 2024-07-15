@@ -113,6 +113,10 @@ namespace Names
 	emotemenu		  	      	 		= Translate(en::n_emotemenu+"\\"+ru::n_emotemenu),
 	blocksmenu		  	      	 		= Translate(en::n_blocksmenu+"\\"+ru::n_blocksmenu),
 	actionsmenu		  	      	 		= Translate(en::n_actionsmenu+"\\"+ru::n_actionsmenu),
+	archernmb		  	      	 		= Translate(en::n_archernmb+"\\"+ru::n_archernmb),
+	buildernmb		  	      	 		= Translate(en::n_buildernmb+"\\"+ru::n_buildernmb),
+	knightnmb		  	      	 		= Translate(en::n_knightnmb+"\\"+ru::n_knightnmb),
+	quartersnmb		  	      	 		= Translate(en::n_quartersnmb+"\\"+ru::n_quartersnmb),
 	settingsmenu		  	      	 	= Translate(en::n_settingsmenu+"\\"+ru::n_settingsmenu),
 	vsettingsmenu		  	      	 	= Translate(en::n_vsettingsmenu+"\\"+ru::n_vsettingsmenu),
 	tagwheel		  	       			= Translate(en::n_tagwheel+"\\"+ru::n_tagwheel),
@@ -138,9 +142,49 @@ namespace Names
 	markbuildercommand					= Translate(en::n_markbuildercommand+"\\"+ru::n_markbuildercommand),
 	activateorthrowbomb					= Translate(en::n_activateorthrowbomb+"\\"+ru::n_activateorthrowbomb),
 
+		// NoMenuBuying Binds
+			// Knight Shop
+	bombnmb								= Translate(en::n_bombnmb+"\\"+ru::n_bombnmb),
+	waterbombnmb						= Translate(en::n_waterbombnmb+"\\"+ru::n_waterbombnmb),
+	minenmb								= Translate(en::n_minenmb+"\\"+ru::n_minenmb),
+	kegnmb								= Translate(en::n_kegnmb+"\\"+ru::n_kegnmb),
+	drillnmb							= Translate(en::n_drillnmb+"\\"+ru::n_drillnmb),
+	satchelnmb							= Translate(en::n_satchelnmb+"\\"+ru::n_satchelnmb),
+
+			// Builder Shop
+	drillbnmb							= Translate(en::n_drillbnmb+"\\"+ru::n_drillbnmb),
+	spongebnmb							= Translate(en::n_spongebnmb+"\\"+ru::n_spongebnmb),
+	bucketwnmb							= Translate(en::n_bucketwnmb+"\\"+ru::n_bucketwnmb),
+	bouldernmb							= Translate(en::n_bouldernmb+"\\"+ru::n_bouldernmb),
+	lanternnmb							= Translate(en::n_lanternnmb+"\\"+ru::n_lanternnmb),
+	bucketnnmb							= Translate(en::n_bucketnnmb+"\\"+ru::n_bucketnnmb),
+	trampolinenmb						= Translate(en::n_trampolinenmb+"\\"+ru::n_trampolinenmb),
+	sawnmb								= Translate(en::n_sawnmb+"\\"+ru::n_sawnmb),
+	cratewoodnmb						= Translate(en::n_cratewoodnmb+"\\"+ru::n_cratewoodnmb),
+	cratecoinsnmb						= Translate(en::n_cratecoinsnmb+"\\"+ru::n_cratecoinsnmb),
+
+			// Archer Shop
+	arrowsnmb							= Translate(en::n_arrowsnmb+"\\"+ru::n_arrowsnmb),
+	waterarrowsnmb						= Translate(en::n_waterarrowsnmb+"\\"+ru::n_waterarrowsnmb),
+	firearrowsnmb						= Translate(en::n_firearrowsnmb+"\\"+ru::n_firearrowsnmb),
+	bombarrowsnmb						= Translate(en::n_bombarrowsnmb+"\\"+ru::n_bombarrowsnmb),
+	blockarrowsnmb						= Translate(en::n_blockarrowsnmb+"\\"+ru::n_blockarrowsnmb),
+
+			// Quarters
+	beernmb								 = Translate(en::n_beernmb+"\\"+ru::n_beernmb),
+	mealnmb								 = Translate(en::n_mealnmb+"\\"+ru::n_mealnmb),
+	eggnmb								 = Translate(en::n_eggnmb+"\\"+ru::n_eggnmb),
+	burgernmb							 = Translate(en::n_burgernmb+"\\"+ru::n_burgernmb),
+	pearnmb								 = Translate(en::n_pearnmb+"\\"+ru::n_pearnmb),
+	sleepnmb							 = Translate(en::n_sleepnmb+"\\"+ru::n_sleepnmb),
+
 		// Settings
 	buildmode		  	      			 = Translate(en::n_buildmode+"\\"+ru::n_buildmode),
 	blockbar		  	      			 = Translate(en::n_blockbar+"\\"+ru::n_blockbar),
+	dsewnmb								 = Translate(en::n_dsewnmb+"\\"+ru::n_dsewnmb),
+	shownomenubuyingpan					 = Translate(en::n_shownomenubuyingpan+"\\"+ru::n_shownomenubuyingpan),
+	nomenubuyingset						 = Translate(en::n_nomenubuyingset+"\\"+ru::n_nomenubuyingset),
+	nomenubuyingboldarset				 = Translate(en::n_nomenubuyingboldarset+"\\"+ru::n_nomenubuyingboldarset),
 	camerasw		  	      			 = Translate(en::n_camerasw+"\\"+ru::n_camerasw),
 	bodytilt		  	      			 = Translate(en::n_bodytilt+"\\"+ru::n_bodytilt),
 	headrotating		  	      		 = Translate(en::n_headrotating+"\\"+ru::n_headrotating),
