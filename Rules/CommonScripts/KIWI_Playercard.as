@@ -150,7 +150,7 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 		{
 			int tier_icon_start = -1;
 			Vec2f icon_pos = topLeft+Vec2f(charnameDims.x+16, usernameTopLeft.y+4);
-			Vec2f tier_icon_pos = Vec2f(portraitTopLeft.x,portraitBotRight.y)+Vec2f(4, 8);
+			Vec2f tier_icon_pos = Vec2f(portraitTopLeft.x,portraitBotRight.y)+Vec2f(36, 8);
 			GUI::DrawIcon("TierBadges", tier_icon_start + tier, Vec2f(16, 16), tier_icon_pos, 1.0f, player.getTeamNum());
 
 			if (mousePos.x > tier_icon_pos.x -4 && mousePos.x < tier_icon_pos.x + 24 && mousePos.y < tier_icon_pos.y + 24 && mousePos.y > tier_icon_pos.y -4)
@@ -373,7 +373,7 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 
 			int years_frame_start = 10;
 
-			if(show_years)
+			if (show_years)
 			{
 				f32 scale = 1.0f;
 				int number_gap = 16*scale;
@@ -389,18 +389,24 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 				tens_frame = years_frame_start + (age / 10) + decimal_frame_shift;
 				units_frame = years_frame_start + (age % 10);
 
-				Vec2f tens_icon_pos = Vec2f(age_icon_pos.x - (number_gap - 8*scale), age_icon_pos.y);
+				Vec2f tens_icon_pos = Vec2f(age_icon_pos.x - (number_gap - 8 * scale), age_icon_pos.y);
 				Vec2f units_icon_pos = Vec2f(tens_icon_pos.x + number_gap, tens_icon_pos.y);
 				//if (age>=10)
 				//	tens_icon_pos.y += units_epic_y_offset;
 
-				if (age>=10)
+				if (age >= 10) {
 					GUI::DrawIcon("AgeBadges", tens_frame+outline_frame_shift, Vec2f(16, 16), tens_icon_pos, scale, 0);
-				GUI::DrawIcon("AgeBadges", units_frame+outline_frame_shift, Vec2f(16, 16), units_icon_pos, scale, 0);
+					GUI::DrawIcon("AgeBadges", units_frame+outline_frame_shift, Vec2f(16, 16), units_icon_pos, scale, 0);
+				} else {
+					GUI::DrawIcon("AgeBadges", units_frame+outline_frame_shift, Vec2f(16, 16), units_icon_pos - Vec2f(8, 0), scale, 0);
+				}
 
-				if (age>=10)
+				if (age >= 10) {
 					GUI::DrawIcon("AgeBadges", tens_frame, Vec2f(16, 16), tens_icon_pos, scale, 0);
-				GUI::DrawIcon("AgeBadges", units_frame, Vec2f(16, 16), units_icon_pos, scale, 0);
+					GUI::DrawIcon("AgeBadges", units_frame, Vec2f(16, 16), units_icon_pos, scale, 0);
+				} else {
+					GUI::DrawIcon("AgeBadges", units_frame, Vec2f(16, 16), units_icon_pos - Vec2f(8, 0), scale, 0);
+				}
 			}
 			else
 			{
