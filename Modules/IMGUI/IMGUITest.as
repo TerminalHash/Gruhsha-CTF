@@ -23,7 +23,7 @@ void onInit(CRules@ this) {}
 void inTick(CRules@ this) {}
 
 void onRender(CRules@ this) {
-    GUI::SetFont("AveriaSerif-tag");
+    GUI::SetFont("menu");
     u32 screen_width = getScreenWidth();
     u32 scoreboard_width = 0;
     for (u32 i = 0; i < column_widths.length; i++) {
