@@ -16,25 +16,25 @@ bool Button(const string text, Vec2f tl, Vec2f br) {
 
     if (hover) {
         if (press) {
-	        Panel(text, tl, br, GRAY);
+            Panel(text, tl, br, GRAY);
             if (!pressed) {
-	            Sound::Play("option");
+                Sound::Play("option");
                 pressed = true;
                 return true;
-	        }
+            }
         } else {
-	        Panel(text, tl, br, WHITE);
-	        pressed = false;
-	    }
+            Panel(text, tl, br, WHITE);
+            pressed = false;
+        }
     } else {
         Panel(text, tl, br, GRAY);
     }
     return false;
 }
 
-void Panel(const string text, Vec2f tl, Vec2f br, SColor color) {
+void Panel(string text, Vec2f tl, Vec2f br, SColor color) {
     GUI::DrawPane(tl, br, color);
-    GUI::DrawTextCentered(text, Vec2f(tl.x + ((br.x - tl.x) * 0.50f), tl.y + ((br.y - tl.y) * 0.50f)), WHITE);
+    GUI::DrawTextCentered(text, Vec2f(tl.x + ((br.x - tl.x) * 0.50f) - 2, tl.y + ((br.y - tl.y) * 0.50f)), WHITE);
 }
 
 }
