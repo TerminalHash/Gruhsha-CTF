@@ -1546,8 +1546,8 @@ void onCreateInventoryMenu(CBlob@ this, CBlob@ forBlob, CGridMenu @gridmenu)
 	}
 
 	this.ClearGridMenusExceptInventory();
-	Vec2f pos2(gridmenu.getUpperLeftPosition().x + 0.5f * (gridmenu.getLowerRightPosition().x - gridmenu.getUpperLeftPosition().x),
-	          gridmenu.getUpperLeftPosition().y - 220);
+	Vec2f pos2(gridmenu.getUpperLeftPosition().x - 0.8f * (gridmenu.getLowerRightPosition().x - gridmenu.getUpperLeftPosition().x),
+	          gridmenu.getUpperLeftPosition().y + 48);
 	CGridMenu@ menu2 = CreateGridMenu(pos2, this, Vec2f(bombTypeNames.length, 2), getTranslatedString("Current bomb"));
 	u8 weaponSel = this.get_u8("bomb type");
 
