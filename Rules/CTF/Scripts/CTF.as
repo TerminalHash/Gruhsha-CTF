@@ -30,7 +30,8 @@ void Config(CTFCore@ this)
 	this.stalemateTime = (getTicksASecond() * stalemateTimeSeconds);
 
 	//how long for the game to play out?
-	s32 gameDurationMinutes = 60; // 1 hour
+	//s32 gameDurationMinutes = 60; // 1 hour
+	s32 gameDurationMinutes = 45; // 45 minutes
 	if (gameDurationMinutes <= 0)
 	{
 		this.gameDuration = 0;
@@ -312,11 +313,19 @@ shared class CTFSpawns : RespawnSystem
 
 		// Sudden Death Mode: increase respawn time, if we have stalemate
 		if (getRules().hasTag("offi match")) {
-			if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) {			// 20 min
+			/*if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) {			// 20 min
 				tickspawndelay = s32(getTicksASecond() * 11);
 			} else if (getGameTime() >= 1980 * getTicksASecond() && getGameTime() <= 3780 * getTicksASecond()) {	// 30 min
 				tickspawndelay = s32(getTicksASecond() * 13);
 			} else if (getGameTime() >= 3780 * getTicksASecond()) {													// 40 min
+				tickspawndelay = s32(getTicksASecond() * 15);
+			}*/
+
+			if (getGameTime() >= 900 * getTicksASecond() && getGameTime() <= 1500 * getTicksASecond()) {			// 15 min
+				tickspawndelay = s32(getTicksASecond() * 11);
+			} else if (getGameTime() >= 1500 * getTicksASecond() && getGameTime() <= 2100 * getTicksASecond()) {	// 25 min
+				tickspawndelay = s32(getTicksASecond() * 13);
+			} else if (getGameTime() >= 2100 * getTicksASecond()) {													// 35 min
 				tickspawndelay = s32(getTicksASecond() * 15);
 			}
 		}

@@ -32,7 +32,8 @@ void onTick(CRules@ this)
 	s32 end_in = this.get_s32("end_in");
 
 	// Special tag for buffs on 20 min
-	if (end_in == 1200) {
+	//if (end_in == 1200) {
+	if (end_in == 2100) {
 		this.Tag("sudden death");
 		this.Sync("sudden death", true);
 
@@ -96,7 +97,7 @@ void onRender(CRules@ this)
 	}
 
 	// Notification
-	if (end_in > 1190 && end_in < 1210) {
+	if (end_in > 2090 && end_in < 2110) {
 		Vec2f dim = Vec2f(342, 155);
 		Vec2f ul(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12);
 		Vec2f tl = ul + Vec2f(-10, -10);

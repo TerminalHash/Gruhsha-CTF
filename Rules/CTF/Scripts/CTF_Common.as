@@ -10,7 +10,7 @@ const int matchtime_stone_amount = 150;
 
 ////////////////////////////////////////////
 // Reducing resupplies stuff
-const u32 lower_mats_timer = 1380; // 20 min
+const u32 lower_mats_timer = 1200; // 20 min
 
 const int lower_wood = 225;
 const int lower_stone = 50;
