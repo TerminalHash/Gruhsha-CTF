@@ -18,7 +18,7 @@ bool Button(const string text, Vec2f tl, Vec2f br) {
         if (press) {
             Panel(text, tl, br, GRAY);
             if (!pressed) {
-                Sound::Play("option");
+                Sound::Play("ButtonClick.ogg.ogg");
                 pressed = true;
                 return true;
             }
