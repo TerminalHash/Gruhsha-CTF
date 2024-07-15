@@ -145,7 +145,6 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 	int tier = player.getSupportTier();
 	if (draw_tier && !player.isBot())
 	{
-
 		if (tier > 0)
 		{
 			int tier_icon_start = -1;
@@ -159,7 +158,6 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 				hovered_icon_pos = tier_icon_pos;
 			}
 		}
-
 	}
 
 	if (acc !is null)
