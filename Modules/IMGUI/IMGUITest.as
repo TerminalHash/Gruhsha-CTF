@@ -1,6 +1,7 @@
 #include "IMGUI.as"
 
 string[] column_names = {
+    "N",
     "CLANTAG",
     "NICKNAME",
     "USERNAME",
@@ -10,11 +11,12 @@ string[] column_names = {
 };
 
 u32[] column_widths = {
+    34,
     100,
     100,
     100,
-    32,
-    32,
+    34,
+    34,
     50
 };
 
@@ -47,9 +49,16 @@ void onRender(CRules@ this) {
         CPlayer@ player = getPlayer(player_id);
         if(player is null) continue;
 
+        string team_name = "SPEC";
         SColor team_color = IMGUI::GRAY;
-        if (player.getTeamNum() == 0) team_color = IMGUI::BLUE;
-        if (player.getTeamNum() == 1) team_color = IMGUI::RED;
+        if (player.getTeamNum() == 0) {
+            team_name = "BLUE";
+            team_color = IMGUI::BLUE;
+        }
+        if (player.getTeamNum() == 1) {
+            team_name = "RED";
+            team_color = IMGUI::RED;
+        }
 
         IMGUI::Panel("", scoreboard_pos, scoreboard_pos + Vec2f(scoreboard_width, 32), IMGUI::BLACK);
 
@@ -58,18 +67,20 @@ void onRender(CRules@ this) {
             u32 width = column_widths[i];
             Vec2f cell_size = Vec2f(width, 32);
 
-            if (name == "CLANTAG") {
-              IMGUI::Panel(""+player.getClantag(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
+            if (name == "N") {
+                IMGUI::Panel(""+(player_id+1), scoreboard_pos, scoreboard_pos + cell_size, team_color);
+            } else if (name == "CLANTAG") {
+                IMGUI::Panel(""+player.getClantag(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
             } else if (name == "NICKNAME") {
-              IMGUI::Panel(""+player.getCharacterName(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
+                IMGUI::Panel(""+player.getCharacterName(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
             } else if (name == "USERNAME") {
-              IMGUI::Panel(""+player.getUsername(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
+                IMGUI::Panel(""+player.getUsername(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
             } else if (name == "K") {
-              IMGUI::Panel(""+player.getKills(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
+                IMGUI::Panel(""+player.getKills(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
             } else if (name == "D") {
-              IMGUI::Panel(""+player.getDeaths(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
+                IMGUI::Panel(""+player.getDeaths(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
             } else if (name == "KDR") {
-              IMGUI::Panel(""+player.getDeaths(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
+                IMGUI::Panel(""+player.getDeaths(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
             }
 
             scoreboard_pos.x += width;
