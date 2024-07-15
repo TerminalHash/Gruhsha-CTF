@@ -117,6 +117,8 @@ namespace Names
 	buildernmb		  	      	 		= Translate(en::n_buildernmb+"\\"+ru::n_buildernmb),
 	knightnmb		  	      	 		= Translate(en::n_knightnmb+"\\"+ru::n_knightnmb),
 	quartersnmb		  	      	 		= Translate(en::n_quartersnmb+"\\"+ru::n_quartersnmb),
+	vehiclenmb		  	      	 		= Translate(en::n_vehiclenmb+"\\"+ru::n_vehiclenmb),
+	boatnmb		  	      	 			= Translate(en::n_boatnmb+"\\"+ru::n_boatnmb),
 	settingsmenu		  	      	 	= Translate(en::n_settingsmenu+"\\"+ru::n_settingsmenu),
 	vsettingsmenu		  	      	 	= Translate(en::n_vsettingsmenu+"\\"+ru::n_vsettingsmenu),
 	tagwheel		  	       			= Translate(en::n_tagwheel+"\\"+ru::n_tagwheel),
@@ -177,6 +179,18 @@ namespace Names
 	burgernmb							 = Translate(en::n_burgernmb+"\\"+ru::n_burgernmb),
 	pearnmb								 = Translate(en::n_pearnmb+"\\"+ru::n_pearnmb),
 	sleepnmb							 = Translate(en::n_sleepnmb+"\\"+ru::n_sleepnmb),
+
+			// Vehicle Shop
+	catapultnmb								 = Translate(en::n_catapultnmb+"\\"+ru::n_catapultnmb),
+	ballistanmb								 = Translate(en::n_ballistanmb+"\\"+ru::n_ballistanmb),
+	outpostnmb								 = Translate(en::n_outpostnmb+"\\"+ru::n_outpostnmb),
+	boltsnmb								 = Translate(en::n_boltsnmb+"\\"+ru::n_boltsnmb),
+	shellsnmb								 = Translate(en::n_shellsnmb+"\\"+ru::n_shellsnmb),
+
+			// Boat Shop
+	dinghynmb							 = Translate(en::n_dinghynmb+"\\"+ru::n_dinghynmb),
+	longboatnmb							 = Translate(en::n_longboatnmb+"\\"+ru::n_longboatnmb),
+	warboatnmb							 = Translate(en::n_warboatnmb+"\\"+ru::n_warboatnmb),
 
 		// Settings
 	buildmode		  	      			 = Translate(en::n_buildmode+"\\"+ru::n_buildmode),

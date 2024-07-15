@@ -5,16 +5,19 @@
 
 void onTick(CBlob@ this) {
 	// Shops!
-
 	bool overlapping_knightshop = false;
 	bool overlapping_archershop = false;
 	bool overlapping_buildershop = false;
 	bool overlapping_kfc = false;
+	bool overlapping_vehicle = false;
+	bool overlapping_boat = false;
 
 	CBlob@ theknightshop;
 	CBlob@ thearchershop;
 	CBlob@ thebuildershop;
 	CBlob@ thekfc;
+	CBlob@ thevehicle;
+	CBlob@ theboat;
 
 	bool dont_show_emotes = false;
 
@@ -33,6 +36,12 @@ void onTick(CBlob@ this) {
 			} else if (overlapping[i].getName() == "quarters") {
 				overlapping_kfc = true;
 				@thekfc = overlapping[i];
+			} else if (overlapping[i].getName() == "vehicleshop") {
+				overlapping_vehicle = true;
+				@thevehicle = overlapping[i];
+			} else if (overlapping[i].getName() == "boatshop") {
+				overlapping_boat = true;
+				@theboat = overlapping[i];
 			}
 		}
 	}
@@ -370,6 +379,124 @@ void onTick(CBlob@ this) {
 				}
 			}
 		}
+
+		// Vehicle Shop
+		if (overlapping_vehicle && thevehicle !is null) {
+			ShopItem[]@ shopitems;
+
+			if (thevehicle.get("shop array", @shopitems)) {
+				bool wanna_buy = false;
+				u8 item_id = 250;
+
+				if (b_KeyJustPressed("vehicle_catapult")) {
+					wanna_buy = true;
+					item_id	= 0;
+				}
+				if (b_KeyJustPressed("vehicle_ballista")) {
+					wanna_buy = true;
+					item_id	= 1;
+				}
+				if (b_KeyJustPressed("vehicle_outpost")) {
+					wanna_buy = true;
+					item_id	= 2;
+				}
+				if (b_KeyJustPressed("vehicle_bolts")) {
+					wanna_buy = true;
+					item_id	= 3;
+				}
+				if (b_KeyJustPressed("vehicle_shells")) {
+					wanna_buy = true;
+					item_id	= 4;
+				}
+
+				// idk why it's duplicated, whatever
+				if (b_KeyJustPressed("vehicle_catapult")) {
+					wanna_buy = true;
+					item_id	= 0;
+				}
+				if (b_KeyJustPressed("vehicle_ballista")) {
+					wanna_buy = true;
+					item_id	= 1;
+				}
+				if (b_KeyJustPressed("vehicle_outpost")) {
+					wanna_buy = true;
+					item_id	= 2;
+				}
+				if (b_KeyJustPressed("vehicle_bolts")) {
+					wanna_buy = true;
+					item_id	= 3;
+				}
+				if (b_KeyJustPressed("vehicle_shells")) {
+					wanna_buy = true;
+					item_id	= 4;
+				}
+
+				if (wanna_buy) {
+					dont_show_emotes = true;
+					ShopItem @s_item = shopitems[item_id];
+
+					if (s_item !is null) {
+						CBitStream params;
+
+						params.write_u8(u8(item_id));
+						params.write_bool(true); //used hotkey?
+
+						thevehicle.SendCommand(thevehicle.getCommandID("shop buy"), params);
+					}
+				}
+			}
+		}
+
+		// Boat Shop
+		if (overlapping_boat && theboat !is null) {
+			ShopItem[]@ shopitems;
+
+			if (theboat.get("shop array", @shopitems)) {
+				bool wanna_buy = false;
+				u8 item_id = 250;
+
+				if (b_KeyJustPressed("boat_dinghy")) {
+					wanna_buy = true;
+					item_id	= 0;
+				}
+				if (b_KeyJustPressed("boat_longboat")) {
+					wanna_buy = true;
+					item_id	= 1;
+				}
+				if (b_KeyJustPressed("boat_warboat")) {
+					wanna_buy = true;
+					item_id	= 2;
+				}
+
+				// idk why it's duplicated, whatever
+				if (b_KeyJustPressed("boat_dinghy")) {
+					wanna_buy = true;
+					item_id	= 0;
+				}
+				if (b_KeyJustPressed("boat_longboat")) {
+					wanna_buy = true;
+					item_id	= 1;
+				}
+				if (b_KeyJustPressed("boat_warboat")) {
+					wanna_buy = true;
+					item_id	= 2;
+				}
+
+				if (wanna_buy) {
+					dont_show_emotes = true;
+					ShopItem @s_item = shopitems[item_id];
+
+					if (s_item !is null) {
+						CBitStream params;
+
+						params.write_u8(u8(item_id));
+						params.write_bool(true); //used hotkey?
+
+						theboat.SendCommand(theboat.getCommandID("shop buy"), params);
+					}
+				}
+			}
+		}
 	}
 
 	if (getRules().get_string("dse_while_using_nomenu_buying") == "yes") {
@@ -395,11 +522,15 @@ void onRender(CSprite@ this) {
 	bool overlapping_archershop = false;
 	bool overlapping_buildershop = false;
 	bool overlapping_kfc = false;
+	bool overlapping_vehicle = false;
+	bool overlapping_boat = false;
 
 	CBlob@ theknightshop;
 	CBlob@ thearchershop;
 	CBlob@ thebuildershop;
 	CBlob@ thekfc;
+	CBlob@ thevehicle;
+	CBlob@ theboat;
 
 	int swidth = getDriver().getScreenWidth();
 	int sheight = getDriver().getScreenHeight();
@@ -413,13 +544,18 @@ void onRender(CSprite@ this) {
 			} else if (overlapping[i].getName() == "archershop") {
 				overlapping_archershop = true;
 				@thearchershop = overlapping[i];
-			}
-			else if (overlapping[i].getName() == "buildershop") {
+			} else if (overlapping[i].getName() == "buildershop") {
 				overlapping_buildershop = true;
 				@thebuildershop = overlapping[i];
 			} else if (overlapping[i].getName() == "quarters") {
 				overlapping_kfc = true;
 				@thekfc = overlapping[i];
+			} else if (overlapping[i].getName() == "vehicleshop") {
+				overlapping_vehicle = true;
+				@thevehicle = overlapping[i];
+			} else if (overlapping[i].getName() == "boatshop") {
+				overlapping_boat = true;
+				@theboat = overlapping[i];
 			}
 		}
 	}
@@ -514,7 +650,7 @@ void onRender(CSprite@ this) {
 		};
 
 		if (thekfc.get("shop array", @shopitems)) {
-			for (int i=0; i < shopitems.length; ++i) {
+			for (int i = 0; i < shopitems.length; ++i) {
 				s32 buttonwidth = advance_by.x;
 				ShopItem @s_item = shopitems[i];
 
@@ -556,7 +692,7 @@ void onRender(CSprite@ this) {
 		};
 
 		if (thebuildershop.get("shop array", @shopitems)) {
-			for (int i=0; i < 9; ++i) {
+			for (int i = 0; i < 10; ++i) {
 				s32 buttonwidth = advance_by.x;
 				ShopItem @s_item = shopitems[i];
 
@@ -584,6 +720,83 @@ void onRender(CSprite@ this) {
 				}
 
 				GUI::DrawPane(start_drawing_here, start_drawing_here+Vec2f(buttonwidth, advance_by.y));
+				GUI::DrawIconByName(s_item.iconName, start_drawing_here + Vec2f(6, 6));
+				GUI::DrawText(binding, start_drawing_here + Vec2f(0, 0), color_white);
+				start_drawing_here.x += buttonwidth;
+			}
+		}
+	}
+
+	if (overlapping_vehicle) {
+		string[] items = {
+		"vehicle_catapult",
+        "vehicle_ballista",
+        "vehicle_outpost",
+        "vehicle_bolts",
+        "vehicle_shells"
+		};
+
+		if (thevehicle.get("shop array", @shopitems)) {
+			for (int i = 0; i < 5; ++i) {
+				s32 buttonwidth = advance_by.x;
+				s32 buttonheight = advance_by.y;
+				ShopItem @s_item = shopitems[i];
+
+				if (s_item.blobName == "catapult") {
+					buttonwidth = 72;
+					buttonheight = 64;
+				}
+				if (s_item.blobName == "ballista") {
+					buttonwidth = 72;
+					buttonheight = 64;
+				}
+				if (s_item.blobName == "outpost") {
+					buttonwidth = 72;
+					buttonheight = 64;
+				}
+
+				string binding;
+				if (getRules().get_s32(items[i] + "$1") != -1) {
+					binding = getKeyName(getRules().get_s32(items[i] + "$1"));
+
+					if (getRules().get_s32(items[i] + "$2") != -1)
+					{
+						binding += ("+" + getKeyName(getRules().get_s32(items[i] + "$2")));
+					}
+				}
+
+				GUI::DrawPane(start_drawing_here, start_drawing_here+Vec2f(buttonwidth, buttonheight));
+				GUI::DrawIconByName(s_item.iconName, start_drawing_here + Vec2f(6, 6));
+				GUI::DrawText(binding, start_drawing_here + Vec2f(0, 0), color_white);
+				start_drawing_here.x += buttonwidth;
+			}
+		}
+	}
+
+	if (overlapping_boat) {
+		string[] items = {
+		"boat_dinghy",
+        "boat_longboat",
+        "boat_warboat"
+		};
+
+		if (theboat.get("shop array", @shopitems)) {
+			for (int i = 0; i < 3; ++i) {
+				s32 buttonwidth = 72;
+				s32 buttonheight = 64;
+				ShopItem @s_item = shopitems[i];
+
+				string binding;
+				if (getRules().get_s32(items[i] + "$1") != -1) {
+					binding = getKeyName(getRules().get_s32(items[i] + "$1"));
+
+					if (getRules().get_s32(items[i] + "$2") != -1)
+					{
+						binding += ("+" + getKeyName(getRules().get_s32(items[i] + "$2")));
+					}
+				}
+
+				GUI::DrawPane(start_drawing_here, start_drawing_here+Vec2f(buttonwidth, buttonheight));
 				GUI::DrawIconByName(s_item.iconName, start_drawing_here + Vec2f(6, 6));
 				GUI::DrawText(binding, start_drawing_here + Vec2f(0, 0), color_white);
 				start_drawing_here.x += buttonwidth;

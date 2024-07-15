@@ -100,6 +100,8 @@ namespace ru
 	n_buildernmb							= "Магазин строителя\n (бинды)",
 	n_knightnmb								= "Магазин рыцаря\n (бинды)",
 	n_quartersnmb							= "Магазин еды\n (бинды)",
+	n_vehiclenmb							= "Магазин машин\n (бинды)",
+	n_boatnmb								= "Магазин лодок\n (бинды)",
 	n_settingsmenu							= "Настройки",
 	n_vsettingsmenu							= "Настройки визуа-\n ла и звуков",
 	n_tagwheel								= "Колесо меток",
@@ -160,6 +162,18 @@ namespace ru
 	n_burgernmb								= "Пирожок с грушей",
 	n_pearnmb								= "Груша",
 	n_sleepnmb								= "Спать",
+
+			// Vehicle Shop
+	n_catapultnmb							= "Катапульта",
+	n_ballistanmb							= "Баллиста",
+	n_outpostnmb							= "Аванпост",
+	n_boltsnmb								= "Болты для баллисты",
+	n_shellsnmb								= "Взрывные болты для баллисты",
+
+			// Boat Shop
+	n_dinghynmb								= "Шлюпка",
+	n_longboatnmb							= "Большая лодка",
+	n_warboatnmb							= "Военная лодка",
 
 		// Settings
 	n_buildmode								= "Режим строительства",

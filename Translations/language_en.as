@@ -100,6 +100,8 @@ namespace en
 	n_buildernmb							= "Builder Shop\n (binds)",
 	n_knightnmb								= "Knight Shop\n (binds)",
 	n_quartersnmb							= "Quarters\n (binds)",
+	n_vehiclenmb							= "Vehicle Shop\n (binds)",
+	n_boatnmb								= "Boat Shop\n (binds)",
 	n_settingsmenu							= "Settings",
 	n_vsettingsmenu							= "Visual/Sound\n Settings",
 	n_tagwheel								= "Tag Wheel",
@@ -160,6 +162,18 @@ namespace en
 	n_burgernmb								= "Pear Tart",
 	n_pearnmb								= "Pear",
 	n_sleepnmb								= "Sleep",
+
+			// Vehicle Shop
+	n_catapultnmb							= "Catapult",
+	n_ballistanmb							= "Ballista",
+	n_outpostnmb							= "Outpost",
+	n_boltsnmb								= "Ballista Bolts",
+	n_shellsnmb								= "Ballista Shells",
+
+			// Boat Shop
+	n_dinghynmb								= "Dinghy",
+	n_longboatnmb							= "Long Boat",
+	n_warboatnmb							= "War Boat",
 
 		// Settings
 	n_buildmode								= "Build Mode",

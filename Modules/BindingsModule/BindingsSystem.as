@@ -44,6 +44,7 @@ void onInit(CRules@ this)
 		if (!file.exists("k_drill$2")) file.add_s32("k_drill$2", -1);
 		if (!file.exists("k_satchel$1")) file.add_s32("k_satchel$1", 54);
 		if (!file.exists("k_satchel$2")) file.add_s32("k_satchel$2", -1);
+
 		// builder shop
 		if (!file.exists("b_drill$1")) file.add_s32("b_drill$1", 49);
 		if (!file.exists("b_drill$2")) file.add_s32("b_drill$2", -1);
@@ -65,6 +66,7 @@ void onInit(CRules@ this)
 		if (!file.exists("b_crate_wood$1")) file.add_s32("b_crate_wood$2", -1);
 		if (!file.exists("b_crate_coins$1")) file.add_s32("b_crate_coins$1", 48);
 		if (!file.exists("b_crate_coins$1")) file.add_s32("b_crate_coins$2", -1);
+
 		// archer shop
 		if (!file.exists("a_arrows$1")) file.add_s32("a_arrows$1", 49);
 		if (!file.exists("a_arrows$2")) file.add_s32("a_arrows$2", -1);
@@ -76,6 +78,7 @@ void onInit(CRules@ this)
 		if (!file.exists("a_bombarrows$2")) file.add_s32("a_bombarrows$2", -1);
 		if (!file.exists("a_blockarrows$1")) file.add_s32("a_blockarrows$1", 53);
 		if (!file.exists("a_blockarrows$2")) file.add_s32("a_blockarrows$2", -1);
+
 		// kfc
 		if (!file.exists("kfc_beer$1")) file.add_s32("kfc_beer$1", 49);
 		if (!file.exists("kfc_beer$2")) file.add_s32("kfc_beer$2", -1);
@@ -89,6 +92,26 @@ void onInit(CRules@ this)
 		if (!file.exists("kfc_pear$2")) file.add_s32("kfc_pear$2", -1);
 		if (!file.exists("kfc_sleep$1")) file.add_s32("kfc_sleep$1", 54);
 		if (!file.exists("kfc_sleep$2")) file.add_s32("kfc_sleep$2", -1);
+
+		// vehicle shop
+		if (!file.exists("vehicle_catapult$1")) file.add_s32("vehicle_catapult$1", 49);
+		if (!file.exists("vehicle_catapult$2")) file.add_s32("vehicle_catapult$2", -1);
+		if (!file.exists("vehicle_ballista$1")) file.add_s32("vehicle_ballista$1", 50);
+		if (!file.exists("vehicle_ballista$2")) file.add_s32("vehicle_ballista$2", -1);
+		if (!file.exists("vehicle_outpost$1")) file.add_s32("vehicle_outpost$1", 51);
+		if (!file.exists("vehicle_outpost$2")) file.add_s32("vehicle_outpost$2", -1);
+		if (!file.exists("vehicle_bolts$1")) file.add_s32("vehicle_bolts$1", 52);
+		if (!file.exists("vehicle_bolts$2")) file.add_s32("vehicle_bolts$2", -1);
+		if (!file.exists("vehicle_shells$1")) file.add_s32("vehicle_shells$1", 53);
+		if (!file.exists("vehicle_shells$2")) file.add_s32("vehicle_shells$2", -1);
+
+		// boat shop
+		if (!file.exists("boat_dinghy$1")) file.add_s32("boat_dinghy$1", 49);
+		if (!file.exists("boat_dinghy$2")) file.add_s32("boat_dinghy$2", -1);
+		if (!file.exists("boat_longboat$1")) file.add_s32("boat_longboat$1", 50);
+		if (!file.exists("boat_longboat$2")) file.add_s32("boat_longboat$2", -1);
+		if (!file.exists("boat_warboat$1")) file.add_s32("boat_warboat$1", 51);
+		if (!file.exists("boat_warboat$2")) file.add_s32("boat_warboat$2", -1);
 
 		if(!file.saveFile(BINDINGSFILE + ".cfg"))
 		{

@@ -16,7 +16,9 @@ string[] page_texts =
 	Names::knightnmb,
 	Names::archernmb,
 	Names::buildernmb,
-	Names::quartersnmb
+	Names::quartersnmb,
+	Names::vehiclenmb,
+	Names::boatnmb
 };
 
 string[][] button_texts =
@@ -104,6 +106,18 @@ string[][] button_texts =
 		Names::burgernmb,
 		Names::pearnmb,
 		Names::sleepnmb
+	},
+	{							// VEHICLE SHOP
+		Names::catapultnmb,
+		Names::ballistanmb,
+		Names::outpostnmb,
+		Names::boltsnmb,
+		Names::shellsnmb
+	},
+	{							// BOAT SHOP
+		Names::dinghynmb,
+		Names::longboatnmb,
+		Names::warboatnmb
 	}
 };
 
@@ -194,6 +208,18 @@ string[][] button_file_names =
 		"kfc_burger",
 		"kfc_pear",
 		"kfc_sleep"
+	},
+	{
+		"vehicle_catapult",
+		"vehicle_ballista",
+		"vehicle_outpost",
+		"vehicle_bolts",
+		"vehicle_shells",
+	},
+	{
+		"boat_dinghy",
+		"boat_longboat",
+		"boat_warboat"
 	}
 };
 
@@ -1753,7 +1779,7 @@ class ClickableButtonGUI
 		GUI::SetFont("menu");
 
 		Vec2f start_offset = Vec2f(50, 600);
-		Vec2f start_offset_p = Vec2f(60, 550);
+		Vec2f start_offset_p = Vec2f(70, 550);
 
 		closebutton.Render(m_clickable_origin + Vec2f(1000 - 40, 0), Vec2f(40, 40));
 
@@ -1776,7 +1802,7 @@ class ClickableButtonGUI
 
 			if (i == 5)
 			{
-				start_offset_p = Vec2f(205, 600);
+				start_offset_p = Vec2f(70, 600);
 			}
 		}
 
@@ -1824,7 +1850,7 @@ class ClickableButtonGUI
 		u8 scale = screen_height / 720.0;
 
 		Vec2f start_offset = Vec2f(50, 600);
-		Vec2f start_offset_p = Vec2f(60, 550);
+		Vec2f start_offset_p = Vec2f(70, 550);
 
 		closebutton.Update(m_clickable_origin + Vec2f(1000 - 40, 0), Vec2f(40, 40));
 
@@ -1847,7 +1873,7 @@ class ClickableButtonGUI
 
 			if (i == 5)
 			{
-				start_offset_p = Vec2f(205, 600);
+				start_offset_p = Vec2f(70, 600);
 			}
 		}
 
