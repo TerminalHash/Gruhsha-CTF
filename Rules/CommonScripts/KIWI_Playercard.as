@@ -410,7 +410,7 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 			}
 			else
 			{
-				GUI::DrawIcon("AgeBadges", age_icon_start + icon, Vec2f(16, 16), age_icon_pos+Vec2f(8, 0), 1.0f, player.getTeamNum());
+				GUI::DrawIcon("AgeBadges", age_icon_start + icon, Vec2f(16, 16), age_icon_pos, 1.0f, player.getTeamNum());
 			}
 
 			if (mousePos.x > age_icon_pos.x -4 && mousePos.x < age_icon_pos.x + 24 && mousePos.y < age_icon_pos.y + 24 && mousePos.y > age_icon_pos.y -4)
