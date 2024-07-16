@@ -2,9 +2,8 @@
 #include "ScoreboardCommon.as"
 
 string[] column_names = {
-    "N",
-    "CLANTAG",
-    "NICKNAME",
+    "TEAM",
+    "PLAYER",
     "USERNAME",
     "K",
     "D",
@@ -12,9 +11,8 @@ string[] column_names = {
 };
 
 u32[] column_widths = {
-    34,
-    100,
-    100,
+    70,
+    200,
     100,
     34,
     34,
@@ -54,7 +52,11 @@ void onRender(CRules@ this) {
         bool inserted = false;
 
         for (u32 j = 0; j < players.length; j++) {
-            if (column_names[priority] == "K" && players[j].getKills() < player.getKills()) {
+            if (column_names[priority] == "TEAM" && players[j].getTeamNum() > player.getTeamNum()) {
+                players.insert(j, player);
+                inserted = true;
+		break;
+            } else if (column_names[priority] == "K" && players[j].getKills() < player.getKills()) {
                 players.insert(j, player);
                 inserted = true;
 		break;
@@ -97,12 +99,10 @@ void onRender(CRules@ this) {
             u32 width = column_widths[column_id];
             Vec2f cell_size = Vec2f(width, 32);
 
-            if (name == "N") {
-                IMGUI::Panel(""+(player_id+1), scoreboard_pos, scoreboard_pos + cell_size, team_color);
-            } else if (name == "CLANTAG") {
-                IMGUI::Panel(""+player.getClantag(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
-            } else if (name == "NICKNAME") {
-                IMGUI::Panel(""+player.getCharacterName(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
+            if (name == "TEAM") {
+                IMGUI::Panel(""+team_name, scoreboard_pos, scoreboard_pos + cell_size, team_color);
+            } else if (name == "PLAYER") {
+                IMGUI::Panel(""+player.getClantag() + " " + player.getCharacterName(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
             } else if (name == "USERNAME") {
                 IMGUI::Panel(""+player.getUsername(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
             } else if (name == "K") {
