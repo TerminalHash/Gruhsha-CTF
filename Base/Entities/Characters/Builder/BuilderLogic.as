@@ -112,10 +112,6 @@ void onTick(CBlob@ this)
 			CBlob@ carried = this.getCarriedBlob();
 			bool holding = carried !is null;// && carried.hasTag("exploding");
 
-			// dont activate keg and satchel via this
-			if (carried.getConfig() == "keg") return;
-			if (carried.getConfig() == "satchel") return;
-
 			CInventory@ inv = this.getInventory();
 			bool thrown = false;
 			u8 bombType = this.get_u8("bomb type");
@@ -152,6 +148,10 @@ void onTick(CBlob@ this)
 
 			if (!thrown)
 			{
+				// dont activate keg and satchel via this
+				if (carried.getConfig() == "keg") return;
+				if (carried.getConfig() == "satchel") return;
+
 				client_SendThrowOrActivateCommand(this);
 				SetFirstAvailableBomb(this);
 			}

@@ -85,32 +85,6 @@ void onTick(CBlob@ this) {
 					item_id	= 5;
 				}
 
-				// idk why it's duplicated, whatever
-				if (b_KeyJustPressed("k_bomb")) {
-					wanna_buy = true;
-					item_id	= 0;
-				}
-				if (b_KeyJustPressed("k_waterbomb")) {
-					wanna_buy = true;
-					item_id	= 1;
-				}
-				if (b_KeyJustPressed("k_mine")) {
-					wanna_buy = true;
-					item_id	= 2;
-				}
-				if (b_KeyJustPressed("k_keg")) {
-					wanna_buy = true;
-					item_id	= 3;
-				}
-				if (b_KeyJustPressed("k_drill")) {
-					wanna_buy = true;
-					item_id	= 4;
-				}
-				if (b_KeyJustPressed("k_satchel")) {
-					wanna_buy = true;
-					item_id	= 5;
-				}
-
 				if (wanna_buy) {
 					dont_show_emotes = true;
 					ShopItem @s_item = shopitems[item_id];
@@ -178,49 +152,6 @@ void onTick(CBlob@ this) {
 					item_id	= 9;
 				}
 
-				// idk why it's duplicated, whatever
-				if (b_KeyJustPressed("b_drill")) {
-					wanna_buy = true;
-					item_id	= 0;
-				}
-				if (b_KeyJustPressed("b_sponge")) {
-					wanna_buy = true;
-					item_id	= 1;
-				}
-				if (b_KeyJustPressed("b_bucketw")) {
-					wanna_buy = true;
-					item_id	= 2;
-				}
-				if (b_KeyJustPressed("b_boulder")) {
-					wanna_buy = true;
-					item_id	= 3;
-				}
-				if (b_KeyJustPressed("b_lantern")) {
-					wanna_buy = true;
-					item_id	= 4;
-				}
-				if (b_KeyJustPressed("b_bucketn")) {
-					wanna_buy = true;
-					item_id	= 5;
-				}
-				if (b_KeyJustPressed("b_trampoline")) {
-					wanna_buy = true;
-					item_id	= 6;
-				}
-				if (b_KeyJustPressed("b_saw")) {
-					wanna_buy = true;
-					item_id	= 7;
-				}
-				if (b_KeyJustPressed("b_crate_wood")) {
-					wanna_buy = true;
-					item_id	= 8;
-				}
-				if (b_KeyJustPressed("b_crate_coins")) {
-					wanna_buy = true;
-					item_id	= 9;
-				}
-
-
 				if (wanna_buy) {
 					dont_show_emotes = true;
 					ShopItem @s_item = shopitems[item_id];
@@ -245,28 +176,6 @@ void onTick(CBlob@ this) {
 				bool wanna_buy = false;
 				u8 item_id = 250;
 
-				if (b_KeyJustPressed("a_arrows")) {
-					wanna_buy = true;
-					item_id	= 0;
-				}
-				if (b_KeyJustPressed("a_waterarrows")) {
-					wanna_buy = true;
-					item_id	= 1;
-				}
-				if (b_KeyJustPressed("a_firearrows")) {
-					wanna_buy = true;
-					item_id	= 2;
-				}
-				if (b_KeyJustPressed("a_bombarrows")) {
-					wanna_buy = true;
-					item_id	= 3;
-				}
-				if (b_KeyJustPressed("a_blockarrows")) {
-					wanna_buy = true;
-					item_id	= 4;
-				}
-
-				// idk why it's duplicated, whatever
 				if (b_KeyJustPressed("a_arrows")) {
 					wanna_buy = true;
 					item_id	= 0;
@@ -338,32 +247,6 @@ void onTick(CBlob@ this) {
 					item_id	= 5;
 				}
 
-				// idk why it's duplicated, whatever
-				if (b_KeyJustPressed("kfc_beer")) {
-					wanna_buy = true;
-					item_id	= 0;
-				}
-				if (b_KeyJustPressed("kfc_meal")) {
-					wanna_buy = true;
-					item_id	= 1;
-				}
-				if (b_KeyJustPressed("kfc_egg")) {
-					wanna_buy = true;
-					item_id	= 2;
-				}
-				if (b_KeyJustPressed("kfc_burger")) {
-					wanna_buy = true;
-					item_id	= 3;
-				}
-				if (b_KeyJustPressed("kfc_pear")) {
-					wanna_buy = true;
-					item_id	= 4;
-				}
-				if (b_KeyJustPressed("kfc_sleep")) {
-					wanna_buy = true;
-					item_id	= 5;
-				}
-
 				if (wanna_buy) {
 					dont_show_emotes = true;
 					ShopItem @s_item = shopitems[item_id];
@@ -409,28 +292,6 @@ void onTick(CBlob@ this) {
 					item_id	= 4;
 				}
 
-				// idk why it's duplicated, whatever
-				if (b_KeyJustPressed("vehicle_catapult")) {
-					wanna_buy = true;
-					item_id	= 0;
-				}
-				if (b_KeyJustPressed("vehicle_ballista")) {
-					wanna_buy = true;
-					item_id	= 1;
-				}
-				if (b_KeyJustPressed("vehicle_outpost")) {
-					wanna_buy = true;
-					item_id	= 2;
-				}
-				if (b_KeyJustPressed("vehicle_bolts")) {
-					wanna_buy = true;
-					item_id	= 3;
-				}
-				if (b_KeyJustPressed("vehicle_shells")) {
-					wanna_buy = true;
-					item_id	= 4;
-				}
-
 				if (wanna_buy) {
 					dont_show_emotes = true;
 					ShopItem @s_item = shopitems[item_id];
@@ -455,20 +316,6 @@ void onTick(CBlob@ this) {
 				bool wanna_buy = false;
 				u8 item_id = 250;
 
-				if (b_KeyJustPressed("boat_dinghy")) {
-					wanna_buy = true;
-					item_id	= 0;
-				}
-				if (b_KeyJustPressed("boat_longboat")) {
-					wanna_buy = true;
-					item_id	= 1;
-				}
-				if (b_KeyJustPressed("boat_warboat")) {
-					wanna_buy = true;
-					item_id	= 2;
-				}
-
-				// idk why it's duplicated, whatever
 				if (b_KeyJustPressed("boat_dinghy")) {
 					wanna_buy = true;
 					item_id	= 0;
