@@ -62,6 +62,10 @@ void onRender(CRules@ this) {
                 players.insert(j, player);
                 inserted = true;
 		break;
+            } else if (column_names[priority] == "KDR" && getKDR(players[j]) < getKDR(player)) {
+                players.insert(j, player);
+                inserted = true;
+		break;
             }
         }
 
