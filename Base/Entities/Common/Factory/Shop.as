@@ -498,11 +498,11 @@ void BuildShopMenu(CBlob@ this, CBlob @caller, string description, Vec2f offset,
 				menu.AddKeyCommand(numKeys[i], this.getCommandID("shop buy"), params);
 			}
 
-			if (getRules().get_string("nomenubuying") != "yes") {
+			if (getRules().get_string("nomenubuying") != "yes" && caller.getConfig() != "builder") {
 				menu.AddKeyCommand(numKeys[i], this.getCommandID("shop buy"), params);
 			}
 
-			if (getRules().get_string("nomenubuying_b") != "yes") {
+			if (getRules().get_string("nomenubuying_b") != "yes" && caller.getConfig() == "builder") {
 				menu.AddKeyCommand(numKeys[i], this.getCommandID("shop buy"), params);
 			}
 		}
