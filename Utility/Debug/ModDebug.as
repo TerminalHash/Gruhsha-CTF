@@ -14,6 +14,12 @@ void onRender(CRules@ this) {
     int builders_limit = this.get_u8("builders_limit");
     s32 players_team_amount = this.get_s32("amount_in_team");
 
+    string respawn_message = "Current respawn time:";
+    string tickspawndelay_default = "5 sec";
+    string tickspawndelay_20 = "11 sec";
+    string tickspawndelay_30 = "13 sec";
+    string tickspawndelay_40 = "15 sec";
+
     string alimtext = archers_limit;
     string blimtext = builders_limit;
     string pcounttext = players_team_amount;
@@ -72,6 +78,18 @@ void onRender(CRules@ this) {
 
             GUI::DrawTextCentered(pcount_message, Vec2f(1000, 480), color_white);
             GUI::DrawTextCentered(pcounttext, Vec2f(1000, 494), color_white);
+
+
+            GUI::DrawTextCentered(respawn_message, Vec2f(1000, 510), color_white);
+            if (getGameTime() >= 900 * getTicksASecond() && getGameTime() <= 1500 * getTicksASecond()) {
+                GUI::DrawTextCentered(tickspawndelay_20, Vec2f(1000, 524), color_white);
+            } else if (getGameTime() >= 1500 * getTicksASecond() && getGameTime() <= 2100 * getTicksASecond()) {
+                GUI::DrawTextCentered(tickspawndelay_30, Vec2f(1000, 524), color_white);
+            } else if (getGameTime() >= 2100 * getTicksASecond()) {
+                GUI::DrawTextCentered(tickspawndelay_40, Vec2f(1000, 524), color_white);
+            } else {
+                GUI::DrawTextCentered(tickspawndelay_default, Vec2f(1000, 524), color_white);
+            }
 
             // Booleans/tags section
             GUI::DrawTextCentered(stats_message, Vec2f(1280, 450), color_white);
