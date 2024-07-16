@@ -20,6 +20,18 @@ void onRender(CRules@ this) {
     string tickspawndelay_30 = "13 sec";
     string tickspawndelay_40 = "15 sec";
 
+    string resupply_message = "Current resupply:";
+    string stonetext = "Stone :";
+    string woodtext = "Wood :";
+    string stone_amount = matchtime_stone_amount;
+    string wood_amount = matchtime_wood_amount;
+    string stone_amount_lower = lower_stone;
+    string wood_amount_lower = lower_wood;
+    string stone_amount_multiple = matchtime_stone_amount * builders_limit;
+    string wood_amount_multiple = matchtime_wood_amount * builders_limit;
+    string stone_amount_multiple_lower = lower_stone * builders_limit;
+    string wood_amount_multiple_lower = lower_wood * builders_limit;
+
     string alimtext = archers_limit;
     string blimtext = builders_limit;
     string pcounttext = players_team_amount;
@@ -89,6 +101,39 @@ void onRender(CRules@ this) {
                 GUI::DrawTextCentered(tickspawndelay_40, Vec2f(1000, 524), color_white);
             } else {
                 GUI::DrawTextCentered(tickspawndelay_default, Vec2f(1000, 524), color_white);
+            }
+
+            GUI::DrawTextCentered(resupply_message, Vec2f(1000, 540), color_white);
+            if (this.hasTag("offi match")) {
+                if (getGameTime() > lower_mats_timer * getTicksASecond()) {
+                    if (builders_limit == 1) {
+                        GUI::DrawTextCentered(stonetext + stone_amount_lower, Vec2f(1000, 554), color_white);
+                        GUI::DrawTextCentered(woodtext + wood_amount_lower, Vec2f(1000, 568), color_white);
+                    }
+
+                    if (builders_limit > 1) {
+                        GUI::DrawTextCentered(stonetext + stone_amount_multiple_lower, Vec2f(1000, 554), color_white);
+                        GUI::DrawTextCentered(woodtext + wood_amount_multiple_lower, Vec2f(1000, 568), color_white);
+                    }
+                } else {
+                    if (builders_limit == 1) {
+                        GUI::DrawTextCentered(stonetext + stone_amount, Vec2f(1000, 554), color_white);
+                        GUI::DrawTextCentered(woodtext + wood_amount, Vec2f(1000, 568), color_white);
+                    }
+
+                    if (builders_limit > 1) {
+                        GUI::DrawTextCentered(stonetext + stone_amount_multiple, Vec2f(1000, 554), color_white);
+                        GUI::DrawTextCentered(woodtext + wood_amount_multiple, Vec2f(1000, 568), color_white);
+                    }
+                }
+            } else if (!warmup) {
+                if (getGameTime() > lower_mats_timer * getTicksASecond()) {
+                    GUI::DrawTextCentered(stonetext + stone_amount_lower, Vec2f(1000, 554), color_white);
+                    GUI::DrawTextCentered(woodtext + wood_amount_lower, Vec2f(1000, 568), color_white);
+                } else {
+                    GUI::DrawTextCentered(stonetext + stone_amount, Vec2f(1000, 554), color_white);
+                    GUI::DrawTextCentered(woodtext + wood_amount, Vec2f(1000, 568), color_white);
+                }
             }
 
             // Booleans/tags section
