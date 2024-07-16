@@ -21,7 +21,7 @@ u32[] column_widths = {
     50
 };
 
-u32 priority = 2;
+u32 priority = 4;
 
 void onInit(CRules@ this) {}
 
@@ -52,10 +52,13 @@ void onRender(CRules@ this) {
         if(player is null) continue;
 
         bool inserted = false;
-        f32 kills = player.getKills();
 
         for (u32 j = 0; j < players.length; j++) {
-            if (players[j].getKills() < kills) {
+            if (column_names[priority] == "K" && players[j].getKills() < player.getKills()) {
+                players.insert(j, player);
+                inserted = true;
+		break;
+            } else if (column_names[priority] == "D" && players[j].getDeaths() < player.getDeaths()) {
                 players.insert(j, player);
                 inserted = true;
 		break;
@@ -103,7 +106,7 @@ void onRender(CRules@ this) {
             } else if (name == "D") {
                 IMGUI::Panel(""+player.getDeaths(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
             } else if (name == "KDR") {
-                IMGUI::Panel(""+getKDR(player), scoreboard_pos, scoreboard_pos + cell_size, team_color);
+                IMGUI::Panel(""+formatFloat(getKDR(player), "", 0, 2), scoreboard_pos, scoreboard_pos + cell_size, team_color);
             }
 
             scoreboard_pos.x += width;
