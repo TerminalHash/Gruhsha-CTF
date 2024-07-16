@@ -19,6 +19,8 @@ u32[] column_widths = {
     50
 };
 
+const u32 column_height = 26;
+
 u32 priority = 4;
 
 void onInit(CRules@ this) {}
@@ -36,10 +38,10 @@ void onRender(CRules@ this) {
     Vec2f scoreboard_start_pos = Vec2f((screen_width - scoreboard_width) / 2.0, 200);
     Vec2f scoreboard_pos = scoreboard_start_pos;
 
-    IMGUI::Panel("", scoreboard_pos, scoreboard_pos + Vec2f(scoreboard_width, 32), IMGUI::BLACK);
+    IMGUI::Panel("", scoreboard_pos, scoreboard_pos + Vec2f(scoreboard_width, column_height), IMGUI::BLACK);
     // НАЗВАНИЯ СТРОК
     for (u32 column_id = 0; column_id < column_names.length; column_id++) {
-        if(IMGUI::Button(column_names[column_id], scoreboard_pos, scoreboard_pos + Vec2f(column_widths[column_id], 32))) priority = column_id;
+        if(IMGUI::Button(column_names[column_id], scoreboard_pos, scoreboard_pos + Vec2f(column_widths[column_id], column_height))) priority = column_id;
 	scoreboard_pos.x += column_widths[column_id];
     }
 
@@ -77,7 +79,7 @@ void onRender(CRules@ this) {
 
     for (u32 player_id = 0; player_id < players.length; player_id++) {
         scoreboard_pos.x = scoreboard_start_pos.x;
-        scoreboard_pos.y += 32;
+        scoreboard_pos.y += column_height;
 
         CPlayer@ player = players[player_id];
 
@@ -92,12 +94,12 @@ void onRender(CRules@ this) {
             team_color = IMGUI::RED;
         }
 
-        IMGUI::Panel("", scoreboard_pos, scoreboard_pos + Vec2f(scoreboard_width, 32), IMGUI::BLACK);
+        IMGUI::Panel("", scoreboard_pos, scoreboard_pos + Vec2f(scoreboard_width, column_height), IMGUI::BLACK);
 
         for (u32 column_id = 0; column_id < column_names.length; column_id++) {
             string name = column_names[column_id];
             u32 width = column_widths[column_id];
-            Vec2f cell_size = Vec2f(width, 32);
+            Vec2f cell_size = Vec2f(width, column_height);
 
             if (name == "TEAM") {
                 IMGUI::Panel(""+team_name, scoreboard_pos, scoreboard_pos + cell_size, team_color);
