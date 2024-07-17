@@ -193,6 +193,15 @@ void sparks(Vec2f at, f32 angle, f32 speed, SColor color)
 }
 
 
+bool canBePickedUp(CBlob@ this, CBlob@ byBlob)
+{
+	if (this.hasTag("exploding")) {
+		return false;
+	}
+
+	return true;
+}
+
 void onDie(CBlob@ this)
 {
 	this.getSprite().SetEmitSoundPaused(true);
