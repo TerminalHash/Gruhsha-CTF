@@ -35,6 +35,10 @@ void onRender(CRules@ this) {
     CPlayer@ local_player = getLocalPlayer();
     if (local_player is null) return;
     u32 local_team_num = local_player.getTeamNum();
+    SColor local_team_color = IMGUI::DARK_GRAY;
+    if (local_team_num == blue_team_num) local_team_color = IMGUI::BLUE;
+    if (local_team_num == red_team_num) local_team_color = IMGUI::RED;
+
     string local_username = local_player.getUsername();
 
     GUI::SetFont("menu");
@@ -130,36 +134,35 @@ void onRender(CRules@ this) {
 	pick_params.write_string(username);
         if (isAdmin(local_player)) {
             if (team_num != blue_team_num) {
-                if (IMGUI::Button("BLUE", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height))) {
+              if (IMGUI::Button("BLUE", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height), IMGUI::BLUE, IMGUI::HBLUE)) {
                     this.SendCommand(this.getCommandID("put to blue"), pick_params);
                 }
                 scoreboard_pos.x += pick_button_width;
             }
             if (team_num != red_team_num) {
-                if (IMGUI::Button("RED", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height))) {
+                if (IMGUI::Button("RED", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height), IMGUI::RED, IMGUI::HRED)) {
                     this.SendCommand(this.getCommandID("put to red"), pick_params);
-                    scoreboard_pos.x += pick_button_width;
                 }
                 scoreboard_pos.x += pick_button_width;
             }
             if (team_num != spec_team_num) {
-                if (IMGUI::Button("SPEC", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height))) {
+              if (IMGUI::Button("SPEC", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height), IMGUI::DARK_GRAY, IMGUI::GRAY)) {
                     this.SendCommand(this.getCommandID("put to spec"), pick_params);
                     scoreboard_pos.x += pick_button_width;
                 }
             }
         } else if (local_player.getUsername() == this.get_string("team_"+local_team_num+"_leader") && username != local_username) {
             if (team_num == local_team_num) {
-                if (IMGUI::Button("SPEC", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height))) {
+                if (IMGUI::Button("SPEC", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height), IMGUI::DARK_GRAY, IMGUI::GRAY)) {
                     this.SendCommand(this.getCommandID("put to spec"), pick_params);
                 }
             }
             if (team_num == spec_team_num) {
-                if (IMGUI::Button("PICK", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height))) {
-                    if (local_team_num == blue_team_num)
-                        this.SendCommand(this.getCommandID("put to blue"), pick_params);
-                    if (local_team_num == red_team_num)
-                        this.SendCommand(this.getCommandID("put to red"), pick_params);
+                if (local_team_num == blue_team_num && IMGUI::Button("PICK", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height), IMGUI::BLUE, IMGUI::HBLUE)) {
+                    this.SendCommand(this.getCommandID("put to blue"), pick_params);
+                }
+                if (local_team_num == blue_team_num && IMGUI::Button("PICK", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height), IMGUI::RED, IMGUI::HRED)) {
+                    this.SendCommand(this.getCommandID("put to red"), pick_params);
                 }
             }
         }
