@@ -19,9 +19,9 @@ array<u32> column_widths = {
     50
 };
 
-const u32 column_height = 26;
+const u32 row_height = 26;
 
-u32 priority = 4;
+u32 priority = 0;
 
 void onInit(CRules@ this) {}
 
@@ -38,17 +38,18 @@ void onRender(CRules@ this) {
     Vec2f scoreboard_start_pos = Vec2f((screen_width - scoreboard_width) / 2.0, 200);
     Vec2f scoreboard_pos = scoreboard_start_pos;
 
-    IMGUI::Panel("", scoreboard_pos, scoreboard_pos + Vec2f(scoreboard_width, column_height), IMGUI::BLACK);
-    // НАЗВАНИЯ СТРОК
+    IMGUI::Panel("", scoreboard_pos, scoreboard_pos + Vec2f(scoreboard_width, row_height), IMGUI::BLACK);
+
     for (u32 column_id = 0; column_id < column_names.length(); column_id++) {
         if (column_names[column_id] == "PLAYER" || column_names[column_id] == "USERNAME")
-            IMGUI::Panel(column_names[column_id], scoreboard_pos, scoreboard_pos + Vec2f(column_widths[column_id], column_height), IMGUI::GRAY);
-        else if (IMGUI::Button(column_names[column_id], scoreboard_pos, scoreboard_pos + Vec2f(column_widths[column_id], column_height))) priority = column_id;
+            IMGUI::Panel(column_names[column_id], scoreboard_pos, scoreboard_pos + Vec2f(column_widths[column_id], row_height));
+        else if (IMGUI::Button(column_names[column_id], scoreboard_pos, scoreboard_pos + Vec2f(column_widths[column_id], row_height))) priority = column_id;
 	scoreboard_pos.x += column_widths[column_id];
     }
 
     array<CPlayer@> players;
 
+    // СОРТИРОВКА ИГРОКОВ
     for (u32 player_id = 0; player_id < getPlayerCount(); player_id++) {
         CPlayer@ player = getPlayer(player_id);
         if(player is null) continue;
@@ -68,41 +69,50 @@ void onRender(CRules@ this) {
         if (!inserted) players.push_back(player);
     }
 
+    // ОТРИСОВКА ОСНОВНОЙ ТАБЛИЦЫ
     for (u32 player_id = 0; player_id < players.length(); player_id++) {
         scoreboard_pos.x = scoreboard_start_pos.x;
-        scoreboard_pos.y += column_height;
+        scoreboard_pos.y += row_height;
 
         CPlayer@ player = players[player_id];
 
         string team_name = "SPEC";
-        SColor team_color = IMGUI::GRAY;
-        if (player.getTeamNum() == 0) {
+        SColor team_color = IMGUI::DARK_GRAY;
+        u32 team_num = player.getTeamNum();
+        if (team_num == 0) {
             team_name = "BLUE";
             team_color = IMGUI::BLUE;
         }
-        if (player.getTeamNum() == 1) {
+        if (team_num == 1) {
             team_name = "RED";
             team_color = IMGUI::RED;
         }
 
-        IMGUI::Panel("", scoreboard_pos, scoreboard_pos + Vec2f(scoreboard_width, column_height), IMGUI::BLACK);
+        string clantag = player.getClantag();
+        string username = player.getUsername();
+
+        IMGUI::Panel("", scoreboard_pos, scoreboard_pos + Vec2f(scoreboard_width, row_height), IMGUI::BLACK);
+
+        if (getRules().get_string("team_"+team_num+"_leader")==username) {
+          IMGUI::Panel("КАПИТАН", scoreboard_pos-Vec2f(100,0), scoreboard_pos + Vec2f(0, row_height), IMGUI::DARK_GRAY, IMGUI::YELLOW);
+        }
 
         for (u32 column_id = 0; column_id < column_names.length(); column_id++) {
-            string name = column_names[column_id];
-            u32 width = column_widths[column_id];
-            Vec2f cell_size = Vec2f(width, column_height);
+            string column_name = column_names[column_id];
+            u32 column_width = column_widths[column_id];
+            Vec2f cell_size = Vec2f(column_width, row_height);
 
             string info = "";
 
-            if (name == "TEAM") info = ""+team_name;
-            else if (name == "PLAYER") info = ""+player.getClantag() + " " + player.getCharacterName();
-            else if (name == "USERNAME") info = ""+player.getUsername();
-            else if (name == "K") info = ""+player.getKills();
-            else if (name == "D") info = ""+player.getDeaths();
-            else if (name == "KDR") info = ""+formatFloat(getKDR(player));
+            if (column_name == "TEAM") info = ""+team_name;
+            else if (column_name == "PLAYER") info = ""+clantag + " " + player.getCharacterName();
+            else if (column_name == "USERNAME") info = ""+username;
+            else if (column_name == "K") info = ""+player.getKills();
+            else if (column_name == "D") info = ""+player.getDeaths();
+            else if (column_name == "KDR") info = ""+formatFloat(getKDR(player));
 
             IMGUI::Panel(info, scoreboard_pos, scoreboard_pos + cell_size, team_color);
-            scoreboard_pos.x += width;
+            scoreboard_pos.x += column_width;
         }
     }
 }
