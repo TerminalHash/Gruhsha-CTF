@@ -92,20 +92,16 @@ void onRender(CRules@ this) {
             u32 width = column_widths[column_id];
             Vec2f cell_size = Vec2f(width, column_height);
 
-            if (name == "TEAM") {
-                IMGUI::Panel(""+team_name, scoreboard_pos, scoreboard_pos + cell_size, team_color);
-            } else if (name == "PLAYER") {
-                IMGUI::Panel(""+player.getClantag() + " " + player.getCharacterName(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
-            } else if (name == "USERNAME") {
-                IMGUI::Panel(""+player.getUsername(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
-            } else if (name == "K") {
-                IMGUI::Panel(""+player.getKills(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
-            } else if (name == "D") {
-                IMGUI::Panel(""+player.getDeaths(), scoreboard_pos, scoreboard_pos + cell_size, team_color);
-            } else if (name == "KDR") {
-                IMGUI::Panel(""+formatFloat(getKDR(player), "", 0, 2), scoreboard_pos, scoreboard_pos + cell_size, team_color);
-            }
+            string info = "";
 
+            if (name == "TEAM") info = ""+team_name;
+            else if (name == "PLAYER") info = ""+player.getClantag() + " " + player.getCharacterName();
+            else if (name == "USERNAME") info = ""+player.getUsername();
+            else if (name == "K") info = ""+player.getKills();
+            else if (name == "D") info = ""+player.getDeaths();
+            else if (name == "KDR") info = ""+formatFloat(getKDR(player));
+
+            IMGUI::Panel(info, scoreboard_pos, scoreboard_pos + cell_size, team_color);
             scoreboard_pos.x += width;
         }
     }
