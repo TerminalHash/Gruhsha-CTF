@@ -29,7 +29,7 @@ u32 priority = 0;
 
 void onInit(CRules@ this) {}
 
-void inTick(CRules@ this) {}
+void onTick(CRules@ this) {}
 
 void onRender(CRules@ this) {
     CPlayer@ local_player = getLocalPlayer();
