@@ -1,98 +1,174 @@
 #include "HolidayCommon"
 #include "pathway.as"
 
+const s32 NUM_HEADFRAMES = 4;
+const s32 NUM_UNIQUEHEADS = 30;
+const int FRAMES_WIDTH = 8 * NUM_HEADFRAMES;
+
 int getHeadSpecs(CPlayer@ player, string &out head_file)
 {
 	CRules@ rules = getRules();
-	if (player is null) return 255;
+	if (player is null)
+	{
+		head_file = "Entities/Characters/Sprites/Heads.png";
+		return (NUM_UNIQUEHEADS+2)*NUM_HEADFRAMES; //knight male head
+		return 255;
+	}
 
-	int head_idx = player.getHead();
+	int headIndex = player.getHead();
+
 	// get dlc pack info
-	int headpack_idx = getHeadsPackIndex(head_idx);
-	HeadsPack@ pack = getHeadsPackByIndex(headpack_idx);
-	head_file = pack.filename;
+	int headsPackIndex = getHeadsPackIndex(headIndex);
+	HeadsPack@ pack = getHeadsPackByIndex(headsPackIndex);
+	string texture_file = pack.filename;
+
 	bool override_frame = false;
 
 	//get the head index relative to the pack index (without unique heads counting)
-	int head_idx_pack = (head_idx - NUM_UNIQUEHEADS) - (headpack_idx * 256);
+	int headIndexInPack = (headIndex - NUM_UNIQUEHEADS) - (headsPackIndex * 256);
 
 	//(has default head set)
-	bool defaultHead = (head_idx == 255 || head_idx_pack < 0 || head_idx_pack >= pack.count);
+	bool defaultHead = (headIndex == 255 || headIndexInPack < 0 || headIndexInPack >= pack.count);
 	if (defaultHead)
 	{
 		//accolade custom head handling
 		//todo: consider pulling other custom head stuff out to here
-
+		u8 head_idx = 0;
 		if (player !is null)
 		{
 			string file_path = getPath() + "Base/Entities/Characters/Sprites/CustomHeads/";
-			string png_file = file_path + player.getUsername() + ".png";
+			string head_file = file_path + player.getUsername() + ".png";
 
-			bool customFileExists = CFileMatcher(png_file).hasMatch();
+			bool customFileExists = CFileMatcher(head_file).hasMatch();
 			bool isHeadValid = false;
-			if (customFileExists)
-				isHeadValid = CFileImage(png_file).getWidth()==64;
+			if (customFileExists) {
+				//isHeadValid = CFileImage(head_file).getWidth()==64;
+				isHeadValid = CFileMatcher(head_file).getFirst().find("Headpacks")>-1;
+			}
 			Accolades@ acc = getPlayerAccolades(player.getUsername());
 			bool gotAccoladeHead = acc.hasCustomHead();
 
-			if(customFileExists)
+			if (g_debug > 0) {
+				print("headfile "+head_file);
+			}
+			//print("got accolade head "+gotAccoladeHead);
+
+			if(customFileExists&&isHeadValid)
 			{
+				if (g_debug>0) {
+					CFileMatcher(head_file).printMatches();
+					//print(player.getCharacterName() + " the " + blob.getName() + " has their head set properly! Congratz");
+				}
 				if (rules.exists(player.getUsername() + "HeadIndex"))
 				{
 					head_idx = rules.get_u8(player.getUsername() + "HeadIndex");
 				}
 				if (rules.exists(player.getUsername() + "Headpack"))
-					head_file = rules.get_string(player.getUsername() + "Headpack");
+					texture_file = rules.get_string(player.getUsername() + "Headpack");
 				else
-					head_file = png_file;
-
-				headpack_idx = 0;
+					texture_file = head_file;
+				headIndex = head_idx;
+				headsPackIndex = 0;
 				override_frame = true;
-
+				//player.Tag("custom_head");
+				rules.set_bool("custom_head"+player.getUsername(), true);
 			} else if (gotAccoladeHead) {
-				head_file = acc.customHeadTexture;
-				head_idx = acc.customHeadIndex;
-				headpack_idx = 0;
+				texture_file = acc.customHeadTexture;
+				headIndex = acc.customHeadIndex;
+				headsPackIndex = 0;
 				override_frame = true;
+				rules.set_bool("custom_head"+player.getUsername(), true);
 			}
 			else if (rules.exists(holiday_prop))
 			{
 				if (rules.exists(holiday_head_prop))
 				{
-					head_idx = rules.get_u8(holiday_head_prop);
-					headpack_idx = 0;
+					headIndex = rules.get_u8(holiday_head_prop);
+					headsPackIndex = 0;
 
 					if (rules.exists(holiday_head_texture_prop))
 					{
-						head_file = rules.get_string(holiday_head_texture_prop);
+						texture_file = rules.get_string(holiday_head_texture_prop);
 						override_frame = true;
 
-						head_idx += player.getSex();
+						headIndex += player.getSex();
 						//sex for bots
 						if (player.isBot())
-							head_idx += player.getNetworkID()%512<256?0:1;
+							headIndex += player.getNetworkID()%512<256?0:1;
 					}
 				}
 			}
+			else
+			{
+				//player.Untag("custom_head");
+				rules.set_bool("custom_head"+player.getUsername(), false);
+				if (g_debug>0)
+					print("no head fo ya :C");
+			}
 		}
 	}
-
-	bool got_custom_head = rules.get_bool("custom_head" + player.getUsername());
-
-	if (!got_custom_head) {
-		head_file = "anonymous_old.png";
-		head_idx = player.getNetworkID()%3;
+	else
+	{
+		//it's not a custom head but it's definitely not a default one too ?_?
+		if (player !is null)
+			rules.set_bool("custom_head"+player.getUsername(), true);
 	}
 
+	int team = doTeamColour(headsPackIndex) ? player.getTeamNum() : 0;
+	int skin = doSkinColour(headsPackIndex) ? player.getSkin() : 0;
+
+	//if player is a mere grunt or doesn't have a cool head to show off in role of CO they get a super basic head (commanders will still have a cool hat though)
+	if (g_debug > 0)
+		print("head n "+headIndex);
+
 	//
-	head_idx = head_idx % 256; // wrap DLC heads into "pack space"
+	headIndex = headIndex % 256; // wrap DLC heads into "pack space"
 
 	// figure out head frame
-	s32 head_frame = override_frame ?
-		(head_idx * NUM_HEADFRAMES) :
-		getHeadFrame(player, head_idx, headpack_idx == 0);
+	s32 headFrame = override_frame ?
+		(headIndex * NUM_HEADFRAMES) :
+		getHeadFrame(player, headIndex, headsPackIndex == 0);
 
-	return head_frame;
+	head_file = texture_file;
+
+	return headFrame;
+}
+
+bool doTeamColour(int packIndex)
+{
+	switch (packIndex) {
+		case 1: //FOTW
+			return false;
+	}
+	//otherwise
+	return true;
+}
+
+bool doSkinColour(int packIndex)
+{
+	switch (packIndex) {
+		case 1: //FOTW
+			return false;
+	}
+	//otherwise
+	return true;
+}
+
+//handling Heads pack DLCs
+
+int getHeadsPackIndex(int headIndex)
+{
+	if (headIndex > 255) {
+		if ((headIndex % 256) >= NUM_UNIQUEHEADS) {
+			return Maths::Min(getHeadsPackCount() - 1, Maths::Floor(headIndex / 256.0f));
+		}
+	}
+	return 0;
+}
+
+string getHeadTexture(int headIndex)
+{
+	return getHeadsPackByIndex(getHeadsPackIndex(headIndex)).filename;
 }
 
 int getHeadFrame(CPlayer@ player, int headIndex, bool default_pack)

@@ -7,86 +7,7 @@
 #include "Accolades.as"
 #include "HolidayCommon.as"
 #include "RunnerHeadAngle.as"
-
-const s32 NUM_HEADFRAMES = 4;
-const s32 NUM_UNIQUEHEADS = 30;
-const int FRAMES_WIDTH = 8 * NUM_HEADFRAMES;
-
-//handling Heads pack DLCs
-
-int getHeadsPackIndex(int headIndex)
-{
-	if (headIndex > 255) {
-		if ((headIndex % 256) >= NUM_UNIQUEHEADS) {
-			return Maths::Min(getHeadsPackCount() - 1, Maths::Floor(headIndex / 256.0f));
-		}
-	}
-	return 0;
-}
-
-bool doTeamColour(int packIndex)
-{
-	switch (packIndex) {
-		case 1: //FOTW
-			return false;
-	}
-	//otherwise
-	return true;
-}
-
-bool doSkinColour(int packIndex)
-{
-	switch (packIndex) {
-		case 1: //FOTW
-			return false;
-	}
-	//otherwise
-	return true;
-}
-
-int getHeadFrame(CBlob@ blob, int headIndex, bool default_pack)
-{
-	if (headIndex < NUM_UNIQUEHEADS)
-	{
-		return headIndex * NUM_HEADFRAMES;
-	}
-
-	//special heads logic for default heads pack
-	if (default_pack && (headIndex == 255 || headIndex < NUM_UNIQUEHEADS))
-	{
-		string config = blob.getConfig();
-		if (config == "builder")
-		{
-			headIndex = NUM_UNIQUEHEADS;
-		}
-		else if (config == "knight")
-		{
-			headIndex = NUM_UNIQUEHEADS + 1;
-		}
-		else if (config == "archer")
-		{
-			headIndex = NUM_UNIQUEHEADS + 2;
-		}
-		else if (config == "migrant")
-		{
-			Random _r(blob.getNetworkID());
-			headIndex = 69 + _r.NextRanged(2); //head scarf or old
-		}
-		else
-		{
-			// default
-			headIndex = NUM_UNIQUEHEADS;
-		}
-	}
-
-	return (((headIndex - NUM_UNIQUEHEADS / 2) * 2) +
-	        (blob.getSexNum() == 0 ? 0 : 1)) * NUM_HEADFRAMES;
-}
-
-string getHeadTexture(int headIndex)
-{
-	return getHeadsPackByIndex(getHeadsPackIndex(headIndex)).filename;
-}
+#include "HeadCommon.as"
 
 void onPlayerInfoChanged(CSprite@ this)
 {
@@ -97,74 +18,21 @@ CSpriteLayer@ LoadHead(CSprite@ this, int headIndex)
 {
 	CBlob@ blob = this.getBlob();
 	CPlayer@ player = blob.getPlayer();
+	CRules@ rules = getRules();
 
 	// strip old head
 	this.RemoveSpriteLayer("head");
+	if (blob !is null)
+		blob.set_s32("headIndex", headIndex);
 
-	// get dlc pack info
-	int headsPackIndex = getHeadsPackIndex(headIndex);
-	HeadsPack@ pack = getHeadsPackByIndex(headsPackIndex);
-	string texture_file = pack.filename;
+	string texture_file;
+	s32 headFrame = getHeadSpecs(player, texture_file);
 
-	bool override_frame = false;
-
-	//get the head index relative to the pack index (without unique heads counting)
-	int headIndexInPack = (headIndex - NUM_UNIQUEHEADS) - (headsPackIndex * 256);
-
-	//(has default head set)
-	bool defaultHead = (headIndex == 255 || headIndexInPack < 0 || headIndexInPack >= pack.count);
-	if (defaultHead)
-	{
-		//accolade custom head handling
-		//todo: consider pulling other custom head stuff out to here
-		if (player !is null && !player.isBot() && headIndex >= NUM_UNIQUEHEADS)
-		{
-			Accolades@ acc = getPlayerAccolades(player.getUsername());
-			CRules@ rules = getRules();
-
-			if (acc.hasCustomHead())
-			{
-				texture_file = acc.customHeadTexture;
-				headIndex = acc.customHeadIndex;
-				headsPackIndex = 0;
-				override_frame = true;
-			}
-			else if (rules.exists(holiday_prop))
-			{
-				if (rules.exists(holiday_head_prop))
-				{
-					headIndex = rules.get_u8(holiday_head_prop);
-					headsPackIndex = 0;
-
-					if (rules.exists(holiday_head_texture_prop))
-					{
-						texture_file = rules.get_string(holiday_head_texture_prop);
-						override_frame = true;
-
-						headIndex += blob.getSexNum();
-					}
-				}
-			}
-		}
-	}
-	else
-	{
-		//not default head; do not use accolades data
-	}
-
-	int team = doTeamColour(headsPackIndex) ? blob.getTeamNum() : 0;
-	int skin = doSkinColour(headsPackIndex) ? blob.getSkinNum() : 0;
+	u8 team = blob.getTeamNum();
+	u8 skin = blob.getSkinNum();
 
 	//add new head
 	CSpriteLayer@ head = this.addSpriteLayer("head", texture_file, 16, 16, team, skin);
-
-	//
-	headIndex = headIndex % 256; // wrap DLC heads into "pack space"
-
-	// figure out head frame
-	s32 headFrame = override_frame ?
-		(headIndex * NUM_HEADFRAMES) :
-		getHeadFrame(blob, headIndex, headsPackIndex == 0);
 
 	if (head !is null)
 	{
