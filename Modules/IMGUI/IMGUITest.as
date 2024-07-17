@@ -20,6 +20,10 @@ array<u32> column_widths = {
 };
 
 const u32 row_height = 26;
+const u32 pick_button_width = 50;
+const u32 blue_team_num = 0;
+const u32 red_team_num = 1;
+const u32 spec_team_num = 200;
 
 u32 priority = 0;
 
@@ -28,6 +32,11 @@ void onInit(CRules@ this) {}
 void inTick(CRules@ this) {}
 
 void onRender(CRules@ this) {
+    CPlayer@ local_player = getLocalPlayer();
+    if (local_player is null) return;
+    u32 local_team_num = local_player.getTeamNum();
+    string local_username = local_player.getUsername();
+
     GUI::SetFont("menu");
     u32 screen_width = getScreenWidth();
     u32 scoreboard_width = 0;
@@ -75,28 +84,29 @@ void onRender(CRules@ this) {
         scoreboard_pos.y += row_height;
 
         CPlayer@ player = players[player_id];
+        string clantag = player.getClantag();
+        string username = player.getUsername();
 
         string team_name = "SPEC";
         SColor team_color = IMGUI::DARK_GRAY;
         u32 team_num = player.getTeamNum();
-        if (team_num == 0) {
+        if (team_num == blue_team_num) {
             team_name = "BLUE";
             team_color = IMGUI::BLUE;
         }
-        if (team_num == 1) {
+        if (team_num == red_team_num) {
             team_name = "RED";
             team_color = IMGUI::RED;
         }
 
-        string clantag = player.getClantag();
-        string username = player.getUsername();
-
         IMGUI::Panel("", scoreboard_pos, scoreboard_pos + Vec2f(scoreboard_width, row_height), IMGUI::BLACK);
 
+        // КАПИТАНСКИЕ ПЛАШКИ
         if (getRules().get_string("team_"+team_num+"_leader")==username) {
-          IMGUI::Panel("КАПИТАН", scoreboard_pos-Vec2f(100,0), scoreboard_pos + Vec2f(0, row_height), IMGUI::DARK_GRAY, IMGUI::YELLOW);
+            IMGUI::Panel("CAPTAIN", scoreboard_pos-Vec2f(100,0), scoreboard_pos + Vec2f(0, row_height), IMGUI::DARK_GRAY, IMGUI::YELLOW);
         }
 
+        // ОСНОВНАЯ ТАБЛИЦА
         for (u32 column_id = 0; column_id < column_names.length(); column_id++) {
             string column_name = column_names[column_id];
             u32 column_width = column_widths[column_id];
@@ -113,6 +123,45 @@ void onRender(CRules@ this) {
 
             IMGUI::Panel(info, scoreboard_pos, scoreboard_pos + cell_size, team_color);
             scoreboard_pos.x += column_width;
+        }
+
+        // КНОПКИ ДЛЯ ПИКОВ
+        CBitStream pick_params;
+	pick_params.write_string(username);
+        if (isAdmin(local_player)) {
+            if (team_num != blue_team_num) {
+                if (IMGUI::Button("BLUE", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height))) {
+                    this.SendCommand(this.getCommandID("put to blue"), pick_params);
+                }
+                scoreboard_pos.x += pick_button_width;
+            }
+            if (team_num != red_team_num) {
+                if (IMGUI::Button("RED", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height))) {
+                    this.SendCommand(this.getCommandID("put to red"), pick_params);
+                    scoreboard_pos.x += pick_button_width;
+                }
+                scoreboard_pos.x += pick_button_width;
+            }
+            if (team_num != spec_team_num) {
+                if (IMGUI::Button("SPEC", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height))) {
+                    this.SendCommand(this.getCommandID("put to spec"), pick_params);
+                    scoreboard_pos.x += pick_button_width;
+                }
+            }
+        } else if (local_player.getUsername() == this.get_string("team_"+local_team_num+"_leader") && username != local_username) {
+            if (team_num == local_team_num) {
+                if (IMGUI::Button("SPEC", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height))) {
+                    this.SendCommand(this.getCommandID("put to spec"), pick_params);
+                }
+            }
+            if (team_num == spec_team_num) {
+                if (IMGUI::Button("PICK", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height))) {
+                    if (local_team_num == blue_team_num)
+                        this.SendCommand(this.getCommandID("put to blue"), pick_params);
+                    if (local_team_num == red_team_num)
+                        this.SendCommand(this.getCommandID("put to red"), pick_params);
+                }
+            }
         }
     }
 }
