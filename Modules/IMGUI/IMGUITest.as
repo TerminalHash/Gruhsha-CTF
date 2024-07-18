@@ -161,7 +161,7 @@ void onRender(CRules@ this) {
                 if (local_team_num == blue_team_num && IMGUI::Button("PICK", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height), IMGUI::BLUE, IMGUI::HBLUE)) {
                     this.SendCommand(this.getCommandID("put to blue"), pick_params);
                 }
-                if (local_team_num == blue_team_num && IMGUI::Button("PICK", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height), IMGUI::RED, IMGUI::HRED)) {
+                if (local_team_num == red_team_num && IMGUI::Button("PICK", scoreboard_pos, scoreboard_pos + Vec2f(pick_button_width, row_height), IMGUI::RED, IMGUI::HRED)) {
                     this.SendCommand(this.getCommandID("put to red"), pick_params);
                 }
             }
