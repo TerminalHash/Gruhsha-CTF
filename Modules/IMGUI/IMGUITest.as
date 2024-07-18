@@ -3,7 +3,7 @@
 
 array<string> column_names = {
     "TEAM",
-    "PLAYER",
+    "NICKNAME",
     "USERNAME",
     "K",
     "D",
@@ -12,14 +12,14 @@ array<string> column_names = {
 
 array<u32> column_widths = {
     70,
-    200,
+    100,
     100,
     34,
     34,
     50
 };
 
-const u32 row_height = 26;
+const u32 row_height = 24;
 const u32 pick_button_width = 50;
 const u32 blue_team_num = 0;
 const u32 red_team_num = 1;
@@ -32,6 +32,8 @@ void onInit(CRules@ this) {}
 void onTick(CRules@ this) {}
 
 void onRender(CRules@ this) {
+    GUI::SetFont("menu");
+  
     CPlayer@ local_player = getLocalPlayer();
     if (local_player is null) return;
     u32 local_team_num = local_player.getTeamNum();
@@ -41,34 +43,24 @@ void onRender(CRules@ this) {
 
     string local_username = local_player.getUsername();
 
-    GUI::SetFont("menu");
-    u32 screen_width = getScreenWidth();
-    u32 scoreboard_width = 0;
-    for (u32 column_id = 0; column_id < column_widths.length(); column_id++) {
-        scoreboard_width += column_widths[column_id];
-    }
-
-    Vec2f scoreboard_start_pos = Vec2f((screen_width - scoreboard_width) / 2.0, 200);
-    Vec2f scoreboard_pos = scoreboard_start_pos;
-
-    IMGUI::Panel("", scoreboard_pos, scoreboard_pos + Vec2f(scoreboard_width, row_height), IMGUI::BLACK);
-
-    for (u32 column_id = 0; column_id < column_names.length(); column_id++) {
-        if (column_names[column_id] == "PLAYER" || column_names[column_id] == "USERNAME")
-            IMGUI::Panel(column_names[column_id], scoreboard_pos, scoreboard_pos + Vec2f(column_widths[column_id], row_height));
-        else if (IMGUI::Button(column_names[column_id], scoreboard_pos, scoreboard_pos + Vec2f(column_widths[column_id], row_height))) priority = column_id;
-	scoreboard_pos.x += column_widths[column_id];
-    }
-
+    // ЗАПОЛНЕНИЕ ОТСОРТИРОВАННОГО МАССИВА ИГРОКОВ
     array<CPlayer@> players;
-
-    // СОРТИРОВКА ИГРОКОВ
     for (u32 player_id = 0; player_id < getPlayerCount(); player_id++) {
         CPlayer@ player = getPlayer(player_id);
         if(player is null) continue;
 
-        bool inserted = false;
+        string nickname = player.getClantag() + " " + player.getCharacterName();
+        Vec2f nickname_size(0,0);
+        GUI::GetTextDimensions(nickname, nickname_size);
+        column_widths[1] = Maths::Max(nickname_size.x + 12, column_widths[1]);
 
+        string username = player.getUsername();
+        Vec2f username_size(0,0);
+        GUI::GetTextDimensions(username, username_size);
+        column_widths[2] = Maths::Max(username_size.x + 12, column_widths[2]);
+        
+        // СОРТИРОВКА
+        bool inserted = false;
         for (u32 j = 0; j < players.length(); j++) {
             if (column_names[priority] == "TEAM" && players[j].getTeamNum() > player.getTeamNum() ||
                 column_names[priority] == "K" && players[j].getKills() < player.getKills() ||
@@ -81,6 +73,26 @@ void onRender(CRules@ this) {
         }
         if (!inserted) players.push_back(player);
     }
+    
+
+    u32 screen_width = getScreenWidth();
+    u32 scoreboard_width = 0;
+    for (u32 column_id = 0; column_id < column_widths.length(); column_id++) {
+        scoreboard_width += column_widths[column_id];
+    }
+
+    Vec2f scoreboard_start_pos((screen_width - scoreboard_width) / 2.0, 200);
+    Vec2f scoreboard_pos(scoreboard_start_pos);
+
+    IMGUI::Panel("", scoreboard_pos, scoreboard_pos + Vec2f(scoreboard_width, row_height), IMGUI::BLACK);
+
+    for (u32 column_id = 0; column_id < column_names.length(); column_id++) {
+        if (column_names[column_id] == "NICKNAME" || column_names[column_id] == "USERNAME")
+            IMGUI::Panel(column_names[column_id], scoreboard_pos, scoreboard_pos + Vec2f(column_widths[column_id], row_height));
+        else if (IMGUI::Button(column_names[column_id], scoreboard_pos, scoreboard_pos + Vec2f(column_widths[column_id], row_height))) priority = column_id;
+	scoreboard_pos.x += column_widths[column_id];
+    }
+
 
     // ОТРИСОВКА ОСНОВНОЙ ТАБЛИЦЫ
     for (u32 player_id = 0; player_id < players.length(); player_id++) {
@@ -119,7 +131,7 @@ void onRender(CRules@ this) {
             string info = "";
 
             if (column_name == "TEAM") info = ""+team_name;
-            else if (column_name == "PLAYER") info = ""+clantag + " " + player.getCharacterName();
+            else if (column_name == "NICKNAME") info = ""+clantag + " " + player.getCharacterName();
             else if (column_name == "USERNAME") info = ""+username;
             else if (column_name == "K") info = ""+player.getKills();
             else if (column_name == "D") info = ""+player.getDeaths();
