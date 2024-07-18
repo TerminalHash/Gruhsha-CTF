@@ -1,24 +1,6 @@
 #include "IMGUI.as"
 #include "ScoreboardCommon.as"
 
-array<string> column_names = {
-    "TEAM",
-    "NICKNAME",
-    "USERNAME",
-    "K",
-    "D",
-    "KDR"
-};
-
-array<u32> column_widths = {
-    70,
-    100,
-    100,
-    34,
-    34,
-    50
-};
-
 const u32 row_height = 24;
 const u32 pick_button_width = 50;
 const u32 blue_team_num = 0;
@@ -32,6 +14,25 @@ void onInit(CRules@ this) {}
 void onTick(CRules@ this) {}
 
 void onRender(CRules@ this) {
+
+    array<string> column_names = {
+        "TEAM",
+        "NICKNAME",
+        "USERNAME",
+        "K",
+        "D",
+        "KDR"
+    };
+    
+    array<u32> column_widths = {
+        60,
+        90,
+        90,
+        34,
+        34,
+        50
+    };
+    
     GUI::SetFont("menu");
   
     CPlayer@ local_player = getLocalPlayer();
