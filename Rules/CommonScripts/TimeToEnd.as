@@ -110,4 +110,8 @@ void onRender(CRules@ this)
 
 		GUI::DrawText(Descriptions::thirtyminutesleft, Vec2f(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 7), color_white);
 	}
+
+	if (this.hasTag("sudden death")) {
+		GUI::DrawIcon("MenuItems.png", 18, Vec2f(32, 32), Vec2f(12, 180), 1.5f);
+	}
 }
