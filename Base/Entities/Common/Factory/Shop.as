@@ -236,6 +236,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 				//////////////////////////////////////
 
 				this.SendCommand(this.getCommandID("shop made item client"), params);
+				printf("bought item");
 			}
 			else
 			{
@@ -367,6 +368,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 					//////////////////////////////////////
 
 					this.SendCommand(this.getCommandID("shop made item client"), params);
+					printf("bought item");
 				}
 			}
 		}
