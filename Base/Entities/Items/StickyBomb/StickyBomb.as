@@ -144,3 +144,11 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 	}
 }
 
+bool canBePickedUp(CBlob@ this, CBlob@ byBlob)
+{
+	if (this.hasTag("exploding")) {
+		return false;
+	}
+
+	return true;
+}
