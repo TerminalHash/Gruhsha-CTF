@@ -818,7 +818,7 @@ void onTick(CBlob@ this)
 					const string itemname = item.getName();
 					if (!holding && bombTypeNames[bombType] == itemname)
 					{
-						if (bombType >= 2)
+						if (bombType >= 3)
 						{
 							this.server_Pickup(item);
 							client_SendThrowOrActivateCommand(this);
@@ -1423,6 +1423,15 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 						blob.set_string("custom_explosion_sound", "/GlassBreak");
 						blob.set_u8("custom_hitter", Hitters::water);
 						blob.Tag("splash ray cast");
+					}
+				}
+				else if (bombType == 2)
+				{
+					CBlob @blob = server_CreateBlob("stickybomb", this.getTeamNum(), this.getPosition());
+					if (blob !is null)
+					{
+						TakeItem(this, bombTypeName);
+						this.server_Pickup(blob);
 					}
 				}
 			}

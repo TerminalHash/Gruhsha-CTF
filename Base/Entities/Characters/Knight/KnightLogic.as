@@ -1859,6 +1859,8 @@ void Callback_PickBomb(CBitStream@ params)
 // bomb pick menu
 void onCreateInventoryMenu(CBlob@ this, CBlob@ forBlob, CGridMenu @gridmenu)
 {
+	AddIconToken("$StickyBomb$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 5, this.getTeamNum());
+
 	if (bombTypeNames.length == 0)
 	{
 		return;

@@ -72,6 +72,10 @@ void Splash(CBlob@ this, const uint splash_halfwidth, const uint splash_halfheig
 
 				Vec2f bombforce = getBombForce(this, radius, hit_blob_pos, pos, blob.getMass());
 
+				if (this.getConfig() == "stickybomb") {
+					bombforce = getStickyBombForce(this, radius, hit_blob_pos, pos, blob.getMass());
+				}
+
 				if (shouldStun && (ownerBlob is blob || (this.isOverlapping(blob) && hitHard)))
 				{
 					this.server_Hit(blob, pos, bombforce, 0.0f, Hitters::water_stun_force, true);
@@ -128,5 +132,19 @@ Vec2f getBombForce(CBlob@ this, f32 radius, Vec2f hit_blob_pos, Vec2f pos, f32 h
 	bombforce.y -= 0.2f;
 	bombforce /= 2.0f;
 	bombforce *= hit_blob_mass * (3.0f);
+	return bombforce;
+}
+
+Vec2f getStickyBombForce(CBlob@ this, f32 radius, Vec2f hit_blob_pos, Vec2f pos, f32 hit_blob_mass)
+{
+	Vec2f offset = hit_blob_pos - pos;
+	f32 distance = offset.Length();
+	//the force, copy across
+	Vec2f bombforce = offset;
+	bombforce.Normalize();
+	bombforce *= 0.1f;
+	bombforce.y -= 0.1f;
+	bombforce /= 0.1f;
+	bombforce *= hit_blob_mass * (0.1f);
 	return bombforce;
 }

@@ -9,24 +9,28 @@ const f32 allow_overlap = 2.0f;
 
 namespace BombType
 {
-    enum type
-    {
-        bomb = 0,
-        water,
-        count
-    };
+	enum type
+	{
+		bomb = 0,
+		water,
+		sticky,
+		count
+	};
 }
 
 const string[] bombNames = { "Bomb",
-                             "Water Bomb"
+                             "Water Bomb",
+                             "Sticky Bomb"
                            };
 
 const string[] bombIcons = { "$Bomb$",
-                             "$WaterBomb$"
+                             "$WaterBomb$",
+                             "$StickyBomb$"
                            };
 
 const string[] bombTypeNames = { "mat_bombs",
-                                 "mat_waterbombs"
+                                 "mat_waterbombs",
+                                 "mat_stickybombs"
                                };
 
 shared class HitData

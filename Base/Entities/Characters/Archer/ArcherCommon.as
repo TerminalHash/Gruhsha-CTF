@@ -59,20 +59,24 @@ namespace BombType
 	{
 		bomb = 0,
 		water,
+		sticky,
 		count
 	};
 }
 
 const string[] bombNames = { "Bomb",
-                             "Water Bomb"
+                             "Water Bomb",
+                             "Sticky Bomb"
                            };
 
 const string[] bombIcons = { "$Bomb$",
-                             "$WaterBomb$"
+                             "$WaterBomb$",
+                             "$StickyBomb$"
                            };
 
 const string[] bombTypeNames = { "mat_bombs",
-                                 "mat_waterbombs"
+                                 "mat_waterbombs",
+                                 "mat_stickybombs"
                                };
 
 bool hasBombs(CBlob@ this, u8 bombType)
