@@ -1004,6 +1004,12 @@ void onRenderScoreboard(CRules@ this) {
 		"Github ",
 		"https://github.com/TerminalHash/Gruhsha-CTF"
 	);
+	LinkButton(
+		Vec2f(screenWidth - tl.x - 355, 115 - scrollOffset),
+		Vec2f(screenWidth - tl.x - 280, 115 - scrollOffset + 40),
+		"Discord ",
+		"https://discord.gg/qSCUWK2xv2"
+	);
 
 	mouseWasPressed2 = controls.mousePressed2;
 }
