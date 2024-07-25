@@ -44,6 +44,8 @@ void onInit(CRules@ this)
 		if (!file.exists("k_drill$2")) file.add_s32("k_drill$2", -1);
 		if (!file.exists("k_satchel$1")) file.add_s32("k_satchel$1", 54);
 		if (!file.exists("k_satchel$2")) file.add_s32("k_satchel$2", -1);
+		if (!file.exists("k_sticky$1")) file.add_s32("k_sticky$1", 55);
+		if (!file.exists("k_sticky$2")) file.add_s32("k_sticky$2", -1);
 
 		// builder shop
 		if (!file.exists("b_drill$1")) file.add_s32("b_drill$1", 49);

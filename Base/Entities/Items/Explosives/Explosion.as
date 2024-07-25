@@ -635,6 +635,10 @@ bool HitBlob(CBlob@ this, Vec2f mapPos, CBlob@ hit_blob, f32 radius, f32 damage,
 	Vec2f bombforce = hit_blob.hasTag("invincible") ? Vec2f_zero : getBombForce(this, radius, hit_blob_pos, pos, hit_blob.getMass());
 	f32 dam = damage * getBombDamageScale(this, radius, hit_blob_pos, pos);
 
+	if (this.getName() == "stickybomb") {
+		bombforce = hit_blob.hasTag("invincible") ? Vec2f_zero : getStickyBombForce(this, radius, hit_blob_pos, pos, hit_blob.getMass());
+	}
+
 	//explosion particle
 	makeSmallExplosionParticle(hit_blob_pos);
 

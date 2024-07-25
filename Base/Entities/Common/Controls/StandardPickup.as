@@ -20,6 +20,7 @@ void onInit(CBlob@ this)
 
 	AddIconToken("$filled_bucket$", "Bucket.png", Vec2f(16, 16), 1);
 	AddIconToken("$blockarrows$", "blockarrows_icon.png", Vec2f(16, 16), 0);
+	AddIconToken("$stickybombs$", "StickyBomb.png", Vec2f(16, 16), 0);
 
 	// setup pickup menu wheel
 	WheelMenu@ menu = get_wheel_menu("pickup");
@@ -35,6 +36,9 @@ void onInit(CBlob@ this)
 
 		const PickupWheelOption[] waterbomb_options = {PickupWheelOption("waterbomb", 1), PickupWheelOption("mat_waterbombs", 0)};
 		menu.add_entry(PickupWheelMenuEntry("Water Bomb", "$mat_waterbombs$", waterbomb_options, Vec2f(0, -6.0f)));
+
+		const PickupWheelOption[] stickybomb_options = {PickupWheelOption("stickybomb", 1), PickupWheelOption("mat_stickybombs", 0)};
+		menu.add_entry(PickupWheelMenuEntry("Sticky Bomb", "$stickybombs$", stickybomb_options, Vec2f(0, -4.0f)));
 
 		menu.add_entry(PickupWheelMenuEntry("Mine", "$mine$", "mine"));
 
