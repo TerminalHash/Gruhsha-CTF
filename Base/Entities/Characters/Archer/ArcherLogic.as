@@ -707,94 +707,7 @@ void ManageBow(CBlob@ this, ArcherInfo@ archer, RunnerMoveVars@ moveVars)
 			getHUD().SetCursorFrame(frame);
 		}
 
-		// pick up arrow
-
-		if (archer.fletch_cooldown > 0)
-		{
-			archer.fletch_cooldown--;
-		}
-
-		// pickup from ground
-		// from clientside right now, could probably move to a simple call and
-		// pray that fletch_cooldown is synced correctly
-
-		if (isClient() && archer.fletch_cooldown == 0 && this.isKeyPressed(key_action2))
-		{
-			if (getPickupArrow(this) !is null)   // pickup arrow from ground
-			{
-				this.SendCommand(this.getCommandID("pickup arrow"));
-				archer.fletch_cooldown = PICKUP_COOLDOWN;
-			}
-		}
-	}
-
-	archer.charge_time = charge_time;
-	archer.charge_state = charge_state;
-	archer.has_arrow = hasarrow;
-
-}
-
-void onTick(CBlob@ this)
-{
-	if (this.isInInventory())
-		return;
-
-	const bool ismyplayer = this.isMyPlayer();
-
-	if (ismyplayer && getHUD().hasMenus())
-	{
-		return;
-	}
-
-	ArcherInfo@ archer;
-	if (!this.get("archerInfo", @archer))
-	{
-		return;
-	}
-
-	CBlob@ carried = this.getCarriedBlob();
-	bool magicdrill = false;
-
-	if (carried !is null)
-	{
-		if (carried.getName() == "drill") magicdrill = true;
-	}
-
-	if (magicdrill)
-	{
-		archer.charge_state = 0;
-		archer.charge_time = 0;
-		this.getSprite().SetEmitSoundPaused(true);
-		getHUD().SetCursorFrame(0);
-	}
-
-	if (isKnocked(this) || this.isInInventory())
-	{
-		archer.grappling = false;
-		archer.charge_state = 0;
-		archer.charge_time = 0;
-		this.getSprite().SetEmitSoundPaused(true);
-		getHUD().SetCursorFrame(0);
-		return;
-	}
-
-	ManageGrapple(this, archer);
-
-	//print("state before: " + archer.charge_state);
-
-	RunnerMoveVars@ moveVars;
-	if (!this.get("moveVars", @moveVars))
-	{
-		return;
-	}
-
-	ManageBow(this, archer, moveVars);
-
-	//print("state after: " + archer.charge_state);
-
-	// activate/throw
-	if (ismyplayer)
-	{
+		// activate/throw
 		if (this.isKeyJustPressed(key_action3))
 		{
 			CBlob@ carried = this.getCarriedBlob();
@@ -840,7 +753,81 @@ void onTick(CBlob@ this)
 				SetFirstAvailableBomb(this);
 			}
 		}
+
+		// pick up arrow
+
+		if (archer.fletch_cooldown > 0)
+		{
+			archer.fletch_cooldown--;
+		}
+
+		// pickup from ground
+		// from clientside right now, could probably move to a simple call and
+		// pray that fletch_cooldown is synced correctly
+
+		if (isClient() && archer.fletch_cooldown == 0 && this.isKeyPressed(key_action2))
+		{
+			if (getPickupArrow(this) !is null)   // pickup arrow from ground
+			{
+				this.SendCommand(this.getCommandID("pickup arrow"));
+				archer.fletch_cooldown = PICKUP_COOLDOWN;
+			}
+		}
 	}
+
+	archer.charge_time = charge_time;
+	archer.charge_state = charge_state;
+	archer.has_arrow = hasarrow;
+
+}
+
+void onTick(CBlob@ this)
+{
+	ArcherInfo@ archer;
+	if (!this.get("archerInfo", @archer))
+	{
+		return;
+	}
+
+	CBlob@ carried = this.getCarriedBlob();
+	bool magicdrill = false;
+
+	if (carried !is null)
+	{
+		if (carried.getName() == "drill") magicdrill = true;
+	}
+
+	if (magicdrill)
+	{
+		archer.charge_state = 0;
+		archer.charge_time = 0;
+		this.getSprite().SetEmitSoundPaused(true);
+		getHUD().SetCursorFrame(0);
+	}
+
+	if (isKnocked(this) || this.isInInventory())
+	{
+		archer.grappling = false;
+		archer.charge_state = 0;
+		archer.charge_time = 0;
+		this.getSprite().SetEmitSoundPaused(true);
+		getHUD().SetCursorFrame(0);
+		return;
+	}
+
+	ManageGrapple(this, archer);
+
+	//print("state before: " + archer.charge_state);
+
+	RunnerMoveVars@ moveVars;
+	if (!this.get("moveVars", @moveVars))
+	{
+		return;
+	}
+
+	ManageBow(this, archer, moveVars);
+
+	//print("state after: " + archer.charge_state);
 }
 
 bool checkGrappleBarrier(Vec2f pos)
