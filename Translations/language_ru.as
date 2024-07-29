@@ -200,6 +200,7 @@ namespace ru
 	n_drillarcher							= "Автоподбор дрели (Лучник)",
 	n_bombbuilder							= "Автоподбор бомб (Строитель)",
 	n_bombarcher							= "Автоподбор бомб (Лучник)",
+	n_cyclewithitem							= "Переключение с предметом в руках",
 
 		// Other
 	n_pressdelete							= "Выбери клавишу и нажми [DELETE] для очистки хоткея!",

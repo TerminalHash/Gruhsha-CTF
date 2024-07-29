@@ -143,6 +143,11 @@ void onInit(CRules@ this)
 				sfile.add_string("disable_class_change_in_shops", "no");
 			}
 
+			if (!sfile.exists("cycle_with_item"))
+			{
+				sfile.add_string("cycle_with_item", "no");
+			}
+
 			if (!sfile.exists("pickdrill_knight"))
 			{
 				sfile.add_string("pickdrill_knight", "yes");
@@ -182,6 +187,7 @@ void onInit(CRules@ this)
 		{
 			sfile.add_string("grapple_with_charging", "yes");
 			sfile.add_string("disable_class_change_in_shops", "no");
+			sfile.add_string("cycle_with_item", "no");
 			sfile.add_string("pickdrill_knight", "yes");
 			sfile.add_string("pickdrill_builder", "yes");
 			sfile.add_string("pickdrill_archer", "yes");

@@ -331,7 +331,7 @@ void onTick(CBlob@ this)
 			if (isTap(this, minimum_ticks))     // tap - put thing in inventory
 			{
 				CBlob@ held = this.getCarriedBlob();
-				if (held !is null)
+				if (held !is null && getRules().get_string("cycle_with_item") != "yes")
 				{
 					this.SendCommand(this.getCommandID("putinheld"));
 				}
