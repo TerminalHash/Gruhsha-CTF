@@ -269,6 +269,8 @@ void TakeItem(CBlob@ this, const string &in name)
 
 void onCreateInventoryMenu(CBlob@ this, CBlob@ forBlob, CGridMenu @gridmenu)
 {
+	AddIconToken("$StickyBomb$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 5, this.getTeamNum());
+
 	if (bombTypeNames.length == 0)
 	{
 		return;
