@@ -149,8 +149,8 @@ void onTick(CBlob@ this)
 			if (!thrown)
 			{
 				// dont activate keg and satchel via this
-				if (carried.getConfig() == "keg") return;
-				if (carried.getConfig() == "satchel") return;
+				if (carried !is null && carried.getConfig() == "keg") return;
+				if (carried !is null && carried.getConfig() == "satchel") return;
 
 				client_SendThrowOrActivateCommand(this);
 				SetFirstAvailableBomb(this);
