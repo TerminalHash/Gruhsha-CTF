@@ -369,7 +369,7 @@ void ManageBow(CBlob@ this, ArcherInfo@ archer, RunnerMoveVars@ moveVars)
 	//
 	CSprite@ sprite = this.getSprite();
 	bool hasarrow = archer.has_arrow;
-	bool hasnormal = hasArrows(this, ArrowType::normal);
+	bool hasnormal = true;
 	s8 charge_time = archer.charge_time;
 	u8 charge_state = archer.charge_state;
 	const bool pressed_action2 = this.isKeyPressed(key_action2);
@@ -386,10 +386,10 @@ void ManageBow(CBlob@ this, ArcherInfo@ archer, RunnerMoveVars@ moveVars)
 			ClientSendArrowState(this);
 			hasarrow = hasnormal;
 
-			if (ismyplayer)
+			/*if (ismyplayer)
 			{
 				Sound::Play("/CycleInventory.ogg");
-			}
+			}*/
 		}
 
 		if (hasarrow != this.get_bool("has_arrow"))
@@ -487,10 +487,10 @@ void ManageBow(CBlob@ this, ArcherInfo@ archer, RunnerMoveVars@ moveVars)
 				ClientSendArrowState(this);
 				hasarrow = hasnormal;
 
-				if (ismyplayer)
+				/*if (ismyplayer)
 				{
 					Sound::Play("/CycleInventory.ogg");
-				}
+				}*/
 			}
 
 			if (responsible)

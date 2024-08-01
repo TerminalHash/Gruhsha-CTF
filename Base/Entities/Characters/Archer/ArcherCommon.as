@@ -244,12 +244,23 @@ bool hasArrows(CBlob@ this)
 	{
 		return this.getBlobCount(arrowTypeNames[archer.arrow_type]) > 0;
 	}
+
+	if (archer.arrow_type == ArrowType::normal)
+	{
+		return true;
+	}
+
 	return false;
 }
 
 bool hasArrows(CBlob@ this, u8 arrowType)
 {
 	if (this is null) return false;
+
+	if (arrowType == ArrowType::normal)
+	{
+		return true;
+	}
 	
 	return arrowType < arrowTypeNames.length && this.hasBlob(arrowTypeNames[arrowType], 1);
 }

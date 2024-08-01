@@ -64,7 +64,7 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 	string name = b.getName();
 	builders_limit = this.get_u8("builders_limit");
 
-	if (name == "archer")  {
+	/*if (name == "archer")  {
 		if (gametime > getCTFTimer(this, p, "archer"))  {
 			CInventory@ inv = b.getInventory();
 
@@ -75,7 +75,7 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 				SetCTFTimer(this, p, gametime + (this.isWarmup() ? materials_wait_warmup : materials_wait)*getTicksASecond(), "archer");
 			}
 		}
-	}
+	}*/
 
 	if (name == "builder" && !this.get_bool("is_warmup")) {
 		if (gametime > getCTFTimer(this, p, "builder")) {
@@ -120,7 +120,7 @@ void Reset(CRules@ this)
 	for (uint i = 0; i < getPlayersCount(); ++i) 
 	{
 		SetCTFTimer(this, getPlayer(i), 0, "builder");
-		SetCTFTimer(this, getPlayer(i), 0, "archer");
+		//SetCTFTimer(this, getPlayer(i), 0, "archer");
 	}
 
 	if (!isServer()) return;
@@ -194,7 +194,7 @@ void onTick(CRules@ this)
 		getBlobsByName("outpost",	@spots);
 		getBlobsByName("warboat",	 @spots);
 		getBlobsByName("buildershop", @spots);
-		getBlobsByName("archershop",  @spots);
+		//getBlobsByName("archershop",  @spots);
 		// getBlobsByName("knightshop",  @spots);
 		for (uint step = 0; step < spots.length; ++step)
 		{
@@ -245,9 +245,10 @@ void onNewPlayerJoin(CRules@ this, CPlayer@ player)
 {
 	s32 next_add_time = getGameTime() + (this.isWarmup() ? materials_wait_warmup : materials_wait) * getTicksASecond();
 
-	if (next_add_time < getCTFTimer(this, player, "builder") || next_add_time < getCTFTimer(this, player, "archer"))
+	//if (next_add_time < getCTFTimer(this, player, "builder") || next_add_time < getCTFTimer(this, player, "archer"))
+	if (next_add_time < getCTFTimer(this, player, "builder"))
 	{
 		SetCTFTimer(this, player, getGameTime(), "builder");
-		SetCTFTimer(this, player, getGameTime(), "archer");
+		//SetCTFTimer(this, player, getGameTime(), "archer");
 	}
 }
