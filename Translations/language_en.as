@@ -79,6 +79,12 @@ namespace en
 
 	// TimeToEnd.as
 	d_thirtyminutesleft						= "15 minutes left, hurry up!",
+	d_suddenactive							= "SUDDEN DEATH MODE IS ACTIVE!",
+	d_kegbuff								= "* Kegs are buffed;",
+	d_drillbuff1							= "* Drillzone compeletly disabled;",
+	d_drillbuff2							= "* Knights and archers get less heat while drilling;",
+	d_blockreqdebuff						= "* Block requirements on mid is multiplied by 1.35;",
+	d_respawndebuff							= "* Respawn time is 15 seconds.",
 
 	//////////////////////////////////////////////////////////
 	// Names

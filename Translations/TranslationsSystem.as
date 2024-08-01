@@ -94,6 +94,12 @@ namespace Descriptions
 
 	// TimeToEnd.as
 	thirtyminutesleft				= Translate(en::d_thirtyminutesleft+"\\"+ru::d_thirtyminutesleft),
+	suddenactive					= Translate(en::d_suddenactive+"\\"+ru::d_suddenactive),
+	kegbuff							= Translate(en::d_kegbuff+"\\"+ru::d_kegbuff),
+	drillbuff1						= Translate(en::d_drillbuff1+"\\"+ru::d_drillbuff1),
+	drillbuff2						= Translate(en::d_drillbuff2+"\\"+ru::d_drillbuff2),
+	blockreqdebuff					= Translate(en::d_blockreqdebuff+"\\"+ru::d_blockreqdebuff),
+	respawndebuff					= Translate(en::d_respawndebuff+"\\"+ru::d_respawndebuff),
 
 	empty 					= "";
 }

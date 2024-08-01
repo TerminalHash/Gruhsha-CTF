@@ -325,9 +325,9 @@ shared class CTFSpawns : RespawnSystem
 			//	tickspawndelay = s32(getTicksASecond() * 11);
 			//} else
 
-			if (getGameTime() >= 1680 * getTicksASecond() && getGameTime() <= 2280 * getTicksASecond()) {	// 25 min
-				tickspawndelay = s32(getTicksASecond() * 13);
-			} else if (getGameTime() >= 2280 * getTicksASecond()) {													// 35 min
+			if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) {	// 20 min
+				tickspawndelay = s32(getTicksASecond() * 12);
+			} else if (getGameTime() >= 1980 * getTicksASecond()) {											// 30 min
 				tickspawndelay = s32(getTicksASecond() * 15);
 			}
 		}
