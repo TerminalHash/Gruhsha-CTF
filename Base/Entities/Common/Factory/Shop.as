@@ -494,9 +494,9 @@ void BuildShopMenu(CBlob@ this, CBlob @caller, string description, Vec2f offset,
 			params.write_u8(i);
 			params.write_bool(true); //used hotkey?
 
-			if (this.getName() == "building") {
+			//if (this.getName() == "building") {
 				menu.AddKeyCommand(numKeys[i], this.getCommandID("shop buy"), params);
-			}
+			/*}
 
 			if (getRules().get_string("nomenubuying") != "yes" && caller.getConfig() != "builder") {
 				menu.AddKeyCommand(numKeys[i], this.getCommandID("shop buy"), params);
@@ -504,7 +504,7 @@ void BuildShopMenu(CBlob@ this, CBlob @caller, string description, Vec2f offset,
 
 			if (getRules().get_string("nomenubuying_b") != "yes" && caller.getConfig() == "builder") {
 				menu.AddKeyCommand(numKeys[i], this.getCommandID("shop buy"), params);
-			}
+			}*/
 		}
 	}
 

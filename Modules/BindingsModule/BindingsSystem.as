@@ -32,7 +32,7 @@ void onInit(CRules@ this)
 
 		// default values for binds:
 		// knight shop
-		if (!file.exists("k_bomb$1")) file.add_s32("k_bomb$1", 49);
+		/*if (!file.exists("k_bomb$1")) file.add_s32("k_bomb$1", 49);
 		if (!file.exists("k_bomb$2")) file.add_s32("k_bomb$2", -1);
 		if (!file.exists("k_waterbomb$1")) file.add_s32("k_waterbomb$1", 50);
 		if (!file.exists("k_waterbomb$2")) file.add_s32("k_waterbomb$2", -1);
@@ -113,7 +113,7 @@ void onInit(CRules@ this)
 		if (!file.exists("boat_longboat$1")) file.add_s32("boat_longboat$1", 50);
 		if (!file.exists("boat_longboat$2")) file.add_s32("boat_longboat$2", -1);
 		if (!file.exists("boat_warboat$1")) file.add_s32("boat_warboat$1", 51);
-		if (!file.exists("boat_warboat$2")) file.add_s32("boat_warboat$2", -1);
+		if (!file.exists("boat_warboat$2")) file.add_s32("boat_warboat$2", -1);*/
 
 		if(!file.saveFile(BINDINGSFILE + ".cfg"))
 		{
@@ -173,7 +173,7 @@ void onInit(CRules@ this)
 				sfile.add_string("pickdrill_archer", "yes");
 			}
 
-			if (!sfile.exists("nomenubuying"))
+			/*if (!sfile.exists("nomenubuying"))
 			{
 				sfile.add_string("nomenubuying", "no");
 			}
@@ -181,7 +181,7 @@ void onInit(CRules@ this)
 			if (!sfile.exists("nomenubuying_b"))
 			{
 				sfile.add_string("nomenubuying_b", "no");
-			}
+			}*/
 		}
 		else // default settings
 		{
@@ -193,8 +193,8 @@ void onInit(CRules@ this)
 			sfile.add_string("pickdrill_archer", "yes");
 			sfile.add_string("pickbomb_builder", "yes");
 			sfile.add_string("pickbomb_archer", "yes");
-			sfile.add_string("nomenubuying", "no");
-			sfile.add_string("nomenubuying_b", "no");
+			//sfile.add_string("nomenubuying", "no");
+			//sfile.add_string("nomenubuying_b", "no");
 
 			printf("Creating local settings file with default values for Gruhsha.");
 		}
@@ -223,7 +223,7 @@ void onInit(CRules@ this)
 				sfile.add_string("blockbar_hud", "yes");
 			}
 
-			if (!sfile.exists("shownomenupanel"))
+			/*if (!sfile.exists("shownomenupanel"))
 			{
 				sfile.add_string("shownomenupanel", "yes");
 			}
@@ -231,7 +231,7 @@ void onInit(CRules@ this)
 			if (!sfile.exists("dse_while_using_nomenu_buying"))
 			{
 				sfile.add_string("dse_while_using_nomenu_buying", "yes");
-			}
+			}*/
 
 			if (!sfile.exists("body_tilting"))
 			{
@@ -286,8 +286,8 @@ void onInit(CRules@ this)
 		else // default settings
 		{
 			sfile.add_string("blockbar_hud", "yes");
-			sfile.add_string("shownomenupanel", "yes");
-			sfile.add_string("dse_while_using_nomenu_buying", "yes");
+			//sfile.add_string("shownomenupanel", "yes");
+			//sfile.add_string("dse_while_using_nomenu_buying", "yes");
 			sfile.add_string("camera_sway", "5");
 			sfile.add_string("body_tilting", "on");
 			sfile.add_string("head_rotating", "on");
