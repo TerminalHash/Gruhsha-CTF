@@ -7,12 +7,16 @@
 
 void onInit(CRules@ this)
 {
+	//this.addCommandID("sudden death sound");
+
 	if (!this.exists("no timer"))
 		this.set_bool("no timer", false);
 	if (!this.exists("game_end_time"))
 		this.set_u32("game_end_time", 0);
 	if (!this.exists("end_in"))
 		this.set_s32("end_in", 0);
+
+	//this.set_bool("kurwa", false);
 }
 
 void onTick(CRules@ this)
@@ -30,12 +34,21 @@ void onTick(CRules@ this)
 	this.Sync("end_in", true);
 
 	s32 end_in = this.get_s32("end_in");
+	//bool kurwa = this.get_bool("kurwa");
 
-	// Special tag for buffs on 20 min
+	// Special tag for buffs on 15 min
 	//if (end_in == 1200) {
-	if (end_in == 780) {
+	if (end_in == 900) {
 		this.Tag("sudden death");
 		this.Sync("sudden death", true);
+/*
+		this.set_bool("kurwa", true);
+		this.Sync("kurwa", true);
+
+		CBitStream bs;
+		bs.write_bool(kurwa);
+		this.SendCommand(this.getCommandID("sudden death sound"), bs);
+*/
 
 		//printf("[INFO] Sudded Death Mode activated!");
 	}
@@ -73,7 +86,18 @@ void onTick(CRules@ this)
 		this.SetCurrentState(3);
 	}
 }
+/*
+void onCommand(CRules@ this, u8 cmd, CBitStream @params) {
+	if (cmd == this.getCommandID("sudden death sound") && isClient()) {
+		bool kurwa;
+		if (!params.saferead_bool(kurwa)) return;
 
+		if (kurwa) {
+			Sound::Play("suddendeath.ogg");
+		}
+	}
+}
+*/
 void onRender(CRules@ this)
 {
 	if (g_videorecording)
@@ -97,7 +121,7 @@ void onRender(CRules@ this)
 	}
 
 	// Notification
-	if (end_in > 770 && end_in < 790) {
+	if (end_in > 890 && end_in < 910) {
 		Vec2f dim = Vec2f(342, 155);
 		Vec2f ul(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12);
 		Vec2f tl = ul + Vec2f(-10, -10);

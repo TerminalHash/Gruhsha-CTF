@@ -78,7 +78,7 @@ namespace en
 	d_sleeptext								= "Sleep. Free!",
 
 	// TimeToEnd.as
-	d_thirtyminutesleft						= "10 minutes left, hurry up!",
+	d_thirtyminutesleft						= "15 minutes left, hurry up!",
 
 	//////////////////////////////////////////////////////////
 	// Names
