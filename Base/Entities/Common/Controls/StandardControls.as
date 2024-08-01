@@ -331,6 +331,7 @@ void onTick(CBlob@ this)
 			if (isTap(this, minimum_ticks))     // tap - put thing in inventory
 			{
 				CBlob@ held = this.getCarriedBlob();
+
 				if (held !is null && getRules().get_string("cycle_with_item") != "yes")
 				{
 					this.SendCommand(this.getCommandID("putinheld"));
@@ -346,6 +347,10 @@ void onTick(CBlob@ this)
 
 						onCycle(params);
 					}
+				}
+
+				if (getGameTime() - this.get_s32("tap_time") > minimum_ticks) {
+					this.SendCommand(this.getCommandID("putinheld"));
 				}
 
 				this.ClearMenus();
