@@ -1020,7 +1020,7 @@ void onCycle(CBitStream@ params)
 		{
 			type = 0;
 		}
-		if (hasArrows(this, type))
+		if (hasArrows(this, type) || type == ArrowType::normal)
 		{
 			CycleToArrowType(this, archer, type);
 			break;
@@ -1068,7 +1068,7 @@ void onSwitch(CBitStream@ params)
 		return;
 	}
 
-	if (hasArrows(this, type))
+	if (hasArrows(this, type) || type == ArrowType::normal)
 	{
 		CycleToArrowType(this, archer, type);
 	}
