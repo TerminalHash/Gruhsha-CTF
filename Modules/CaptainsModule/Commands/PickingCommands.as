@@ -346,3 +346,40 @@ class PreventVoicelineSpamming : ChatCommand
 		}
 	}
 }
+
+class ToggleOffi : ChatCommand
+{
+	ToggleOffi()
+	{
+		super("offi", "Toggle offi match tag");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		if (!rules.hasTag("offi match")) {
+			rules.Tag("offi match");
+			rules.Sync("offi match", true);
+		} else {
+			rules.Untag("offi match");
+			rules.Sync("offi match", true);
+		}
+
+		if (isServer()) {
+			if (!rules.hasTag("offi match")) {
+				server_AddToChat("This match is not offi!", SColor(0xff474ac6));
+			} else {
+				server_AddToChat("This match is offi!", SColor(0xff474ac6));
+			}
+		}
+	}
+}
