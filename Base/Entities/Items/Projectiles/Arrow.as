@@ -97,6 +97,13 @@ void onInit(CBlob@ this)
 		if (arrowType == ArrowType::block)
 			sprite.SetAnimation(anim);
 	}
+
+	{
+		Animation@ anim = sprite.addAnimation("stone block arrow", 0, false);
+		anim.AddFrame(17);
+		if (arrowType == ArrowType::stoneblock)
+			sprite.SetAnimation(anim);
+	}
 }
 
 void turnOffFire(CBlob@ this)
@@ -314,7 +321,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 				this.setPosition(betweenpos - (velnorm * vellen));
 			}
 		}
-		else if (arrowType == ArrowType::block)
+		else if (arrowType == ArrowType::block || arrowType == ArrowType::stoneblock)
 		{
 			this.server_Die();
 			return;
@@ -670,7 +677,7 @@ void ArrowHitMap(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, u8 c
 			this.server_Die(); //explode
 		}
 	}
-	else if (arrowType == ArrowType::water || arrowType == ArrowType::block)
+	else if (arrowType == ArrowType::water || arrowType == ArrowType::block || arrowType == ArrowType::stoneblock)
 	{
 		this.server_Die();
 	}
@@ -819,15 +826,19 @@ void onDie(CBlob@ this)
 		FireUp(this);
 	}
 
-	if (arrowType == ArrowType::water)
-	{
+	if (arrowType == ArrowType::water) {
 		SplashArrow(this);
 	}
-	if (arrowType == ArrowType::block)
-	{
-		if (!inNoBuildZone(getMap(), this.getPosition(), CMap::tile_wood))
-		{
+
+	if (arrowType == ArrowType::block) {
+		if (!inNoBuildZone(getMap(), this.getPosition(), CMap::tile_wood)) {
 			getMap().server_SetTile(this.getPosition(), CMap::tile_wood);
+		}
+	}
+
+	if (arrowType == ArrowType::stoneblock) {
+		if (!inNoBuildZone(getMap(), this.getPosition(), CMap::tile_castle)) {
+			getMap().server_SetTile(this.getPosition(), CMap::tile_castle);
 		}
 	}
 }

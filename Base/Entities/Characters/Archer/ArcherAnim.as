@@ -119,7 +119,8 @@ void LoadSprites(CSprite@ this)
 		anim.AddFrame(9); //water
 		anim.AddFrame(8); //fire
 		anim.AddFrame(14); //bomb
-		anim.AddFrame(16); //block
+		anim.AddFrame(16); //wooden block
+		anim.AddFrame(17); //stone block
 		arrow.SetOffset(Vec2f(-1.0f, 5.0f + config_offset));
 		arrow.SetAnimation("default");
 		arrow.SetVisible(false);

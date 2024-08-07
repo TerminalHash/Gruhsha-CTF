@@ -21,6 +21,7 @@ namespace en
 
 	// ArcherShop.as
 	d_woodenarrowdesc						= "Spawns wooden block at the landing site.",
+	d_stonearrowdesc						= "Spawns stone block at the landing site.",
 
 	// BindingsCommon.as
 	d_modbindplaceholder					= "placeholder",
@@ -91,7 +92,8 @@ namespace en
 	//////////////////////////////////////////////////////////
 
 	// ArcherShop.as
-	n_woodenarrow							= "Block Arrow",
+	n_woodenarrow							= "Wooden Block Arrow",
+	n_stonearrow							= "Stone Block Arrow",
 	n_bombarrow								= "Bomb Arrow",
 
 	//BindingsCommon.as

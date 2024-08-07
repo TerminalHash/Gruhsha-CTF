@@ -56,7 +56,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 		}
 	}
 	if (blobName == "mat_firearrows" || blobName == "mat_bombarrows" ||
-	        blobName == "mat_waterarrows" || blobName == "mat_blockarrows")
+	        blobName == "mat_waterarrows" || blobName == "mat_blockarrows" || blobName == "mat_stoneblockarrows")
 	{
 		if (this.server_PutInInventory(blob))
 		{

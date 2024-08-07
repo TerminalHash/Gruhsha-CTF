@@ -36,6 +36,7 @@ namespace Descriptions
 
 	// ArcherShop.as
 	woodenarrowdesc		  	    	= Translate(en::d_woodenarrowdesc+"\\"+ru::d_woodenarrowdesc),
+	stonearrowdesc		  	    	= Translate(en::d_stonearrowdesc+"\\"+ru::d_stonearrowdesc),
 
 	// BindingsCommon.as
 	modbindplaceholder		  	    = Translate(en::d_modbindplaceholder+"\\"+ru::d_modbindplaceholder),
@@ -110,6 +111,7 @@ namespace Names
 
 	// ArcherShop.as
 	woodenarrow		  	      	 	= Translate(en::n_woodenarrow+"\\"+ru::n_woodenarrow),
+	stonearrow		  	      	 	= Translate(en::n_stonearrow+"\\"+ru::n_stonearrow),
 	bombarrow		  	      	 	= Translate(en::n_bombarrow+"\\"+ru::n_bombarrow),
 
 	// BindingsCommon.as

@@ -20,6 +20,7 @@ void onInit(CBlob@ this)
 
 	AddIconToken("$filled_bucket$", "Bucket.png", Vec2f(16, 16), 1);
 	AddIconToken("$blockarrows$", "blockarrows_icon.png", Vec2f(16, 16), 0);
+	AddIconToken("$stoneblockarrows$", "stoneblockarrows_icon.png", Vec2f(15, 16), 0);
 	AddIconToken("$stickybombs$", "StickyBomb.png", Vec2f(16, 16), 0);
 
 	// setup pickup menu wheel
@@ -47,7 +48,8 @@ void onInit(CBlob@ this)
 		menu.add_entry(PickupWheelMenuEntry("Water Arrows", "$mat_waterarrows$", "mat_waterarrows", Vec2f(0, 2.0f)));
 		menu.add_entry(PickupWheelMenuEntry("Fire Arrows", "$mat_firearrows$", "mat_firearrows", Vec2f(0, -6.0f)));
 		menu.add_entry(PickupWheelMenuEntry("Bomb Arrows", "$mat_bombarrows$", "mat_bombarrows"));
-		menu.add_entry(PickupWheelMenuEntry("Block Arrows", "$blockarrows$", "mat_blockarrows"));
+		menu.add_entry(PickupWheelMenuEntry("Wood Block Arrows", "$blockarrows$", "mat_blockarrows"));
+		menu.add_entry(PickupWheelMenuEntry("Stone Block Arrows", "$stoneblockarrows$", "mat_stoneblockarrows"));
 
 		// builder stuff
 		menu.add_entry(PickupWheelMenuEntry("Gold", "$mat_gold$", "mat_gold", Vec2f(0, -6.0f)));
