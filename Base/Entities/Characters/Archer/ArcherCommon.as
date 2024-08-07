@@ -244,7 +244,7 @@ bool hasArrows(CBlob@ this)
 	{
 		return false;
 	}
-	if (archer.arrow_type >= 0 && archer.arrow_type < arrowTypeNames.length)
+	if (archer.arrow_type >= 0 && archer.arrow_type < arrowTypeNames.length && archer.arrow_type != ArrowType::normal)
 	{
 		return this.getBlobCount(arrowTypeNames[archer.arrow_type]) > 0;
 	}
