@@ -256,29 +256,22 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 			headColor = 0xFF808080;
 		}
 
-		if (b !is null)
-		{
+		if (b !is null) {
 			headIndex = b.get_s32("head index");
 			headTexture = b.get_string("head texture");
 			teamIndex = b.get_s32("head team");
-		}
-		else if (p.exists("head index"))
-		{
+		} else if (p.exists("head index") && customHeadTexture == "") {
 			// HACK: no better infrastructure to know a player's head when
 			// they're dead
 			headIndex = p.get_s32("head index");
 			headTexture = p.get_string("head texture");
-		}
-// 		else if (customHeadTexture != "" && !p.isBot()) // if player has custom head
-// 		{
-// 			headIndex = p.get_s32("head index");
-// 			headTexture = customHeadTexture;
-// 			teamIndex = p.get_s32("head team");
-//
+		} else if (customHeadTexture != "") { // if player has custom head
+ 			headIndex = p.get_s32("head index");
+ 			headTexture = customHeadTexture;
+ 			teamIndex = p.get_s32("head team");
+
  			//printf ("We set " + headTexture + " for player " + username + " from custom heads"); // debug shit
-// 		}
-		else
-		{
+ 		} else {
 			headColor = 0x00000000;
 		}
 
