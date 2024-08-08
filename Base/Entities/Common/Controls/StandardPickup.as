@@ -398,7 +398,7 @@ f32 getPriorityPickupScale(CBlob@ this, CBlob@ b)
 
 		// Kegs, really matters when lit (exploding)
 		// But we still want a high priority so bombjumping with kegs is easier
-		if (name == "keg" || name == "bomb")
+		if (name == "keg" )
 		{
 			return exploding ? factor_very_important : factor_military_important;
 		}
@@ -456,7 +456,7 @@ f32 getPriorityPickupScale(CBlob@ this, CBlob@ b)
 
 		if (name == "mat_bombs" || name == "mat_waterbombs")
 		{
-			return knight ? factor_resource_useful_rare : factor_resource_useful;
+			return knight ? factor_resource_useful : factor_resource_boring;
 		}
 
 		const bool archer = (thisname == "archer");
@@ -469,7 +469,7 @@ f32 getPriorityPickupScale(CBlob@ this, CBlob@ b)
 
 		if (name == "mat_waterarrows" || name == "mat_firearrows" || name == "mat_bombarrows")
 		{
-			return archer ? factor_resource_useful_rare : factor_resource_useful;
+			return archer ? factor_resource_useful_rare : factor_resource_boring;
 		}
 	}
 
@@ -518,7 +518,7 @@ CBlob@ getClosestAimedBlob(CBlob@ this, CBlob@[] available)
 		float cursorDistance = (this.getAimPos() - current.getPosition()).Length();
 
 		float radius = current.getRadius();
-		if (radius > 3.0f && cursorDistance > radius * (current.hasTag("dead") ? 0.5f : 1.5f)) // corpses don't count unless you really try to aim at one
+		if (radius > 3.0f && cursorDistance > current.getRadius() * (current.hasTag("dead") ? 0.5f : 1.5f)) // corpses don't count unless you really try to aim at one
 		{
 			continue;
 		}
