@@ -265,13 +265,14 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 			// they're dead
 			headIndex = p.get_s32("head index");
 			headTexture = p.get_string("head texture");
-		} else if (customHeadTexture != "") { // if player has custom head
- 			headIndex = p.get_s32("head index");
- 			headTexture = customHeadTexture;
- 			teamIndex = p.get_s32("head team");
+		} else if (customHeadTexture != "") {
+			// if player has custom head
+			headIndex = p.get_s32("head index");
+			headTexture = customHeadTexture;
+			teamIndex = p.get_s32("head team");
 
- 			//printf ("We set " + headTexture + " for player " + username + " from custom heads"); // debug shit
- 		} else {
+		//printf ("We set " + headTexture + " for player " + username + " from custom heads"); // debug shit
+		} else {
 			headColor = 0x00000000;
 		}
 
