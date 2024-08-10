@@ -10,7 +10,7 @@ void onInit(CBlob@ this)
 {
 	this.set_u16("explosive_parent", 0);
 	this.getShape().getConsts().net_threshold_multiplier = 2.0f;
-	SetupBomb(this, bomb_fuse, 16.0f, 10.0f, 24.0f, 0.8f, true);
+	SetupBomb(this, bomb_fuse, 16.0f, 2.0f, 24.0f, 0.8f, false);
 	//
 	this.Tag("activated"); // make it lit already and throwable
 }
@@ -143,7 +143,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 		}
 	}
 }
-
+/*
 bool canBePickedUp(CBlob@ this, CBlob@ byBlob)
 {
 	if (this.hasTag("exploding")) {
@@ -152,3 +152,4 @@ bool canBePickedUp(CBlob@ this, CBlob@ byBlob)
 
 	return true;
 }
+*/
