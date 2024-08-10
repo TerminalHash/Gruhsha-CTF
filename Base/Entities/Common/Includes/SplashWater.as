@@ -76,6 +76,10 @@ void Splash(CBlob@ this, const uint splash_halfwidth, const uint splash_halfheig
 					bombforce = getStickyBombForce(this, radius, hit_blob_pos, pos, blob.getMass());
 				}
 
+				if (this.getName() == "bucket") {
+					bombforce = Vec2f(0, 0);
+				}
+
 				if (shouldStun && (ownerBlob is blob || (this.isOverlapping(blob) && hitHard)))
 				{
 					this.server_Hit(blob, pos, bombforce, 0.0f, Hitters::water_stun_force, true);
