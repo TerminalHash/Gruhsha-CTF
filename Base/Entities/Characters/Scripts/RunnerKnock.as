@@ -64,6 +64,13 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 
 				break;
 		}
+
+		// Prevent autistic bombjump action
+		u32 secs_since = getGameTime() - this.get_u32("lastbombjumptimetigor");
+
+		if (secs_since < 10) {
+			time = 45;
+		}
 	}
 
 	if (damage == 0 || force)

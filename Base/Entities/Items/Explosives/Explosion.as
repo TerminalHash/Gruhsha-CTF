@@ -572,6 +572,14 @@ bool HitBlob(CBlob@ this, Vec2f mapPos, CBlob@ hit_blob, f32 radius, f32 damage,
 	Vec2f wall_hit;
 	Vec2f hitvec = hit_blob_pos - pos;
 
+	// Erzats tigorsun's autistic bombjumps fix from bunnie
+	if (this.getName() == "bomb" && hit_blob.getName() == "bomb" && this.getDamageOwnerPlayer() is hit_blob.getDamageOwnerPlayer()) {
+		if (isServer() && !hit_blob.isAttached()) {
+			hit_blob.Tag("DONTSTACKBOMBJUMP");
+			hit_blob.Sync("DONTSTACKBOMBJUMP", true);
+		}
+	}
+
 	if (bother_raycasting && this.getName() != "keg") // have we already checked the rays?
 	{
 		// no wall in front

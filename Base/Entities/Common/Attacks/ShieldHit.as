@@ -23,84 +23,130 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 {
 	if (this.hasTag("dead") ||
 	        !canBlockThisType(customData) ||
-	        this is hitterBlob)
-	{
+	        this is hitterBlob) {
 		return damage;
 	}
 
 	//no shield when stunned
-	if (isKnocked(this) && !isJustKnocked(this))
-	{
+	if (isKnocked(this) && !isJustKnocked(this)) {
 		return damage;
 	}
 
-	if (blockAttack(this, velocity, 0.0f) && this.hasTag("shielded"))
-	{
-		if (isExplosionHitter(customData)) //bomb jump
-		{
-			Vec2f vel = this.getVelocity();
-			this.setVelocity(Vec2f(0.0f, -1.8));
+	CPlayer@ dmgowner = hitterBlob.getDamageOwnerPlayer();
+	CPlayer@ thisplayer = this.getPlayer();
 
-			Vec2f bombforce = Vec2f(0.0f, ((velocity.y > 0) ? 0.7f : -1.3f));
+	if ((blockAttack(this, velocity, 0.0f) && this.hasTag("shielded"))) {
+		if (isExplosionHitter(customData)) { //bomb jump
+			bool earlyreturn = false;
+			bool preventbombertactic = false;
 
-			bombforce.Normalize();
-			bombforce *= 2.0f * Maths::Sqrt(damage) * this.getMass();
-			bombforce.y -= 2;
+			if (dmgowner !is null && thisplayer !is null) {
+				u32 secs_since = getGameTime() - this.get_u32("lastbombjumptimetigor");
+				//printf("Current time: " + getGameTime());
+				//printf("Last bomb hit time: " + this.get_u32("lastbombjumptimetigor"));
+				//printf("Final time: " + secs_since);
 
-			if (!this.isOnGround() && !this.isOnLadder())
-			{
-				if (this.isFacingLeft() && vel.x > 0)
-				{
-					//bombforce.x += 50;
-					bombforce.y -= 80;
+				if (secs_since < 10) {
+					preventbombertactic = true;
 				}
-				else if (!this.isFacingLeft() && vel.x < 0)
-				{
-					//bombforce.x -= 50;
-					bombforce.y -= 80;
+
+				if (hitterBlob.hasTag("DONTSTACKBOMBJUMP") && dmgowner is thisplayer) {
+					earlyreturn = true;
 				}
 			}
-			else if (this.isFacingLeft() && vel.x > 0)
-			{
-				//bombforce.x += 5;
+
+			if (true) {
+				Vec2f vel = this.getVelocity();
+				//printf("Current velocity: " + vel);
+
+				if (!earlyreturn) {
+					this.setVelocity(Vec2f(0.0f, -1.8));
+				}
+
+				Vec2f bombforce = Vec2f(0.0f, ((velocity.y > 0) ? 0.7f : -1.3f));
+
+				bombforce.Normalize();
+				bombforce *= 2.0f * Maths::Sqrt(damage) * this.getMass();
+				bombforce.y -= 2;
+
+				if (!this.isOnGround() && !this.isOnLadder()) {
+					if (this.isFacingLeft() && vel.x > 0) {
+						//bombforce.x += 50;
+						bombforce.y -= 80;
+					} else if (!this.isFacingLeft() && vel.x < 0) {
+						//bombforce.x -= 50;
+						bombforce.y -= 80;
+					}
+				}
+
+				if (preventbombertactic) {
+					//printf("Early return is " + earlyreturn);
+
+					// Force knock player to prevent keg litting
+					this.Tag("force_knock");
+
+					// Force player's velocity, they should suck with long flight distance
+					// dont works as supposed, dont use please
+					/*if (this.isFacingLeft()) {
+						this.setVelocity(Vec2f(1.0f, -1.8));
+					} else {
+						this.setVelocity(Vec2f(-1.0f, -1.8));
+					}*/
+
+					// Force drop keg, while player trying to make tigorsun's bomj jab
+					// dont works as supposed, dont use please
+					/*CBlob@ carriedblob = this.getCarriedBlob();
+
+					if (carriedblob !is null && carriedblob.getConfig() == "keg") {
+						this.server_DetachFrom(this);
+					}*/
+
+					preventbombertactic = false;
+					//printf("Fuck you, kurwa bomber!")
+				}
+
+				if (earlyreturn) {
+					earlyreturn = false;
+					// Dont touch debug lines needlessly!
+
+					//printf("Early return");
+					//printf("Early return is " + earlyreturn);
+					//printf("Force: " + bombforce);
+					//this.setVelocity(bombforce);
+				}
+
+				if (!earlyreturn || !preventbombertactic) {
+					this.AddForce(bombforce);
+				}
+
+				this.Tag("dont stop til ground");
+
+				if (dmgowner !is null && thisplayer !is null) {
+						if (dmgowner is thisplayer) {
+							this.set_u32("lastbombjumptimetigor", getGameTime());
+							this.Sync("lastbombjumptimetigor", true);
+					}
+				}
+			} else if (exceedsShieldBreakForce(this, damage) && customData != Hitters::arrow) {
+				knockShieldDown(this);
+				this.Tag("force_knock");
 			}
-			else if (!this.isFacingLeft() && vel.x < 0)
-			{
-				//bombforce.x -= 5;
+
+			if (getNet().isClient()) {
+				this.Tag("shieldDoesBlock");
+				this.set_f32("shieldDamage", damage);
+				this.set_Vec2f("shieldDamageVel", velocity);
+				this.set_Vec2f("ShieldWorldPoint", worldPoint);
 			}
 
-			if (true)
-			{
-				this.AddForce(bombforce);
+			return 0.0f;
+		} else {
+			if (getNet().isClient() && isJustKnocked(hitterBlob)) {
+				this.Tag("shieldNoBlock");
+				this.set_f32("shieldDamage", damage);
+				this.set_Vec2f("shieldDamageVel", velocity);
+				this.set_Vec2f("ShieldWorldPoint", worldPoint);
 			}
-
-			this.Tag("dont stop til ground");
-
-		}
-		else if (exceedsShieldBreakForce(this, damage) && customData != Hitters::arrow)
-		{
-			knockShieldDown(this);
-			this.Tag("force_knock");
-		}
-
-		if (getNet().isClient())
-		{
-			this.Tag("shieldDoesBlock");
-			this.set_f32("shieldDamage", damage);
-			this.set_Vec2f("shieldDamageVel", velocity);
-			this.set_Vec2f("ShieldWorldPoint", worldPoint);
-		}
-
-		return 0.0f;
-	}
-	else
-	{
-		if (getNet().isClient() && isJustKnocked(hitterBlob))
-		{
-			this.Tag("shieldNoBlock");
-			this.set_f32("shieldDamage", damage);
-			this.set_Vec2f("shieldDamageVel", velocity);
-			this.set_Vec2f("ShieldWorldPoint", worldPoint);
 		}
 	}
 
@@ -140,4 +186,5 @@ void shieldHit(f32 damage, Vec2f velocity, Vec2f worldPoint)
 	Sound::Play("Entities/Characters/Knight/ShieldHit.ogg", worldPoint);
 	const f32 vellen = velocity.Length();
 	sparks(worldPoint, -velocity.Angle(), Maths::Max(vellen * 0.05f, damage));
+	//printf("Shield hit!");
 }

@@ -51,8 +51,11 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 
 	bool enemy_water = false;
 
-	if (hitterBlob.getConfig() == "stickybomb")
-	{
+	if (hitterBlob.getConfig() == "stickybomb") {
+		return damage;
+	}
+
+	if (hitterBlob.getName() == "bucket") {
 		return damage;
 	}
 
@@ -66,6 +69,17 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 
 	if (damage > 0.125f || enemy_water)
 	{
+		CPlayer@ dmgowner = hitterBlob.getDamageOwnerPlayer();
+		CPlayer@ thisplayer = this.getPlayer();
+
+		if (hitterBlob.getTeamNum() == this.getTeamNum() && hitterBlob.getName() == "bomb" && dmgowner !is thisplayer) {
+			return damage;
+		}
+
+		if (hitterBlob.hasTag("DONTSTACKBOMBJUMP") && dmgowner is thisplayer) {
+			return damage;
+		}
+
 		this.AddForce(f * 40.0f * scale * Maths::Log(2.0f * (10.0f + (damage * 2.0f))));
 	}
 
