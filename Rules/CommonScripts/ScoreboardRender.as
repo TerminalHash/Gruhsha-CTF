@@ -237,18 +237,12 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 		}
 
 		// head icon
-
 		string headTexture = "Heads.png";
 		int headIndex = 32*4;
 		int teamIndex = p.getTeamNum();
 		Vec2f headOffset = Vec2f(22, -12);
 		float headScale = 1.0f;
 		SColor headColor(0xFFFFFFFF);
-
-		string customHeadTexture = getPath() + "Characters/CustomHeads/" + username + ".png";
-		//string customHeadTexture = ""; // comment out line above and uncomment this for debug
-
-		Accolades@ acchead = getPlayerAccolades(p.getUsername());
 
 		// show normally colored head for specs, they're never alive
 		if (team !is null && dead)
@@ -260,18 +254,11 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 			headIndex = b.get_s32("head index");
 			headTexture = b.get_string("head texture");
 			teamIndex = b.get_s32("head team");
-		} else if (p.exists("head index") && customHeadTexture == "") {
+		} else if (p.exists("head index")) {
 			// HACK: no better infrastructure to know a player's head when
 			// they're dead
 			headIndex = p.get_s32("head index");
 			headTexture = p.get_string("head texture");
-		} else if (customHeadTexture != "") {
-			// if player has custom head
-			headIndex = p.get_s32("head index");
-			headTexture = customHeadTexture;
-			teamIndex = p.get_s32("head team");
-
-		//printf ("We set " + headTexture + " for player " + username + " from custom heads"); // debug shit
 		} else {
 			headColor = 0x00000000;
 		}
