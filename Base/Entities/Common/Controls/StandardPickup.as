@@ -454,7 +454,7 @@ f32 getPriorityPickupScale(CBlob@ this, CBlob@ b)
 
 		const bool knight = (thisname == "knight");
 
-		if (name == "mat_bombs" || name == "mat_waterbombs")
+		if (name == "mat_bombs" || name == "mat_waterbombs" || name == "mat_stickybombs")
 		{
 			return knight ? factor_resource_useful : factor_resource_boring;
 		}
@@ -467,7 +467,7 @@ f32 getPriorityPickupScale(CBlob@ this, CBlob@ b)
 			return archer && !this.hasBlob("mat_arrows", 15) ? factor_resource_useful : factor_resource_boring;
 		}
 
-		if (name == "mat_waterarrows" || name == "mat_firearrows" || name == "mat_bombarrows")
+		if (name == "mat_waterarrows" || name == "mat_firearrows" || name == "mat_bombarrows" || name == "mat_blockarrows" || name == "mat_stoneblockarrows")
 		{
 			return archer ? factor_resource_useful_rare : factor_resource_boring;
 		}
