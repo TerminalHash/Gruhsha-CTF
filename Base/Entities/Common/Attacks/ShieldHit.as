@@ -46,7 +46,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 				//printf("Last bomb hit time: " + this.get_u32("lastbombjumptimetigor"));
 				//printf("Final time: " + secs_since);
 
-				if (secs_since < 10) {
+				if (secs_since < 13) {
 					preventbombertactic = true;
 				}
 
