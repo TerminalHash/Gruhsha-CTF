@@ -209,6 +209,7 @@ namespace ru
 	n_bombbuilder							= "Автоподбор бомб (Строитель)",
 	n_bombarcher							= "Автоподбор бомб (Лучник)",
 	n_cyclewithitem							= "Переключение с предметом в руках",
+	n_visualitempick						= "Наглядное расстояние до предмета",
 
 		// Other
 	n_pressdelete							= "Выбери клавишу и нажми [DELETE] для очистки хоткея!",

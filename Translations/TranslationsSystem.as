@@ -226,6 +226,7 @@ namespace Names
 	bombbuilder							 = Translate(en::n_bombbuilder+"\\"+ru::n_bombbuilder),
 	bombarcher							 = Translate(en::n_bombarcher+"\\"+ru::n_bombarcher),
 	cyclewithitem						 = Translate(en::n_cyclewithitem+"\\"+ru::n_cyclewithitem),
+	visualitempick						 = Translate(en::n_visualitempick+"\\"+ru::n_visualitempick),
 
 		// Other
 	pressdelete		  	       			= Translate(en::n_pressdelete+"\\"+ru::n_pressdelete),

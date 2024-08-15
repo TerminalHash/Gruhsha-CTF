@@ -358,6 +358,7 @@ string[][] vsetting_texts =
 		//Names::shownomenubuyingpan,
 		//Names::dsewnmb,
 		Names::camerasw,
+		Names::visualitempick,
 		Names::bodytilt,
 		Names::headrotating,
 		Names::clusterfuck,
@@ -377,6 +378,7 @@ string[][] vsetting_file_names =
 		"blockbar_hud",
 		//"shownomenupanel",
 		//"dse_while_using_nomenu_buying",
+		"visual_item_pick",
 		"camera_sway",
 		"body_tilting",
 		"head_rotating",
@@ -412,6 +414,10 @@ string[][][] vsetting_options =
 			"3", // 3
 			"4", // 4
 			"5" // 5
+		},
+		{
+			Descriptions::universaloff,       // VISUAL ITEM PICKING
+			Descriptions::universalon
 		},
 		{
 			Descriptions::universaloff,       // BODY TILTING

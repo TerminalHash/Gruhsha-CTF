@@ -150,7 +150,7 @@ void onTick(CBlob@ this)
 				if (ap.getOccupied() !is null && ap.name != "PICKUP")
 				{
 					CBitStream params;
-					params.write_u16(ap.getOccupied().getNetworkID());
+					params.write_netid(ap.getOccupied().getNetworkID());
 					this.SendCommand(this.getCommandID("detach"), params);
 					this.set_bool("release click", false);
 					break;
@@ -180,7 +180,7 @@ void onTick(CBlob@ this)
 			if (selected !is null && !selected.disabled)
 			{
 				CBlob@[] blobsInRadius;
-				if (this.getMap().getBlobsInRadius(this.getPosition(), this.getRadius() + 50.0f, @blobsInRadius))
+				if (this.getMap().getBlobsInRadius(this.getPosition(), 50.0f, @blobsInRadius))
 				{
 					uint highestPriority = 0;
 					float closestScore = 600.0f;
@@ -221,7 +221,7 @@ void onTick(CBlob@ this)
 					{
 						// NOTE: optimisation: use selected-option-blobs-in-radius
 						@closest = @GetBetterAlternativePickupBlobs(blobsInRadius, closest);
-						client_Pickup(this, closest);
+						server_Pickup(this, this, closest);
 					}
 				}
 			}
@@ -256,11 +256,19 @@ void onTick(CBlob@ this)
 		{
 			if (this.get_bool("release click"))
 			{
-				CBlob@[]@ closestBlobs;
-				this.get("closest blobs", @closestBlobs);
-				if (closestBlobs.length > 0)
+				if (prevBlob !is null)
 				{
-					client_Pickup(this, closestBlobs[0]);
+					//printf("serverside pickup " + prevBlob.getName());
+					server_Pickup(this, this, prevBlob);
+				}
+				else
+				{
+					CBlob@[]@ closestBlobs;
+					this.get("closest blobs", @closestBlobs);
+					if (closestBlobs.length > 0)
+					{
+						server_Pickup(this, this, closestBlobs[0]);
+					}
 				}
 			}
 			ClearPickupBlobs(this);
@@ -674,22 +682,55 @@ void onInit(CSprite@ this)
 	this.getCurrentScript().runFlags |= Script::tick_myplayer;
 }
 
+
+CBlob@ prevBlob;
+
 void onRender(CSprite@ this)
 {
 	CBlob@ blob = this.getBlob();
+	if (blob is null || !blob.isMyPlayer()) return;
 
+	Vec2f aimpos = blob.getAimPos();
 
-	// render item held when in inventory
+	CBlob@ aimblob = getMap().getBlobAtPosition(aimpos);
 
-	if (blob.isKeyPressed(key_inventory))
+	CBlob@[] aimbloblist;
+	CBlob@ closestblob;
+	f32 aimblobdist = 320.0f;
+	if (getMap().getBlobsInRadius(aimpos, 32.0, aimbloblist))
 	{
-		CBlob @pickBlob = blob.getCarriedBlob();
-
-		if (pickBlob !is null)
+		for (int i=0; i<aimbloblist.length; ++i)
 		{
-			pickBlob.RenderForHUD((blob.getAimPos() + Vec2f(0.0f, 8.0f)) - blob.getPosition() , RenderStyle::normal);
+			CBlob@ cb = aimbloblist[i];
+			if ((aimpos - cb.getPosition()).Length() < aimblobdist && cb.canBePickedUp(blob))
+			{
+				@closestblob = cb;
+				aimblobdist = (aimpos - cb.getPosition()).Length();
+				//printf("hi " + aimblobdist);
+			}
 		}
 	}
+
+	if (getRules().get_string("visual_item_pick") != "off") {
+		if (closestblob !is null && closestblob.canBePickedUp(blob))
+		{
+			@prevBlob = closestblob;
+			f32 distance_to_blob = (closestblob.getPosition() - blob.getPosition()).Length();
+
+			if (distance_to_blob > 50.0f || getMap().rayCastSolid(closestblob.getPosition(), blob.getPosition())) {
+				GUI::DrawCircle(getDriver().getScreenPosFromWorldPos(closestblob.getPosition()), closestblob.getRadius() * 4, SColor(255, 255, 55, 55));
+				GUI::DrawCircle(getDriver().getScreenPosFromWorldPos(closestblob.getPosition()), closestblob.getRadius() * 4 + 2.0, SColor(255, 255, 55, 55));
+				GUI::DrawCircle(getDriver().getScreenPosFromWorldPos(closestblob.getPosition()), closestblob.getRadius() * 4 + 4.0, SColor(255, 255, 55, 55));
+				//closestblob.RenderForHUD(Vec2f(0, 0), 0, SColor(45, 155, 50, 50), RenderStyle::outline_front);
+			} else if (distance_to_blob <= 50.0f && !getMap().rayCastSolid(closestblob.getPosition(), blob.getPosition())) {
+				GUI::DrawCircle(getDriver().getScreenPosFromWorldPos(closestblob.getPosition()), closestblob.getRadius() * 4, SColor(255, 55, 255, 55));
+				GUI::DrawCircle(getDriver().getScreenPosFromWorldPos(closestblob.getPosition()), closestblob.getRadius() * 4 + 2.0, SColor(255, 55, 255, 55));
+				GUI::DrawCircle(getDriver().getScreenPosFromWorldPos(closestblob.getPosition()), closestblob.getRadius() * 4 + 4.0, SColor(255, 55, 255, 55));
+				//closestblob.RenderForHUD(Vec2f(0, 0), 0, SColor(45, 50, 155, 50), RenderStyle::outline_front);
+			}
+		}
+	}
+
 
 	if (blob.isKeyPressed(key_pickup))
 	{

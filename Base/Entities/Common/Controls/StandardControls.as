@@ -56,26 +56,25 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 	}
 	else if (cmd == this.getCommandID("pickup"))
 	{
-		CPlayer@ callerp = getNet().getActiveCommandPlayer();
-		if (callerp is null) return;
+		CBlob@ owner = getBlobByNetworkID(params.read_netid());
+		CBlob@ pick = getBlobByNetworkID(params.read_netid());
 
-		CBlob@ caller = callerp.getBlob();
-		if (caller is null) return;
-		if (caller !is this) return;
-		if (caller.isInInventory()) return;
-		if (caller.isAttached()) return;
-
-		u16 pickedup_id;
-		if (!params.saferead_u16(pickedup_id)) return;
-
-		CBlob@ pickedup = getBlobByNetworkID(pickedup_id);
-		if (pickedup is null) return;
-
-		if (!pickedup.canBePickedUp(caller)) return;
-
-		if (pickedup.isAttached()) return;
-
-		caller.server_Pickup(pickedup);
+		if (owner !is null
+		    && !owner.isInInventory()
+		    && !owner.isAttached()
+		    && pick !is null
+		    && !pick.isAttached()
+		    && pick.canBePickedUp(owner))
+		{
+			f32 distance = (owner.getPosition() - pick.getPosition()).Length();
+			if (distance < 50.0f)
+			{
+				if (!getMap().rayCastSolid(owner.getPosition(), pick.getPosition()))
+				{
+					owner.server_Pickup(pick);
+				}
+			}
+		}
 	}
 	else if (cmd == this.getCommandID("detach"))
 	{

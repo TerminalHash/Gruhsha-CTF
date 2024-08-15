@@ -209,6 +209,7 @@ namespace en
 	n_bombbuilder							= "Bomb autopickup (Builder)",
 	n_bombarcher							= "Bomb autopickup (Archer)",
 	n_cyclewithitem							= "Cycle with item in hand",
+	n_visualitempick						= "Visual item picking",
 
 		// Other
 	n_pressdelete							= "Choose a bind and press [DELETE] to remove key",

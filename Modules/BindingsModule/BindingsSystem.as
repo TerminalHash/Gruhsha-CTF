@@ -233,6 +233,11 @@ void onInit(CRules@ this)
 				sfile.add_string("dse_while_using_nomenu_buying", "yes");
 			}*/
 
+			if (!sfile.exists("visual_item_pick"))
+			{
+				sfile.add_string("visual_item_pick", "off");
+			}
+
 			if (!sfile.exists("body_tilting"))
 			{
 				sfile.add_string("body_tilting", "on");
@@ -289,6 +294,7 @@ void onInit(CRules@ this)
 			//sfile.add_string("shownomenupanel", "yes");
 			//sfile.add_string("dse_while_using_nomenu_buying", "yes");
 			sfile.add_string("camera_sway", "5");
+			sfile.add_string("visual_item_pick", "off");
 			sfile.add_string("body_tilting", "on");
 			sfile.add_string("head_rotating", "on");
 			sfile.add_string("clusterfuck", "on");
