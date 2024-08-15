@@ -50,6 +50,10 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 					preventbombertactic = true;
 				}
 
+				if (secs_since < 3) {
+					earlyreturn = true;
+				}
+
 				if (hitterBlob.hasTag("DONTSTACKBOMBJUMP") && dmgowner is thisplayer) {
 					earlyreturn = true;
 				}
