@@ -489,6 +489,10 @@ string[][][] vsetting_option_names =
 			"on"
 		},
 		{
+			"off",       // BODY TILTING
+			"on"
+		},
+		{
 			"off",       // HEAD ROTATING
 			"on"
 		},
