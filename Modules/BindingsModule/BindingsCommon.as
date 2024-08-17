@@ -485,7 +485,7 @@ string[][][] vsetting_option_names =
 			"5" // 5
 		},
 		{
-			"off",       // BODY TILTING
+			"off",       // VISUAL ITEM PICKING
 			"on"
 		},
 		{
