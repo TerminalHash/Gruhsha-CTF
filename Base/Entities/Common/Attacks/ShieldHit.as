@@ -49,7 +49,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 				if (secs_since < 3) {
 					earlyreturn = true;
 				} else if (secs_since < 20 && dmgowner is thisplayer) {
-					if (this.getCarriedBlob().getName() == "keg") {
+					if (this.getCarriedBlob() !is null && this.getCarriedBlob().getName() == "keg") {
 						setKnocked(this, 7);
 						this.DropCarried();
 					}
