@@ -34,6 +34,8 @@ namespace ru
 	d_universalno							= "Нет",
 	d_universalon							= "Включено",
 	d_universaloff							= "Выключено",
+	d_universalold							= "Старая",
+	d_universalnew							= "Новая",
 
 	// PickingCommands.as
 	d_bindingscom							= "Открыть меню кастомных биндингов",
@@ -210,6 +212,7 @@ namespace ru
 	n_bombarcher							= "Автоподбор бомб (Лучник)",
 	n_cyclewithitem							= "Переключение с предметом в руках",
 	n_visualitempick						= "Наглядное расстояние до предмета",
+	n_pickupsystem							= "Система подбора предметов",
 
 		// Other
 	n_pressdelete							= "Выбери клавишу и нажми [DELETE] для очистки хоткея!",

@@ -34,6 +34,8 @@ namespace en
 	d_universalno							= "No",
 	d_universalon							= "On",
 	d_universaloff							= "Off",
+	d_universalold							= "Old",
+	d_universalnew							= "New",
 
 	// PickingCommands.as
 	d_bindingscom							= "Show mod bindings menu",
@@ -210,6 +212,7 @@ namespace en
 	n_bombarcher							= "Bomb autopickup (Archer)",
 	n_cyclewithitem							= "Cycle with item in hand",
 	n_visualitempick						= "Visual item picking",
+	n_pickupsystem							= "Item pickup system",
 
 		// Other
 	n_pressdelete							= "Choose a bind and press [DELETE] to remove key",

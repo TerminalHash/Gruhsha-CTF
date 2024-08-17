@@ -180,7 +180,7 @@ void onTick(CBlob@ this)
 			if (selected !is null && !selected.disabled)
 			{
 				CBlob@[] blobsInRadius;
-				if (this.getMap().getBlobsInRadius(this.getPosition(), 50.0f, @blobsInRadius))
+				if (this.getMap().getBlobsInRadius(this.getPosition(), this.getRadius() + 50.0f, @blobsInRadius))
 				{
 					uint highestPriority = 0;
 					float closestScore = 600.0f;
@@ -256,7 +256,7 @@ void onTick(CBlob@ this)
 		{
 			if (this.get_bool("release click"))
 			{
-				if (prevBlob !is null)
+				if (prevBlob !is null && (getRules().get_string("item_pickup") == "new"))
 				{
 					//printf("serverside pickup " + prevBlob.getName());
 					server_Pickup(this, this, prevBlob);
@@ -712,25 +712,44 @@ void onRender(CSprite@ this)
 	}
 
 	if (getRules().get_string("visual_item_pick") != "off") {
-		if (closestblob !is null && closestblob.canBePickedUp(blob))
-		{
+		if (closestblob !is null && closestblob.canBePickedUp(blob)) {
 			@prevBlob = closestblob;
 			f32 distance_to_blob = (closestblob.getPosition() - blob.getPosition()).Length();
 
-			if (distance_to_blob > 50.0f || getMap().rayCastSolid(closestblob.getPosition(), blob.getPosition())) {
+			if (distance_to_blob > blob.getRadius() * 0.5 + 25.0f + closestblob.getRadius() || getMap().rayCastSolid(closestblob.getPosition(), blob.getPosition())) {
 				GUI::DrawCircle(getDriver().getScreenPosFromWorldPos(closestblob.getPosition()), closestblob.getRadius() * 4, SColor(255, 255, 55, 55));
 				GUI::DrawCircle(getDriver().getScreenPosFromWorldPos(closestblob.getPosition()), closestblob.getRadius() * 4 + 2.0, SColor(255, 255, 55, 55));
 				GUI::DrawCircle(getDriver().getScreenPosFromWorldPos(closestblob.getPosition()), closestblob.getRadius() * 4 + 4.0, SColor(255, 255, 55, 55));
 				//closestblob.RenderForHUD(Vec2f(0, 0), 0, SColor(45, 155, 50, 50), RenderStyle::outline_front);
-			} else if (distance_to_blob <= 50.0f && !getMap().rayCastSolid(closestblob.getPosition(), blob.getPosition())) {
+			} else if (distance_to_blob <= blob.getRadius() * 0.5 + 25.0f + closestblob.getRadius() && !getMap().rayCastSolid(closestblob.getPosition(), blob.getPosition())) {
 				GUI::DrawCircle(getDriver().getScreenPosFromWorldPos(closestblob.getPosition()), closestblob.getRadius() * 4, SColor(255, 55, 255, 55));
 				GUI::DrawCircle(getDriver().getScreenPosFromWorldPos(closestblob.getPosition()), closestblob.getRadius() * 4 + 2.0, SColor(255, 55, 255, 55));
 				GUI::DrawCircle(getDriver().getScreenPosFromWorldPos(closestblob.getPosition()), closestblob.getRadius() * 4 + 4.0, SColor(255, 55, 255, 55));
 				//closestblob.RenderForHUD(Vec2f(0, 0), 0, SColor(45, 50, 155, 50), RenderStyle::outline_front);
 			}
 		}
+	} else {
+		if (blob.isKeyPressed(key_pickup) && closestblob !is null && (getRules().get_string("item_pickup") == "new")) {
+			f32 distance_to_blob = (closestblob.getPosition() - blob.getPosition()).Length();
+			Vec2f dimensions;
+
+			if (closestblob !is null && (distance_to_blob <= blob.getRadius() * 0.5 + 25.0f + closestblob.getRadius() && !getMap().rayCastSolid(closestblob.getPosition(), blob.getPosition()))) {
+				closestblob.RenderForHUD(RenderStyle::outline_front);
+				closestblob.RenderForHUD(RenderStyle::additive);
+
+				GUI::SetFont("menu");
+
+				string invName = getTranslatedString(closestblob.getInventoryName());
+				GUI::GetTextDimensions(invName, dimensions);
+				GUI::DrawText(invName, getDriver().getScreenPosFromWorldPos(closestblob.getPosition() - Vec2f(0, -closestblob.getHeight() / 2)) - Vec2f(dimensions.x / 2, -8.0f), color_white);
+			}
+		}
 	}
 
+	// Fully disable vanilla behaviour of pickups, if we using new pickup mode
+	if (getRules().get_string("item_pickup") == "new") {
+		return;
+	}
 
 	if (blob.isKeyPressed(key_pickup))
 	{

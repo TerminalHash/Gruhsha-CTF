@@ -232,6 +232,7 @@ string[][] setting_texts =
 		Names::grapplewhilecharging,
 		Names::switchclasschanginginshop,
 		Names::cyclewithitem,
+		Names::pickupsystem,
 		Names::drillknight,
 		Names::drillbuilder,
 		Names::drillarcher,
@@ -248,6 +249,7 @@ string[][] setting_file_names =
 		"grapple_with_charging",
 		"disable_class_change_in_shops",
 		"cycle_with_item",
+		"item_pickup",
 		"pickdrill_knight",
 		"pickdrill_builder",
 		"pickdrill_archer",
@@ -272,6 +274,10 @@ string[][][] setting_options =
 		{
 			Descriptions::universalno, // 10	CYCLE WITH ITEM IN HAND
 			Descriptions::universalyes // 20
+		},
+		{
+			Descriptions::universalold, // 10	ITEM PICKUP SYSTEM
+			Descriptions::universalnew // 20
 		},
 		{
 			Descriptions::universalno, // 10	DRILL AUTOPICKUP FOR KNIGHT
@@ -318,6 +324,10 @@ string[][][] setting_option_names =
 		{
 			"no", // 10    CYCLE WITH ITEM IN HAND
 			"yes" // 20
+		},
+		{
+			"legacy", // 10    ITEM PICKUP SYSTEM
+			"new" // 20
 		},
 		{
 			"no", // 10    DRILL AUTOPICKUP FOR KNIGHT

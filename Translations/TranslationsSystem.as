@@ -49,6 +49,8 @@ namespace Descriptions
 	universalno		  	  			= Translate(en::d_universalno+"\\"+ru::d_universalno),
 	universalon		  	  			= Translate(en::d_universalon+"\\"+ru::d_universalon),
 	universaloff		  	  		= Translate(en::d_universaloff+"\\"+ru::d_universaloff),
+	universalold		  	  		= Translate(en::d_universalold+"\\"+ru::d_universalold),
+	universalnew		  	  		= Translate(en::d_universalnew+"\\"+ru::d_universalnew),
 
 	// PickingCommands.as
 	bindingscom		  	       		= Translate(en::d_bindingscom+"\\"+ru::d_bindingscom),
@@ -227,6 +229,7 @@ namespace Names
 	bombarcher							 = Translate(en::n_bombarcher+"\\"+ru::n_bombarcher),
 	cyclewithitem						 = Translate(en::n_cyclewithitem+"\\"+ru::n_cyclewithitem),
 	visualitempick						 = Translate(en::n_visualitempick+"\\"+ru::n_visualitempick),
+	pickupsystem						 = Translate(en::n_pickupsystem+"\\"+ru::n_pickupsystem),
 
 		// Other
 	pressdelete		  	       			= Translate(en::n_pressdelete+"\\"+ru::n_pressdelete),
