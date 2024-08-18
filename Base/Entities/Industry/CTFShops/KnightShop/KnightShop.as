@@ -7,6 +7,7 @@
 #include "CheckSpam.as"
 #include "GenericButtonCommon.as"
 #include "TeamIconToken.as"
+#include "TranslationsSystem.as"
 
 void onInit(CBlob@ this)
 {
@@ -93,7 +94,7 @@ void onInit(CBlob@ this)
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::satchel);
 	}
 	{
-		ShopItem@ s = addShopItem(this, "Sticky Bomb", "$stickybombs$", "mat_stickybombs", Descriptions::bomb, true);
+		ShopItem@ s = addShopItem(this, Names::stickybomb, "$stickybombs$", "mat_stickybombs", Descriptions::stickybombdesc, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::stickybomb);
 	}
 }

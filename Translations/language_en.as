@@ -56,6 +56,9 @@ namespace en
 	d_specallcomtext						= "Puts everyone in Spectators",
 	d_preventvoicelinespamtext				= "Disallow annoying voiceline spam from player",
 
+	// KnightShop.as
+	d_stickybombdesc						= "Slime covered bomb, able to stick to surface.",
+
 	// Satchel.as
 	d_satcheldesc							= "Ignites flammable blocks, activated by throw key",
 
@@ -219,6 +222,9 @@ namespace en
 
 	// Food.as
 	n_burgerinv								= "Pear tart",
+
+	// KnightShop.as
+	n_stickybomb							= "Sticky Bomb",
 
 	// KIWI_Playercard.as
 	n_medalsn								= "Medals",

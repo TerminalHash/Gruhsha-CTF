@@ -71,6 +71,9 @@ namespace Descriptions
 	specallcomtext		  	       	= Translate(en::d_specallcomtext+"\\"+ru::d_specallcomtext),
 	preventvoicelinespamtext		= Translate(en::d_preventvoicelinespamtext+"\\"+ru::d_preventvoicelinespamtext),
 
+	// KnightShop.as
+	stickybombdesc					= Translate(en::d_stickybombdesc+"\\"+ru::d_stickybombdesc),
+
 	// Satchel.as
 	satcheldesc			  	       	= Translate(en::d_satcheldesc+"\\"+ru::d_satcheldesc),
 
@@ -236,6 +239,9 @@ namespace Names
 
 	// Food.as
 	burgerinv		  	       			= Translate(en::n_burgerinv+"\\"+ru::n_burgerinv),
+
+	// KnightShop.as
+	stickybomb							= Translate(en::n_stickybomb+"\\"+ru::n_stickybomb),
 
 	// KIWI_Playercard.as
 	medalsn		  	       				= Translate(en::n_medalsn+"\\"+ru::n_medalsn),

@@ -56,6 +56,9 @@ namespace ru
 	d_specallcomtext						= "Сделать всех игроков наблюдателями",
 	d_preventvoicelinespamtext				= "Запретить игроку спамить войслайнами",
 
+	// KnightShop.as
+	d_stickybombdesc						= "Покрытая слизью бомба, способна прилипать к поверхности.",
+
 	// Satchel.as
 	d_satcheldesc							= "Поджигает горючие блоки, активируется при помощи клавиши броска",
 
@@ -219,6 +222,9 @@ namespace ru
 
 	// Food.as
 	n_burgerinv								= "Пирожок с грушами",
+
+	// KnightShop.as
+	n_stickybomb							= "Липкая бомба",
 
 	// KIWI_Playercard.as
 	n_medalsn								= "Медали",
