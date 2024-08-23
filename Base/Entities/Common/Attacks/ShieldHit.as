@@ -34,6 +34,9 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 		return damage;
 	}
 
+	CPlayer@ dmgowner = hitterBlob.getDamageOwnerPlayer();
+	CPlayer@ thisplayer = this.getPlayer();
+
 	if (blockAttack(this, velocity, 0.0f) && this.hasTag("shielded"))
 	{
 		if (isExplosionHitter(customData)) //bomb jump
