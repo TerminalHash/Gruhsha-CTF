@@ -58,6 +58,7 @@ namespace en
 
 	// KnightShop.as
 	d_stickybombdesc						= "Slime covered bomb, able to stick to surface.",
+	d_goldenminedesc						= "More durable version of mine, able to stick to surface.",
 
 	// Satchel.as
 	d_satcheldesc							= "Ignites flammable blocks, activated by throw key",
@@ -225,6 +226,7 @@ namespace en
 
 	// KnightShop.as
 	n_stickybomb							= "Sticky Bomb",
+	n_goldenmine							= "Golden Mine",
 
 	// KIWI_Playercard.as
 	n_medalsn								= "Medals",

@@ -58,6 +58,7 @@ namespace ru
 
 	// KnightShop.as
 	d_stickybombdesc						= "Покрытая слизью бомба, способна прилипать к поверхности.",
+	d_goldenminedesc						= "Более прочная версия мины, способна прилипать к поверхности.",
 
 	// Satchel.as
 	d_satcheldesc							= "Поджигает горючие блоки, активируется при помощи клавиши броска",
@@ -225,6 +226,7 @@ namespace ru
 
 	// KnightShop.as
 	n_stickybomb							= "Липкая бомба",
+	n_goldenmine							= "Золотая мина",
 
 	// KIWI_Playercard.as
 	n_medalsn								= "Медали",
