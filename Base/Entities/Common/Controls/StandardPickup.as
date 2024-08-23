@@ -395,7 +395,7 @@ f32 getPriorityPickupScale(CBlob@ this, CBlob@ b)
 		}
 
 		// Military stuff we don't want to pick up when in the same team and always considered lit
-		if (name == "mine" || name == "bomb" || name == "waterbomb")
+		if (name == "mine" || name == "bomb" || name == "waterbomb" || name == "golden_mine")
 		{
 			// Make an exception to the team rule: when the explosive is the holder's
 			bool mine = b.getDamageOwnerPlayer() is this.getPlayer();
