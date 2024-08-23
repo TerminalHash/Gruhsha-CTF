@@ -263,6 +263,15 @@ void onDie(CBlob@ this)
 
 void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 {
+	if (blob !is null)
+	{
+		if (blob.getShape().isStatic() && this.hasTag("exploding"))
+		{
+			this.setAngleDegrees(90 - (this.getPosition() - blob.getPosition()).Angle());
+			this.getShape().SetStatic(true);
+		}
+	}
+
 	if (!solid)
 	{
 		return;
