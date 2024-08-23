@@ -100,7 +100,6 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 			if (dmgowner !is null && thisplayer !is null) {
 					if (dmgowner is thisplayer) {
 						this.set_u32("lastbombjumptimetigor", getGameTime());
-						this.Sync("lastbombjumptimetigor", true);
 				}
 			}
 		}
