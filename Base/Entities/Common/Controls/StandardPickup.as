@@ -42,6 +42,7 @@ void onInit(CBlob@ this)
 		menu.add_entry(PickupWheelMenuEntry("Sticky Bomb", "$stickybombs$", stickybomb_options, Vec2f(0, -4.0f)));
 
 		menu.add_entry(PickupWheelMenuEntry("Mine", "$mine$", "mine"));
+		menu.add_entry(PickupWheelMenuEntry("Golden Mine", "$golden_mine$", "golden_mine"));
 
 		// archer stuff
 		menu.add_entry(PickupWheelMenuEntry("Arrows", "$mat_arrows$", "mat_arrows", Vec2f(0, -8.0f)));
