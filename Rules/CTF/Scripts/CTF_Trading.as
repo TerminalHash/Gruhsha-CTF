@@ -128,7 +128,7 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 
 	bool giveBuilderBonus = false;
 
-	if(customData == Hitters::drill || customData == Hitters::spikes || customData == Hitters::builder) 
+	if (customData == Hitters::drill || customData == Hitters::spikes || customData == Hitters::builder)
 	{
 		giveBuilderBonus = true;
 	}
@@ -146,13 +146,17 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 					plcl = killer.getBlob().getName();
 				}
 
-				killer.server_setCoins(killer.getCoins() + (coinsOnKillAdd * Maths::Pow(killstreakFactor, killer.get_u8("killstreak"))) * getArcherMultiplier(plcl) * getMultiplier());
+				if (customData != Hitters::keg) {
+					killer.server_setCoins(killer.getCoins() + (coinsOnKillAdd * Maths::Pow(killstreakFactor, killer.get_u8("killstreak"))) * getArcherMultiplier(plcl) * getMultiplier());
+					//printf("Give coins KILL");
+				}
 			}
 
 			CPlayer@ helper = getAssistPlayer (victim, killer);
 			if (helper !is null) 
 			{ 
 				helper.server_setCoins(helper.getCoins() + (giveBuilderBonus ? coinsOnAssistAddBuilder : coinsOnAssistAdd));
+				//printf("Give coins ASSIST");
 			}
 		}
 		if (!this.isWarmup())	//only reduce coins if the round is on.
@@ -178,17 +182,19 @@ f32 onPlayerTakeDamage(CRules@ this, CPlayer@ victim, CPlayer@ attacker, f32 Dam
 
 	bool giveBuilderBonus = false;
 
-
 	if (attacker !is null && attacker !is victim && attacker.getTeamNum() != victim.getTeamNum())
 	{
-		if(attacker.lastBlobConfig == "builder")
+		if (attacker.lastBlobConfig == "builder")
 		{
 			giveBuilderBonus = true;
 		}
+
         CBlob@ v = victim.getBlob();
         f32 health = 0.0f;
-        if(v !is null)
+
+        if (v !is null)
             health = v.getHealth();
+
         f32 dmg = DamageScale;
         dmg = Maths::Min(health, dmg);
 
@@ -200,6 +206,7 @@ f32 onPlayerTakeDamage(CRules@ this, CPlayer@ victim, CPlayer@ attacker, f32 Dam
 		}
 
 		attacker.server_setCoins(attacker.getCoins() + (dmg * coinsOnDamageAdd / this.attackdamage_modifier) * getArcherMultiplier(plcl) * getMultiplier());
+		//printf("Give coins DAMAGE");
 	}
 
 	return DamageScale;
@@ -286,5 +293,6 @@ void awardCoins(CBitStream@ params)
 			coins /= warmupFactor;
 
 		p.server_setCoins(p.getCoins() + coins);
+		//printf("Give coins EVENTS");
 	}
 }
