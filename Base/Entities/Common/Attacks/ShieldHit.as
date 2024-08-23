@@ -42,7 +42,6 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 		if (isExplosionHitter(customData)) //bomb jump
 		{
 			bool earlyreturn = false;
-			bool preventbombertactic = false;
 
 			if (dmgowner !is null && thisplayer !is null) {
 				u32 secs_since = getGameTime() - this.get_u32("lastbombjumptimetigor");
@@ -50,9 +49,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 				printf("Last bomb hit time: " + this.get_u32("lastbombjumptimetigor"));
 				printf("Final time: " + secs_since);
 
-				if (secs_since < 3) {
-					earlyreturn = true;
-				} else if (secs_since < 90 && dmgowner is thisplayer) {
+				if (secs_since < 90 && dmgowner is thisplayer) {
 					if (this.getCarriedBlob() !is null && this.getCarriedBlob().getName() == "keg") {
 						setKnocked(this, 7);
 						this.DropCarried();
