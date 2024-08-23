@@ -34,10 +34,33 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 		return damage;
 	}
 
+	CPlayer@ dmgowner = hitterBlob.getDamageOwnerPlayer();
+	CPlayer@ thisplayer = this.getPlayer();
+
 	if (blockAttack(this, velocity, 0.0f) && this.hasTag("shielded"))
 	{
 		if (isExplosionHitter(customData)) //bomb jump
 		{
+			bool earlyreturn = false;
+
+			if (dmgowner !is null && thisplayer !is null) {
+				u32 secs_since = getGameTime() - this.get_u32("lastbombjumptimetigor");
+				//printf("Current time: " + getGameTime());
+				//printf("Last bomb hit time: " + this.get_u32("lastbombjumptimetigor"));
+				//printf("Final time: " + secs_since);
+
+				if (secs_since < 90 && dmgowner is thisplayer) {
+					if (this.getCarriedBlob() !is null && this.getCarriedBlob().getName() == "keg") {
+						setKnocked(this, 7);
+						this.DropCarried();
+					}
+				}
+
+				if (hitterBlob.hasTag("DONTSTACKBOMBJUMP") && dmgowner is thisplayer) {
+					earlyreturn = true;
+				}
+			}
+
 			Vec2f vel = this.getVelocity();
 			this.setVelocity(Vec2f(0.0f, -1.8));
 
@@ -60,22 +83,25 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 					bombforce.y -= 80;
 				}
 			}
-			else if (this.isFacingLeft() && vel.x > 0)
-			{
-				//bombforce.x += 5;
-			}
-			else if (!this.isFacingLeft() && vel.x < 0)
-			{
-				//bombforce.x -= 5;
-			}
 
-			if (true)
-			{
+			if (earlyreturn) {
+				// Dont touch debug lines needlessly!
+
+				//printf("Early return");
+				//printf("Early return is " + earlyreturn);
+				//printf("Force: " + bombforce);
+				//this.setVelocity(bombforce);
+			} else if (!earlyreturn) {
 				this.AddForce(bombforce);
 			}
 
 			this.Tag("dont stop til ground");
 
+			if (dmgowner !is null && thisplayer !is null) {
+					if (dmgowner is thisplayer) {
+						this.set_u32("lastbombjumptimetigor", getGameTime());
+				}
+			}
 		}
 		else if (exceedsShieldBreakForce(this, damage) && customData != Hitters::arrow)
 		{
