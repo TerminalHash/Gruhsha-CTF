@@ -85,7 +85,7 @@ namespace en
 	d_sleeptext								= "Sleep. Free!",
 
 	// TimeToEnd.as
-	d_thirtyminutesleft						= "15 minutes left, hurry up!",
+	d_thirtyminutesleft						= "5 minutes left, hurry up!",
 	d_suddenactive							= "SUDDEN DEATH MODE IS ACTIVE!",
 	d_kegbuff								= "* Kegs are buffed;",
 	d_drillbuff1							= "* Drillzone compeletly disabled;",
