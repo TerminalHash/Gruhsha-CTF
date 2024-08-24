@@ -7,7 +7,6 @@
 #include "GameplayEventsCommon.as";
 #include "Requirements.as"
 #include "RunnerTextures.as"
-#include "BindingsCommon.as";
 
 bool PlaceBlob(CBlob@ this, CBlob@ blob, Vec2f cursorPos, bool repairing = false, CBlob@ repairBlob = null)
 {
