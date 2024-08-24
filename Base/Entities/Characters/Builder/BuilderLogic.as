@@ -101,14 +101,14 @@ void onTick(CBlob@ this)
 	{
 		Pickaxe(this);
 		if (this.isKeyJustPressed(key_action3)) {
-			CBlob@ carried = this.getCarriedBlob();
+			/*CBlob@ carried = this.getCarriedBlob();
 
 			if (carried is null || !carried.hasTag("temp blob")) {
 				client_SendThrowOrActivateCommand(this);
 			}
 		}
 
-		if (b_KeyJustPressed("activate_or_throw_bomb")) {
+		if (b_KeyJustPressed("activate_or_throw_bomb")) {*/
 			CBlob@ carried = this.getCarriedBlob();
 			bool holding = carried !is null;// && carried.hasTag("exploding");
 
@@ -148,6 +148,16 @@ void onTick(CBlob@ this)
 
 			if (!thrown)
 			{
+				// dont "activate" temp blobs like ladders or doors
+				if ((carried is null || carried.hasTag("temp blob")) &&
+					(
+						carried.getConfig() == "ladder" ||
+						carried.getConfig() == "stone_door" ||
+						carried.getConfig() == "wooden_door" ||
+						carried.getConfig() == "wooden_platform"
+					)
+				) return;
+
 				// dont activate keg and satchel via this
 				if (carried !is null && carried.getConfig() == "keg") return;
 				if (carried !is null && carried.getConfig() == "satchel") return;

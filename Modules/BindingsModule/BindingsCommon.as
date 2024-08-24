@@ -64,7 +64,7 @@ string[][] button_texts =
 		Names::drillcommand,
 		Names::cancelarrowschargingcommand,
 		Names::markbuildercommand,
-		Names::activateorthrowbomb
+		//Names::activateorthrowbomb
 	}
 	/*{
 		"Go away"								// TECHNICAL LINE DONT TOUCH PLEASE
@@ -167,7 +167,7 @@ string[][] button_file_names =
 		"take_out_drill",
 		"cancel_charging",
 		"mark_team_builder",
-		"activate_or_throw_bomb"
+		//"activate_or_throw_bomb"
 	}
 	/*{
 		"go away"								// TECHNICAL LINE DONT TOUCH PLEASE
