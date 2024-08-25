@@ -396,31 +396,4 @@ void onTick(CBlob@ this)
 	}
 
 	UpdateSprite(this);
-
-	// Waffle: Automatically chop trees behind the saw if they're fully grown
-	if (this.getTickSinceCreated() % 15 == 0 && !this.isAttached() && getSawOn(this))
-	{
-		CMap@ map = getMap();
-		if (map is null)
-		{
-			return;
-		}
-
-		CBlob@[] overlapping;
-		Vec2f offset = Vec2f(this.getWidth(), this.getHeight()) / 3;
-		map.getBlobsInBox(this.getPosition() - offset, this.getPosition() + offset, overlapping);
-		for (u16 i = 0; i < overlapping.length(); i++)
-		{
-			CBlob@ blob = overlapping[i];
-			if (blob !is null && blob.hasTag("tree"))
-			{
-				TreeVars vars;
-				blob.get("TreeVars", vars);
-				if (vars.max_height == vars.height && !blob.exists("cut_down_time"))
-				{
-					this.server_Hit(blob, blob.getPosition(), blob.getPosition() - this.getPosition(), 0.5f, Hitters::saw);
-				}
-			}
-		}
-	}
 }
