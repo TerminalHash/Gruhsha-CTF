@@ -148,6 +148,9 @@ void onTick(CBlob@ this)
 
 			if (!thrown)
 			{
+				// wtf???
+				if (carried is null) return;
+
 				// dont "activate" temp blobs like ladders or doors
 				if ((carried is null || carried.hasTag("temp blob")) &&
 					(
