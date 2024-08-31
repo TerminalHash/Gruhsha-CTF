@@ -4,7 +4,7 @@
 #include "TranslationsSystem.as"
 
 //Vec2f playerCardDims(256, 198+102);
-Vec2f playerCardDims(256, 198+62);
+Vec2f playerCardDims(256, 198+92);
 Vec2f hovered_icon_pos();
 
 int hovered_accolade = -1;
@@ -38,6 +38,10 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 	string charname = player.getCharacterName();
 	string clantag = player.getClantag();
 
+	// other stuff
+	s32 kills_c   = player.getKills();
+	s32 deaths_c  = player.getDeaths();
+
 	//main pane
 	Vec2f paneDims = playerCardDims;
 	Vec2f topLeft = pos;//-Vec2f(paneDims.x/2+32,-8);
@@ -51,7 +55,7 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 
 	GUI::DrawPane(topLeft, botRight);
 
-	Vec2f paneGap(0, 3);
+	Vec2f paneGap(0, 30);
 	Vec2f sideGap(6, 6);
 
 	//charname stuff
@@ -427,6 +431,7 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 		}
 	}
 
+	// head panel
 	if (draw_head) {
 		string head_file;
 		int head_frame;
@@ -445,14 +450,13 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 		GUI::DrawIcon(head_file, head_frame+(getGameTime()%90<60?(getGameTime()%90<40?1:2):0), head_dims, head_icon_pos, head_icon_scale, head_icon_scale, player.getTeamNum(), SColor(0xaaffffff));
 	}
 
-	// head panel
-	//f32 head_icon_scale = 1.0f;
-	//Vec2f headFrameTopLeft(usernameTopLeft.x, usernamePaneDims.y+sideGap.y+24);
-	//Vec2f headFrameBotRight = Vec2f(botRight.x-headFrameTopLeft.x, topLeft.y+headFrameTopLeft.y+usernamePaneDims.y+16);
-	//Vec2f head_icon_pos = Vec2f(agePaneTopLeft.x+70, portraitBotRight.y+120);
-	//GUI::DrawPane(topLeft+headFrameTopLeft, headFrameBotRight, SColor(0xff777777));
-	//GUI::DrawIcon(head_file, head_frame, Vec2f(64,16), head_icon_pos, head_icon_scale, head_icon_scale, player.getTeamNum(), SColor(0xFFFFFFFF));
-	//GUI::DrawIcon(head_file, head_icon_pos, head_icon_scale);
+	// KDR panel
+	Vec2f kdrFrameTopLeft(usernameTopLeft.x, usernamePaneDims.y+sideGap.y+24);
+	Vec2f kdrFrameBotRight = Vec2f(botRight.x-kdrFrameTopLeft.x, topLeft.y+kdrFrameTopLeft.y+usernamePaneDims.y+0);
+	Vec2f kdr_text_pos = Vec2f(agePaneTopLeft.x+70, portraitBotRight.y+120);
+	GUI::DrawPane(topLeft+kdrFrameTopLeft, kdrFrameBotRight, SColor(0xff777777));
+	GUI::DrawText(getTranslatedString("KDR"), topLeft+kdrFrameTopLeft+Vec2f(5, 5), SColor(0xFFFFFFFF));
+	GUI::DrawText("" + formatFloat(kills_c / Maths::Max(f32(deaths_c), 1.0f), "", 0, 2), topLeft+kdrFrameTopLeft+Vec2f(34, 5), SColor(0xFFFFFFFF));
 
 	// Clan Badges
 	f32 clan_badge_icon_scale = 1.0f;

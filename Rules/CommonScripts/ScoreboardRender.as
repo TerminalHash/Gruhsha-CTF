@@ -109,7 +109,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 	GUI::DrawText(getTranslatedString("Kills"), Vec2f(br.x - 260, tl.y), kdr_color);      // Waffle: Change header color for old stats
 	GUI::DrawText(getTranslatedString("Deaths"), Vec2f(br.x - 190, tl.y), kdr_color);     // Waffle: --
 	GUI::DrawText(getTranslatedString("Assists"), Vec2f(br.x - 120, tl.y), kdr_color);    // Waffle: --
-	GUI::DrawText(getTranslatedString("KDR"), Vec2f(br.x - 50, tl.y), kdr_color);         // Waffle: --
+	//GUI::DrawText(getTranslatedString("KDR"), Vec2f(br.x - 50, tl.y), kdr_color);         // Waffle: --
 
 	// Old accolades shit, we dont using this anymore
 	/*GUI::DrawText(getTranslatedString("Accolades"), Vec2f(br.x - accolades_start, tl.y), SColor(0xffffffff));
@@ -633,7 +633,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 		GUI::DrawText("" + kills, Vec2f(br.x - 260, tl.y), kdr_color);
 		GUI::DrawText("" + deaths, Vec2f(br.x - 190, tl.y), kdr_color);
 		GUI::DrawText("" + assists, Vec2f(br.x - 120, tl.y), kdr_color);
-		GUI::DrawText("" + formatFloat(kills / Maths::Max(f32(deaths), 1.0f), "", 0, 2), Vec2f(br.x - 50, tl.y), kdr_color);
+		//GUI::DrawText("" + formatFloat(kills / Maths::Max(f32(deaths), 1.0f), "", 0, 2), Vec2f(br.x - 50, tl.y), kdr_color);
 
 		int teamIndexSpectators = 200;
 		int teamIndexBlue = 0;
@@ -748,6 +748,7 @@ void onRenderScoreboard(CRules@ this) {
 	{
 		CPlayer@ p = getPlayer(i);
 		f32 kdr = getKDR(p);
+		f32 kills = p.getKills();
 		bool inserted = false;
 		if (p.getTeamNum() == this.getSpectatorTeamNum())
 		{
@@ -760,7 +761,7 @@ void onRenderScoreboard(CRules@ this) {
 		{
 			for (u32 j = 0; j < blueplayers.length; j++)
 			{
-				if (getKDR(blueplayers[j]) < kdr)
+				if (blueplayers[j].getKills() < kills)
 				{
 					blueplayers.insert(j, p);
 					inserted = true;
@@ -776,7 +777,7 @@ void onRenderScoreboard(CRules@ this) {
 		{
 			for (u32 j = 0; j < redplayers.length; j++)
 			{
-				if (getKDR(redplayers[j]) < kdr)
+				if (redplayers[j].getKills() < kills)
 				{
 					redplayers.insert(j, p);
 					inserted = true;
