@@ -252,6 +252,7 @@ namespace Names
 
 	// ScoreboardCommon.as
 	modsettingsbutton	  	       		= Translate(en::n_modsettingsbutton+"\\"+ru::n_modsettingsbutton),
+	damagedealtsc	  	       			= Translate(en::n_damagedealtsc+"\\"+ru::n_damagedealtsc),
 
 	// ScoreboardRender.as
 	matssection	  	   		    		= Translate(en::n_matssection+"\\"+ru::n_matssection),

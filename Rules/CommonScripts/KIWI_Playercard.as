@@ -456,7 +456,10 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 	Vec2f kdr_text_pos = Vec2f(agePaneTopLeft.x+70, portraitBotRight.y+120);
 	GUI::DrawPane(topLeft+kdrFrameTopLeft, kdrFrameBotRight, SColor(0xff777777));
 	GUI::DrawText(getTranslatedString("KDR"), topLeft+kdrFrameTopLeft+Vec2f(5, 5), SColor(0xFFFFFFFF));
-	GUI::DrawText("" + formatFloat(kills_c / Maths::Max(f32(deaths_c), 1.0f), "", 0, 2), topLeft+kdrFrameTopLeft+Vec2f(34, 5), SColor(0xFFFFFFFF));
+	GUI::DrawText("" + formatFloat(kills_c / Maths::Max(f32(deaths_c), 1.0f), "", 0, 2), topLeft+kdrFrameTopLeft+Vec2f(40, 5), SColor(0xFFFFFFFF));
+	GUI::DrawText("|", topLeft+kdrFrameTopLeft+Vec2f(78, 4), SColor(0xFFFFFFFF));
+	GUI::DrawText(getTranslatedString("Deaths"), topLeft+kdrFrameTopLeft+Vec2f(90, 5), SColor(0xFFFFFFFF));
+	GUI::DrawText("" + deaths_c, topLeft+kdrFrameTopLeft+Vec2f(156, 5), SColor(0xFFFFFFFF));
 
 	// Clan Badges
 	f32 clan_badge_icon_scale = 1.0f;

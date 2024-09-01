@@ -238,6 +238,7 @@ namespace en
 
 	// ScoreboardRender.as
 	n_matssection							= "Materials",
+	n_damagedealtsc							= "Damage",
 
 	// Quarters.as
 	n_beeritem								= "Kvass - 1 Heart",
