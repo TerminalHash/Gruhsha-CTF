@@ -13,6 +13,11 @@ f32 getKDR(CPlayer@ p)
 	return p.getKills() / Maths::Max(f32(p.getDeaths()), 1.0f);
 }
 
+f32 getKPM(CPlayer@ p)
+{
+	return p.getKills() / Maths::Max(f32(getRules().get_s32("play_time" + p.getUsername()) / 60.0), 1.0f);
+}
+
 SColor getNameColour(CPlayer@ p)
 {
 	SColor c;

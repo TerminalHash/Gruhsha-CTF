@@ -4,7 +4,7 @@
 #include "TranslationsSystem.as"
 
 //Vec2f playerCardDims(256, 198+102);
-Vec2f playerCardDims(256, 198+92);
+Vec2f playerCardDims(356, 198+92);
 Vec2f hovered_icon_pos();
 
 int hovered_accolade = -1;
@@ -41,6 +41,7 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 	// other stuff
 	s32 kills_c   = player.getKills();
 	s32 deaths_c  = player.getDeaths();
+	s32 assists_c = player.getAssists();
 
 	//main pane
 	Vec2f paneDims = playerCardDims;
@@ -460,6 +461,9 @@ void makePlayerCard(CPlayer@ player, Vec2f pos)
 	GUI::DrawText("|", topLeft+kdrFrameTopLeft+Vec2f(78, 4), SColor(0xFFFFFFFF));
 	GUI::DrawText(getTranslatedString("Deaths"), topLeft+kdrFrameTopLeft+Vec2f(90, 5), SColor(0xFFFFFFFF));
 	GUI::DrawText("" + deaths_c, topLeft+kdrFrameTopLeft+Vec2f(156, 5), SColor(0xFFFFFFFF));
+	GUI::DrawText("|", topLeft+kdrFrameTopLeft+Vec2f(176, 4), SColor(0xFFFFFFFF));
+	GUI::DrawText(getTranslatedString("Assists"), topLeft+kdrFrameTopLeft+Vec2f(186, 5), SColor(0xFFFFFFFF));
+	GUI::DrawText("" + assists_c, topLeft+kdrFrameTopLeft+Vec2f(286, 5), SColor(0xFFFFFFFF));
 
 	// Clan Badges
 	f32 clan_badge_icon_scale = 1.0f;

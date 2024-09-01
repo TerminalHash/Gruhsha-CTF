@@ -239,6 +239,7 @@ namespace ru
 	// ScoreboardRender.as
 	n_matssection							= "Материалы",
 	n_damagedealtsc							= "Урон",
+	n_killsperminute						= "У/М",
 
 	// Quarters.as
 	n_beeritem								= "Квас - 1 Сердце",

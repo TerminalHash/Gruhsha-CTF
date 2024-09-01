@@ -107,9 +107,12 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 	GUI::DrawText(getTranslatedString("Username"), Vec2f(br.x - 470, tl.y), SColor(0xffffffff));
 	GUI::DrawText(getTranslatedString("Ping"), Vec2f(br.x - 330, tl.y), SColor(0xffffffff));
 	GUI::DrawText(getTranslatedString("Kills"), Vec2f(br.x - 260, tl.y), kdr_color);      // Waffle: Change header color for old stats
+	GUI::DrawText(Names::damagedealtsc, Vec2f(br.x - 170, tl.y), SColor(0xffffffff));
+	GUI::DrawText(Names::killsperminute, Vec2f(br.x - 100, tl.y), SColor(0xffffffff));
+
+	// OLD STUFF
 	//GUI::DrawText(getTranslatedString("Deaths"), Vec2f(br.x - 190, tl.y), kdr_color);     // Waffle: --
-	GUI::DrawText(Names::damagedealtsc, Vec2f(br.x - 190, tl.y), kdr_color);     // Waffle: --
-	GUI::DrawText(getTranslatedString("Assists"), Vec2f(br.x - 120, tl.y), kdr_color);    // Waffle: --
+	//GUI::DrawText(getTranslatedString("Assists"), Vec2f(br.x - 120, tl.y), kdr_color);    // Waffle: --
 	//GUI::DrawText(getTranslatedString("KDR"), Vec2f(br.x - 50, tl.y), kdr_color);         // Waffle: --
 
 	// Old accolades shit, we dont using this anymore
@@ -633,9 +636,10 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 		GUI::DrawText("" + username, Vec2f(br.x - 470, tl.y), namecolour);
 		GUI::DrawText("" + ping_in_ms, Vec2f(br.x - 330, tl.y), SColor(0xffffffff));
 		GUI::DrawText("" + kills, Vec2f(br.x - 260, tl.y), kdr_color);
+		GUI::DrawText("" + dmgdeal, Vec2f(br.x - 170, tl.y), kdr_color);
+		GUI::DrawText("" + formatFloat(getKPM(p), "", 0, 2), Vec2f(br.x - 100, tl.y), SColor(0xffffffff));
 		//GUI::DrawText("" + deaths, Vec2f(br.x - 190, tl.y), kdr_color);
-		GUI::DrawText("" + dmgdeal, Vec2f(br.x - 190, tl.y), kdr_color);
-		GUI::DrawText("" + assists, Vec2f(br.x - 120, tl.y), kdr_color);
+		//GUI::DrawText("" + assists, Vec2f(br.x - 120, tl.y), kdr_color);
 		//GUI::DrawText("" + formatFloat(kills / Maths::Max(f32(deaths), 1.0f), "", 0, 2), Vec2f(br.x - 50, tl.y), kdr_color);
 
 		int teamIndexSpectators = 200;
