@@ -20,11 +20,11 @@ SColor getNameColour(CPlayer@ p)
 	bool showColor = (p !is localplayer && isSpecial(localplayer)) || coloredNameEnabled(getRules(), p);
 	bool customColor = false;
 
+	string username = p.getUsername();
+
 	if (username == "TerminalHash" || username == "kusaka79") {
 		customColor = true;
 	}
-
-	string username = p.getUsername();
 
 	// set custom color for rolas
 	if (p.isDev() && showColor && !customColor) {
