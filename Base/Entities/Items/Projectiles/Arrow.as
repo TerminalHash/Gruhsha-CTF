@@ -683,7 +683,7 @@ void ArrowHitMap(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, u8 c
 	}
 	else if (arrowType == ArrowType::fire)
 	{
-		this.server_SetTimeToDie(FIRE_IGNITE_TIME);
+		this.server_Die();
 	}
 
 	//kill any grain plants we shot the base of
