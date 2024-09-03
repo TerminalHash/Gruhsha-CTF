@@ -144,18 +144,19 @@ void onRender(CRules@ this)
 	if (this.hasTag("sudden death")) {
 		GUI::DrawIcon("MenuItems.png", 18, Vec2f(32, 32), Vec2f(12, 180), 1.5f);
 
-		Vec2f dim = Vec2f(342, 155);
+		Vec2f dim = Vec2f(342, 195);
 		Vec2f ul(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12);
 		Vec2f tl = ul + Vec2f(-190, -100);
 
 		if (mousePos.x > x -4 && mousePos.x < x + 74 && mousePos.y < skull.y + 85 && mousePos.y > skull.y +12) {
-			GUI::DrawSunkenPane(tl, tl + Vec2f(490, 110));
+			GUI::DrawSunkenPane(tl, tl + Vec2f(490, 120));
 			GUI::DrawText(Descriptions::suddenactive, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y - 80), color_white);
 			GUI::DrawText(Descriptions::kegbuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y - 65), color_white);
 			GUI::DrawText(Descriptions::drillbuff1, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y - 50), color_white);
 			GUI::DrawText(Descriptions::drillbuff2, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y - 35), color_white);
 			GUI::DrawText(Descriptions::blockreqdebuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y - 20), color_white);
 			GUI::DrawText(Descriptions::respawndebuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y - 5), color_white);
+			GUI::DrawText(Descriptions::shielddebuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y + 10), color_white);
 		}
 	}
 }

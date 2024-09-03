@@ -107,6 +107,7 @@ namespace Descriptions
 	drillbuff2						= Translate(en::d_drillbuff2+"\\"+ru::d_drillbuff2),
 	blockreqdebuff					= Translate(en::d_blockreqdebuff+"\\"+ru::d_blockreqdebuff),
 	respawndebuff					= Translate(en::d_respawndebuff+"\\"+ru::d_respawndebuff),
+	shielddebuff					= Translate(en::d_shielddebuff+"\\"+ru::d_shielddebuff),
 
 	empty 					= "";
 }
