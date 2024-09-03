@@ -546,7 +546,7 @@ void Pickaxe(CBlob@ this)
 	{
 		CBitStream params;
 		params.write_u16(0);
-		params.write_Vec2f(hitdata.tilepos);
+		params.write_Vec2f(tilepos);
 		this.SendCommand(this.getCommandID("pickaxe"), params);
 
 		TileType t = getMap().getTile(hitdata.tilepos).type;
