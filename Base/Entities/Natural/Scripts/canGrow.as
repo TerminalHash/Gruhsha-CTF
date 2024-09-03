@@ -55,12 +55,10 @@ bool canGrowAt(CBlob@ this, Vec2f pos)
 	}*/
 
 	Vec2f underneath = Vec2f(pos.x, pos.y + (this.getHeight() + map.tilesize) * 0.5f);
-	if (map.isTileGround(map.getTile(underneath).type) || map.isTileStone(map.getTile(underneath).type))
-	{
+
+	if (map.isTileGround(map.getTile(underneath).type) || map.isTileStone(map.getTile(underneath).type) || map.isTileBedrock(map.getTile(underneath).type)) {
 		return true;
-	}
-	else
-	{
+	} else {
 		return false;
 	}
 }
