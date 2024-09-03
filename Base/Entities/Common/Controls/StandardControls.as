@@ -347,7 +347,7 @@ void onTick(CBlob@ this)
 						onCycle(params);
 					}
 
-					if (held !is null) {
+					if (held !is null && getRules().get_string("cycle_with_item") == "yes") {
 						this.SendCommand(this.getCommandID("putinheld"));
 					}
 				}
