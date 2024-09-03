@@ -348,7 +348,7 @@ void onTick(CBlob@ this)
 					}
 				}
 
-				if (getGameTime() - this.get_s32("tap_time") > minimum_ticks) {
+				if (getGameTime() - this.get_s32("tap_time") > 1) {
 					this.SendCommand(this.getCommandID("putinheld"));
 				}
 
