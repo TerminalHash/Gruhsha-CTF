@@ -346,10 +346,10 @@ void onTick(CBlob@ this)
 
 						onCycle(params);
 					}
-				}
 
-				if (getGameTime() - this.get_s32("tap_time") > 1) {
-					this.SendCommand(this.getCommandID("putinheld"));
+					if (held !is null) {
+						this.SendCommand(this.getCommandID("putinheld"));
+					}
 				}
 
 				this.ClearMenus();
