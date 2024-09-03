@@ -1,12 +1,12 @@
 // spawn resources
-const u32 materials_wait = 25; //seconds between free mats
-const u32 materials_wait_warmup = 40; //seconds between free mats
+const u32 materials_wait = 30; //seconds between free mats
+const u32 materials_wait_warmup = 45; //seconds between free mats
 
 const int warmup_wood_amount = 500;
 const int warmup_stone_amount = 500;
 
 const int matchtime_wood_amount = 375;
-const int matchtime_stone_amount = 150;
+const int matchtime_stone_amount = 75;
 
 ////////////////////////////////////////////
 // Reducing resupplies stuff
