@@ -71,6 +71,7 @@ void onTick(CBlob@ this)
 	if (rules.hasTag("sudden death")) {
 		this.set_f32("explosive_radius", 78.0f);
 		this.set_f32("map_damage_radius", 78.0f);
+		this.set_f32("map_damage_ratio", 1.0f);
 	}
 }
 
