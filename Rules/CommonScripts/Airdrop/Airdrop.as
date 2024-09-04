@@ -27,8 +27,6 @@ void onTick(CRules@ this) {
 		this.set_s32("airdrop timer", airdrop_interval);
 
 		CMap@ map = getMap();
-		f32 left = getRules().get_u16("barrier_x1");
-		f32 right = getRules().get_u16("barrier_x2");
 		const f32 mapCenter = map.tilemapwidth * map.tilesize * 0.5;
 
 		for (uint i = 0; i < crates_to_spawn; i++) {
