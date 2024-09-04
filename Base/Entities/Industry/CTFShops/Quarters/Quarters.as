@@ -196,7 +196,7 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 		caller.CreateGenericButton("$rest$", Vec2f(-6, 0), this, this.getCommandID("rest"), getTranslatedString("Rest"));
 	}*/
 
-	this.set_bool("shop available", isOverlapping);
+	this.set_bool("shop available", isOverlapping && !caller.isAttachedTo(this));
 }
 
 void onShopMadeItem(CBitStream@ params)

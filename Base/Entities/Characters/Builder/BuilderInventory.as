@@ -81,13 +81,13 @@ void MakeBlocksMenu(CInventory@ this, const Vec2f &in INVENTORY_CE)
 {
 	CBlob@ blob = this.getBlob();
 	if (blob is null) return;
-	
+
 	BuildBlock[][]@ blocks;
 	blob.get(blocks_property, @blocks);
 	if (blocks is null) return;
-	
+
 	const Vec2f MENU_CE = Vec2f(0, MENU_SIZE.y * -GRID_SIZE - GRID_PADDING) + INVENTORY_CE;
-	
+
 	CGridMenu@ menu = CreateGridMenu(MENU_CE, blob, MENU_SIZE, getTranslatedString("Build"));
 	if (menu !is null)
 	{
@@ -134,9 +134,9 @@ void MakeBlocksMenu(CInventory@ this, const Vec2f &in INVENTORY_CE)
 				button.SetSelected(1);
 			}
 		}
-		
+
 		const Vec2f TOOL_POS = menu.getUpperLeftPosition() - Vec2f(GRID_PADDING, 0) + Vec2f(-1, 1) * GRID_SIZE / 2;
-		
+
 		CGridMenu@ tool = CreateGridMenu(TOOL_POS, blob, Vec2f(1, 1), "");
 		if (tool !is null)
 		{
@@ -202,36 +202,25 @@ void onCommand(CInventory@ this, u8 cmd, CBitStream@ params)
 		if (callerp is null) return;
 
 		CBlob@ callerb = callerp.getBlob();
-		if (callerb is null) return;
-		if (callerb !is blob) return;
+		if (callerb is null || callerb !is blob) return;
+
 		BuildBlock[][]@ blocks;
 		if (!blob.get(blocks_property, @blocks)) return;
 
 		u8 i;
 		if (!params.saferead_u8(i)) return; 
 
-		CBitStream sparams;
-		sparams.write_u8(i);
-		blob.SendCommand(blob.getCommandID("make block client"), sparams);
-
 		const u8 PAGE = blob.get_u8("build page");
-		if (blocks !is null && i >= 0 && i < blocks[PAGE].length)
+		if (blocks !is null && i < blocks[PAGE].length)
 		{
 			BuildBlock@ block = @blocks[PAGE][i];
 			bool canBuildBlock = canBuild(blob, @blocks[PAGE], i) && !isKnocked(blob);
-			if (!canBuildBlock)
-			{
-				return;
-			}
+			if (!canBuildBlock) return;
 
 			CBlob@ carryBlob = blob.getCarriedBlob();
 			if (carryBlob !is null)
 			{
-				// check if this isn't what we wanted to create
-				if (carryBlob.getName() == block.name)
-				{
-					return;
-				}
+				if (carryBlob.getName() == block.name) return;
 
 				if (carryBlob.hasTag("temp blob"))
 				{
@@ -249,51 +238,53 @@ void onCommand(CInventory@ this, u8 cmd, CBitStream@ params)
 				}
 			}
 
+			blob.set_Vec2f("building space", Vec2f_zero);
+			blob.set_u8("buildblob", 0);
+
 			if (block.tile == 0)
 			{
 				server_BuildBlob(blob, @blocks[PAGE], i);
 			}
-			else
-			{
-				blob.set_TileType("buildtile", block.tile);
-			}
+
+			blob.set_TileType("buildtile", block.tile);
+
+			CBitStream stream;
+			stream.write_TileType(block.tile);
+			stream.write_bool(block.buildOnGround);
+			stream.write_u32(blob.get_u32("cant build time"));
+			stream.write_u8(blob.get_u8("buildblob"));
+			stream.write_Vec2f(blob.get_Vec2f("building space"));
+			blob.SendCommand(blob.getCommandID("make block client"), stream);
 		}
 	}
 	else if (cmd == blob.getCommandID("make block client") && isClient())
 	{
-		BuildBlock[][]@ blocks;
-		if (!blob.get(blocks_property, @blocks)) return;
+		const TileType buildtile = params.read_TileType();
+		const bool buildonground = params.read_bool();
+		const u32 buildtime = params.read_u32();
+		const u8 buildblob = params.read_u8();
+		const Vec2f buildspace = params.read_Vec2f();
 
-		u8 i;
-		if (!params.saferead_u8(i)) return; 
+		blob.set_TileType("buildtile", buildtile);
+		blob.set_u32("cant build time", buildtime);
+		blob.set_u8("buildblob", buildblob);
+		blob.set_Vec2f("building space", buildspace);
 
-		const u8 PAGE = blob.get_u8("build page");
-		if (blocks !is null && i >= 0 && i < blocks[PAGE].length)
+		if (buildonground)
 		{
-			BuildBlock@ block = @blocks[PAGE][i];
-			bool canBuildBlock = canBuild(blob, @blocks[PAGE], i) && !isKnocked(blob);
-			if (!canBuildBlock)
+			if (buildblob > 0)
 			{
-				if (blob.isMyPlayer())
-				{
-					blob.getSprite().PlaySound("/NoAmmo", 0.5);
-				}
-				return;
+				blob.getSprite().PlaySound("/Construct");
 			}
+			else if (blob.isMyPlayer())
+			{
+				blob.getSprite().PlaySound("/NoAmmo", 0.5f);
+			}
+		}
 
-			if (block.tile == 0)
-			{
-				server_BuildBlob(blob, @blocks[PAGE], i);
-			}
-			else
-			{
-				blob.set_TileType("buildtile", block.tile);
-			}
-
-			if (blob.isMyPlayer())
-			{
-				SetHelp(blob, "help self action", "builder", getTranslatedString("$Build$Build/Place  $LMB$"), "", 3);
-			}
+		if (blob.isMyPlayer())
+		{
+			SetHelp(blob, "help self action", "builder", getTranslatedString("$Build$Build/Place  $LMB$"), "", 3);
 		}
 	}
 	else if (cmd == blob.getCommandID("tool clear") && isServer())
