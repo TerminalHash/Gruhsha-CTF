@@ -829,6 +829,7 @@ void Reset(CRules@ this)
 	this.set("core", @core);
 	this.set("start_gametime", getGameTime() + core.warmUpTime);
 	this.set_u32("game_end_time", getGameTime() + core.gameDuration); //for TimeToEnd.as
+	this.Tag("faster mining");
 }
 
 void onRestart(CRules@ this)
