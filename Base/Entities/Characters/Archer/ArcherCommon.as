@@ -224,7 +224,7 @@ const string[] arrowNames = { "Regular arrows",
                               "Water arrows",
                               "Fire arrows",
                               "Bomb arrow",
-                              "Wooden Block arrows",
+                              "Wooden Block Arrows",
                               "Stone Block Arrows"
                             };
 
