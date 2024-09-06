@@ -654,6 +654,11 @@ void onTick(CMovement@ this)
 			}
 		}
 
+		if (blob.hasTag("icy")) {
+			moveVars.walkFactor *= 0.4f;
+			moveVars.jumpFactor *= 0.3f;
+		}
+
 		bool facingleft = blob.isFacingLeft();
 		bool stand = blob.isOnGround() || blob.isOnLadder();
 		Vec2f walkDirection;

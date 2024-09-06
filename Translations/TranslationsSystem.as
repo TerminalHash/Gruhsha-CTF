@@ -74,6 +74,7 @@ namespace Descriptions
 	// KnightShop.as
 	stickybombdesc					= Translate(en::d_stickybombdesc+"\\"+ru::d_stickybombdesc),
 	goldenminedesc					= Translate(en::d_goldenminedesc+"\\"+ru::d_goldenminedesc),
+	icebombdesc						= Translate(en::d_icebombdesc+"\\"+ru::d_icebombdesc),
 
 	// Satchel.as
 	satcheldesc			  	       	= Translate(en::d_satcheldesc+"\\"+ru::d_satcheldesc),
@@ -245,6 +246,7 @@ namespace Names
 	// KnightShop.as
 	stickybomb							= Translate(en::n_stickybomb+"\\"+ru::n_stickybomb),
 	goldenmine							= Translate(en::n_goldenmine+"\\"+ru::n_goldenmine),
+	icebomb								= Translate(en::n_icebomb+"\\"+ru::n_icebomb),
 
 	// KIWI_Playercard.as
 	medalsn		  	       				= Translate(en::n_medalsn+"\\"+ru::n_medalsn),

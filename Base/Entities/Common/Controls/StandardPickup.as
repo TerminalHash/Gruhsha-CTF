@@ -41,6 +41,9 @@ void onInit(CBlob@ this)
 		const PickupWheelOption[] stickybomb_options = {PickupWheelOption("stickybomb", 1), PickupWheelOption("mat_stickybombs", 0)};
 		menu.add_entry(PickupWheelMenuEntry("Sticky Bomb", "$stickybombs$", stickybomb_options, Vec2f(0, -4.0f)));
 
+		const PickupWheelOption[] icebomb_options = {PickupWheelOption("icebomb", 1), PickupWheelOption("mat_icebombs", 0)};
+		menu.add_entry(PickupWheelMenuEntry("Ice Bomb", "$mat_icebombs$", icebomb_options, Vec2f(0, -6.0f)));
+
 		menu.add_entry(PickupWheelMenuEntry("Mine", "$mine$", "mine"));
 		menu.add_entry(PickupWheelMenuEntry("Golden Mine", "$golden_mine$", "golden_mine"));
 

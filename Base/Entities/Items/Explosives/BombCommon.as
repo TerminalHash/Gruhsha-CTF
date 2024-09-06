@@ -38,7 +38,7 @@ bool UpdateBomb(CBlob@ this)
 		SColor lightColor;
 		const u8 hitter = this.get_u8("custom_hitter");
 
-		if (hitter == Hitters::water)
+		if (hitter == Hitters::water || hitter == Hitters::ice)
 		{
 			this.getSprite().SetEmitSound("WaterSparkle.ogg");
 			this.getSprite().SetEmitSoundPaused(false);

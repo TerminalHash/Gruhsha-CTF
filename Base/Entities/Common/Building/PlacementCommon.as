@@ -284,6 +284,10 @@ void SetTileAimpos(CBlob@ this, BlockCursor@ bc)
 
 u32 getCurrentBuildDelay(CBlob@ this)
 {
+	if (this.hasTag("icy")) {
+		return (getRules().getCurrentState() != GAME ? this.get_u32("warmup build delay") : this.get_u32("iced build delay"));
+	}
+
 	return (getRules().getCurrentState() != GAME ? this.get_u32("warmup build delay") : this.get_u32("build delay"));
 }
 
@@ -297,6 +301,7 @@ void SetupBuildDelay(CBlob@ this)
 	this.set_u32("build time", getGameTime());
 	this.set_u32("build delay", 6);
 	this.set_u32("warmup build delay", 4);
+	this.set_u32("iced build delay", 10);
 }
 
 bool isBuildDelayed(CBlob@ this)

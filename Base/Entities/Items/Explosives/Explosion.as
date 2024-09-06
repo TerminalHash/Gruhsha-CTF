@@ -130,6 +130,13 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 		return;
 	}
 
+	if (hitter == Hitters::ice)
+	{
+		int tilesr = (r / map.tilesize) * 0.5f;
+		Splash(this, tilesr, tilesr, 0.0f, false);
+		return;
+	}
+
 	//
 
 	makeLargeExplosionParticle(pos);
@@ -356,6 +363,13 @@ void onHitBlob(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@
 		{
 			//printf("onhitblob " + hitBlob.getName() + ", velocity: " + velocity + " , length: " + velocity.Length() + ", gt: " + getGameTime());
 			hitBlob.AddForce(velocity);
+		}
+	}
+
+	if (this.getName() == "icebomb") {
+		if (hitBlob !is null && hitBlob.hasTag("player")) {
+			hitBlob.Tag("icy");
+			hitBlob.Sync("icy", true);
 		}
 	}
 }
