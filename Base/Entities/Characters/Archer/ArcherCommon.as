@@ -35,6 +35,7 @@ namespace ArcherParams
 const f32 archer_grapple_length = 72.0f;
 const f32 archer_grapple_slack = 16.0f;
 const f32 archer_grapple_throw_speed = 20.0f;
+const f32 archer_grapple_throw_speed_i = 10.0f;
 
 const f32 archer_grapple_force = 2.0f;
 const f32 archer_grapple_accel_limit = 1.5f;
