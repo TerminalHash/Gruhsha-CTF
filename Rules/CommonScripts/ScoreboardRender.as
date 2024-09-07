@@ -39,11 +39,15 @@ class OldPlayerStats {
 	s32 kills;
 	s32 deaths;
 	s32 assists;
+	f32 dmgdeal;
+	f32 kpm;
 
 	OldPlayerStats() {
 		kills   = 0;
 		deaths  = 0;
 		assists = 0;
+		dmgdeal = 0;
+		kpm = 0;
 	}
 }
 
@@ -107,8 +111,8 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 	GUI::DrawText(getTranslatedString("Username"), Vec2f(br.x - 470, tl.y), SColor(0xffffffff));
 	GUI::DrawText(getTranslatedString("Ping"), Vec2f(br.x - 330, tl.y), SColor(0xffffffff));
 	GUI::DrawText(getTranslatedString("Kills"), Vec2f(br.x - 260, tl.y), kdr_color);      // Waffle: Change header color for old stats
-	GUI::DrawText(Names::damagedealtsc, Vec2f(br.x - 170, tl.y), SColor(0xffffffff));
-	GUI::DrawText(Names::killsperminute, Vec2f(br.x - 100, tl.y), SColor(0xffffffff));
+	GUI::DrawText(Names::damagedealtsc, Vec2f(br.x - 170, tl.y), kdr_color);
+	GUI::DrawText(Names::killsperminute, Vec2f(br.x - 100, tl.y), kdr_color);
 
 	// OLD STUFF
 	//GUI::DrawText(getTranslatedString("Deaths"), Vec2f(br.x - 190, tl.y), kdr_color);     // Waffle: --
@@ -608,6 +612,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 		s32 deaths  = p.getDeaths();
 		s32 assists = p.getAssists();
 		f32 dmgdeal = getRules().get_f32("damage_impact_" + p.getUsername());
+		f32 kpm = getKPM(p);
 
 		if (old_stats)
 		{
@@ -630,6 +635,8 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 				kills   = old_player_stats.kills;
 				deaths  = old_player_stats.deaths;
 				assists = old_player_stats.assists;
+				dmgdeal = old_player_stats.dmgdeal;
+				kpm     = old_player_stats.kpm;
 			}
 		}
 
@@ -637,7 +644,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 		GUI::DrawText("" + ping_in_ms, Vec2f(br.x - 330, tl.y), SColor(0xffffffff));
 		GUI::DrawText("" + kills, Vec2f(br.x - 260, tl.y), kdr_color);
 		GUI::DrawText("" + dmgdeal, Vec2f(br.x - 170, tl.y), kdr_color);
-		GUI::DrawText("" + formatFloat(getKPM(p), "", 0, 2), Vec2f(br.x - 100, tl.y), SColor(0xffffffff));
+		GUI::DrawText("" + formatFloat(kpm, "", 0, 2), Vec2f(br.x - 100, tl.y), kdr_color);
 		//GUI::DrawText("" + deaths, Vec2f(br.x - 190, tl.y), kdr_color);
 		//GUI::DrawText("" + assists, Vec2f(br.x - 120, tl.y), kdr_color);
 		//GUI::DrawText("" + formatFloat(kills / Maths::Max(f32(deaths), 1.0f), "", 0, 2), Vec2f(br.x - 50, tl.y), kdr_color);
@@ -1082,6 +1089,8 @@ void onRestart(CRules@ this)
 			old_player_stats.kills = player.getKills();
 			old_player_stats.deaths = player.getDeaths();
 			old_player_stats.assists = player.getAssists();
+			old_player_stats.dmgdeal = getRules().get_f32("damage_impact_" + player.getUsername());
+			old_player_stats.kpm = getKPM(player);
 		}
 
 		// Reset for next game
