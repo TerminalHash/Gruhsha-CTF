@@ -1027,7 +1027,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 						this.server_Pickup(blob);
 						blob.set_f32("map_damage_ratio", 0.0f);
 						blob.set_f32("explosive_damage", 0.0f);
-						blob.set_f32("explosive_radius", 92.0f);
+						blob.set_f32("explosive_radius", 128.0f);
 						blob.set_bool("map_damage_raycast", false);
 						blob.set_string("custom_explosion_sound", "/GlassBreak");
 						blob.set_u8("custom_hitter", Hitters::ice);
