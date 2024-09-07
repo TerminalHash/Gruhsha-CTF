@@ -12,6 +12,7 @@ int zoomLevel = 1; // we can declare a global because this script is just used b
 void onInit(CBlob@ this)
 {
 	this.set_s32("tap_time", getGameTime());
+	this.set_s32("buy delay", 10);
 	CBlob@[] blobs;
 	this.set("pickup blobs", blobs);
 	this.set_u16("hover netid", 0);
@@ -272,6 +273,10 @@ void onTick(CBlob@ this)
 		this.SendCommand(this.getCommandID("drill command"));
 	}
 
+	if (this.get_s32("buy delay") > 0) {
+		this.sub_s32("buy delay", 1);
+	}
+
 	// Shops!
 	bool overlapping_knightshop = false;
 	bool overlapping_archershop = false;
@@ -331,6 +336,7 @@ void onTick(CBlob@ this)
 				if (b_KeyJustPressed("k_bomb")) {
 					wanna_buy = true;
 					item_id	= 0;
+					printf("wanna_buy bool is true");
 				}
 				if (b_KeyJustPressed("k_waterbomb")) {
 					wanna_buy = true;
@@ -352,6 +358,10 @@ void onTick(CBlob@ this)
 					wanna_buy = true;
 					item_id	= 5;
 				}
+				if (b_KeyJustPressed("k_sticky")) {
+					wanna_buy = true;
+					item_id	= 6;
+				}
 
 				if (wanna_buy) {
 					dont_show_emotes = true;
@@ -363,7 +373,10 @@ void onTick(CBlob@ this)
 						params.write_u8(u8(item_id));
 						params.write_bool(true); //used hotkey?
 
-						theknightshop.SendCommand(theknightshop.getCommandID("shop buy"), params);
+						if (this.get_s32("buy delay") <= 0) {
+							theknightshop.SendCommand(theknightshop.getCommandID("shop buy"), params);
+							this.set_s32("buy delay", 10);
+						}
 					}
 				}
 			}
@@ -430,7 +443,10 @@ void onTick(CBlob@ this)
 						params.write_u8(u8(item_id));
 						params.write_bool(true); //used hotkey?
 
-						thebuildershop.SendCommand(thebuildershop.getCommandID("shop buy"), params);
+						if (this.get_s32("buy delay") <= 0) {
+							thebuildershop.SendCommand(thebuildershop.getCommandID("shop buy"), params);
+							this.set_s32("buy delay", 10);
+						}
 					}
 				}
 			}
@@ -464,6 +480,10 @@ void onTick(CBlob@ this)
 					wanna_buy = true;
 					item_id	= 4;
 				}
+				if (b_KeyJustPressed("a_stoneblockarrows")) {
+					wanna_buy = true;
+					item_id	= 5;
+				}
 
 				if (wanna_buy) {
 					dont_show_emotes = true;
@@ -476,7 +496,10 @@ void onTick(CBlob@ this)
 						params.write_u8(u8(item_id));
 						params.write_bool(true); //used hotkey?
 
-						thearchershop.SendCommand(thearchershop.getCommandID("shop buy"), params);
+						if (this.get_s32("buy delay") <= 0) {
+							thearchershop.SendCommand(thearchershop.getCommandID("shop buy"), params);
+							this.set_s32("buy delay", 10);
+						}
 					}
 				}
 			}
@@ -525,7 +548,10 @@ void onTick(CBlob@ this)
 						params.write_u8(u8(item_id));
 						params.write_bool(true); //used hotkey?
 
-						thekfc.SendCommand(thekfc.getCommandID("shop buy"), params);
+						if (this.get_s32("buy delay") <= 0) {
+							thekfc.SendCommand(thekfc.getCommandID("shop buy"), params);
+							this.set_s32("buy delay", 10);
+						}
 					}
 				}
 			}
@@ -570,7 +596,10 @@ void onTick(CBlob@ this)
 						params.write_u8(u8(item_id));
 						params.write_bool(true); //used hotkey?
 
-						thevehicle.SendCommand(thevehicle.getCommandID("shop buy"), params);
+						if (this.get_s32("buy delay") <= 0) {
+							thevehicle.SendCommand(thevehicle.getCommandID("shop buy"), params);
+							this.set_s32("buy delay", 10);
+						}
 					}
 				}
 			}
@@ -607,7 +636,11 @@ void onTick(CBlob@ this)
 						params.write_u8(u8(item_id));
 						params.write_bool(true); //used hotkey?
 
-						theboat.SendCommand(theboat.getCommandID("shop buy"), params);
+						if (this.get_s32("buy delay") <= 0) {
+							theboat.SendCommand(theboat.getCommandID("shop buy"), params);
+							this.set_s32("buy delay", 10);
+
+						}
 					}
 				}
 			}
@@ -680,7 +713,8 @@ void onTick(CBlob@ this)
 			if (isTap(this, minimum_ticks))     // tap - put thing in inventory
 			{
 				CBlob@ held = this.getCarriedBlob();
-				if (held !is null)
+
+				if (held !is null && getRules().get_string("cycle_with_item") != "yes")
 				{
 					this.SendCommand(this.getCommandID("putinheld"));
 				}
@@ -695,6 +729,10 @@ void onTick(CBlob@ this)
 
 						onCycle(params);
 					}
+				}
+
+				if (getGameTime() - this.get_s32("tap_time") > minimum_ticks) {
+					this.SendCommand(this.getCommandID("putinheld"));
 				}
 
 				this.ClearMenus();
@@ -859,7 +897,8 @@ void onRender(CSprite@ this)
 		"k_mine",
 		"k_keg",
 		"k_drill",
-		"k_satchel"
+		"k_satchel",
+		"k_sticky"
 		};
 
 		if (theknightshop.get("shop array", @shopitems)) {
@@ -895,7 +934,8 @@ void onRender(CSprite@ this)
 		"a_waterarrows",
 		"a_firearrows",
 		"a_bombarrows",
-		"a_blockarrows"
+		"a_blockarrows",
+		"a_stoneblockarrows"
 		};
 
 		if (thearchershop.get("shop array", @shopitems)) {
