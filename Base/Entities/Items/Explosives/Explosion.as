@@ -369,7 +369,7 @@ void onHitBlob(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@
 	if (this.getName() == "icebomb") {
 		if (hitBlob !is null && hitBlob.hasTag("player")) {
 			hitBlob.Tag("icy");
-			hitBlob.Sync("icy", true);
+			//hitBlob.Sync("icy", true);
 		}
 	}
 }

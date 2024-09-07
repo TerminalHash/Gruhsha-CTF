@@ -76,7 +76,7 @@ void Splash(CBlob@ this, const uint splash_halfwidth, const uint splash_halfheig
 					bombforce = getStickyBombForce(this, radius, hit_blob_pos, pos, blob.getMass());
 				}
 
-				if (this.getName() == "bucket") {
+				if (this.getName() == "bucket" || this.getName() == "icebomb") {
 					bombforce = Vec2f(0, 0);
 				}
 

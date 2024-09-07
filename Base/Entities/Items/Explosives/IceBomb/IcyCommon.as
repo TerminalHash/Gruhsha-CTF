@@ -41,6 +41,6 @@ void onTick(CBlob@ this) {
 
         // Untag player, he's warmed up
         this.Untag("icy");
-        this.Sync("icy", true);
+        //this.Sync("icy", true);
     }
 }
