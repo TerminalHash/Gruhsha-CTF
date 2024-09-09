@@ -1553,6 +1553,11 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 								this.set_s32("fire sword delay", getTicksASecond() * 30);
 							} else {
 								this.server_Hit(rayb, rayInfos[j].hitpos, velocity, temp_damage, type, true);
+
+								// reset timer for attacked knight
+								if (rayb !is null && rayb.getConfig() == "knight") {
+									rayb.set_s32("fire sword delay", getTicksASecond() * 30);
+								}
 							}
 						}
 					}
