@@ -47,12 +47,12 @@ const string[]      NAME =
 
 const u8[]          WEIGHT =
 {
-	35,                     // mat_waterarrows
-	40,                     // mat_firearrows
-	35,                     // mat_blockarrows
+	30,                     // mat_waterarrows
+	35,                     // mat_firearrows
+	30,                     // mat_blockarrows
     25,                     // mat_stoneblockarrows
-	40,                     // mat_wood
-	25,                     // mat_stone
+	50,                     // mat_wood
+	45,                     // mat_stone
 	5,                      // mat_gold
 	45,                     // drill
 	55,                     // mat_bombs
@@ -61,7 +61,7 @@ const u8[]          WEIGHT =
     30,                     // satchel
 	25,                     // mine
 	30,                     // food
-	45,                     // pear
+	40,                     // pear
 	5                       // bison
 };
 
