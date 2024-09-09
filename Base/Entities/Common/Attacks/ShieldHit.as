@@ -109,12 +109,14 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 			this.Tag("force_knock");
 		}
 
+		/*
 		if (customData != Hitters::arrow || !isExplosionHitter(customData)) {
 			CRules@ rules = getRules();
 			if (rules.hasTag("sudden death")) {
 				return damage * 0.5f;
 			}
 		}
+		*/
 
 		if (getNet().isClient())
 		{
