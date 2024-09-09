@@ -9,6 +9,7 @@ void onInit(CBlob@ this)
 	this.SetMinimapVars("MinimapAirdropIcon.png", 0, Vec2f(8, 8));
 
 	this.Tag("activatable");
+	this.Tag("special");
 	this.Tag("heavy weight");
 
 	this.addCommandID("activate");
