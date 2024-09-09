@@ -30,7 +30,7 @@ void onTick(CBlob@ this)
 		}
 
 		// para force + swing in wind
-		this.AddForce(Vec2f(Maths::Sin(getGameTime() * 0.03f) * 1.0f, -30.0f * this.getVelocity().y));
+		this.AddForce(Vec2f(Maths::Sin(getGameTime() * 0.03f) * 1.0f, -120.0f * this.getVelocity().y));
 
 		if (this.isOnGround() || this.isInWater() || this.isAttached())
 		{
