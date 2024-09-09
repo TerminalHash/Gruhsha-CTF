@@ -109,14 +109,19 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 			this.Tag("force_knock");
 		}
 
-		/*
-		if (customData != Hitters::arrow || !isExplosionHitter(customData)) {
+		// SUDDEN DEATH: shield lets half damage through
+		if (customData == Hitters::sword) {
 			CRules@ rules = getRules();
+
 			if (rules.hasTag("sudden death")) {
+				// if our sword has fire aspect, only effect allowed to pierce shield
+				if (this.get_s32("fire sword delay") <= 0) {
+					return 0.0f;
+				}
+
 				return damage * 0.5f;
 			}
 		}
-		*/
 
 		if (getNet().isClient())
 		{
