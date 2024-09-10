@@ -103,7 +103,8 @@ bool Toggle(string title, bool toggle) {
     }
 
     GUI::DrawText(title, Vec2f(br.x, tl.y), WHITE);
-    if (toggle) GUI::DrawIcon("IMGUI_Icons.png", 0, Vec2f(16,16), tl + Vec2f(2,2), 0.5, 0);
+    if (toggle) GUI::DrawIcon("IMGUI_Icons.png", 1, Vec2f(16,16), tl + Vec2f(2,2), 0.5, 0);
+    if (!toggle) GUI::DrawIcon("IMGUI_Icons.png", 0, Vec2f(16,16), tl + Vec2f(2,2), 0.5, 0);
   
     draw_point += Vec2f(0, 22);
     return toggle;
