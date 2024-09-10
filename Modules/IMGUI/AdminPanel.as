@@ -26,6 +26,15 @@ void ShowPrototypeMenu()
 }
 
 void onRender(CRules@ this) {
+	CPlayer@ player = getLocalPlayer();
+	if (player is null) return;
+
+	// Ordinary mortals not allowed here
+	if (!player.isMod()) {
+		getRules().set_bool("prototype_menu_open", false);
+		return;
+	}
+
 	if (!this.get_bool("prototype_menu_open")) return;
 
     IMGUI::Begin("KURWA BOBER", Vec2f(200, 200), Vec2f(600, 600));
