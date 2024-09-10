@@ -1,3 +1,8 @@
+// AdminPanel.as
+/*
+	Interface for some admin commands and iteractions.
+*/
+
 #include "IMGUI.as"
 #include "ScoreboardCommon.as"
 #include "RulesCore.as"
@@ -37,8 +42,12 @@ void onRender(CRules@ this) {
 
 	if (!this.get_bool("prototype_menu_open")) return;
 
-    IMGUI::Begin("KURWA BOBER", Vec2f(200, 200), Vec2f(600, 600));
-    IMGUI::Text("Match management");
+    IMGUI::Begin("KURWA BOBER", Vec2f(200, 200), Vec2f(600, 780));
+
+    /////////////////////////////////////////////////
+    // Match Management section
+    /////////////////////////////////////////////////
+    IMGUI::Text("Match Management");
     IMGUI::Text(" ");
 	if (!this.hasTag("sudden death")) {
         IMGUI::Text("Sudden Death is off.");
@@ -57,33 +66,43 @@ void onRender(CRules@ this) {
     }
 
     IMGUI::Text(" ");
+    /////////////////////////////////////////////////
 
-	if (!this.hasTag("offi match")) {
-        IMGUI::Text("This match is not offi.");
-	} else {
-        IMGUI::Text("This match is offi.");
-	}
+    /////////////////////////////////////////////////
+    // Map Management Section
+    /////////////////////////////////////////////////
+    IMGUI::Text("Map Management");
 
-    if (IMGUI::Button("Toggle OFFI")) {
-    		if (!this.hasTag("offi match")) {
-			this.Tag("offi match");
-			this.Sync("offi match", true);
-		} else {
-			this.Untag("offi match");
-			this.Sync("offi match", true);
-		}
-
-		if (isServer()) {
-			if (!this.hasTag("offi match")) {
-				server_AddToChat("This match is not offi!", SColor(0xff474ac6));
-			} else {
-				server_AddToChat("This match is offi!", SColor(0xff474ac6));
-			}
-		}
+    if (IMGUI::Button("Load next map")) {
+        LoadNextMap();
     }
 
     IMGUI::Text(" ");
-    IMGUI::Text("Team management");
+    IMGUI::Text("Debug Maps");
+
+    if (IMGUI::Button("Load Bombjump Debug map")) {
+        LoadMap("Bombjump_debug");
+    }
+
+    if (IMGUI::Button("Load Trampoline Test map")) {
+        LoadMap("NewTrampolineTest");
+    }
+
+    if (IMGUI::Button("Load Plain Debug map")) {
+        LoadMap("PlainDebug");
+    }
+
+    if (IMGUI::Button("Load Very Small Plain Debug map")) {
+        LoadMap("VerySmallPlain_Debug");
+    }
+
+    IMGUI::Text(" ");
+    /////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////
+    // Team Management section
+    /////////////////////////////////////////////////
+    IMGUI::Text("Team Management");
 
     if (IMGUI::Button("Put all players into spectators")) {
         if (isServer()) PutEveryoneInSpec();
@@ -113,9 +132,9 @@ void onRender(CRules@ this) {
     }
 
     IMGUI::Text(" ");
+    /////////////////////////////////////////////////
 
     toggle1 = IMGUI::Toggle("TEST TOGGLE 1", toggle1);
-
     toggle2 = IMGUI::Toggle("TEST TOGGLE 2", toggle2);
 
     IMGUI::Text(" ");
