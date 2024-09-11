@@ -92,6 +92,7 @@ void onInit(CBlob@ this)
 	{
 		ShopItem@ s = addShopItem(this, "Satchel", getTeamIcon("satchel", "Satchel.png", team_num, Vec2f(16, 16), 0), "satchel", Descriptions::satchel, false);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::satchel);
+		s.spawnToInventory = true;
 	}
 	{
 		ShopItem@ s = addShopItem(this, Names::stickybomb, "$stickybombs$", "mat_stickybombs", Descriptions::stickybombdesc, true);
