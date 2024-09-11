@@ -8,6 +8,6 @@ void onRender(CSprite@ this) {
     if (!blob.hasTag("icy")) return;
 
     if (blob.hasTag("icy") && blob.get_s32("icy time") > 0) {
-        blob.RenderForHUD(Vec2f(0, 0), 0, SColor(255, 55, 50, 185), RenderStyle::outline_front);
+        blob.RenderForHUD(Vec2f(0, 0), 0, SColor(255, 55, 50, 185), RenderStyle::additive);
     }
 }
