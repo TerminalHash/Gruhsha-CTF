@@ -3,13 +3,16 @@ namespace ImGUI {
 namespace Colors {
     const SColor FG = SColor(0xFFFFFFFF);
     const SColor WINDOW_BG = SColor(0xFF333333);
+    const SColor WINDOW_BORDER = SColor(0xFF222222);
     const SColor WINDOW_TITLE = SColor(0xFF444444);
     const SColor BUTTON_NORMAL = SColor(0xFF666666);
     const SColor BUTTON_HOVER = SColor(0xFF777777);
     const SColor BUTTON_PRESS = SColor(0xFF888888);
+    const SColor BUTTON_BORDER = SColor(0xFF222222);
 };
 
 CControls@ controls = getControls();
+
 Vec2f window_tl = Vec2f(0,0);
 Vec2f window_br = Vec2f(0,0);
 float drawstart = 0.0;
@@ -17,8 +20,9 @@ bool pressed = false;
 
 void Begin(string title, Vec2f tl, Vec2f br) {
     GUI::SetFont("ImGUI");
-    GUI::DrawRectangle(tl, br, Colors::WINDOW_BG);
-    GUI::DrawRectangle(tl, Vec2f(br.x, tl.y + 24), Colors::WINDOW_TITLE);
+    GUI::DrawRectangle(tl, br, Colors::WINDOW_BORDER);
+    GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::WINDOW_BG);
+    GUI::DrawRectangle(tl + Vec2f(2, 2), Vec2f(br.x - 2, tl.y + 22), Colors::WINDOW_TITLE);
     GUI::DrawText(title, Vec2f(tl.x + 4, tl.y + 3), Colors::FG);
     window_tl = tl;
     window_br = br;
@@ -43,10 +47,12 @@ bool Button(const string title) {
     bool hover = mouse_pos.x > tl.x && mouse_pos.x < br.x && mouse_pos.y > tl.y && mouse_pos.y < br.y;
     bool press = controls.mousePressed1;
 
+    GUI::DrawRectangle(tl, br, Colors::BUTTON_BORDER);
+    
     if (hover) {
         if (press) {
-            GUI::DrawRectangle(tl, br, Colors::BUTTON_PRESS);
-            GUI::DrawTextCentered(title, Vec2f(tl.x + ((br.x - tl.x) * 0.50f) - 2, tl.y + ((br.y - tl.y) * 0.50f)), Colors::FG);
+            GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::BUTTON_PRESS);
+            GUI::DrawTextCentered(title, Vec2f(tl.x + ((br.x - tl.x) * 0.5) - 2, tl.y + ((br.y - tl.y) * 0.48)), Colors::FG);
             drawstart = br.y + 4;
             if (!pressed) {
                 Sound::Play("ButtonClick.ogg");
@@ -54,14 +60,14 @@ bool Button(const string title) {
                 return true;
             }
         } else {
-            GUI::DrawRectangle(tl, br, Colors::BUTTON_HOVER);
+            GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::BUTTON_HOVER);
             pressed = false;
         }
     } else {
-        GUI::DrawRectangle(tl, br, Colors::BUTTON_NORMAL);
+        GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::BUTTON_NORMAL);
     }
 
-    GUI::DrawTextCentered(title, Vec2f(tl.x + ((br.x - tl.x) * 0.50f) - 2, tl.y + ((br.y - tl.y) * 0.50f)), Colors::FG);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + ((br.x - tl.x) * 0.50f) - 2, tl.y + ((br.y - tl.y) * 0.48f)), Colors::FG);
     drawstart = br.y + 4;
     return false;
 }
@@ -90,7 +96,7 @@ bool Toggle(string title, bool toggle) {
     }
 
     if (toggle) toggle_index += 1;
-    GUI::DrawIcon("ImGUI_Icons.png", toggle_index, Vec2f(16,16), tl, 0.5, 0);
+    GUI::DrawIcon("ImGUI_Icons.png", toggle_index, Vec2f(8,8), tl, 1, 0);
     GUI::DrawText(title, tl + Vec2f(20, 0), Colors::FG);
 
     drawstart = br.y + 4;
@@ -105,7 +111,7 @@ int SliderInt(string title, int slider, int min = 0, int max = 10) {
     bool hover = mouse_pos.x > tl.x && mouse_pos.x < br.x && mouse_pos.y > tl.y && mouse_pos.y < br.y;
     bool press = controls.mousePressed1;
 
-    GUI::DrawRectangle(tl, br, Colors::BUTTON_NORMAL);
+    //  GUI::DrawRectangle(tl, br, Colors::BUTTON_NORMAL);
 
     return slider;
 }

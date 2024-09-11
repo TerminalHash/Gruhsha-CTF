@@ -10,7 +10,8 @@ bool toggle2 = false;
 int slider = 0;
 
 void onRender(CRules@ this) {
-    ImGUI::Begin("Settings", Vec2f(200, 200), Vec2f(600, 600));
+    float screen_width = getScreenWidth(); 
+    ImGUI::Begin("Settings", Vec2f(screen_width / 2 - 200, 200), Vec2f(screen_width / 2 + 200, 600));
     ImGUI::Button("Button Example 1");
     ImGUI::Text("Text example AMOGUS");
     ImGUI::Button("Button Example 2");
