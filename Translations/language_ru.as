@@ -151,6 +151,9 @@ namespace ru
 	n_kegnmb								= "Кега",
 	n_drillnmb								= "Бур",
 	n_satchelnmb							= "Взрывпакет",
+	n_stickybombnmb							= "Липкая бомба",
+	n_goldenminenmb							= "Золотая мина",
+	n_icebombnmb							= "Ледяная бомба",
 
 			// Builder Shop
 	n_drillbnmb								= "Бур",
@@ -169,7 +172,8 @@ namespace ru
 	n_waterarrowsnmb						= "Водные стрелы",
 	n_firearrowsnmb							= "Огненные стрелы",
 	n_bombarrowsnmb							= "Стрелы-бомбы",
-	n_blockarrowsnmb						= "Стрелы-блоки",
+	n_blockarrowsnmb						= "Стрелы-блоки (дерево)",
+	n_stoneblockarrowsnmb					= "Стрелы-блоки (камень)",
 
 			// Quarters
 	n_beernmb								= "Квас",

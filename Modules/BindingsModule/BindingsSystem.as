@@ -32,7 +32,7 @@ void onInit(CRules@ this)
 
 		// default values for binds:
 		// knight shop
-		/*if (!file.exists("k_bomb$1")) file.add_s32("k_bomb$1", 49);
+		if (!file.exists("k_bomb$1")) file.add_s32("k_bomb$1", 49);
 		if (!file.exists("k_bomb$2")) file.add_s32("k_bomb$2", -1);
 		if (!file.exists("k_waterbomb$1")) file.add_s32("k_waterbomb$1", 50);
 		if (!file.exists("k_waterbomb$2")) file.add_s32("k_waterbomb$2", -1);
@@ -46,6 +46,10 @@ void onInit(CRules@ this)
 		if (!file.exists("k_satchel$2")) file.add_s32("k_satchel$2", -1);
 		if (!file.exists("k_sticky$1")) file.add_s32("k_sticky$1", 55);
 		if (!file.exists("k_sticky$2")) file.add_s32("k_sticky$2", -1);
+		if (!file.exists("k_icebomb$1")) file.add_s32("k_icebomb$1", 56);
+		if (!file.exists("k_icebomb$2")) file.add_s32("k_icebomb$2", -1);
+		if (!file.exists("k_goldmine$1")) file.add_s32("k_goldmine$1", 57);
+		if (!file.exists("k_goldmine$2")) file.add_s32("k_goldmine$2", -1);
 
 		// builder shop
 		if (!file.exists("b_drill$1")) file.add_s32("b_drill$1", 49);
@@ -80,6 +84,8 @@ void onInit(CRules@ this)
 		if (!file.exists("a_bombarrows$2")) file.add_s32("a_bombarrows$2", -1);
 		if (!file.exists("a_blockarrows$1")) file.add_s32("a_blockarrows$1", 53);
 		if (!file.exists("a_blockarrows$2")) file.add_s32("a_blockarrows$2", -1);
+		if (!file.exists("a_stoneblockarrows$1")) file.add_s32("a_stoneblockarrows$1", 54);
+		if (!file.exists("a_stoneblockarrows$2")) file.add_s32("a_stoneblockarrows$2", -1);
 
 		// kfc
 		if (!file.exists("kfc_beer$1")) file.add_s32("kfc_beer$1", 49);
@@ -113,7 +119,7 @@ void onInit(CRules@ this)
 		if (!file.exists("boat_longboat$1")) file.add_s32("boat_longboat$1", 50);
 		if (!file.exists("boat_longboat$2")) file.add_s32("boat_longboat$2", -1);
 		if (!file.exists("boat_warboat$1")) file.add_s32("boat_warboat$1", 51);
-		if (!file.exists("boat_warboat$2")) file.add_s32("boat_warboat$2", -1);*/
+		if (!file.exists("boat_warboat$2")) file.add_s32("boat_warboat$2", -1);
 
 		if(!file.saveFile(BINDINGSFILE + ".cfg"))
 		{

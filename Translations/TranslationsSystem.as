@@ -168,6 +168,9 @@ namespace Names
 	kegnmb								= Translate(en::n_kegnmb+"\\"+ru::n_kegnmb),
 	drillnmb							= Translate(en::n_drillnmb+"\\"+ru::n_drillnmb),
 	satchelnmb							= Translate(en::n_satchelnmb+"\\"+ru::n_satchelnmb),
+	stickybombnmb						= Translate(en::n_stickybombnmb+"\\"+ru::n_stickybombnmb),
+	goldenminenmb						= Translate(en::n_goldenminenmb+"\\"+ru::n_goldenminenmb),
+	icebombnmb							= Translate(en::n_icebombnmb+"\\"+ru::n_icebombnmb),
 
 			// Builder Shop
 	drillbnmb							= Translate(en::n_drillbnmb+"\\"+ru::n_drillbnmb),
@@ -187,6 +190,7 @@ namespace Names
 	firearrowsnmb						= Translate(en::n_firearrowsnmb+"\\"+ru::n_firearrowsnmb),
 	bombarrowsnmb						= Translate(en::n_bombarrowsnmb+"\\"+ru::n_bombarrowsnmb),
 	blockarrowsnmb						= Translate(en::n_blockarrowsnmb+"\\"+ru::n_blockarrowsnmb),
+	stoneblockarrowsnmb					= Translate(en::n_stoneblockarrowsnmb+"\\"+ru::n_stoneblockarrowsnmb),
 
 			// Quarters
 	beernmb								 = Translate(en::n_beernmb+"\\"+ru::n_beernmb),

@@ -151,6 +151,9 @@ namespace en
 	n_kegnmb								= "Keg",
 	n_drillnmb								= "Drill",
 	n_satchelnmb							= "Satchel",
+	n_stickybombnmb							= "Sticky Bomb",
+	n_goldenminenmb							= "Golden Mine",
+	n_icebombnmb							= "Ice Bomb",
 
 			// Builder Shop
 	n_drillbnmb								= "Drill",
@@ -169,7 +172,8 @@ namespace en
 	n_waterarrowsnmb						= "Water Arrows",
 	n_firearrowsnmb							= "Fire Arrows",
 	n_bombarrowsnmb							= "Bomb Arrows",
-	n_blockarrowsnmb						= "Block Arrows",
+	n_blockarrowsnmb						= "Wooden Block Arrows",
+	n_stoneblockarrowsnmb					= "Stone Block Arrows",
 
 			// Quarters
 	n_beernmb								= "Kvass",
