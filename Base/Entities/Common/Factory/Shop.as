@@ -467,7 +467,7 @@ void BuildShopMenu(CBlob@ this, CBlob @caller, string description, Vec2f offset,
 	const string caption = getTranslatedString(description);
 
 	CControls@ controls = caller.getControls();
-	CGridMenu@ menu = CreateGridMenu(caller.getScreenPos() + offset, this, Vec2f(slotsAdd.x, slotsAdd.y), caption);
+	CGridMenu@ menu = CreateGridMenu(caller.getScreenPos() + offset, this, Vec2f(slotsAdd.x, slotsAdd.y), "Buy");
 
 	getRules().set_netid("shop open menu blob", this.getNetworkID());
 	getRules().set_string("shop open menu name", caption);
@@ -489,17 +489,9 @@ void BuildShopMenu(CBlob@ this, CBlob @caller, string description, Vec2f offset,
 			params.write_u8(i);
 			params.write_bool(true); //used hotkey?
 
-			//if (this.getName() == "building") {
-				menu.AddKeyCommand(numKeys[i], this.getCommandID("shop buy"), params);
-			/*}
-
-			if (getRules().get_string("nomenubuying") != "yes" && caller.getConfig() != "builder") {
+			if (this.getName() == "building") {
 				menu.AddKeyCommand(numKeys[i], this.getCommandID("shop buy"), params);
 			}
-
-			if (getRules().get_string("nomenubuying_b") != "yes" && caller.getConfig() == "builder") {
-				menu.AddKeyCommand(numKeys[i], this.getCommandID("shop buy"), params);
-			}*/
 		}
 	}
 
