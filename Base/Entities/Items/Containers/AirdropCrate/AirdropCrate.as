@@ -72,7 +72,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 	{
 		CPlayer@ p = getNet().getActiveCommandPlayer();
 		if (p is null) return;
-					
+
 		CBlob@ caller = p.getBlob();
 		if (caller is null) return;
 
@@ -85,6 +85,17 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		addLoot(this, INDEX_AIRDROP, 4, 0);
 
 		server_CreateLoot(this, this.getPosition(), caller.getTeamNum());
+
+		int coins_amount = 35;
+        int countplayes = getPlayersCount();
+        int callerteam = p.getTeamNum();
+
+        // give coins for players in team of caller
+        for (int i = 0; i < countplayes; i++) {
+            CPlayer@ player = getPlayer(i);
+            if (player.getTeamNum() == callerteam)
+                player.server_setCoins(player.getCoins() + coins_amount);
+        }
 
 		this.SendCommand(this.getCommandID("activate client"));
 
