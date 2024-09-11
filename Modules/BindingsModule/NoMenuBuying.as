@@ -24,6 +24,9 @@ void onTick(CBlob@ this)
 	CBlob@[] overlapping;
 	if (getMap().getBlobsInRadius(this.getPosition(), 8.0f, overlapping)) {
 		for (int i = 0; i < overlapping.length; ++i) {
+			// fix multiply buying shit
+			if (!this.isMyPlayer()) return;
+
 			if (overlapping[i].getName() == "knightshop") {
 				overlapping_knightshop = true;
 				@theknightshop = overlapping[i];
