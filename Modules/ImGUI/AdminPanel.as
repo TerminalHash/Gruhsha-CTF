@@ -3,7 +3,7 @@
 	Interface for some admin commands and iteractions.
 */
 
-#include "IMGUI.as"
+#include "ImGUI.as"
 #include "ScoreboardCommon.as"
 #include "RulesCore.as"
 #include "PickingCommon.as"
@@ -42,20 +42,20 @@ void onRender(CRules@ this) {
 
 	if (!this.get_bool("prototype_menu_open")) return;
 
-    IMGUI::Begin("KURWA BOBER", Vec2f(200, 200), Vec2f(600, 780));
+    ImGUI::Begin("KURWA BOBER", Vec2f(200, 200), Vec2f(600, 780));
 
     /////////////////////////////////////////////////
     // Match Management section
     /////////////////////////////////////////////////
-    IMGUI::Text("Match Management");
-    IMGUI::Text(" ");
+    ImGUI::Text("Match Management");
+    ImGUI::Text(" ");
 	if (!this.hasTag("sudden death")) {
-        IMGUI::Text("Sudden Death is off.");
+        ImGUI::Text("Sudden Death is off.");
 	} else {
-        IMGUI::Text("Sudden Death is on.");
+        ImGUI::Text("Sudden Death is on.");
 	}
 
-    if (IMGUI::Button("Toggle Sudden Death Mode")) {
+    if (ImGUI::Button("Toggle Sudden Death Mode")) {
 		if (!this.hasTag("sudden death")) {
 			this.Tag("sudden death");
 			this.Sync("sudden death", true);
@@ -65,54 +65,54 @@ void onRender(CRules@ this) {
 		}
     }
 
-    IMGUI::Text(" ");
+    ImGUI::Text(" ");
     /////////////////////////////////////////////////
 
     /////////////////////////////////////////////////
     // Map Management Section
     /////////////////////////////////////////////////
-    IMGUI::Text("Map Management");
+    ImGUI::Text("Map Management");
 
-    if (IMGUI::Button("Load next map")) {
+    if (ImGUI::Button("Load next map")) {
         LoadNextMap();
     }
 
-    IMGUI::Text(" ");
-    IMGUI::Text("Debug Maps");
+    ImGUI::Text(" ");
+    ImGUI::Text("Debug Maps");
 
-    if (IMGUI::Button("Load Bombjump Debug map")) {
+    if (ImGUI::Button("Load Bombjump Debug map")) {
         LoadMap("Bombjump_debug");
     }
 
-    if (IMGUI::Button("Load Trampoline Test map")) {
+    if (ImGUI::Button("Load Trampoline Test map")) {
         LoadMap("NewTrampolineTest");
     }
 
-    if (IMGUI::Button("Load Plain Debug map")) {
+    if (ImGUI::Button("Load Plain Debug map")) {
         LoadMap("PlainDebug");
     }
 
-    if (IMGUI::Button("Load Very Small Plain Debug map")) {
+    if (ImGUI::Button("Load Very Small Plain Debug map")) {
         LoadMap("VerySmallPlain_Debug");
     }
 
-    IMGUI::Text(" ");
+    ImGUI::Text(" ");
     /////////////////////////////////////////////////
 
     /////////////////////////////////////////////////
     // Team Management section
     /////////////////////////////////////////////////
-    IMGUI::Text("Team Management");
+    ImGUI::Text("Team Management");
 
-    if (IMGUI::Button("Put all players into spectators")) {
+    if (ImGUI::Button("Put all players into spectators")) {
         if (isServer()) PutEveryoneInSpec();
     }
 
-    if (IMGUI::Button("Demote Captains")) {
+    if (ImGUI::Button("Demote Captains")) {
         if (isServer()) DemoteLeaders();
     }
 
-    if (IMGUI::Button("Lock teams")) {
+    if (ImGUI::Button("Lock teams")) {
 		CRules@ rules = getRules();
 		ApprovedTeams@ approved_teams;
 		if (!rules.get("approved_teams", @approved_teams)) return;
@@ -131,17 +131,17 @@ void onRender(CRules@ this) {
 		rules.set("approved_teams", @approved_teams);
     }
 
-    IMGUI::Text(" ");
+    ImGUI::Text(" ");
     /////////////////////////////////////////////////
 
-    toggle1 = IMGUI::Toggle("TEST TOGGLE 1", toggle1);
-    toggle2 = IMGUI::Toggle("TEST TOGGLE 2", toggle2);
+    toggle1 = ImGUI::Toggle("TEST TOGGLE 1", toggle1);
+    toggle2 = ImGUI::Toggle("TEST TOGGLE 2", toggle2);
 
-    IMGUI::Text(" ");
+    ImGUI::Text(" ");
 
-    if (IMGUI::Button("Close menu")) {
+    if (ImGUI::Button("Close menu")) {
         this.set_bool("prototype_menu_open", false);
     }
 
-    IMGUI::End();
+    ImGUI::End();
 }
