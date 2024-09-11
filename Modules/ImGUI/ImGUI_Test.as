@@ -7,23 +7,20 @@ void onTick(CRules@ this) {}
 
 bool toggle1 = false;
 bool toggle2 = false;
-float slider = 0.5;
+int slider = 0;
 
 void onRender(CRules@ this) {
     ImGUI::Begin("Settings", Vec2f(200, 200), Vec2f(600, 600));
-    ImGUI::Button("PRESS if you are Gay");
-    ImGUI::Text("Pnext ЛОХ");
-    ImGUI::Button("PRESS if you are not Gay");
-    ImGUI::Text("Terminal ЛОХ");
-    toggle1 = ImGUI::Toggle("Ставь галочку если ты реальный пидор", toggle1);
-    ImGUI::Text("Kusaka ЛОХ");
-    toggle2 = ImGUI::Toggle("Ставь галочку если ты реальный гей", toggle2);
-    ImGUI::Button("JUST PRESS IDIOT");
+    ImGUI::Button("Button Example 1");
+    ImGUI::Text("Text example AMOGUS");
+    ImGUI::Button("Button Example 2");
+    ImGUI::Text("Text example ABOBA");
+    toggle1 = ImGUI::Toggle("Toggle example 1", toggle1);
+    toggle2 = ImGUI::Toggle("Toggle example 2", toggle2);
+    ImGUI::Text("Text example PINEKST");
+    ImGUI::Button("Button Example 3");
 
-    //    IMGUI::SliderConfig slider_config();
-    //    slider_config.min = 0.0;
-    //    slider_config.max = 1.0;
-    //    slider = IMGUI::Slider("slider exaple", slider, slider_config);
-    
+    slider = ImGUI::SliderInt("Slider example", slider, 1, 5);
+
     ImGUI::End();
 }
