@@ -24,9 +24,9 @@ void onRestart(CRules@ this) {
              string SourceSans = CFileMatcher("SourceHanSansCN-Bold.ttf").getFirst();
              GUI::LoadFont("SourceHanSansCN-Bold", SourceSans, 34, true);
         }
-        if (!GUI::isFontLoaded("ImGUI")) {
-             string ImGUI = CFileMatcher("ImGUI.ttf").getFirst();
-             GUI::LoadFont("ImGUI", ImGUI, 14, true);
+        if (!GUI::isFontLoaded("KUI")) {
+             string ImGUI = CFileMatcher("KUI.ttf").getFirst();
+             GUI::LoadFont("KUI", ImGUI, 14, true);
         }
     }
 }

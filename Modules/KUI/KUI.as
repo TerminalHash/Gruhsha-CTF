@@ -1,4 +1,4 @@
-namespace ImGUI {
+namespace KUI {
 
 const int TOGGLE_ICONS = 0;
 const int TUNER_ICONS = 4;
@@ -24,7 +24,7 @@ float drawstart = 0.0;
 bool pressed = false;
 
 void Begin(string title, Vec2f tl, Vec2f br) {
-    GUI::SetFont("ImGUI");
+    GUI::SetFont("KUI");
 
     //    GUI::DrawRectangle(tl, br, Colors::WINDOW_BORDER);
     //    GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::WINDOW_BG);
@@ -136,7 +136,7 @@ bool Toggle(string title, bool toggle) {
 
     if (toggle) toggle_index += 1;
 
-    GUI::DrawIcon("ImGUI_Icons.png", TOGGLE_ICONS + toggle_index, Vec2f(8,8), tl, 1, 0);
+    GUI::DrawIcon("KUI_Icons.png", TOGGLE_ICONS + toggle_index, Vec2f(8,8), tl, 1, 0);
     GUI::DrawText(title, tl + Vec2f(20, 0), Colors::FG);
 
     drawstart = br.y + 4;
@@ -187,8 +187,8 @@ int Tuner(string title, int tuner, int min = 1, int max = 5) {
         }
     }
 
-    GUI::DrawIcon("ImGUI_Icons.png", TUNER_ICONS + ltuner_index, Vec2f(8,8), ltuner_tl, 1, 0);
-    GUI::DrawIcon("ImGUI_Icons.png", TUNER_ICONS + rtuner_index, Vec2f(8,8), rtuner_tl, 1, 0);
+    GUI::DrawIcon("KUI_Icons.png", TUNER_ICONS + ltuner_index, Vec2f(8,8), ltuner_tl, 1, 0);
+    GUI::DrawIcon("KUI_Icons.png", TUNER_ICONS + rtuner_index, Vec2f(8,8), rtuner_tl, 1, 0);
     GUI::DrawTextCentered("" + tuner, Vec2f(ltuner_br.x + (rtuner_tl.x - ltuner_br.x) / 2 - 2, ltuner_tl.y + (rtuner_br.y - ltuner_tl.y) / 2 - 1), Colors::FG);
     GUI::DrawText(title, Vec2f(rtuner_br.x + 4, drawstart), Colors::FG);
     drawstart += 20;
