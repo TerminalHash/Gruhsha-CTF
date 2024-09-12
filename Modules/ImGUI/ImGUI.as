@@ -44,6 +44,17 @@ void End() {
     drawstart = 0;
 }
 
+void Separator(float separator = 20) {
+    drawstart += separator;
+}
+
+void Line() {
+    Vec2f p1 = Vec2f(window_tl.x + 8, drawstart);
+    Vec2f p2 = Vec2f(window_br.x - 8, drawstart);
+    GUI::DrawLine2D(p1, p2, Colors::FG);
+    drawstart += 4;
+}
+
 void Text(string text) {
     GUI::DrawText(text, Vec2f(window_tl.x + 8, drawstart), Colors::FG);
     drawstart += 20;
@@ -178,7 +189,7 @@ int Tuner(string title, int tuner, int min = 1, int max = 5) {
 
     GUI::DrawIcon("ImGUI_Icons.png", TUNER_ICONS + ltuner_index, Vec2f(8,8), ltuner_tl, 1, 0);
     GUI::DrawIcon("ImGUI_Icons.png", TUNER_ICONS + rtuner_index, Vec2f(8,8), rtuner_tl, 1, 0);
-    GUI::DrawTextCentered("" + tuner, Vec2f(ltuner_br.x + (rtuner_tl.x - ltuner_br.x) / 2 - 2, ltuner_tl.y + (rtuner_br.y - ltuner_tl.y) / 2 - 2), Colors::FG);
+    GUI::DrawTextCentered("" + tuner, Vec2f(ltuner_br.x + (rtuner_tl.x - ltuner_br.x) / 2 - 2, ltuner_tl.y + (rtuner_br.y - ltuner_tl.y) / 2 - 1), Colors::FG);
     GUI::DrawText(title, Vec2f(rtuner_br.x + 4, drawstart), Colors::FG);
     drawstart += 20;
     return tuner;
