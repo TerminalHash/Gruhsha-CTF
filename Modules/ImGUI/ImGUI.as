@@ -30,7 +30,7 @@ void Begin(string title, Vec2f tl, Vec2f br) {
     //    GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::WINDOW_BG);
     //    GUI::DrawRectangle(tl + Vec2f(2, 2), Vec2f(br.x - 2, tl.y + 22), Colors::WINDOW_TITLE);
 
-    GUI::DrawPane(tl, br);
+    GUI::DrawFramedPane(tl, br);
     GUI::DrawPane(tl, Vec2f(br.x, tl.y + 26));
     GUI::DrawText(title, Vec2f(tl.x + 6, tl.y + 4), Colors::FG);
 
@@ -45,13 +45,13 @@ void End() {
 }
 
 void Text(string text) {
-    GUI::DrawText(text, Vec2f(window_tl.x + 6, drawstart), Colors::FG);
+    GUI::DrawText(text, Vec2f(window_tl.x + 8, drawstart), Colors::FG);
     drawstart += 20;
 }
 
 bool Button(string title) {
-    Vec2f tl = Vec2f(window_tl.x + 6, drawstart);
-    Vec2f br = Vec2f(window_br.x - 6, drawstart + 28);
+    Vec2f tl = Vec2f(window_tl.x + 8, drawstart);
+    Vec2f br = Vec2f(window_br.x - 8, drawstart + 28);
 
     Vec2f mouse_pos = controls.getMouseScreenPos();
     bool hover = mouse_pos.x > tl.x && mouse_pos.x < br.x && mouse_pos.y > tl.y && mouse_pos.y < br.y;
@@ -101,8 +101,8 @@ void DrawButtonPress(string title, Vec2f tl, Vec2f br) {
 }
 
 bool Toggle(string title, bool toggle) {
-    Vec2f tl = Vec2f(window_tl.x + 6, drawstart);
-    Vec2f br = Vec2f(window_br.x - 6, drawstart + 16);
+    Vec2f tl = Vec2f(window_tl.x + 8, drawstart);
+    Vec2f br = Vec2f(window_br.x - 8, drawstart + 16);
 
     int toggle_index = 0;
 
@@ -133,8 +133,8 @@ bool Toggle(string title, bool toggle) {
 }
 
 int Tuner(string title, int tuner, int min = 1, int max = 5) {
-    Vec2f ltuner_tl = Vec2f(window_tl.x + 6, drawstart);
-    Vec2f ltuner_br = Vec2f(window_tl.x + 6 + 16, drawstart + 16);
+    Vec2f ltuner_tl = Vec2f(window_tl.x + 8, drawstart);
+    Vec2f ltuner_br = Vec2f(window_tl.x + 8 + 16, drawstart + 16);
 
     Vec2f tuner_value_dim;
     GUI::GetTextDimensions(max + "", tuner_value_dim);
