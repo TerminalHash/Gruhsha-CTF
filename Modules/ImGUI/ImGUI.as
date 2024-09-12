@@ -1,5 +1,8 @@
 namespace ImGUI {
-  
+
+const int TOGGLE_ICONS = 0;
+const int TUNER_ICONS = 4;
+
 namespace Colors {
     const SColor FG = SColor(0xFFFFFFFF);
     const SColor WINDOW_BG = SColor(0xFF333333);
@@ -113,24 +116,33 @@ bool Toggle(string title, bool toggle) {
     }
 
     if (toggle) toggle_index += 1;
-    GUI::DrawIcon("ImGUI_Icons.png", toggle_index, Vec2f(8,8), tl, 1, 0);
+
+    GUI::DrawIcon("ImGUI_Icons.png", TOGGLE_ICONS + toggle_index, Vec2f(8,8), tl, 1, 0);
     GUI::DrawText(title, tl + Vec2f(20, 0), Colors::FG);
 
     drawstart = br.y + 4;
     return toggle;
 }
 
-int SliderInt(string title, int slider, int min = 0, int max = 10) {
-    Vec2f tl = Vec2f(window_tl.x + 4, drawstart);
-    Vec2f br = Vec2f(window_br.x - 4, drawstart + 20);
+int Tuner(string title, int tuner, int min = 1, int max = 5) {
+    Vec2f ltuner_tl = Vec2f(window_tl.x + 4, drawstart);
+    Vec2f ltuner_br = Vec2f(window_tl.x + 4 + 16, drawstart + 16);
 
-    Vec2f mouse_pos = controls.getMouseScreenPos();
-    bool hover = mouse_pos.x > tl.x && mouse_pos.x < br.x && mouse_pos.y > tl.y && mouse_pos.y < br.y;
-    bool press = controls.mousePressed1;
+    Vec2f tuner_value_dim;
+    GUI::GetTextDimensions(max + "", tuner_value_dim);
 
-    //  GUI::DrawRectangle(tl, br, Colors::BUTTON_NORMAL);
+    Vec2f rtuner_tl = Vec2f(ltuner_br.x + tuner_value_dim.x, drawstart);
+    Vec2f rtuner_br = Vec2f(ltuner_br.x + tuner_value_dim.x + 16, drawstart + 16);
+    
+    //    Vec2f mouse_pos = controls.getMouseScreenPos();
+    //    bool hover = mouse_pos.x > tl.x && mouse_pos.x < br.x && mouse_pos.y > tl.y && mouse_pos.y < br.y;
+    //    bool press = controls.mousePressed1;
 
-    return slider;
+    GUI::DrawIcon("ImGUI_Icons.png", TUNER_ICONS + 0, Vec2f(8,8), ltuner_tl, 1, 0);
+    GUI::DrawTextCentered("" + tuner, Vec2f(ltuner_br.x + (rtuner_tl.x - ltuner_br.x) * 0.5, ltuner_tl.y + (rtuner_br.y - ltuner_tl.y) * 0.4), Colors::FG);
+    GUI::DrawIcon("ImGUI_Icons.png", TUNER_ICONS + 2, Vec2f(8,8), rtuner_tl, 1, 0);
+    
+    return tuner;
 }
 
 }
