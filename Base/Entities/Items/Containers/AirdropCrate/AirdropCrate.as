@@ -112,9 +112,15 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 	}
 }
 
+//bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
+//{
+//	return blob.getShape().isStatic() && blob.isCollidable();
+//}
+
 bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
 {
-	return blob.getShape().isStatic() && blob.isCollidable();
+	return (this.getName() == blob.getName())
+		|| ((blob.getShape().isStatic() || blob.hasTag("player") || blob.hasTag("projectile")) && !blob.hasTag("parachute"));
 }
 
 bool canBePickedUp(CBlob@ this, CBlob@ byBlob)
