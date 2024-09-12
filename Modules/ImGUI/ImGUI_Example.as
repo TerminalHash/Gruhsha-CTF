@@ -6,7 +6,8 @@ void onTick(CRules@ this) {}
 
 bool toggle1 = false;
 bool toggle2 = false;
-int tuner = 27;
+int tuner1 = 3;
+int tuner2 = 8;
 
 void onRender(CRules@ this) {
     float screen_width = getScreenWidth();
@@ -19,6 +20,7 @@ void onRender(CRules@ this) {
     toggle2 = ImGUI::Toggle("Toggle example 2", toggle2);
     ImGUI::Text("Text example PINEKST");
     ImGUI::Button("Button Example 3");
-    tuner = ImGUI::Tuner("Slider example", tuner, 1, 100);
+    tuner1 = ImGUI::Tuner("Tuner example 1", tuner1, 0, 5);
+    tuner2 = ImGUI::Tuner("Tuner example 2", tuner2, 4, 10);
     ImGUI::End();
 }

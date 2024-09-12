@@ -74,21 +74,21 @@ bool Button(string title) {
 void DrawButtonNormal(string title, Vec2f tl, Vec2f br) {
     GUI::DrawRectangle(tl, br, Colors::BUTTON_BORDER_NORMAL);
     GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::BUTTON_NORMAL);
-    GUI::DrawTextCentered(title, Vec2f(tl.x + ((br.x - tl.x) * 0.50f) - 2, tl.y + ((br.y - tl.y) * 0.48f)), Colors::FG);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
     drawstart = br.y + 4;
 }
 
 void DrawButtonHover(string title, Vec2f tl, Vec2f br) {
     GUI::DrawRectangle(tl, br, Colors::BUTTON_BORDER_HOVER);
     GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::BUTTON_HOVER);
-    GUI::DrawTextCentered(title, Vec2f(tl.x + ((br.x - tl.x) * 0.50f) - 2, tl.y + ((br.y - tl.y) * 0.48f)), Colors::FG);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
     drawstart = br.y + 4;
 }
 
 void DrawButtonPress(string title, Vec2f tl, Vec2f br) {
     GUI::DrawRectangle(tl, br, Colors::BUTTON_BORDER_PRESS);
     GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::BUTTON_PRESS);
-    GUI::DrawTextCentered(title, Vec2f(tl.x + ((br.x - tl.x) * 0.50f) - 2, tl.y + ((br.y - tl.y) * 0.48f)), Colors::FG);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
     drawstart = br.y + 4;
 }
 
@@ -134,14 +134,45 @@ int Tuner(string title, int tuner, int min = 1, int max = 5) {
     Vec2f rtuner_tl = Vec2f(ltuner_br.x + tuner_value_dim.x, drawstart);
     Vec2f rtuner_br = Vec2f(ltuner_br.x + tuner_value_dim.x + 16, drawstart + 16);
     
-    //    Vec2f mouse_pos = controls.getMouseScreenPos();
-    //    bool hover = mouse_pos.x > tl.x && mouse_pos.x < br.x && mouse_pos.y > tl.y && mouse_pos.y < br.y;
-    //    bool press = controls.mousePressed1;
+    Vec2f mouse_pos = controls.getMouseScreenPos();
+    bool lhover = mouse_pos.x > ltuner_tl.x && mouse_pos.x < ltuner_br.x && mouse_pos.y > ltuner_tl.y && mouse_pos.y < ltuner_br.y;
+    bool rhover = mouse_pos.x > rtuner_tl.x && mouse_pos.x < rtuner_br.x && mouse_pos.y > rtuner_tl.y && mouse_pos.y < rtuner_br.y;
+    bool press = controls.mousePressed1;
 
-    GUI::DrawIcon("ImGUI_Icons.png", TUNER_ICONS + 0, Vec2f(8,8), ltuner_tl, 1, 0);
-    GUI::DrawTextCentered("" + tuner, Vec2f(ltuner_br.x + (rtuner_tl.x - ltuner_br.x) * 0.5, ltuner_tl.y + (rtuner_br.y - ltuner_tl.y) * 0.4), Colors::FG);
-    GUI::DrawIcon("ImGUI_Icons.png", TUNER_ICONS + 2, Vec2f(8,8), rtuner_tl, 1, 0);
-    
+    int ltuner_index = 0;
+    int rtuner_index = 2;
+
+    if (lhover) {
+        ltuner_index = 1;
+        if (press) {
+            if (!pressed) {
+                Sound::Play("ButtonClick.ogg");
+                tuner = Maths::Max(min, tuner - 1);
+                pressed = true;
+            }
+        } else {
+            pressed = false;
+        }
+    }
+
+    if (rhover) {
+        rtuner_index = 3;
+        if (press) {
+            if (!pressed) {
+                Sound::Play("ButtonClick.ogg");
+                tuner = Maths::Min(max, tuner + 1);
+                pressed = true;
+            }
+        } else {
+            pressed = false;
+        }
+    }
+
+    GUI::DrawIcon("ImGUI_Icons.png", TUNER_ICONS + ltuner_index, Vec2f(8,8), ltuner_tl, 1, 0);
+    GUI::DrawIcon("ImGUI_Icons.png", TUNER_ICONS + rtuner_index, Vec2f(8,8), rtuner_tl, 1, 0);
+    GUI::DrawTextCentered("" + tuner, Vec2f(ltuner_br.x + (rtuner_tl.x - ltuner_br.x) / 2 - 2, ltuner_tl.y + (rtuner_br.y - ltuner_tl.y) / 2 - 2), Colors::FG);
+    GUI::DrawText(title, Vec2f(rtuner_br.x + 4, drawstart), Colors::FG);
+    drawstart += 20;
     return tuner;
 }
 
