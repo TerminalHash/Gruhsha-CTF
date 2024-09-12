@@ -45,7 +45,7 @@ void onRender(CRules@ this) {
     int builder_range = this.get_u8("builders_limit");
     int archer_range = this.get_u8("archers_limit");
 
-    ImGUI::Begin("Admin Menu", Vec2f(200, 200), Vec2f(600, 740));
+    ImGUI::Begin("Admin Menu", Vec2f(200, 200), Vec2f(500, 740));
 
     /////////////////////////////////////////////////
     // Match Management section
