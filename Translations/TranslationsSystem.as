@@ -109,6 +109,8 @@ namespace Descriptions
 	blockreqdebuff					= Translate(en::d_blockreqdebuff+"\\"+ru::d_blockreqdebuff),
 	respawndebuff					= Translate(en::d_respawndebuff+"\\"+ru::d_respawndebuff),
 	shielddebuff					= Translate(en::d_shielddebuff+"\\"+ru::d_shielddebuff),
+	swordbuff						= Translate(en::d_swordbuff+"\\"+ru::d_swordbuff),
+	pricedebuff						= Translate(en::d_pricedebuff+"\\"+ru::d_pricedebuff),
 
 	empty 					= "";
 }

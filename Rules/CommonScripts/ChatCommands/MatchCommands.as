@@ -83,6 +83,22 @@ class ToggleSuddenDeath : ChatCommand
 			rules.Sync("sudden death", true);
 		}
 
+		CBlob@[] knightshoplist;
+		if(getBlobsByName("knightshop", knightshoplist)) {
+			for (int i = 0; i < knightshoplist.size(); ++i) {
+				CBlob@ currentshop = knightshoplist[i];
+				currentshop.SendCommand(currentshop.getCommandID("reset menu"));
+			}
+		}
+
+		CBlob@[] archershoplist;
+		if(getBlobsByName("archershop", archershoplist)) {
+			for (int i = 0; i < archershoplist.size(); ++i) {
+				CBlob@ currentshop = archershoplist[i];
+				currentshop.SendCommand(currentshop.getCommandID("reset menu"));
+			}
+		}
+
 		if (isServer()) {
 			if (!rules.hasTag("sudden death")) {
 				server_AddToChat("Sudden Death mode is disabled!", SColor(0xff474ac6));

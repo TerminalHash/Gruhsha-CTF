@@ -39,16 +39,40 @@ void onTick(CRules@ this)
 	// Special tag for buffs on 5 min
 	//if (end_in == 1200) {
 	if (end_in == 300) {
+		if(!isServer()) return;
+
 		this.Tag("sudden death");
 		this.Sync("sudden death", true);
-/*
+
+		// FIXME: play sound
+		// works as shit, dont use it
+		/*
 		this.set_bool("kurwa", true);
 		this.Sync("kurwa", true);
 
 		CBitStream bs;
 		bs.write_bool(kurwa);
 		this.SendCommand(this.getCommandID("sudden death sound"), bs);
-*/
+		*/
+
+		// Change prices in shops
+		// knight shop
+		CBlob@[] knightshoplist;
+		if(getBlobsByName("knightshop", knightshoplist)) {
+			for (int i = 0; i < knightshoplist.size(); ++i) {
+				CBlob@ currentshop = knightshoplist[i];
+				currentshop.SendCommand(currentshop.getCommandID("reset menu"));
+			}
+		}
+
+		// archer shop
+		CBlob@[] archershoplist;
+		if(getBlobsByName("archershop", archershoplist)) {
+			for (int i = 0; i < archershoplist.size(); ++i) {
+				CBlob@ currentshop = archershoplist[i];
+				currentshop.SendCommand(currentshop.getCommandID("reset menu"));
+			}
+		}
 
 		//printf("[INFO] Sudded Death Mode activated!");
 	}
@@ -144,12 +168,12 @@ void onRender(CRules@ this)
 	if (this.hasTag("sudden death")) {
 		GUI::DrawIcon("MenuItems.png", 18, Vec2f(32, 32), Vec2f(12, 180), 1.5f);
 
-		Vec2f dim = Vec2f(342, 195);
+		Vec2f dim = Vec2f(342, 295);
 		Vec2f ul(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12);
 		Vec2f tl = ul + Vec2f(-190, -100);
 
 		if (mousePos.x > x -4 && mousePos.x < x + 74 && mousePos.y < skull.y + 85 && mousePos.y > skull.y +12) {
-			GUI::DrawSunkenPane(tl, tl + Vec2f(490, 120));
+			GUI::DrawSunkenPane(tl, tl + Vec2f(490, 150));
 			GUI::DrawText(Descriptions::suddenactive, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y - 80), color_white);
 			GUI::DrawText(Descriptions::kegbuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y - 65), color_white);
 			GUI::DrawText(Descriptions::drillbuff1, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y - 50), color_white);
@@ -157,6 +181,8 @@ void onRender(CRules@ this)
 			GUI::DrawText(Descriptions::blockreqdebuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y - 20), color_white);
 			GUI::DrawText(Descriptions::respawndebuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y - 5), color_white);
 			GUI::DrawText(Descriptions::shielddebuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y + 10), color_white);
+			GUI::DrawText(Descriptions::swordbuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y + 25), color_white);
+			GUI::DrawText(Descriptions::pricedebuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y + 40), color_white);
 		}
 	}
 }

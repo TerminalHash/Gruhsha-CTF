@@ -93,7 +93,9 @@ namespace en
 	d_drillbuff2							= "* Knights and archers get less heat while drilling;",
 	d_blockreqdebuff						= "* Block requirements on mid is multiplied by 1.35;",
 	d_respawndebuff							= "* Respawn time is 15 seconds;",
-	d_shielddebuff							= "* Shields miss half of the damage from slashes and jabs.",
+	d_shielddebuff							= "* Shields miss half of the damage from slashes and jabs;",
+	d_swordbuff								= "* Knight gains the ability to strike fire once every 30 seconds;",
+	d_pricedebuff							= "* Prices for some items are being recalculated.",
 
 	//////////////////////////////////////////////////////////
 	// Names

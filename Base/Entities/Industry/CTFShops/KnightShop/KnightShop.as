@@ -37,6 +37,7 @@ void onInit(CBlob@ this)
 	// Dynamic prices
 	u32 dynamic_bomb_cost = 25;
 	u32 dynamic_water_bomb_cost = 35;
+	u32 dynamic_keg_cost = 130;
 	u32 player_amount = getRules().get_s32("amount_in_team");
 
 	if (player_amount >= 12 && player_amount < 14)
@@ -65,6 +66,10 @@ void onInit(CBlob@ this)
 		dynamic_water_bomb_cost = 55;
 	}
 
+	if (getRules().hasTag("sudden death")) {
+		dynamic_keg_cost = 150;
+	}
+
 	int team_num = this.getTeamNum();
 
 	{
@@ -82,7 +87,7 @@ void onInit(CBlob@ this)
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Keg", getTeamIcon("keg", "Keg.png", team_num, Vec2f(16, 16), 0), "keg", Descriptions::keg, false);
-		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::keg);
+		AddRequirement(s.requirements, "coin", "", "Coins", dynamic_keg_cost /*CTFCosts::keg*/);
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Drill", getTeamIcon("drill", "Drill.png", team_num, Vec2f(32, 16), 0), "drill", Descriptions::drill, false);
