@@ -32,7 +32,7 @@ void ShowPrototypeMenu()
 
 void onRender(CRules@ this) {
 	CPlayer@ player = getLocalPlayer();
-	if (player is null && !player.isMyPlayer()) return;
+	if (player is null || !player.isMyPlayer()) return;
 
 	// Ordinary mortals not allowed here
 	if (!player.isRCON()) {
