@@ -8,7 +8,9 @@ namespace Colors {
     const SColor BUTTON_NORMAL = SColor(0xFF666666);
     const SColor BUTTON_HOVER = SColor(0xFF777777);
     const SColor BUTTON_PRESS = SColor(0xFF888888);
-    const SColor BUTTON_BORDER = SColor(0xFF222222);
+    const SColor BUTTON_BORDER_NORMAL = SColor(0xFF222222);
+    const SColor BUTTON_BORDER_HOVER = SColor(0xFFAAAAAA);
+    const SColor BUTTON_BORDER_PRESS = SColor(0xFFFFFFFF);
 };
 
 CControls@ controls = getControls();
@@ -39,7 +41,7 @@ void Text(string text) {
     drawstart += 20;
 }
 
-bool Button(const string title) {
+bool Button(string title) {
     Vec2f tl = Vec2f(window_tl.x + 4, drawstart);
     Vec2f br = Vec2f(window_br.x - 4, drawstart + 26);
 
@@ -47,29 +49,44 @@ bool Button(const string title) {
     bool hover = mouse_pos.x > tl.x && mouse_pos.x < br.x && mouse_pos.y > tl.y && mouse_pos.y < br.y;
     bool press = controls.mousePressed1;
 
-    GUI::DrawRectangle(tl, br, Colors::BUTTON_BORDER);
-    
     if (hover) {
         if (press) {
-            GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::BUTTON_PRESS);
-            GUI::DrawTextCentered(title, Vec2f(tl.x + ((br.x - tl.x) * 0.5) - 2, tl.y + ((br.y - tl.y) * 0.48)), Colors::FG);
-            drawstart = br.y + 4;
+            DrawButtonPress(title, tl, br);
             if (!pressed) {
                 Sound::Play("ButtonClick.ogg");
                 pressed = true;
                 return true;
             }
         } else {
-            GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::BUTTON_HOVER);
+            DrawButtonHover(title, tl, br);
             pressed = false;
         }
     } else {
-        GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::BUTTON_NORMAL);
+        DrawButtonNormal(title, tl, br);
     }
 
+    return false;
+}
+
+void DrawButtonNormal(string title, Vec2f tl, Vec2f br) {
+    GUI::DrawRectangle(tl, br, Colors::BUTTON_BORDER_NORMAL);
+    GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::BUTTON_NORMAL);
     GUI::DrawTextCentered(title, Vec2f(tl.x + ((br.x - tl.x) * 0.50f) - 2, tl.y + ((br.y - tl.y) * 0.48f)), Colors::FG);
     drawstart = br.y + 4;
-    return false;
+}
+
+void DrawButtonHover(string title, Vec2f tl, Vec2f br) {
+    GUI::DrawRectangle(tl, br, Colors::BUTTON_BORDER_HOVER);
+    GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::BUTTON_HOVER);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + ((br.x - tl.x) * 0.50f) - 2, tl.y + ((br.y - tl.y) * 0.48f)), Colors::FG);
+    drawstart = br.y + 4;
+}
+
+void DrawButtonPress(string title, Vec2f tl, Vec2f br) {
+    GUI::DrawRectangle(tl, br, Colors::BUTTON_BORDER_PRESS);
+    GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::BUTTON_PRESS);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + ((br.x - tl.x) * 0.50f) - 2, tl.y + ((br.y - tl.y) * 0.48f)), Colors::FG);
+    drawstart = br.y + 4;
 }
 
 bool Toggle(string title, bool toggle) {
