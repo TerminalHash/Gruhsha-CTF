@@ -1,3 +1,5 @@
+#include "BindingsCommon.as"
+
 namespace KUI {
 
 const int TOGGLE_ICONS = 0;
@@ -61,6 +63,8 @@ void Text(string text) {
 }
 
 bool Button(string title) {
+    if (controls is null) return false;
+
     Vec2f tl = Vec2f(window_tl.x + 8, drawstart);
     Vec2f br = Vec2f(window_br.x - 8, drawstart + 28);
 
@@ -112,6 +116,8 @@ void DrawButtonPress(string title, Vec2f tl, Vec2f br) {
 }
 
 bool Toggle(string title, bool toggle) {
+    if (controls is null) return toggle;
+
     Vec2f tl = Vec2f(window_tl.x + 8, drawstart);
     Vec2f br = Vec2f(window_br.x - 8, drawstart + 16);
 
@@ -120,14 +126,14 @@ bool Toggle(string title, bool toggle) {
     Vec2f mouse_pos = controls.getMouseScreenPos();
     bool hover = mouse_pos.x > tl.x && mouse_pos.x < br.x && mouse_pos.y > tl.y && mouse_pos.y < br.y;
     bool press = controls.mousePressed1;
-   
+
     if (hover) {
         toggle_index = 2;
         if (press) {
             if (!pressed) {
                 Sound::Play("ButtonClick.ogg");
                 pressed = true;
-                toggle = not toggle;
+                toggle = !toggle;
             }
         } else {
             pressed = false;
@@ -144,6 +150,8 @@ bool Toggle(string title, bool toggle) {
 }
 
 int Tuner(string title, int tuner, int min = 1, int max = 5) {
+    if (controls is null) return tuner;
+
     Vec2f ltuner_tl = Vec2f(window_tl.x + 8, drawstart);
     Vec2f ltuner_br = Vec2f(window_tl.x + 8 + 16, drawstart + 16);
 
@@ -152,7 +160,7 @@ int Tuner(string title, int tuner, int min = 1, int max = 5) {
 
     Vec2f rtuner_tl = Vec2f(ltuner_br.x + tuner_value_dim.x, drawstart);
     Vec2f rtuner_br = Vec2f(ltuner_br.x + tuner_value_dim.x + 16, drawstart + 16);
-    
+
     Vec2f mouse_pos = controls.getMouseScreenPos();
     bool lhover = mouse_pos.x > ltuner_tl.x && mouse_pos.x < ltuner_br.x && mouse_pos.y > ltuner_tl.y && mouse_pos.y < ltuner_br.y;
     bool rhover = mouse_pos.x > rtuner_tl.x && mouse_pos.x < rtuner_br.x && mouse_pos.y > rtuner_tl.y && mouse_pos.y < rtuner_br.y;
@@ -195,4 +203,40 @@ int Tuner(string title, int tuner, int min = 1, int max = 5) {
     return tuner;
 }
 
+int ButtonKeybind(int key) {
+    if (controls is null) return key;
+
+    Vec2f tl = Vec2f(window_tl.x + 8, drawstart);
+    Vec2f br = Vec2f(window_br.x - 8, drawstart + 28);
+
+    Vec2f mouse_pos = controls.getMouseScreenPos();
+    bool hover = mouse_pos.x > tl.x && mouse_pos.x < br.x && mouse_pos.y > tl.y && mouse_pos.y < br.y;
+    bool press = controls.mousePressed1;
+
+    if (hover) {
+        DrawButtonHover(getKeyName(key), tl, br);
+        if (press) {
+            DrawButtonPress(getKeyName(key), tl, br);
+            if (!pressed) {
+                Sound::Play("ButtonClick.ogg");
+                pressed = true;
+                return key;
+            }
+
+            for (int i = 1; i <= 512; i++) {
+                if (i == EKEY_CODE::KEY_LBUTTON) continue;
+                bool key_pressed = controls.isKeyPressed(i);
+                if (!key_pressed) continue;
+                key = i;
+                break;
+            }
+        }
+    } else {
+        DrawButtonNormal(getKeyName(key), tl, br);
+    }
+
+    return key;
 }
+
+}
+

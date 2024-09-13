@@ -6,6 +6,7 @@ void onTick(CRules@ this) {}
 
 bool toggle = false;
 int tuner = 3;
+int key = EKEY_CODE::KEY_DELETE;
 
 void onRender(CRules@ this) {
     float screen_width = getScreenWidth();
@@ -16,5 +17,6 @@ void onRender(CRules@ this) {
     KUI::Button("Button example");
     toggle = KUI::Toggle("Toggle example", toggle);
     tuner = KUI::Tuner("Tuner example", tuner, 1, 10);
+    key = KUI::ButtonKeybind(key);
     KUI::End();
 }
