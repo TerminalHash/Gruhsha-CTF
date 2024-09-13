@@ -57,7 +57,7 @@ void Line() {
 
 void Text(string text) {
     GUI::DrawText(text, Vec2f(window_tl.x + 8, drawstart), Colors::FG);
-    drawstart += 20;
+    drawstart += 18;
 }
 
 bool Button(string title) {
