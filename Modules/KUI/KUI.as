@@ -4,19 +4,7 @@ namespace KUI {
 
 const int TOGGLE_ICONS = 0;
 const int TUNER_ICONS = 4;
-
-namespace Colors {
-    const SColor FG = SColor(0xFFFFFFFF);
-    const SColor WINDOW_BG = SColor(0xFF647160);
-    const SColor WINDOW_BORDER = SColor(0xFF130D1D);
-    const SColor WINDOW_TITLE = SColor(0xFF7E8C79);
-    const SColor BUTTON_NORMAL = SColor(0xFF7E8C79);
-    const SColor BUTTON_HOVER = SColor(0xFF97A792);
-    const SColor BUTTON_PRESS = SColor(0xFF97A792);
-    const SColor BUTTON_BORDER_NORMAL = SColor(0xFF130D1D);
-    const SColor BUTTON_BORDER_HOVER = SColor(0xFFFFFFFF);
-    const SColor BUTTON_BORDER_PRESS = SColor(0xFFAAAAAA);
-};
+const SColor FG = SColor(0xFFFFFFFF);
 
 CControls@ controls = getControls();
 
@@ -28,13 +16,9 @@ bool pressed = false;
 void Begin(string title, Vec2f tl, Vec2f br) {
     GUI::SetFont("KUI");
 
-    //    GUI::DrawRectangle(tl, br, Colors::WINDOW_BORDER);
-    //    GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::WINDOW_BG);
-    //    GUI::DrawRectangle(tl + Vec2f(2, 2), Vec2f(br.x - 2, tl.y + 22), Colors::WINDOW_TITLE);
-
     GUI::DrawFramedPane(tl, br);
     GUI::DrawPane(tl, Vec2f(br.x, tl.y + 26));
-    GUI::DrawText(title, Vec2f(tl.x + 6, tl.y + 4), Colors::FG);
+    GUI::DrawText(title, Vec2f(tl.x + 6, tl.y + 4), FG);
 
     window_tl = tl;
     window_br = br;
@@ -53,17 +37,19 @@ void Separator(float separator = 20) {
 void Line() {
     Vec2f p1 = Vec2f(window_tl.x + 8, drawstart);
     Vec2f p2 = Vec2f(window_br.x - 8, drawstart);
-    GUI::DrawLine2D(p1, p2, Colors::FG);
+    GUI::DrawLine2D(p1, p2, FG);
     drawstart += 4;
 }
 
 void Text(string text) {
-    GUI::DrawText(text, Vec2f(window_tl.x + 8, drawstart), Colors::FG);
-    drawstart += 18;
+    GUI::DrawText(text, Vec2f(window_tl.x + 8, drawstart), FG);
+    drawstart += 20;
 }
 
 bool Button(string title) {
     if (controls is null) return false;
+
+    bool button = false;
 
     Vec2f tl = Vec2f(window_tl.x + 8, drawstart);
     Vec2f br = Vec2f(window_br.x - 8, drawstart + 28);
@@ -78,7 +64,7 @@ bool Button(string title) {
             if (!pressed) {
                 Sound::Play("ButtonClick.ogg");
                 pressed = true;
-                return true;
+                button = true;
             }
         } else {
             DrawButtonHover(title, tl, br);
@@ -88,30 +74,24 @@ bool Button(string title) {
         DrawButtonNormal(title, tl, br);
     }
 
-    return false;
+    return button;
 }
 
 void DrawButtonNormal(string title, Vec2f tl, Vec2f br) {
-  //GUI::DrawRectangle(tl, br, Colors::BUTTON_BORDER_NORMAL);
-  //GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::BUTTON_NORMAL);
     GUI::DrawButton(tl, br);
-    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), FG);
     drawstart = br.y + 4;
 }
 
 void DrawButtonHover(string title, Vec2f tl, Vec2f br) {
-  //GUI::DrawRectangle(tl, br, Colors::BUTTON_BORDER_HOVER);
-  //GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::BUTTON_HOVER);
     GUI::DrawButtonHover(tl, br);
-    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), FG);
     drawstart = br.y + 4;
 }
 
 void DrawButtonPress(string title, Vec2f tl, Vec2f br) {
-  //GUI::DrawRectangle(tl, br, Colors::BUTTON_BORDER_PRESS);
-  //GUI::DrawRectangle(tl + Vec2f(2, 2), br - Vec2f(2, 2), Colors::BUTTON_PRESS);
     GUI::DrawButtonPressed(tl, br);
-    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), FG);
     drawstart = br.y + 4;
 }
 
@@ -143,7 +123,7 @@ bool Toggle(string title, bool toggle) {
     if (toggle) toggle_index += 1;
 
     GUI::DrawIcon("KUI_Icons.png", TOGGLE_ICONS + toggle_index, Vec2f(8,8), tl, 1, 0);
-    GUI::DrawText(title, tl + Vec2f(20, 0), Colors::FG);
+    GUI::DrawText(title, tl + Vec2f(20, 0), FG);
 
     drawstart = br.y + 4;
     return toggle;
@@ -197,30 +177,28 @@ int Tuner(string title, int tuner, int min = 1, int max = 5) {
 
     GUI::DrawIcon("KUI_Icons.png", TUNER_ICONS + ltuner_index, Vec2f(8,8), ltuner_tl, 1, 0);
     GUI::DrawIcon("KUI_Icons.png", TUNER_ICONS + rtuner_index, Vec2f(8,8), rtuner_tl, 1, 0);
-    GUI::DrawTextCentered("" + tuner, Vec2f(ltuner_br.x + (rtuner_tl.x - ltuner_br.x) / 2 - 2, ltuner_tl.y + (rtuner_br.y - ltuner_tl.y) / 2 - 1), Colors::FG);
-    GUI::DrawText(title, Vec2f(rtuner_br.x + 4, drawstart), Colors::FG);
+    GUI::DrawTextCentered("" + tuner, Vec2f(ltuner_br.x + (rtuner_tl.x - ltuner_br.x) / 2 - 2, ltuner_tl.y + (rtuner_br.y - ltuner_tl.y) / 2 - 1), FG);
+    GUI::DrawText(title, Vec2f(rtuner_br.x + 4, drawstart), FG);
     drawstart += 20;
     return tuner;
 }
 
-int ButtonKeybind(int key) {
+int Keybind(string title, int key) {
     if (controls is null) return key;
 
     Vec2f tl = Vec2f(window_tl.x + 8, drawstart);
-    Vec2f br = Vec2f(window_br.x - 8, drawstart + 28);
+    Vec2f br = Vec2f(window_tl.x + 8 + 100, drawstart + 28);
 
     Vec2f mouse_pos = controls.getMouseScreenPos();
     bool hover = mouse_pos.x > tl.x && mouse_pos.x < br.x && mouse_pos.y > tl.y && mouse_pos.y < br.y;
     bool press = controls.mousePressed1;
 
     if (hover) {
-        DrawButtonHover(getKeyName(key), tl, br);
         if (press) {
             DrawButtonPress(getKeyName(key), tl, br);
             if (!pressed) {
                 Sound::Play("ButtonClick.ogg");
                 pressed = true;
-                return key;
             }
 
             for (int i = 1; i <= 512; i++) {
@@ -230,11 +208,15 @@ int ButtonKeybind(int key) {
                 key = i;
                 break;
             }
+        } else {
+            DrawButtonHover(getKeyName(key), tl, br);
+            pressed = false;
         }
     } else {
         DrawButtonNormal(getKeyName(key), tl, br);
     }
 
+    GUI::DrawText(title, Vec2f(br.x + 4, tl.y + 4), FG);
     return key;
 }
 

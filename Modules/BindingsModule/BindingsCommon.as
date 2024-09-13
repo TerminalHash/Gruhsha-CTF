@@ -1947,8 +1947,8 @@ string getKeyName(u32 i, bool short=false)
 		case EKEY_CODE::KEY_RBUTTON: return "RMB";
 		case EKEY_CODE::KEY_MBUTTON: return "MIDDLE CLICK";
 		case EKEY_CODE::KEY_CANCEL: return "CANCEL";
-		case EKEY_CODE::KEY_XBUTTON1: return "KEY_XBUTTON1";
-		case EKEY_CODE::KEY_XBUTTON2: return "KEY_XBUTTON2";
+		case EKEY_CODE::KEY_XBUTTON1: return "X1MB";
+		case EKEY_CODE::KEY_XBUTTON2: return "X2MB";
 		case EKEY_CODE::KEY_BACK: return "BACK";
 		case EKEY_CODE::KEY_TAB: return "TAB";
 		case EKEY_CODE::KEY_CLEAR: return "CLEAR";
@@ -2048,15 +2048,15 @@ string getKeyName(u32 i, bool short=false)
 		case EKEY_CODE::KEY_RSHIFT: return short ? "s" : "RSHIFT";
 		case EKEY_CODE::KEY_LCONTROL: return short ? "c" : "LCONTROL";
 		case EKEY_CODE::KEY_RCONTROL: return short ? "c" : "RCONTROL";
-		case EKEY_CODE::KEY_LMENU: return short ? "a" : "L ALT";
-		case EKEY_CODE::KEY_RMENU: return short ? "a" : "R ALT";
+		case EKEY_CODE::KEY_LMENU: return short ? "a" : "LALT";
+		case EKEY_CODE::KEY_RMENU: return short ? "a" : "RALT";
 		case EKEY_CODE::KEY_PLUS: return "+";
 		case EKEY_CODE::KEY_COMMA: return ",";
 		case EKEY_CODE::KEY_MINUS: return "-";
 		case EKEY_CODE::KEY_PERIOD: return ".";
 		case EKEY_CODE::KEY_PLAY: return "PLAY";
-		case EKEY_CODE::MOUSE_SCROLL_UP: return "MOUSE SCROLL UP";
-		case EKEY_CODE::MOUSE_SCROLL_DOWN: return "MOUSE SCROLL DOWN";
+		case EKEY_CODE::MOUSE_SCROLL_UP: return "USCROLL";
+		case EKEY_CODE::MOUSE_SCROLL_DOWN: return "DSCROLL";
 	}
 
 	if (i == -1)
