@@ -130,7 +130,7 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 		return;
 	}
 
-	if (hitter == Hitters::ice)
+	if (this.getConfig() == "icebomb")
 	{
 		int tilesr = (r / map.tilesize) * 0.5f;
 		Splash(this, tilesr, tilesr, 0.0f, false);
