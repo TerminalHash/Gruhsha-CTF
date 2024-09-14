@@ -785,12 +785,16 @@ void HandlePickaxeCommand(CBlob@ this, u16 blobID, Vec2f tilepos)
 
 			// for smaller delay
 			if (map.isTileWood(type) || // wood tile
-				(type >= CMap::tile_wood_back && type <= 207) || // wood backwall
+				//(type >= CMap::tile_wood_back && type <= 207) || // wood backwall
 				map.isTileCastle(type) || // castle block
 				(type >= CMap::tile_castle_back && type <= 79) || // castle backwall
 					type == CMap::tile_castle_back_moss) // castle mossbackwall
 			{
 				map.server_DestroyTile(tilepos, 1.0f, this);
+				hitting_structure = true;
+			}
+
+			if ((type >= CMap::tile_wood_back && type <= 207)) {
 				hitting_structure = true;
 			}
 		}
