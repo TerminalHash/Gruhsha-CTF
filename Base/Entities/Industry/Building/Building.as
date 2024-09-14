@@ -57,6 +57,7 @@ void onInit(CBlob@ this)
 		ShopItem@ s = addShopItem(this, "Boat Shop", getTeamIcon("boatshop", "BoatShop.png", team_num, Vec2f(40, 24)), "boatshop", Descriptions::boatshop);
 		//AddRequirement(s.requirements, "blob", "mat_gold", "Gold", CTFCosts::boatshop_gold);
 		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", CTFCosts::boatshop_wood);
+		AddRequirement(s.requirements, "no more", "boatshop", "Boat Shop", 1);
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Vehicle Shop", getTeamIcon("vehicleshop", "VehicleShop.png", team_num, Vec2f(40, 24)), "vehicleshop", Descriptions::vehicleshop);
