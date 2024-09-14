@@ -417,7 +417,7 @@ shared class CTFCore : RulesCore
 		ctf_spawns.force = false;
 
 		// Change player classes to knight explicity
-		if (ticksToStart == 5 * 30 && rules.getCurrentState() != GAME)
+		if (ticksToStart <= 5 * 30 && rules.getCurrentState() != GAME)
 		{
 			for (int l = 0; l < getPlayersCount(); ++l)
 			{
