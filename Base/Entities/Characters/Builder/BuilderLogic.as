@@ -790,6 +790,7 @@ void HandlePickaxeCommand(CBlob@ this, u16 blobID, Vec2f tilepos)
 				(type >= CMap::tile_castle_back && type <= 79) || // castle backwall
 					type == CMap::tile_castle_back_moss) // castle mossbackwall
 			{
+				map.server_DestroyTile(tilepos, 1.0f, this);
 				hitting_structure = true;
 			}
 		}
