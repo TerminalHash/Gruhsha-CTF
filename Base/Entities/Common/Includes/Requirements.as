@@ -289,10 +289,10 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 		}
 		else if (req == "buy delay")
 		{
-			CPlayer@ player1 = inv1 !is null ? inv1.getBlob().getPlayer() : null;
-			if (player1 !is null && 
-				player1.exists("bought_item_" + blobName) &&
-				(getGameTime() < player1.get_s32("bought_item_" + blobName) + (30 * getTicksASecond())))
+			CBlob@ blob = inv1 !is null ? inv1.getBlob() : null;
+			if (blob !is null && 
+				blob.exists("bought_item_" + blobName) &&
+				(getGameTime() < blob.get_s32("bought_item_" + blobName) + (30 * getTicksASecond())))
 			{
 				AddRequirement(missingBs, req, blobName, friendlyName);
 				has = false;
@@ -385,11 +385,11 @@ void server_TakeRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &ino
 		}
 		else if (req == "buy delay")
 		{
-			CPlayer@ player1 = inv1 !is null ? inv1.getBlob().getPlayer() : null;
-			if (player1 !is null)
+			CBlob@ blob = inv1 !is null ? inv1.getBlob() : null;
+			if (blob !is null)
 			{
-				player1.set_s32("bought_item_" + blobName, getGameTime());
-				player1.Sync("bought_item_" + blobName, true);
+				blob.set_s32("bought_item_" + blobName, getGameTime());
+				blob.Sync("bought_item_" + blobName, true);
 			}
 		}
 	}
