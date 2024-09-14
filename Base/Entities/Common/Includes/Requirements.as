@@ -389,6 +389,7 @@ void server_TakeRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &ino
 			if (player1 !is null)
 			{
 				player1.set_s32("bought_item_" + blobName, getGameTime());
+				player1.Sync("bought_item_" + blobName, true);
 			}
 		}
 	}
