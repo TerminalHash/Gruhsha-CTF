@@ -67,7 +67,7 @@ void onInit(CBlob@ this)
 	}
 
 	if (getRules().hasTag("sudden death")) {
-		dynamic_keg_cost = 150;
+		dynamic_keg_cost = 200;
 	}
 
 	int team_num = this.getTeamNum();
