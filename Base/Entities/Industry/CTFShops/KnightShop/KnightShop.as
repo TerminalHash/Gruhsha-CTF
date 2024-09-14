@@ -67,7 +67,7 @@ void onInit(CBlob@ this)
 	}
 
 	if (getRules().hasTag("sudden death")) {
-		dynamic_keg_cost = 200;
+		dynamic_keg_cost = 150;
 	}
 
 	int team_num = this.getTeamNum();
@@ -88,6 +88,7 @@ void onInit(CBlob@ this)
 	{
 		ShopItem@ s = addShopItem(this, "Keg", getTeamIcon("keg", "Keg.png", team_num, Vec2f(16, 16), 0), "keg", Descriptions::keg, false);
 		AddRequirement(s.requirements, "coin", "", "Coins", dynamic_keg_cost /*CTFCosts::keg*/);
+		AddRequirement(s.requirements, "buy delay", "keg", "Keg");
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Drill", getTeamIcon("drill", "Drill.png", team_num, Vec2f(32, 16), 0), "drill", Descriptions::drill, false);

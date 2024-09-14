@@ -81,6 +81,13 @@ string getButtonRequirementsText(CBitStream& inout bs, bool missing)
 			text += " \n\n";
 			text += quantityColor;
 		}
+		else if (requiredType == "buy delay" && missing)
+		{
+			text += quantityColor;
+			text += "You must wait before buy next " + friendlyName + "!";
+			text += " \n\n";
+			text += quantityColor;
+		}
 	}
 
 	return text;
@@ -267,7 +274,7 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 				has = false;
 			}
 		}
-		else if(req == "builder")
+		else if (req == "builder")
 		{
 			CPlayer@ player1 = inv1 !is null ? inv1.getBlob().getPlayer() : null;
 			if (player1 !is null)
@@ -279,7 +286,17 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 				}
 
 			}
-
+		}
+		else if (req == "buy delay")
+		{
+			CPlayer@ player1 = inv1 !is null ? inv1.getBlob().getPlayer() : null;
+			if (player1 !is null && 
+				player1.exists("bought_item_" + blobName) &&
+				(getGameTime() < player1.get_s32("bought_item_" + blobName) + (30 * getTicksASecond())))
+			{
+				AddRequirement(missingBs, req, blobName, friendlyName);
+				has = false;
+			}
 		}
 	}
 	missingBs.ResetBitIndex();
@@ -364,6 +381,14 @@ void server_TakeRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &ino
 				taken = quantity - taken;
 				taken = Maths::Min(player2.getCoins(), quantity);
 				player2.server_setCoins(player2.getCoins() - taken);
+			}
+		}
+		else if (req == "buy delay")
+		{
+			CPlayer@ player1 = inv1 !is null ? inv1.getBlob().getPlayer() : null;
+			if (player1 !is null)
+			{
+				player1.set_s32("bought_item_" + blobName, getGameTime());
 			}
 		}
 	}
