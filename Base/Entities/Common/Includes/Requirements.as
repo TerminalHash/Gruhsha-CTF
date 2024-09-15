@@ -292,7 +292,7 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 			CBlob@ blob = inv1 !is null ? inv1.getBlob() : null;
 			if (blob !is null && 
 				blob.exists("bought_item_" + blobName) &&
-				(getGameTime() < blob.get_s32("bought_item_" + blobName) + (90 * getTicksASecond())))
+				(getGameTime() < blob.get_s32("bought_item_" + blobName) + (60 * getTicksASecond())))
 			{
 				AddRequirement(missingBs, req, blobName, friendlyName);
 				has = false;
