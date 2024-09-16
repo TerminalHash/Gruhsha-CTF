@@ -100,7 +100,7 @@ void onInit(CBlob@ this)
 	}
 
 	// SUDDEN DEATH: Fire Aspect for knights
-	this.set_s32("fire sword delay", getTicksASecond() * 30);
+	//this.set_s32("fire sword delay", getTicksASecond() * 30);
 
 	//centered on bomb select
 	//this.set_Vec2f("inventory offset", Vec2f(0.0f, 122.0f));
@@ -486,10 +486,10 @@ void onTick(CBlob@ this)
 	}
 
 	// SUDDEN DEATH: Fire Aspect for knights
-	if (getRules().hasTag("sudden death")) {
+	/*if (getRules().hasTag("sudden death")) {
 		if (this.get_s32("fire sword delay") > 0)
 			this.sub_s32("fire sword delay", 1);
-	}
+	}*/
 
 }
 
@@ -1536,7 +1536,11 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 					velocity.Normalize();
 					velocity *= 12; // knockback force is same regardless of distance
 
-					if (!getRules().hasTag("sudden death")) {
+					if (rayb.getTeamNum() != this.getTeamNum() || rayb.hasTag("dead player")) {
+						this.server_Hit(rayb, rayInfos[j].hitpos, velocity, temp_damage, type, true);
+					}
+
+					/*if (!getRules().hasTag("sudden death")) {
 						if (rayb.getTeamNum() != this.getTeamNum() || rayb.hasTag("dead player")) {
 							this.server_Hit(rayb, rayInfos[j].hitpos, velocity, temp_damage, type, true);
 						}
@@ -1560,7 +1564,7 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 								}
 							}
 						}
-					}
+					}*/
 
 					if (large)
 					{
