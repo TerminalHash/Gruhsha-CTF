@@ -110,7 +110,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 		}
 
 		// SUDDEN DEATH: shield lets half damage through
-		if (customData == Hitters::sword) {
+		/*if (customData == Hitters::sword) {
 			CRules@ rules = getRules();
 
 			if (rules.hasTag("sudden death")) {
@@ -121,7 +121,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 
 				return damage * 0.5f;
 			}
-		}
+		}*/
 
 		if (getNet().isClient())
 		{
