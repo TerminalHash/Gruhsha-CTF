@@ -23,12 +23,15 @@ const string last_drill_prop = "drill last active";
 
 const u8 heat_add = 7;
 const u8 heat_add_k = 8;
+const u8 heat_add_high = 9;
 const u8 heat_add_low = 5;
 const u8 heat_add_constructed = 2;
 const u8 heat_add_constructed_k = 2.3;
+const u8 heat_add_constructed_high = 10;
 const u8 heat_add_constructed_low = 1;
 const u8 heat_add_blob = 6;
 const u8 heat_add_blob_k = 6.9;
+const u8 heat_add_blob_high = 15;
 const u8 heat_add_blob_low = 4;
 const u8 heat_cool_amount = 2;
 
@@ -468,7 +471,7 @@ void onTick(CBlob@ this)
 										if (holder.getConfig() == "builder" && rules.hasTag("sudden death")) {
 											adding = heat_add_constructed_low;
 										} else if (holder.getConfig() != "builder" && rules.hasTag("sudden death")) {
-											adding = heat_add_constructed;
+											adding = heat_add_constructed_high;
 										}
 
 										heat += adding;
@@ -484,7 +487,7 @@ void onTick(CBlob@ this)
 										if (holder.getConfig() == "builder" && rules.hasTag("sudden death")) {
 											adding = heat_add_blob_low;
 										} else if (holder.getConfig() != "builder" && rules.hasTag("sudden death")) {
-											adding = heat_add_blob;
+											adding = heat_add_blob_high;
 										}
 
 										heat += adding;
@@ -500,7 +503,7 @@ void onTick(CBlob@ this)
 										if (holder.getConfig() == "builder" && rules.hasTag("sudden death")) {
 											adding = heat_add_low;
 										} else if (holder.getConfig() != "builder" && rules.hasTag("sudden death")) {
-											adding = heat_add;
+											adding = heat_add_high;
 										}
 
 										heat += adding;
