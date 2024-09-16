@@ -71,6 +71,10 @@ void LoadSprites(CSprite@ this)
 		{
 			ensureCorrectRunnerTexture(this, "knight_junko-enoshima", "KnightJunko-Enoshima");
 		}
+	else if (username == "cosm_akylka")
+		{
+			ensureCorrectRunnerTexture(this, "knight_cosm_akylka", "Knightcosm_akylka");
+		}
 	else
 	{
 		switch (armour)
