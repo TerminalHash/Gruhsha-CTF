@@ -17,6 +17,8 @@
     PlacementCommon.as
 */
 
+#include "FireCommon.as";
+
 const int icy_state_time = getTicksASecond() * 10; // 10 seconds
 
 void onInit(CBlob@ this) {
@@ -28,7 +30,11 @@ void onTick(CBlob@ this) {
     if (!this.hasTag("icy")) return;
 
     if (this.hasTag("icy") && this.get_s32("icy time") > 0) {
-        this.sub_s32("icy time", 1);
+        if (this.hasTag(burning_tag)) {
+            this.sub_s32("icy time", 2);
+        } else {
+            this.sub_s32("icy time", 1);
+        }
 
         // Imitation of slow down via player's mass increasing
         this.SetMass(140.0);
