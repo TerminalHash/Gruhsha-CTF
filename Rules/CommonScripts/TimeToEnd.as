@@ -180,9 +180,11 @@ void onRender(CRules@ this)
 			GUI::DrawText(Descriptions::drillbuff2, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y - 35), color_white);
 			GUI::DrawText(Descriptions::blockreqdebuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y - 20), color_white);
 			GUI::DrawText(Descriptions::respawndebuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y - 5), color_white);
-			GUI::DrawText(Descriptions::shielddebuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y + 10), color_white);
-			GUI::DrawText(Descriptions::swordbuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y + 25), color_white);
-			GUI::DrawText(Descriptions::pricedebuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y + 40), color_white);
+			GUI::DrawText(Descriptions::pricedebuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y + 10), color_white);
+
+			// victims of democracy
+			//GUI::DrawText(Descriptions::shielddebuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y + 10), color_white);
+			//GUI::DrawText(Descriptions::swordbuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y + 25), color_white);
 		}
 	}
 }
