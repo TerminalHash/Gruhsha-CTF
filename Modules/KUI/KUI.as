@@ -1,5 +1,3 @@
-#include "KUI_Keybind.as"
-
 void onInit(CRules@ this) {
     onRestart(this);
 }
@@ -195,17 +193,6 @@ int Tabs(int tab, array<string> tabs) {
     }
 
     return tab;
-}
-
-void Separator(float separator = 20) {
-    window_draw_point += separator;
-}
-
-void Line() {
-    Vec2f p1 = Vec2f(window_tl.x + WINDOW_INDENT_R, window_draw_point);
-    Vec2f p2 = Vec2f(window_br.x - WINDOW_INDENT_L, window_draw_point);
-    GUI::DrawLine2D(p1, p2, Colors::FG);
-    window_draw_point += 4;
 }
 
 void Text(string text) {
@@ -406,7 +393,7 @@ int Keybind(string title, int key) {
 
     if (hover) {
         if (press) {
-            DrawButtonPressed(keyname(key), tl, br);
+            DrawButtonPressed(Keyname(key), tl, br);
             if (!pressed) {
                 Sound::Play("buttonclick");
                 pressed = true;
@@ -420,16 +407,151 @@ int Keybind(string title, int key) {
                 break;
             }
         } else {
-            DrawButtonHovered(keyname(key), tl, br);
+            DrawButtonHovered(Keyname(key), tl, br);
             pressed = false;
         }
     } else {
-        DrawButtonDefault(keyname(key), tl, br);
+        DrawButtonDefault(Keyname(key), tl, br);
     }
 
     GUI::DrawText(title, Vec2f(br.x + 4, tl.y + KEYBIND_HEIGHT / 2 - TEXT_HEIGHT / 2 - 1), Colors::FG);
     window_draw_point += KEYBIND_HEIGHT + KEYBIND_INDENT;
     return key;
+}
+
+string Keyname(int key)
+{
+    switch (key)
+    {
+        case EKEY_CODE::KEY_LBUTTON:           return "LMB";
+        case EKEY_CODE::KEY_RBUTTON:           return "RMB";
+        case EKEY_CODE::KEY_MBUTTON:           return "MIDDLE CLICK";
+        case EKEY_CODE::KEY_CANCEL:            return "CANCEL";
+        case EKEY_CODE::KEY_XBUTTON1:          return "X1MB";
+        case EKEY_CODE::KEY_XBUTTON2:          return "X2MB";
+        case EKEY_CODE::KEY_BACK:              return "BACK";
+        case EKEY_CODE::KEY_TAB:               return "TAB";
+        case EKEY_CODE::KEY_CLEAR:             return "CLEAR";
+        case EKEY_CODE::KEY_RETURN:            return "RETURN";
+        case EKEY_CODE::KEY_SHIFT:             return "SHIFT";
+        case EKEY_CODE::KEY_CONTROL:           return "CONTROL";
+        case EKEY_CODE::KEY_MENU:              return "MENU";
+        case EKEY_CODE::KEY_PAUSE:             return "PAUSE";
+        case EKEY_CODE::KEY_CAPITAL:           return "CAPS LOCK";
+        case EKEY_CODE::KEY_ESCAPE:            return "ESC";
+        case EKEY_CODE::KEY_SPACE:             return "SPACE";
+        case EKEY_CODE::KEY_PRIOR:             return "PRIOR";
+        case EKEY_CODE::KEY_NEXT:              return "NEXT";
+        case EKEY_CODE::KEY_END:               return "END";
+        case EKEY_CODE::KEY_HOME:              return "HOME";
+        case EKEY_CODE::KEY_LEFT:              return "LEFT";
+        case EKEY_CODE::KEY_UP:                return "UP";
+        case EKEY_CODE::KEY_RIGHT:             return "RIGHT";
+        case EKEY_CODE::KEY_DOWN:              return "DOWN";
+        case EKEY_CODE::KEY_SELECT:            return "SELECT";
+        case EKEY_CODE::KEY_PRINT:             return "PRNTSCR";
+        case EKEY_CODE::KEY_EXECUT:            return "EXECUTE";
+        case EKEY_CODE::KEY_INSERT:            return "INSERT";
+        case EKEY_CODE::KEY_DELETE:            return "DEL";
+        case EKEY_CODE::KEY_HELP:              return "HELP";
+        case EKEY_CODE::KEY_KEY_0:             return "0";
+        case EKEY_CODE::KEY_KEY_1:             return "1";
+        case EKEY_CODE::KEY_KEY_2:             return "2";
+        case EKEY_CODE::KEY_KEY_3:             return "3";
+        case EKEY_CODE::KEY_KEY_4:             return "4";
+        case EKEY_CODE::KEY_KEY_5:             return "5";
+        case EKEY_CODE::KEY_KEY_6:             return "6";
+        case EKEY_CODE::KEY_KEY_7:             return "7";
+        case EKEY_CODE::KEY_KEY_8:             return "8";
+        case EKEY_CODE::KEY_KEY_9:             return "9";
+        case EKEY_CODE::KEY_KEY_A:             return "A";
+        case EKEY_CODE::KEY_KEY_B:             return "B";
+        case EKEY_CODE::KEY_KEY_C:             return "C";
+        case EKEY_CODE::KEY_KEY_D:             return "D";
+        case EKEY_CODE::KEY_KEY_E:             return "E";
+        case EKEY_CODE::KEY_KEY_F:             return "F";
+        case EKEY_CODE::KEY_KEY_G:             return "G";
+        case EKEY_CODE::KEY_KEY_H:             return "H";
+        case EKEY_CODE::KEY_KEY_I:             return "I";
+        case EKEY_CODE::KEY_KEY_J:             return "J";
+        case EKEY_CODE::KEY_KEY_K:             return "K";
+        case EKEY_CODE::KEY_KEY_L:             return "L";
+        case EKEY_CODE::KEY_KEY_M:             return "M";
+        case EKEY_CODE::KEY_KEY_N:             return "N";
+        case EKEY_CODE::KEY_KEY_O:             return "O";
+        case EKEY_CODE::KEY_KEY_P:             return "P";
+        case EKEY_CODE::KEY_KEY_Q:             return "Q";
+        case EKEY_CODE::KEY_KEY_R:             return "R";
+        case EKEY_CODE::KEY_KEY_S:             return "S";
+        case EKEY_CODE::KEY_KEY_T:             return "T";
+        case EKEY_CODE::KEY_KEY_U:             return "U";
+        case EKEY_CODE::KEY_KEY_V:             return "V";
+        case EKEY_CODE::KEY_KEY_W:             return "W";
+        case EKEY_CODE::KEY_KEY_X:             return "X";
+        case EKEY_CODE::KEY_KEY_Y:             return "Y";
+        case EKEY_CODE::KEY_KEY_Z:             return "Z";
+        case EKEY_CODE::KEY_LWIN:              return "LWIN";
+        case EKEY_CODE::KEY_RWIN:              return "RWIN";
+        case EKEY_CODE::KEY_APPS:              return "APPS";
+        case EKEY_CODE::KEY_SLEEP:             return "SLEEP";
+        case EKEY_CODE::KEY_NUMPAD0:           return "NP0";
+        case EKEY_CODE::KEY_NUMPAD1:           return "NP1";
+        case EKEY_CODE::KEY_NUMPAD2:           return "NP2";
+        case EKEY_CODE::KEY_NUMPAD3:           return "NP3";
+        case EKEY_CODE::KEY_NUMPAD4:           return "NP4";
+        case EKEY_CODE::KEY_NUMPAD5:           return "NP5";
+        case EKEY_CODE::KEY_NUMPAD6:           return "NP6";
+        case EKEY_CODE::KEY_NUMPAD7:           return "NP7";
+        case EKEY_CODE::KEY_NUMPAD8:           return "NP8";
+        case EKEY_CODE::KEY_NUMPAD9:           return "NP9";
+        case EKEY_CODE::KEY_MULTIPLY:          return "MULTIPLY";
+        case EKEY_CODE::KEY_ADD:               return "ADD";
+        case EKEY_CODE::KEY_SEPARATOR:         return "SEPARATOR";
+        case EKEY_CODE::KEY_SUBTRACT:          return "SUBTRACT";
+        case EKEY_CODE::KEY_DECIMAL:           return "DECIMAL";
+        case EKEY_CODE::KEY_DIVIDE:            return "DIVIDE";
+        case EKEY_CODE::KEY_F1:                return "F1";
+        case EKEY_CODE::KEY_F2:                return "F2";
+        case EKEY_CODE::KEY_F3:                return "F3";
+        case EKEY_CODE::KEY_F4:                return "F4";
+        case EKEY_CODE::KEY_F5:                return "F5";
+        case EKEY_CODE::KEY_F6:                return "F6";
+        case EKEY_CODE::KEY_F7:                return "F7";
+        case EKEY_CODE::KEY_F8:                return "F8";
+        case EKEY_CODE::KEY_F9:                return "F9";
+        case EKEY_CODE::KEY_F10:               return "F10";
+        case EKEY_CODE::KEY_F11:               return "F11";
+        case EKEY_CODE::KEY_F12:               return "F12";
+        case EKEY_CODE::KEY_NUMLOCK:           return "NUMLOCK";
+        case EKEY_CODE::KEY_SCROLL:            return "SCROLL";
+        case EKEY_CODE::KEY_LSHIFT:            return "LSHIFT";
+        case EKEY_CODE::KEY_RSHIFT:            return "RSHIFT";
+        case EKEY_CODE::KEY_LCONTROL:          return "LCONTROL";
+        case EKEY_CODE::KEY_RCONTROL:          return "RCONTROL";
+        case EKEY_CODE::KEY_LMENU:             return "LALT";
+        case EKEY_CODE::KEY_RMENU:             return "RALT";
+        case EKEY_CODE::KEY_PLUS:              return "+";
+        case EKEY_CODE::KEY_COMMA:             return ",";
+        case EKEY_CODE::KEY_MINUS:             return "-";
+        case EKEY_CODE::KEY_PERIOD:            return ".";
+        case EKEY_CODE::KEY_PLAY:              return "PLAY";
+        case EKEY_CODE::MOUSE_SCROLL_UP:       return "SCROLL UP";
+        case EKEY_CODE::MOUSE_SCROLL_DOWN:     return "SCROLL DOWN";
+        default:                               return "UNKNOWN";
+    }
+
+    return "";
+}
+
+void Indentation(int indentation) {
+    window_draw_point += indentation;
+}
+
+void Line() {
+    Vec2f p1 = Vec2f(window_tl.x + WINDOW_INDENT_R, window_draw_point);
+    Vec2f p2 = Vec2f(window_br.x - WINDOW_INDENT_L, window_draw_point);
+    GUI::DrawLine2D(p1, p2, Colors::FG);
+    window_draw_point += 4;
 }
 
 }
