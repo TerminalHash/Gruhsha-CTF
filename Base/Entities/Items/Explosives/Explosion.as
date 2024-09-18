@@ -372,6 +372,12 @@ void onHitBlob(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@
 			//hitBlob.Sync("icy", true);
 		}
 	}
+
+	if (this.getName() == "waterbomb") {
+		if (hitBlob !is null && hitBlob.hasTag("player") && hitBlob.hasTag("icy")) {
+			hitBlob.add_s32("icy time", getTicksASecond() * 5);
+		}
+	}
 }
 
 /**
