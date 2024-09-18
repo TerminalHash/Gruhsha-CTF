@@ -398,7 +398,7 @@ f32 getPriorityPickupScale(CBlob@ this, CBlob@ b)
 		}
 
 		// Military stuff we don't want to pick up when in the same team and always considered lit
-		if (name == "mine" || name == "bomb" || name == "waterbomb" || name == "golden_mine")
+		if (name == "mine" || name == "bomb" || name == "waterbomb" || name == "golden_mine" || name == "icebomb")
 		{
 			// Make an exception to the team rule: when the explosive is the holder's
 			bool mine = b.getDamageOwnerPlayer() is this.getPlayer();
@@ -466,7 +466,7 @@ f32 getPriorityPickupScale(CBlob@ this, CBlob@ b)
 
 		const bool knight = (thisname == "knight");
 
-		if (name == "mat_bombs" || name == "mat_waterbombs" || name == "mat_stickybombs")
+		if (name == "mat_bombs" || name == "mat_waterbombs" || name == "mat_stickybombs" || name == "mat_icebombs")
 		{
 			return knight ? factor_resource_useful : factor_resource_boring;
 		}
