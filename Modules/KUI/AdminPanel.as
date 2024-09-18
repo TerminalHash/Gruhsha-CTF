@@ -123,6 +123,11 @@ void onRender(CRules@ this) {
             LoadNextMap();
         }
 
+        if (KUI::Button("Open map list (NOT READY)")) {
+            //getRules().set_bool("prototype_menu_open", false);
+            //getRules().set_bool("map_list_menu", true);
+        }
+
         KUI::Separator();
     /////////////////////////////////////////////////
 
