@@ -59,7 +59,7 @@ namespace en
 	// KnightShop.as
 	d_stickybombdesc						= "Slime covered bomb, able to stick to surface.",
 	d_goldenminedesc						= "More durable version of mine, able to stick to surface.",
-	d_icebombdesc							= "Ice water with ice chunks that will slow your opponent down for a while.",
+	d_icebombdesc							= "A snow globe with a mini-keg inside, capable of slowing down an opponent for a small amount of time.",
 
 	// Satchel.as
 	d_satcheldesc							= "Ignites flammable blocks, activated by throw key",
