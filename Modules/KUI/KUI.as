@@ -11,13 +11,13 @@ void onRestart(CRules@ this) {
 
 namespace KUI {
 
-const string ICONS_FILE_NAME = "KUI_Icons.png";
+const string ICONS = "KUI_Icons.png";
 
 const int WINDOW_TITLE_HEIGHT = 26;
 const int WINDOW_INDENT_R = 10;
 const int WINDOW_INDENT_L = 10;
 const int WINDOW_INDENT_T = 4;
-const int WINDOW_CLOSE_ICON = 8;
+const int WINDOW_CLOSE_ICON = 16;
 const Vec2f WINDOW_CLOSE_ICON_SIZE = Vec2f(8,8);
 
 const int TAB_HEIGHT = 26;
@@ -29,17 +29,15 @@ const int BUTTON_HEIGHT = 26;
 const int BUTTON_INDENT = 4;
 
 const int TOGGLE_HEIGHT = 16;
+const int TOGGLE_ICON_T = 0;
+const int TOGGLE_ICON_F = 4;
 const Vec2f TOGGLE_ICON_SIZE = Vec2f(8,8);
-const int TOGGLE_ICON = 0;
-const int TOGGLE_ICON_ON = 1;
-const int TOGGLE_ICON_HOVER = 2;
 const int TOGGLE_INDENT = 4;
 
 const int TUNER_HEIGHT = 16;
+const int TUNER_ICON_L = 8;
+const int TUNER_ICON_R = 12;
 const Vec2f TUNER_ICON_SIZE = Vec2f(8,8);
-const int TUNER_L_ICON = 4;
-const int TUNER_R_ICON = 6;
-const int TUNER_ICON_HOVER = 1;
 const int TUNER_INDENT = 4;
 
 const int KEYBIND_HEIGHT = 26;
@@ -135,7 +133,7 @@ bool Begin(string title, Vec2f size, const BeginConfig config = BeginConfig()) {
     if (config.closable) {
         Vec2f tl = Vec2f(window_br.x - WINDOW_TITLE_HEIGHT, window_tl.y);
         Vec2f br = Vec2f(window_br.x, window_tl.y + WINDOW_TITLE_HEIGHT);
-        if(ButtonIconGeneral("KUI_Icons.png", tl, br, WINDOW_CLOSE_ICON_SIZE, WINDOW_CLOSE_ICON)) {
+        if(ButtonIconGeneral(ICONS, tl, br, WINDOW_CLOSE_ICON, WINDOW_CLOSE_ICON_SIZE)) {
             return false;
         }
     }
@@ -237,7 +235,22 @@ bool ButtonGeneral(string title, Vec2f tl, Vec2f br) {
     return result;
 }
 
-bool ButtonIconGeneral(string icon_name, Vec2f tl, Vec2f br, Vec2f icon_size = Vec2f(8,8), int icon_index = 0) {
+void DrawButtonDefault(string title, Vec2f tl, Vec2f br) {
+    GUI::DrawButton(tl, br);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
+}
+
+void DrawButtonHovered(string title, Vec2f tl, Vec2f br) {
+    GUI::DrawButtonHover(tl, br);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
+}
+
+void DrawButtonPressed(string title, Vec2f tl, Vec2f br) {
+    GUI::DrawButtonPressed(tl, br);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
+}
+
+bool ButtonIconGeneral(string icon_name, Vec2f tl, Vec2f br, int icon_index, Vec2f icon_size = Vec2f(8,8)) {
     if (controls is null) return false;
     Vec2f mouse_pos = controls.getMouseScreenPos();
     bool press = controls.mousePressed1;
@@ -263,65 +276,31 @@ bool ButtonIconGeneral(string icon_name, Vec2f tl, Vec2f br, Vec2f icon_size = V
     return result;
 }
 
-void DrawButtonDefault(string title, Vec2f tl, Vec2f br) {
-    GUI::DrawButton(tl, br);
-    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
-}
-
-void DrawButtonHovered(string title, Vec2f tl, Vec2f br) {
-    GUI::DrawButtonHover(tl, br);
-    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
-}
-
-void DrawButtonPressed(string title, Vec2f tl, Vec2f br) {
-    GUI::DrawButtonPressed(tl, br);
-    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
-}
-
 void DrawButtonIconDefault(string icon_name, Vec2f tl, Vec2f br, Vec2f icon_size = Vec2f(8,8), int icon_index = 0) {
-    GUI::DrawButton(tl, br);
-    GUI::DrawIcon(icon_name, icon_index, icon_size, tl + (br - tl - icon_size * 2) / 2, 1, 0);
+    GUI::DrawIcon(icon_name, icon_index + 0, icon_size, tl + (br - tl - icon_size * 2) / 2, 1, 0);
 }
 
 void DrawButtonIconHovered(string icon_name, Vec2f tl, Vec2f br, Vec2f icon_size = Vec2f(8,8), int icon_index = 0) {
-    GUI::DrawButtonHover(tl, br);
-    GUI::DrawIcon(icon_name, icon_index, icon_size, tl + (br - tl - icon_size * 2) / 2, 1, 0);
+    GUI::DrawIcon(icon_name, icon_index + 1, icon_size, tl + (br - tl - icon_size * 2) / 2, 1, 0);
 }
 
 void DrawButtonIconPressed(string icon_name, Vec2f tl, Vec2f br, Vec2f icon_size = Vec2f(8,8), int icon_index = 0) {
-    GUI::DrawButtonPressed(tl, br);
-    GUI::DrawIcon(icon_name, icon_index, icon_size, tl + (br - tl - icon_size * 2) / 2, 1, 0);
+    GUI::DrawIcon(icon_name, icon_index + 2, icon_size, tl + (br - tl - icon_size * 2) / 2, 1, 0);
 }
 
 bool Toggle(string title, bool toggle) {
     if (controls is null) return toggle;
 
     Vec2f tl = Vec2f(window_tl.x + WINDOW_INDENT_R, window_draw_point);
-    Vec2f br = Vec2f(window_br.x - WINDOW_INDENT_L, window_draw_point + TOGGLE_HEIGHT);
+    Vec2f br = Vec2f(window_tl.x + WINDOW_INDENT_R + 16, window_draw_point + TOGGLE_HEIGHT);
 
-    int toggle_icon_index = TOGGLE_ICON;
-
-    Vec2f mouse_pos = controls.getMouseScreenPos();
-    bool hover = mouse_pos.x > tl.x && mouse_pos.x < br.x && mouse_pos.y > tl.y && mouse_pos.y < br.y;
-    bool press = controls.mousePressed1;
-
-    if (hover) {
-        toggle_icon_index = TOGGLE_ICON + TOGGLE_ICON_HOVER;
-        if (press) {
-            if (!pressed) {
-                Sound::Play("buttonclick");
-                pressed = true;
-                toggle = !toggle;
-            }
-        } else {
-            pressed = false;
-        }
+    if (toggle) {
+        if(ButtonIconGeneral(ICONS, tl, br, TOGGLE_ICON_T, TOGGLE_ICON_SIZE)) toggle = !toggle;
+    } else {
+        if(ButtonIconGeneral(ICONS, tl, br, TOGGLE_ICON_F, TOGGLE_ICON_SIZE)) toggle = !toggle;
     }
 
-    if (toggle) toggle_icon_index += TOGGLE_ICON_ON;
-
-    GUI::DrawIcon(ICONS_FILE_NAME, toggle_icon_index, TOGGLE_ICON_SIZE, tl, 1, 0);
-    GUI::DrawText(title, tl + Vec2f(TOGGLE_ICON_SIZE.x * 2 + 4, 0), Colors::FG);
+    GUI::DrawText(title, Vec2f(br.x + 4, tl.y), Colors::FG);
 
     window_draw_point = br.y + TOGGLE_INDENT;
     return toggle;
@@ -330,52 +309,19 @@ bool Toggle(string title, bool toggle) {
 int Tuner(string title, int tuner, int min = 1, int max = 5) {
     if (controls is null) return tuner;
 
-    Vec2f tuner_l_tl = Vec2f(window_tl.x + WINDOW_INDENT_L, window_draw_point);
-    Vec2f tuner_l_br = Vec2f(window_tl.x + WINDOW_INDENT_L + TUNER_ICON_SIZE.x * 2, window_draw_point + TUNER_HEIGHT);
+    Vec2f tuner_l_tl = Vec2f(window_tl.x + WINDOW_INDENT_L - 2, window_draw_point);
+    Vec2f tuner_l_br = Vec2f(window_tl.x + WINDOW_INDENT_L - 2 + 16, window_draw_point + TUNER_HEIGHT);
 
     Vec2f tuner_value_dim;
-    GUI::GetTextDimensions(max + "", tuner_value_dim);
+    GUI::GetTextDimensions(""+max, tuner_value_dim);
 
-    Vec2f tuner_r_tl = Vec2f(tuner_l_br.x + tuner_value_dim.x, window_draw_point);
-    Vec2f tuner_r_br = Vec2f(tuner_l_br.x + tuner_value_dim.x + TUNER_ICON_SIZE.x * 2, window_draw_point + TUNER_HEIGHT);
+    Vec2f tuner_r_tl = Vec2f(tuner_l_br.x + tuner_value_dim.x + 4, window_draw_point);
+    Vec2f tuner_r_br = Vec2f(tuner_l_br.x + tuner_value_dim.x + 4 + 16, window_draw_point + TUNER_HEIGHT);
 
-    Vec2f mouse_pos = controls.getMouseScreenPos();
-    bool hover_l = mouse_pos.x > tuner_l_tl.x && mouse_pos.x < tuner_l_br.x && mouse_pos.y > tuner_l_tl.y && mouse_pos.y < tuner_l_br.y;
-    bool hover_r = mouse_pos.x > tuner_r_tl.x && mouse_pos.x < tuner_r_br.x && mouse_pos.y > tuner_r_tl.y && mouse_pos.y < tuner_r_br.y;
-    bool press = controls.mousePressed1;
+    if (ButtonIconGeneral(ICONS, tuner_l_tl, tuner_l_br, TUNER_ICON_L, TUNER_ICON_SIZE)) tuner = Maths::Max(tuner - 1, min);
+    if (ButtonIconGeneral(ICONS, tuner_r_tl, tuner_r_br, TUNER_ICON_R, TUNER_ICON_SIZE)) tuner = Maths::Min(tuner + 1, max);
 
-    int tuner_l_icon_index = TUNER_L_ICON;
-    int tuner_r_icon_index = TUNER_R_ICON;
-
-    if (hover_l) {
-        tuner_l_icon_index += TUNER_ICON_HOVER;
-        if (press) {
-            if (!pressed) {
-                Sound::Play("buttonclick");
-                tuner = Maths::Max(min, tuner - 1);
-                pressed = true;
-            }
-        } else {
-            pressed = false;
-        }
-    }
-
-    if (hover_r) {
-        tuner_r_icon_index += TUNER_ICON_HOVER;
-        if (press) {
-            if (!pressed) {
-                Sound::Play("buttonclick");
-                tuner = Maths::Min(max, tuner + 1);
-                pressed = true;
-            }
-        } else {
-            pressed = false;
-        }
-    }
-
-    GUI::DrawIcon(ICONS_FILE_NAME, tuner_l_icon_index, TUNER_ICON_SIZE, tuner_l_tl, 1, 0);
-    GUI::DrawIcon(ICONS_FILE_NAME, tuner_r_icon_index, TUNER_ICON_SIZE, tuner_r_tl, 1, 0);
-    GUI::DrawTextCentered("" + tuner, Vec2f(tuner_l_br.x + (tuner_r_tl.x - tuner_l_br.x) / 2 - 2, tuner_l_tl.y + (tuner_r_br.y - tuner_l_tl.y) / 2 - 1), Colors::FG);
+    GUI::DrawTextCentered(""+tuner, Vec2f(tuner_l_br.x + (tuner_r_tl.x - tuner_l_br.x) / 2 - 2, tuner_l_tl.y + (tuner_r_br.y - tuner_l_tl.y) / 2 - 1), Colors::FG);
     GUI::DrawText(title, Vec2f(tuner_r_br.x + 4, window_draw_point), Colors::FG);
     window_draw_point += TUNER_HEIGHT + TUNER_INDENT;
     return tuner;
