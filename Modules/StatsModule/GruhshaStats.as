@@ -199,8 +199,12 @@ void onStateChange( CRules@ this, const u8 oldState )
 			if (p is null) continue;
 
 			if (p.getTeamNum() != 0 && p.getTeamNum() != 1) continue;
+
+			string player_damage = getRules().get_f32("damage_impact_" + p.getUsername());
 			
 			string player_name = p.getUsername();
+
+			tcpr("PlayerDamage" + player_name + " " +  player_damage);
 
 			tcpr("PlayerLeave " + player_name + " " + p.getTeamNum() + " " + getGameTime());
 		}
