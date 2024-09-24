@@ -28,6 +28,8 @@ const int       stepper_h = 16;
 const int       stepper_icon_l = 8;
 const int       stepper_icon_r = 12;
 const Vec2f     stepper_icon_sz = Vec2f(8,8);
+const int       slider_h = 24;
+const int       dragger_h = 24;
 const int       keybind_h = 24;
 const int       keybind_w = 160;
 const int       spacing = 2;
@@ -66,6 +68,10 @@ namespace Input {
     Vec2f GetCursorPos() {
         return controls.getMouseScreenPos();
     }
+
+    void  SetCursorPos(Vec2f pos) {
+        controls.setMousePosition(pos);
+    }
 }
 
 ////////////// VARIABLES //////////////
@@ -73,12 +79,12 @@ namespace Input {
 // Indexing //
 int         button_current   = 0;
 int         button_hovered   = 0;
+int         slider_current   = 0;
+int         slider_selected  = 0;
+int         dragger_current     = 0;
+int         dragger_selected    = 0;
 int         keybind_current  = 0;
 int         keybind_selected = 0;
-
-// Columns //
-int         column_current = 0;
-int         columns        = 1;
 
 // Screen space //
 Vec2f       screen_tl = Vec2f_zero;
@@ -127,9 +133,9 @@ void Begin(Vec2f tl = Vec2f_zero, Vec2f br = Vec2f(getScreenWidth(), getScreenHe
     GUI::SetFont("KUI");
     Input::Update();
 
-    columns = 1;
-
     button_current  = 0;
+    slider_current  = 0;
+    dragger_current = 0;
     keybind_current = 0;
 
     screen_tl = tl;
@@ -144,6 +150,8 @@ void End() {
     GUI::SetFont("menu");
 
     button_current  = 0;
+    slider_current  = 0;
+    dragger_current = 0;
     keybind_current = 0;
 
     screen_tl = Vec2f_zero;
@@ -156,8 +164,6 @@ void End() {
 
 bool Window(string title, Vec2f size, const WindowConfig config = WindowConfig()) {
     // WINDOW ALIGNMENT
-
-    columns = 1;
 
     Vec2f screen_sz = screen_br - screen_tl;
     switch (config.alignment) {
@@ -239,7 +245,7 @@ int TabBar(int tab, array<string> tabs) {
             if (i != tab) {
                 if (ButtonGeneral(tl, br, title)) tab = i;
             } else {
-                DrawButtonPressed(tl, br, title);
+                DrawButtonSelected(tl, br, title);
             }
         }
 
@@ -248,14 +254,6 @@ int TabBar(int tab, array<string> tabs) {
     }
 
     return tab;
-}
-
-void TableBegin(int columns) {
-    table_columns = columns;
-}
-
-void TableEnd() {
-    table_columns = 1;
 }
 
 void Spacing(int spacing) {
@@ -318,6 +316,11 @@ void DrawButtonPressed(Vec2f tl, Vec2f br, string title = "") {
     GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
 }
 
+void DrawButtonSelected(Vec2f tl, Vec2f br, string title = "") {
+    GUI::DrawSunkenPane(tl, br);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
+}
+
 bool ButtonIconGeneral(Vec2f tl, Vec2f br, string icon_name, int icon_index, Vec2f icon_size = Vec2f(8,8)) {
     button_current += 1;
 
@@ -356,42 +359,160 @@ void DrawButtonIconPressed(Vec2f tl, Vec2f br, string icon_name, Vec2f icon_size
     GUI::DrawIcon(icon_name, icon_index + 2, icon_size, tl + (br - tl - icon_size * 2) / 2, 1);
 }
 
-bool Toggle(bool toggle, string title = "") {
+bool Toggle(bool value, string title = "") {
     Vec2f tl = canvas_tl;
     Vec2f br = canvas_tl + Vec2f(16, toggle_h);
 
-    if (toggle) {
-        if(ButtonIconGeneral(tl, br, icons, toggle_icon_t, toggle_icon_sz)) toggle = !toggle;
+    if (value) {
+        if(ButtonIconGeneral(tl, br, icons, toggle_icon_t, toggle_icon_sz)) value = !value;
     } else {
-        if(ButtonIconGeneral(tl, br, icons, toggle_icon_f, toggle_icon_sz)) toggle = !toggle;
+        if(ButtonIconGeneral(tl, br, icons, toggle_icon_f, toggle_icon_sz)) value = !value;
     }
 
     GUI::DrawText(title, Vec2f(br.x + 4, tl.y), Colors::FG);
 
     canvas_tl.y += toggle_h + spacing;
-    return toggle;
+    return value;
 }
 
-int Stepper(int stepper, string title = "", int min = 1, int max = 5) {
-    Vec2f stepper_l_tl = canvas_tl;
-    Vec2f stepper_l_br = canvas_tl + Vec2f(16, stepper_h);
+int Stepper(int value, string title = "", int min = 0, int max = 5, int step = 1) {
+    Vec2f l_tl = canvas_tl;
+    Vec2f l_br = canvas_tl + Vec2f(16, stepper_h);
 
-    Vec2f stepper_val_dim;
-    GUI::GetTextDimensions(""+max, stepper_val_dim);
+    Vec2f value_dim;
+    GUI::GetTextDimensions(""+max, value_dim);
 
-    Vec2f stepper_r_tl = Vec2f(stepper_l_br.x + stepper_val_dim.x + 4, canvas_tl.y);
-    Vec2f stepper_r_br = Vec2f(stepper_l_br.x + stepper_val_dim.x + 4, canvas_tl.y) + Vec2f(16, stepper_h);
+    Vec2f r_tl = Vec2f(l_br.x + value_dim.x + 4, canvas_tl.y);
+    Vec2f r_br = Vec2f(l_br.x + value_dim.x + 4, canvas_tl.y) + Vec2f(16, stepper_h);
 
-    if (ButtonIconGeneral(stepper_l_tl, stepper_l_br, icons, stepper_icon_l, stepper_icon_sz)) stepper = Maths::Max(stepper - 1, min);
-    if (ButtonIconGeneral(stepper_r_tl, stepper_r_br, icons, stepper_icon_r, stepper_icon_sz)) stepper = Maths::Min(stepper + 1, max);
+    if (ButtonIconGeneral(l_tl, l_br, icons, stepper_icon_l, stepper_icon_sz)) value = Maths::Max(value - step, min);
+    if (ButtonIconGeneral(r_tl, r_br, icons, stepper_icon_r, stepper_icon_sz)) value = Maths::Min(value + step, max);
 
-    GUI::DrawTextCentered(""+stepper, Vec2f(stepper_l_br.x + (stepper_r_tl.x - stepper_l_br.x) / 2 - 2, stepper_l_tl.y + (stepper_r_br.y - stepper_l_tl.y) / 2 - 1), Colors::FG);
-    GUI::DrawText(title, Vec2f(stepper_r_br.x + 4, canvas_tl.y), Colors::FG);
+    GUI::DrawTextCentered(""+value, Vec2f(l_br.x + (r_tl.x - l_br.x) / 2 - 2, l_tl.y + (r_br.y - l_tl.y) / 2 - 1), Colors::FG);
+    GUI::DrawText(title, Vec2f(r_br.x + 4, canvas_tl.y), Colors::FG);
     canvas_tl.y += stepper_h + spacing;
-    return stepper;
+    return value;
 }
 
-int Keybind(int key, string title = "") {
+int SliderInt(int value, string title, int min, int max) {
+    slider_current += 1;
+
+    Vec2f tl = canvas_tl;
+    Vec2f br = Vec2f(canvas_br.x - (canvas_br.x - canvas_tl.x) / 2, canvas_tl.y + slider_h);
+
+    Vec2f value_dim;
+    GUI::GetTextDimensions(""+max, value_dim);
+    int value_w = value_dim.x + 16;
+
+    if (slider_selected == slider_current) {
+        DrawButtonSelected(tl, br);
+
+        value = (Maths::Clamp(Input::GetCursorPos().x, tl.x + value_w / 2, br.x - value_w / 2) - tl.x - value_w / 2) / (br.x - tl.x - value_w) * (max - min) + min;
+
+        if (Input::IsJustReleased()) {
+            slider_selected = 0;
+        }
+    } else if (ButtonGeneral(tl, br)) {
+        slider_selected = slider_current;
+    }
+
+    Vec2f value_tl = Vec2f(tl.x + (br.x - tl.x - value_w) * (0.0 + value - min) / (max - min), tl.y);
+    Vec2f value_br = Vec2f(tl.x + (br.x - tl.x - value_w) * (0.0 + value - min) / (max - min) + value_w, br.y);
+
+    DrawButtonDefault(value_tl, value_br, ""+value);
+    GUI::DrawText(title, Vec2f(br.x + 4, canvas_tl.y + dragger_h / 2 - text_h / 2 - 1), Colors::FG);
+
+    canvas_tl.y += slider_h + spacing;
+    return value;
+}
+
+float SliderFloat(float value, string title, float min, float max) {
+    slider_current += 1;
+
+    Vec2f tl = canvas_tl;
+    Vec2f br = Vec2f(canvas_br.x - (canvas_br.x - canvas_tl.x) / 2, canvas_tl.y + slider_h);
+
+    Vec2f value_dim;
+    GUI::GetTextDimensions(formatFloat(max, "", 0, 2), value_dim);
+    int value_w = value_dim.x + 16;
+
+    if (slider_selected == slider_current) {
+        DrawButtonSelected(tl, br);
+
+        value = (Maths::Clamp(Input::GetCursorPos().x, tl.x + value_w / 2, br.x - value_w / 2) - tl.x - value_w / 2) / (br.x - tl.x - value_w) * (max - min) + min;
+
+        if (Input::IsJustReleased()) {
+            slider_selected = 0;
+        }
+    } else if (ButtonGeneral(tl, br)) {
+        slider_selected = slider_current;
+    }
+
+    Vec2f value_tl = Vec2f(tl.x + (br.x - tl.x - value_w) * (value - min) / (max - min), tl.y);
+    Vec2f value_br = Vec2f(tl.x + (br.x - tl.x - value_w) * (value - min) / (max - min) + value_w, br.y);
+
+    DrawButtonDefault(value_tl, value_br, formatFloat(value, "", 0, 2));
+    GUI::DrawText(title, Vec2f(br.x + 4, canvas_tl.y + dragger_h / 2 - text_h / 2 - 1), Colors::FG);
+
+    canvas_tl.y += slider_h + spacing;
+    return value;
+}
+
+int DraggerInt(int value, string title, int step = 1) {
+    dragger_current += 1;
+
+    Vec2f tl = canvas_tl;
+    Vec2f br = Vec2f(canvas_br.x - (canvas_br.x - canvas_tl.x) / 2, canvas_tl.y + dragger_h);
+    Vec2f center = tl + (br - tl) / 2;
+
+    if(dragger_selected == dragger_current) {
+        DrawButtonSelected(tl, br, ""+value);
+        value -= (center.x - Input::GetCursorPos().x) * step;
+        Input::SetCursorPos(center);
+        if (Input::IsJustReleased()) {
+            getHUD().ShowCursor();
+            dragger_selected = 0;
+        }
+    } else if(ButtonGeneral(tl, br, ""+value)) {
+        getHUD().HideCursor();
+        dragger_selected = dragger_current;
+        Input::SetCursorPos(center);
+    }
+
+    GUI::DrawText(title, Vec2f(br.x + 4, canvas_tl.y + dragger_h / 2 - text_h / 2 - 1), Colors::FG);
+
+    canvas_tl.y += dragger_h + spacing;
+    return value;
+}
+
+float DraggerFloat(float value, string title, float step = 0.01) {
+    dragger_current += 1;
+
+    Vec2f tl = canvas_tl;
+    Vec2f br = Vec2f(canvas_br.x - (canvas_br.x - canvas_tl.x) / 2, canvas_tl.y + dragger_h);
+    Vec2f center = tl + (br - tl) / 2;
+
+    if(dragger_selected == dragger_current) {
+        DrawButtonSelected(tl, br, formatFloat(value, "", 0, 2));
+        value -= (center.x - Input::GetCursorPos().x) * step;
+        Input::SetCursorPos(center);
+        if (Input::IsJustReleased()) {
+            getHUD().ShowCursor();
+            dragger_selected = 0;
+        }
+    } else if(ButtonGeneral(tl, br, formatFloat(value, "", 0, 2))) {
+        getHUD().HideCursor();
+        dragger_selected = dragger_current;
+        Input::SetCursorPos(center);
+    }
+
+    GUI::DrawText(title, Vec2f(br.x + 4, canvas_tl.y + dragger_h / 2 - text_h / 2 - 1), Colors::FG);
+
+    canvas_tl.y += dragger_h + spacing;
+    return value;
+}
+
+int Keybind(int key, string title) {
     keybind_current += 1;
 
     Vec2f tl = canvas_tl;
@@ -401,7 +522,7 @@ int Keybind(int key, string title = "") {
     Input::controls.setButtonsLock(keybind_selected == 0 ? false : true);
 
     if (keybind_selected == keybind_current) {
-        DrawButtonPressed(tl, br, key_title);
+        DrawButtonSelected(tl, br, key_title);
         int last_key = Input::controls.lastKeyPressed;
 
         if (last_key != 0 and !Input::IsPress()) {
