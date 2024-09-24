@@ -8,9 +8,10 @@ const s32 bomb_fuse = 120;
 
 void onInit(CBlob@ this)
 {
+	this.Tag("directional_style");
 	this.set_u16("explosive_parent", 0);
 	this.getShape().getConsts().net_threshold_multiplier = 2.0f;
-	SetupBomb(this, bomb_fuse, 16.0f, 2.0f, 24.0f, 0.8f, false);
+	SetupBomb(this, bomb_fuse, 96.0f, 2.0f, 96.0f, 0.8f, true);
 	//
 	this.Tag("activated"); // make it lit already and throwable
 }
@@ -107,7 +108,7 @@ void onTick(CBlob@ this)
 		//stick to map
 		if (this.isOnMap())
 		{
-			this.setAngleDegrees(90 - this.getGroundNormal().Angle());
+			this.setAngleDegrees(180 - this.getGroundNormal().Angle());
 			this.getShape().SetStatic(true);
 		}
 		else if (this.isAttached()) //pulled off
