@@ -57,7 +57,7 @@ const u8[]          WEIGHT =
 	45,                     // drill
 	55,                     // mat_bombs
 	35,                     // mat_waterbombs
-    25,                     // mat_stickybombs
+    5,                      // mat_stickybombs
     30,                     // satchel
 	25,                     // mine
 	30,                     // food
