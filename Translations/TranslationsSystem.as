@@ -37,6 +37,7 @@ namespace Descriptions
 	// ArcherShop.as
 	woodenarrowdesc		  	    	= Translate(en::d_woodenarrowdesc+"\\"+ru::d_woodenarrowdesc),
 	stonearrowdesc		  	    	= Translate(en::d_stonearrowdesc+"\\"+ru::d_stonearrowdesc),
+	mountedbowdesc		  	    	= Translate(en::d_mountedbowdesc+"\\"+ru::d_mountedbowdesc),
 
 	// BindingsCommon.as
 	modbindplaceholder		  	    = Translate(en::d_modbindplaceholder+"\\"+ru::d_modbindplaceholder),
@@ -194,6 +195,7 @@ namespace Names
 	bombarrowsnmb						= Translate(en::n_bombarrowsnmb+"\\"+ru::n_bombarrowsnmb),
 	blockarrowsnmb						= Translate(en::n_blockarrowsnmb+"\\"+ru::n_blockarrowsnmb),
 	stoneblockarrowsnmb					= Translate(en::n_stoneblockarrowsnmb+"\\"+ru::n_stoneblockarrowsnmb),
+	mountedbownmb						= Translate(en::n_mountedbownmb+"\\"+ru::n_mountedbownmb),
 
 			// Quarters
 	beernmb								 = Translate(en::n_beernmb+"\\"+ru::n_beernmb),

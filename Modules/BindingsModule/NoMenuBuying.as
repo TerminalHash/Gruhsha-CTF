@@ -226,6 +226,10 @@ void onTick(CBlob@ this)
 					wanna_buy = true;
 					item_id	= 5;
 				}
+				if (b_KeyJustPressed("a_mountedbow")) {
+					wanna_buy = true;
+					item_id	= 6;
+				}
 
 				if (wanna_buy) {
 					dont_show_emotes = true;
@@ -490,7 +494,8 @@ void onRender(CSprite@ this)
 		"a_firearrows",
 		"a_bombarrows",
 		"a_blockarrows",
-		"a_stoneblockarrows"
+		"a_stoneblockarrows",
+		"a_mountedbow"
 		};
 
 		if (thearchershop.get("shop array", @shopitems)) {

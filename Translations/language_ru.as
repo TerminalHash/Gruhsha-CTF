@@ -22,6 +22,7 @@ namespace ru
 	// ArcherShop.as
 	d_woodenarrowdesc						= "Ставит деревянный блок на месте приземления.",
 	d_stonearrowdesc						= "Ставит каменный блок на месте приземления.",
+	d_mountedbowdesc						= "Стационарный арбалет для тех, кто хочет хоть немного побыть лучником.",
 
 	// BindingsCommon.as
 	d_modbindplaceholder					= "пусто",
@@ -177,6 +178,7 @@ namespace ru
 	n_bombarrowsnmb							= "Стрелы-бомбы",
 	n_blockarrowsnmb						= "Стрелы-блоки (дерево)",
 	n_stoneblockarrowsnmb					= "Стрелы-блоки (камень)",
+	n_mountedbownmb							= "Стационарный арбалет",
 
 			// Quarters
 	n_beernmb								= "Квас",

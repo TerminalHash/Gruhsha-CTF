@@ -90,7 +90,8 @@ string[][] button_texts =
 		Names::firearrowsnmb,
 		Names::bombarrowsnmb,
 		Names::blockarrowsnmb,
-		Names::stoneblockarrowsnmb
+		Names::stoneblockarrowsnmb,
+		Names::mountedbownmb
 	},
 	{							// BUILDER SHOP
 		Names::drillbnmb,
@@ -198,6 +199,7 @@ string[][] button_file_names =
 		"a_bombarrows",
 		"a_blockarrows",
 		"a_stoneblockarrows",
+		"a_mountedbow"
 	},
 	{
 		"b_drill",

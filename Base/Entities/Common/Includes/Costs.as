@@ -18,7 +18,7 @@ namespace CTFCosts
 		quarry_stone, quarry_gold, quarry_count;
 
 	//ArcherShop.as
-	s32 arrows, waterarrows, firearrows, bombarrows, blockarrows, stoneblockarrows;
+	s32 arrows, waterarrows, firearrows, bombarrows, blockarrows, stoneblockarrows, mountedbow;
 
 	//KnightShop.as
 	s32 bomb, waterbomb, mine, keg, satchel, stickybomb, golden_mine, icebomb;
@@ -126,6 +126,7 @@ void InitCosts()
 	CTFCosts::bombarrows =                  ReadCost(cfg, costs, "cost_bombarrows"         , 50);
 	CTFCosts::blockarrows =                 ReadCost(cfg, costs, "cost_blockarrows"        , 40);
 	CTFCosts::stoneblockarrows =            ReadCost(cfg, costs, "cost_stoneblockarrows"   , 70);
+	CTFCosts::mountedbow =                  ReadCost(cfg, costs, "cost_mountedbow"         , 100);
 
 	//KnightShop.as
 	CTFCosts::bomb =                        ReadCost(cfg, costs, "cost_bomb"               , 25);

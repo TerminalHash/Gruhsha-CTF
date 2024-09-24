@@ -86,6 +86,8 @@ void onInit(CRules@ this)
 		if (!file.exists("a_blockarrows$2")) file.add_s32("a_blockarrows$2", -1);
 		if (!file.exists("a_stoneblockarrows$1")) file.add_s32("a_stoneblockarrows$1", 54);
 		if (!file.exists("a_stoneblockarrows$2")) file.add_s32("a_stoneblockarrows$2", -1);
+		if (!file.exists("a_mountedbow$1")) file.add_s32("a_mountedbow$1", 55);
+		if (!file.exists("a_mountedbow$2")) file.add_s32("a_mountedbow$2", -1);
 
 		// kfc
 		if (!file.exists("kfc_beer$1")) file.add_s32("kfc_beer$1", 49);

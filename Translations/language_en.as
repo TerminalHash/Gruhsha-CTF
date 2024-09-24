@@ -22,6 +22,7 @@ namespace en
 	// ArcherShop.as
 	d_woodenarrowdesc						= "Spawns wooden block at the landing site.",
 	d_stonearrowdesc						= "Spawns stone block at the landing site.",
+	d_mountedbowdesc						= "Stationary crossbow for those who want to be an archer for a while.",
 
 	// BindingsCommon.as
 	d_modbindplaceholder					= "placeholder",
@@ -177,6 +178,7 @@ namespace en
 	n_bombarrowsnmb							= "Bomb Arrows",
 	n_blockarrowsnmb						= "Wooden Block Arrows",
 	n_stoneblockarrowsnmb					= "Stone Block Arrows",
+	n_mountedbownmb							= "Mounted Bow",
 
 			// Quarters
 	n_beernmb								= "Kvass",

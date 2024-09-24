@@ -6,6 +6,7 @@
 #include "CheckSpam.as"
 #include "Costs.as"
 #include "GenericButtonCommon.as"
+#include "TeamIconToken.as"
 #include "TranslationsSystem.as"
 
 void onInit(CBlob@ this)
@@ -24,9 +25,11 @@ void onInit(CBlob@ this)
 
 	// SHOP
 	this.set_Vec2f("shop offset", Vec2f_zero);
-	this.set_Vec2f("shop menu size", Vec2f(6, 1));
+	this.set_Vec2f("shop menu size", Vec2f(7, 1));
 	this.set_string("shop description", "Buy");
 	this.set_u8("shop icon", 25);
+
+	int team_num = this.getTeamNum();
 
 	// CLASS
 	this.set_Vec2f("class offset", Vec2f(-6, 0));
@@ -89,6 +92,12 @@ void onInit(CBlob@ this)
 	{
 		ShopItem@ s = addShopItem(this, Names::stonearrow, "$stoneblockarrows$", "mat_stoneblockarrows", Descriptions::stonearrowdesc, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::stoneblockarrows);
+	}
+	{
+		string mountedbow_icon = getTeamIcon("mounted_bow", "MountedBow.png", team_num, Vec2f(16, 16), 6);
+		ShopItem@ s = addShopItem(this, "Mounted Bow", mountedbow_icon, "mounted_bow", Descriptions::mountedbowdesc, false, true);
+		s.crate_icon = 3;
+		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::mountedbow);
 	}
 }
 
