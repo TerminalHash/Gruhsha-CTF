@@ -80,12 +80,6 @@ void onRender(CSprite@ this)
 	u8 type = blob.get_u8("bomb type");
 	u8 frame = 1;
 
-	if (getRules().hasTag("sudden death") && blob.get_s32("fire sword delay") <= 0) {
-		frame = 7;
-	} else {
-		frame = 1;
-	}
-
 	if (type == 0) {
 		frame = 0;
 	} else if (type < 255) {
