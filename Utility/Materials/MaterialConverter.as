@@ -1,6 +1,6 @@
 // MaterialConverter.as
 
-s32 convert_time_inventory = 15;
+s32 convert_time_inventory = 10;
 s32 convert_time_carried = 5;
 
 ///////////////////////////////////////////////
