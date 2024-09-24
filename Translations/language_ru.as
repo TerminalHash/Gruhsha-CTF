@@ -143,7 +143,8 @@ namespace ru
 	n_drillcommand							= "Достать/Убрать дрель",
 	n_cancelarrowschargingcommand			= "Перестать заряжать лук",
 	n_markbuildercommand					= "Отмечать позицию строителя",
-	n_activateorthrowbomb					= "Активация бомбы (Строитель)",
+	n_activateorthrowbomb					= "Активация предметов",
+	n_putitemcommand						= "Положить предмет в инвентарь",
 
 		// NoMenuBuying Binds
 			// Knight Shop

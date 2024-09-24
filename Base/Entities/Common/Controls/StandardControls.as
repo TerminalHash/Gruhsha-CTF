@@ -264,10 +264,17 @@ void onTick(CBlob@ this)
 	}
 
 	// drill thing
-
-	if (b_KeyJustPressed("take_out_drill"))
-	{
+	if (b_KeyJustPressed("take_out_drill")) {
 		this.SendCommand(this.getCommandID("drill command"));
+	}
+
+	// custom key for item putting into inventory
+	if (b_KeyJustPressed("put_item")) {
+		CBlob@ held = this.getCarriedBlob();
+
+		if (held !is null) {
+			this.SendCommand(this.getCommandID("putinheld"));
+		}
 	}
 
 	/*else dont use this cause menu won't be release/clickable

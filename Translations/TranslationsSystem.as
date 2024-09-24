@@ -161,6 +161,7 @@ namespace Names
 	cancelarrowschargingcommand			= Translate(en::n_cancelarrowschargingcommand+"\\"+ru::n_cancelarrowschargingcommand),
 	markbuildercommand					= Translate(en::n_markbuildercommand+"\\"+ru::n_markbuildercommand),
 	activateorthrowbomb					= Translate(en::n_activateorthrowbomb+"\\"+ru::n_activateorthrowbomb),
+	putitemcommand						= Translate(en::n_putitemcommand+"\\"+ru::n_putitemcommand),
 
 		// NoMenuBuying Binds
 			// Knight Shop

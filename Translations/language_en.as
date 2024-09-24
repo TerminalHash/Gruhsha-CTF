@@ -143,7 +143,8 @@ namespace en
 	n_drillcommand							= "Take out drill",
 	n_cancelarrowschargingcommand			= "Cancel bow charging",
 	n_markbuildercommand					= "Mark builder position",
-	n_activateorthrowbomb					= "Activate/throw bomb (Builder)",
+	n_activateorthrowbomb					= "Activate/throw item",
+	n_putitemcommand						= "Put item into inventory",
 
 		// NoMenuBuying Binds
 			// Knight Shop
