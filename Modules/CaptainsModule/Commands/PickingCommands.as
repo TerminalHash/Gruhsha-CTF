@@ -383,3 +383,51 @@ class ToggleOffi : ChatCommand
 		}
 	}
 }
+
+class TagBuilder : ChatCommand
+{
+	TagBuilder()
+	{
+		super("tagbuilder", "Choose player, what will be builder in match");
+		SetUsage("<username>");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		RulesCore@ core;
+		rules.get("core", @core);
+
+		if (core is null) return false;
+
+		u8 caller_team = player.getTeamNum();
+		u8 first_team_picking = 0;
+
+		return (
+			rules.get_string("team_" + caller_team + "_leader") == player.getUsername()
+			&& !isPickingEnded() || player.isRCON()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		if (args.size() < 1) return;
+
+		const string PLAYER_USERNAME = args[0];
+
+		CPlayer@ tagged_player = getPlayerByNamePart(PLAYER_USERNAME);
+
+		if (tagged_player is null) return;
+		if (tagged_player.getTeamNum() != player.getTeamNum()) return;
+
+		RulesCore@ core;
+		rules.get("core", @core);
+
+		if (core is null) return;
+
+		rules.set_string("team_" + player.getTeamNum() + "_builder", tagged_player.getUsername());
+	}
+}

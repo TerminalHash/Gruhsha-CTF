@@ -16,4 +16,5 @@ void RegisterGruhshaChatCommands(ChatCommandManager@ manager)
 	manager.RegisterCommand(ToggleClassChangingOnShops());
 	manager.RegisterCommand(PreventVoicelineSpamming());
 	manager.RegisterCommand(ToggleOffi());
+	manager.RegisterCommand(TagBuilder());
 }

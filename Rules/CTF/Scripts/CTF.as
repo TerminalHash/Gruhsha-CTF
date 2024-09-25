@@ -431,7 +431,11 @@ shared class CTFCore : RulesCore
 						string role;
 						int teamNum = p.getTeamNum();
 
-						if (b.getName() == "builder" && !(getRules().get_string("team_" + teamNum + "_leader") == p.getUsername()))
+						if (b.getName() == "builder" &&
+						!(
+							getRules().get_string("team_" + teamNum + "_leader") == p.getUsername() ||
+							getRules().get_string("team_" + teamNum + "_builder") == p.getUsername())
+						)
 						{
 							role = "knight";
 							CBlob@ test = server_CreateBlobNoInit(role);
@@ -830,6 +834,10 @@ void Reset(CRules@ this)
 	this.set("start_gametime", getGameTime() + core.warmUpTime);
 	this.set_u32("game_end_time", getGameTime() + core.gameDuration); //for TimeToEnd.as
 	this.Tag("faster mining");
+
+	// Reset builders in team, captains should set them by hands
+	this.set_string("team_" + "0" + "_builder", "");
+	this.set_string("team_" + "1" + "_builder", "");
 }
 
 void onRestart(CRules@ this)

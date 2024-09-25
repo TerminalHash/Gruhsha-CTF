@@ -312,6 +312,12 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 				GUI::DrawIcon("CaptainMark/en.png", 0, Vec2f(38, 9), tl + Vec2f(-82, 0), 1.0f, 0);
 		}
 
+		// Tag builder in scoreboard
+		if (getRules().get_string("team_" + teamIndex + "_builder") == username) {
+			GUI::DrawIcon("CaptainMark/builder_tag.png", 0, Vec2f(14, 9), tl + Vec2f(-34, 0), 1.0f, 0);
+		}
+
+
 		//have to calc this from ticks
 		s32 ping_in_ms = s32(p.getPing() * 1000.0f / 30.0f);
 
