@@ -373,13 +373,13 @@ void onTick(CRules@ this)
 	{
 		ResetRuleBindings();
 		LoadFileBindings();
-	} 
+	}
 
 	if (getGameTime() % 30 == 0 && !this.get_bool("loadedsettings"))
 	{
 		ResetRuleSettings();
 		LoadFileSettings();
-	} 
+	}
 
 	if (getGameTime() % 30 == 0 && !this.get_bool("loadedvsettings"))
 	{

@@ -1,14 +1,3 @@
-void onInit(CRules@ this) {
-    onRestart(this);
-}
-
-void onRestart(CRules@ this) {
-    if (!GUI::isFontLoaded("KUI")) {
-         string ImGUI = CFileMatcher("KUI.ttf").getFirst();
-         GUI::LoadFont("KUI", ImGUI, 14, true);
-    }
-}
-
 namespace KUI {
 
 ////////////// CONTSANTS //////////////
@@ -208,6 +197,11 @@ bool Window(string title, Vec2f size, const WindowConfig config = WindowConfig()
     window_tl += config.pos;
     window_br += config.pos;
 
+    Vec2f cpos = Input::GetCursorPos();
+    bool hover = cpos.x > window_tl.x && cpos.x < window_br.x && cpos.y > window_tl.y && cpos.y < window_br.y;
+
+    Input::controls.setButtonsLock(hover ? true : false);
+
     // WINDOW TITLE AND PANEL
     GUI::DrawFramedPane(window_tl, window_br);
     GUI::DrawPane(window_tl, Vec2f(window_br.x, window_tl.y + window_title_h));
@@ -222,7 +216,10 @@ bool Window(string title, Vec2f size, const WindowConfig config = WindowConfig()
         Vec2f br = Vec2f(window_br.x,
                          window_tl.y + window_title_h);
 
-        if(ButtonIconGeneral(tl, br, icons, window_close_icon, window_close_icon_size)) return false;
+        if(ButtonIconGeneral(tl, br, icons, window_close_icon, window_close_icon_size)) {
+            Input::controls.setButtonsLock(false);
+            return false;
+        }
     }
 
     window_tl += Vec2f(0, window_title_h);
@@ -574,8 +571,6 @@ int Keybind(int key, string title) {
     Vec2f tl = canvas_tl;
     Vec2f br = canvas_tl + Vec2f(keybind_w, keybind_h);
     string key_title = Input::controls.getKeyName(key);
-
-    Input::controls.setButtonsLock(keybind_selected == 0 ? false : true);
 
     if (keybind_selected == keybind_current) {
         DrawButtonSelected(tl, br, key_title);
