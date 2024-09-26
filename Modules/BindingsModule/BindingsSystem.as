@@ -214,7 +214,7 @@ void onInit(CRules@ this)
 		}
 
 		if(!sfile.saveFile(SETTINGSFILE + ".cfg"))
-		{	
+		{
 			print("Failed to save GRUHSHA_customizableplayersettings.cfg");
 		}
 		else
@@ -575,7 +575,7 @@ void InitMenu()
 						button.m_selecteds.push_back(true);
 						button.m_state.push_back(ClickableButtonStates::Selected);
 					}
-					else 
+					else
 					{
 						button.m_selecteds.push_back(false);
 						button.m_state.push_back(ClickableButtonStates::None);
