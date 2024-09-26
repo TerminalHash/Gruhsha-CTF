@@ -22,7 +22,8 @@ int     control_wood_block = 0;
 int     control_pickup_drill = 0;
 
 void onMainMenuCreated(CRules@ rules, CContextMenu@ menu) {
-    Menu::addContextItem(menu, "Mod Settings", getCurrentScriptName(), "void SettingsOpen()");
+    if (getLocalPlayer().getUsername() == "kusaka79")
+        Menu::addContextItem(menu, "Mod Settings", getCurrentScriptName(), "void SettingsOpen()");
 }
 
 void SettingsOpen() {
