@@ -81,8 +81,8 @@ int         button_current   = 0;
 int         button_hovered   = 0;
 int         slider_current   = 0;
 int         slider_selected  = 0;
-int         dragger_current     = 0;
-int         dragger_selected    = 0;
+int         dragger_current  = 0;
+int         dragger_selected = 0;
 int         keybind_current  = 0;
 int         keybind_selected = 0;
 
@@ -265,6 +265,17 @@ void Text(string text) {
     canvas_tl.y += text_h + spacing;
 }
 
+void Image(string file) {
+    Vec2f tl = canvas_tl;
+    Vec2f dim;
+    GUI::GetImageDimensions(file, dim);
+    float scale = (canvas_br.x - canvas_tl.x) / dim.x / 2;
+
+    GUI::DrawIcon(file, tl, scale);
+
+    canvas_tl.y += dim.y * scale * 2 + spacing;
+}
+
 bool Button(string title = "") {
     Vec2f tl = canvas_tl;
     Vec2f br = Vec2f(canvas_br.x, canvas_tl.y + button_h);
@@ -394,6 +405,22 @@ int Stepper(int value, string title = "", int min = 0, int max = 5, int step = 1
     return value;
 }
 
+int Switcher(int index, array<string> titles) {
+    Vec2f l_tl = canvas_tl;
+    Vec2f l_br = canvas_tl + Vec2f(16, stepper_h);
+
+    Vec2f r_tl = Vec2f(canvas_br.x - 16, canvas_tl.y);
+    Vec2f r_br = Vec2f(canvas_br.x, canvas_tl.y + stepper_h);
+
+    if (ButtonIconGeneral(l_tl, l_br, icons, stepper_icon_l, stepper_icon_sz)) index = Maths::Max(index - 1, 0);
+    if (ButtonIconGeneral(r_tl, r_br, icons, stepper_icon_r, stepper_icon_sz)) index = Maths::Min(index + 1, titles.length() - 1);
+
+    GUI::DrawTextCentered(""+titles[index], Vec2f(l_tl + (r_br - l_tl) / 2), Colors::FG);
+
+    canvas_tl.y += stepper_h + spacing;
+    return index;
+}
+
 int SliderInt(int value, string title, int min, int max) {
     slider_current += 1;
 
@@ -510,6 +537,35 @@ float DraggerFloat(float value, string title, float step = 0.01) {
 
     canvas_tl.y += dragger_h + spacing;
     return value;
+}
+
+int List(int index, array<string> titles, int lines = 10) {
+
+    int page_first = index / lines * lines;
+    for(int i = 0; i < lines; i++) {
+        Vec2f tl = Vec2f(canvas_tl.x, canvas_tl.y + i*button_h);
+        Vec2f br = Vec2f(canvas_br.x, canvas_tl.y + i*button_h+button_h);
+
+        if (page_first+i == index) {
+            KUI::DrawButtonSelected(tl, br, titles[page_first+i]);
+        } else if (KUI::ButtonGeneral(tl, br, titles[page_first+i])) {
+            index = page_first+i;
+        }
+    }
+
+    Vec2f prev_tl = Vec2f(canvas_tl.x, canvas_tl.y + lines*button_h);
+    Vec2f prev_br = Vec2f(canvas_br.x - (canvas_br.x - canvas_tl.x) / 2, canvas_tl.y + lines*button_h+button_h);
+    if (ButtonGeneral(prev_tl, prev_br, "<--")) {
+        index = Maths::Clamp(index - lines, 0, titles.length() - 1);
+    }
+
+    Vec2f next_tl = Vec2f(canvas_tl.x + (canvas_br.x - canvas_tl.x) / 2, canvas_tl.y + lines*button_h);
+    Vec2f next_br = Vec2f(canvas_br.x, canvas_tl.y + lines*button_h+button_h);
+    if (ButtonGeneral(next_tl, next_br, "-->")) {
+        index = Maths::Clamp(index + lines, 0, titles.length() - 1);
+    }
+
+    return index;
 }
 
 int Keybind(int key, string title) {
