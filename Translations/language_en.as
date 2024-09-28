@@ -60,6 +60,7 @@ namespace en
 	// KnightShop.as
 	d_stickybombdesc						= "Slime-covered dynamite that sticks to surfaces.\n Designed to demolish structures.",
 	d_goldenminedesc						= "More durable version of mine, able to stick to surface.",
+	d_slideminedesc								= "A less durable version of the regular mine, can be primed while moving.",
 	d_icebombdesc							= "A snow globe with a mini-keg inside, capable of slowing down an opponent for a small amount of time.",
 
 	// Satchel.as
@@ -161,6 +162,7 @@ namespace en
 	n_stickybombnmb							= "Sticky Bomb",
 	n_goldenminenmb							= "Golden Mine",
 	n_icebombnmb							= "Ice Bomb",
+	n_slideminenmb							= "Slide Mine",
 
 			// Builder Shop
 	n_drillbnmb								= "Drill",
@@ -242,6 +244,7 @@ namespace en
 	// KnightShop.as
 	n_stickybomb							= "Sticky Bomb",
 	n_goldenmine							= "Golden Mine",
+	n_slidemine							    = "Slide Mine",
 	n_icebomb								= "Ice Bomb",
 
 	// KIWI_Playercard.as

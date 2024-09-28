@@ -60,6 +60,7 @@ namespace ru
 	// KnightShop.as
 	d_stickybombdesc						= "Покрытый слизью динамит, прилипающий к поверхности.\n Предназначен для сноса конструкций.",
 	d_goldenminedesc						= "Более прочная версия мины, способна прилипать к поверхности.",
+	d_slideminedesc								= "Менее прочная версия обычной мины, взводится в боевое состояние при движении.",
 	d_icebombdesc							= "Снежный шар с мини-кегой внутри, способен замедлить противника на небольшое время.",
 
 	// Satchel.as
@@ -161,6 +162,7 @@ namespace ru
 	n_stickybombnmb							= "Липкая бомба",
 	n_goldenminenmb							= "Золотая мина",
 	n_icebombnmb							= "Ледяная бомба",
+	n_slideminenmb							= "Слайд-мина",
 
 			// Builder Shop
 	n_drillbnmb								= "Бур",
@@ -242,6 +244,7 @@ namespace ru
 	// KnightShop.as
 	n_stickybomb							= "Липкая бомба",
 	n_goldenmine							= "Золотая мина",
+	n_slidemine							    = "Слайд-мина",
 	n_icebomb								= "Ледяная бомба",
 
 	// KIWI_Playercard.as

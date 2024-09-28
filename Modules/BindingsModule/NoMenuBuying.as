@@ -110,6 +110,10 @@ void onTick(CBlob@ this)
 					wanna_buy = true;
 					item_id	= 8;
 				}
+				if (b_KeyJustPressed("k_slidemine")) {
+					wanna_buy = true;
+					item_id	= 9;
+				}
 
 				if (wanna_buy) {
 					dont_show_emotes = true;
@@ -461,7 +465,8 @@ void onRender(CSprite@ this)
 		"k_satchel",
 		"k_sticky",
 		"k_icebomb",
-		"k_goldmine"
+		"k_goldmine",
+		"k_slidemine"
 		};
 
 		if (theknightshop.get("shop array", @shopitems)) {
