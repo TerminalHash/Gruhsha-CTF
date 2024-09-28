@@ -36,34 +36,34 @@ void onInit(CBlob@ this)
 
 	// Dynamic prices
 	u32 dynamic_bomb_cost = 25;
-	u32 dynamic_water_bomb_cost = 35;
+	u32 dynamic_water_bomb_cost = 70;
 	u32 dynamic_keg_cost = 130;
 	u32 player_amount = getRules().get_s32("amount_in_team");
 
 	if (player_amount >= 12 && player_amount < 14)
 	{
 		dynamic_bomb_cost = 30;
-		dynamic_water_bomb_cost = 40;
+		dynamic_water_bomb_cost = 80;
 	}
 	else if (player_amount >= 14 && player_amount < 16)
 	{
 		dynamic_bomb_cost = 35;
-		dynamic_water_bomb_cost = 45;
+		dynamic_water_bomb_cost = 85;
 	}
 	else if (player_amount >= 16 && player_amount < 18)
 	{
 		dynamic_bomb_cost = 40;
-		dynamic_water_bomb_cost = 50;
+		dynamic_water_bomb_cost = 90;
 	}
 	else if (player_amount >= 18 && player_amount < 19)
 	{
 		dynamic_bomb_cost = 40;
-		dynamic_water_bomb_cost = 50;
+		dynamic_water_bomb_cost = 90;
 	}
 	else if (player_amount >= 19)
 	{
 		dynamic_bomb_cost = 45;
-		dynamic_water_bomb_cost = 55;
+		dynamic_water_bomb_cost = 95;
 	}
 
 	if (getRules().hasTag("sudden death")) {
