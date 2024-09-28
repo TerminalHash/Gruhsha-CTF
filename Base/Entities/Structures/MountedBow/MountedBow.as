@@ -1,14 +1,40 @@
 #include "VehicleCommon.as"
+#include "ArcherCommon.as"
+#include "BombCommon.as"
 #include "GenericButtonCommon.as"
 
 // Mounted Bow logic
+
+const s32 bomb_fuse = 120;
 
 class MountedBowInfo : VehicleInfo
 {
 	void onFire(CBlob@ this, CBlob@ bullet, const u16 &in fired_charge)
 	{
-		if (bullet !is null)
-		{
+		if (bullet !is null) {
+			if (current_ammo_index == 1) {
+				bullet.set_u8("arrow type", ArrowType::fire);
+				bullet.getSprite().SetAnimation("fire arrow");
+			} else if (current_ammo_index == 2) {
+				bullet.set_u8("arrow type", ArrowType::water);
+				bullet.getSprite().SetAnimation("water arrow");
+			} /*else if (current_ammo_index == 3) {
+				bullet.set_u8("arrow type", ArrowType::block);
+				bullet.getSprite().SetAnimation("block arrow");
+			}*/ else if (current_ammo_index == 3) {
+				bullet.set_u8("arrow type", ArrowType::stoneblock);
+				bullet.getSprite().SetAnimation("stone block arrow");
+			} else if (current_ammo_index == 4) {
+				bullet.set_u8("arrow type", ArrowType::bomb);
+
+				SetupBomb(bullet, bomb_fuse, 48.0f, 1.5f, 24.0f, 0.5f, true);
+				bullet.set_u8("custom_hitter", Hitters::bomb_arrow);
+
+				bullet.getSprite().SetAnimation("bomb arrow");
+			} else {
+				bullet.set_u8("arrow type", ArrowType::normal);
+			}
+
 			const f32 sign = this.isFacingLeft() ? -1 : 1;
 			f32 angle = wep_angle * sign;
 			angle += (XORRandom(512) - 256) / 64.0f;
@@ -20,7 +46,7 @@ class MountedBowInfo : VehicleInfo
 			// set much higher drag than archer arrow
 			bullet.getShape().setDrag(bullet.getShape().getDrag() * 2.0f);
 
-			bullet.server_SetTimeToDie(5.0f);   // override lock
+			bullet.server_SetTimeToDie(10.0f);   // override lock
 			//bullet.server_SetTimeToDie(0.69f);
 			bullet.Tag("bow arrow");
 		}
@@ -39,12 +65,74 @@ void onInit(CBlob@ this)
 	VehicleInfo@ v;
 	if (!this.get("VehicleInfo", @v)) return;
 
+	// NORMAL ARROW
 	Vehicle_AddAmmo(this, v,
 	                    25, // fire delay (ticks)
 	                    1, // fire bullets amount
 	                    1, // fire cost
 	                    "mat_arrows", // bullet ammo config name
 	                    "Arrows", // name for ammo selection
+	                    "arrow", // bullet config name
+	                    "BowFire", // fire sound
+	                    "EmptyFire", // empty fire sound
+	                    Vec2f(-3, 0) //fire position offset
+	                   );
+	// FIRE ARROW
+	Vehicle_AddAmmo(this, v,
+	                    25, // fire delay (ticks)
+	                    1, // fire bullets amount
+	                    1, // fire cost
+	                    "mat_firearrows", // bullet ammo config name
+	                    "Fire Arrows", // name for ammo selection
+	                    "arrow", // bullet config name
+	                    "BowFire", // fire sound
+	                    "EmptyFire", // empty fire sound
+	                    Vec2f(-3, 0) //fire position offset
+	                   );
+	// WATER ARROW
+	Vehicle_AddAmmo(this, v,
+	                    25, // fire delay (ticks)
+	                    1, // fire bullets amount
+	                    1, // fire cost
+	                    "mat_waterarrows", // bullet ammo config name
+	                    "Water Arrows", // name for ammo selection
+	                    "arrow", // bullet config name
+	                    "BowFire", // fire sound
+	                    "EmptyFire", // empty fire sound
+	                    Vec2f(-3, 0) //fire position offset
+	                   );
+	// WOODEN BLOCK ARROW
+	// if uncommented, will broke ammo types
+	/*Vehicle_AddAmmo(this, v,
+	                    25, // fire delay (ticks)
+	                    1, // fire bullets amount
+	                    1, // fire cost
+	                    "mat_blockarrows", // bullet ammo config name
+	                    "Wooden Block Arrows", // name for ammo selection
+	                    "arrow", // bullet config name
+	                    "BowFire", // fire sound
+	                    "EmptyFire", // empty fire sound
+	                    Vec2f(-3, 0) //fire position offset
+	                   );*/
+	// STONE BLOCK ARROW
+	Vehicle_AddAmmo(this, v,
+	                    25, // fire delay (ticks)
+	                    1, // fire bullets amount
+	                    1, // fire cost
+	                    "mat_stoneblockarrows", // bullet ammo config name
+	                    "Stone Block Arrows", // name for ammo selection
+	                    "arrow", // bullet config name
+	                    "BowFire", // fire sound
+	                    "EmptyFire", // empty fire sound
+	                    Vec2f(-3, 0) //fire position offset
+	                   );
+	// BOMB ARROW
+	Vehicle_AddAmmo(this, v,
+	                    75, // fire delay (ticks)
+	                    1, // fire bullets amount
+	                    1, // fire cost
+	                    "mat_bombarrows", // bullet ammo config name
+	                    "Bomb Arrows", // name for ammo selection
 	                    "arrow", // bullet config name
 	                    "BowFire", // fire sound
 	                    "EmptyFire", // empty fire sound
@@ -141,6 +229,8 @@ void onTick(CBlob@ this)
 		VehicleInfo@ v;
 		if (!this.get("VehicleInfo", @v)) return;
 
+		//printf("Ochko enota " + v.current_ammo_index);
+
 		const f32 angle = getAimAngle(this, v);
 		v.wep_angle = angle;
 
@@ -159,6 +249,7 @@ void onTick(CBlob@ this)
 		Vehicle_StandardControls(this, v);
 	}
 	this.set_bool("facing", this.isFacingLeft());
+
 }
 
 void onHealthChange(CBlob@ this, f32 oldHealth)
