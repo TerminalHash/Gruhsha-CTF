@@ -39,7 +39,7 @@ class MountedBowInfo : VehicleInfo
 			f32 angle = wep_angle * sign;
 			angle += (XORRandom(512) - 256) / 64.0f;
 
-			const f32 arrow_speed = 36.0f;
+			const f32 arrow_speed = 32.0f;
 			Vec2f vel = Vec2f(arrow_speed * sign, 0.0f).RotateBy(angle);
 			bullet.setVelocity(vel);
 
