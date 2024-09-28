@@ -46,6 +46,7 @@ void onInit(CBlob@ this)
 
 		menu.add_entry(PickupWheelMenuEntry("Mine", "$mine$", "mine"));
 		menu.add_entry(PickupWheelMenuEntry("Golden Mine", "$golden_mine$", "golden_mine"));
+		menu.add_entry(PickupWheelMenuEntry("Slide Mine", "$slidemine$", "slidemine"));
 
 		// archer stuff
 		menu.add_entry(PickupWheelMenuEntry("Arrows", "$mat_arrows$", "mat_arrows", Vec2f(0, -8.0f)));
@@ -392,13 +393,15 @@ f32 getPriorityPickupScale(CBlob@ this, CBlob@ b)
 	//// MILITARY ////
 	{
 		// special mine check for unarmed enemy mines
-		if (name == "mine" && b.hasTag("mine_priming") && !same_team)
+		if ((name == "mine" && b.hasTag("mine_priming") && !same_team) ||
+			(name == "golden_mine" && b.hasTag("mine_priming") && !same_team) ||
+			(name == "slidemine" && b.hasTag("mine_priming") && !same_team))
 		{
 			return factor_important;
 		}
 
 		// Military stuff we don't want to pick up when in the same team and always considered lit
-		if (name == "mine" || name == "bomb" || name == "waterbomb" || name == "golden_mine" || name == "icebomb")
+		if (name == "mine" || name == "bomb" || name == "waterbomb" || name == "golden_mine" || name == "icebomb" || name == "slidemine")
 		{
 			// Make an exception to the team rule: when the explosive is the holder's
 			bool mine = b.getDamageOwnerPlayer() is this.getPlayer();
