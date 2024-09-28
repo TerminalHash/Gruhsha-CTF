@@ -79,6 +79,7 @@ void onInit(CBlob@ this)
 	{
 		ShopItem@ s = addShopItem(this, "Water Bomb", "$waterbomb$", "mat_waterbombs", Descriptions::waterbomb, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", dynamic_water_bomb_cost /*CTFCosts::waterbomb*/);
+		AddRequirement(s.requirements, "no more", "waterbomb", "Water Bomb", 4);
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Mine", getTeamIcon("mine", "Mine.png", team_num, Vec2f(16, 16), 1), "mine", Descriptions::mine, false);
