@@ -53,6 +53,7 @@ void onInit(CBlob@ this)
 	}
 
 	this.set_u8(MINE_TIMER, 0);
+	this.addCommandID("mine_primed_client");
 
 	this.getCurrentScript().tickIfTag = MINE_PRIMING;
 }
@@ -68,7 +69,7 @@ void onTick(CBlob@ this)
 	if (isServer())
 	{
 		//tick down
-		if(this.getVelocity().LengthSquared() < 26.0f && !this.isAttached())
+		if (this.getVelocity().LengthSquared() < 26.0f && !this.isAttached())
 		{
 			u8 timer = this.get_u8(MINE_TIMER);
 			timer++;
@@ -95,17 +96,6 @@ void onTick(CBlob@ this)
 		else if (this.hasTag(MINE_PRIMING))
 		{
 			this.set_u8(MINE_TIMER, 0);
-		}
-
-		//stick to map
-		if (this.isOnMap())
-		{
-			this.setAngleDegrees(90 - this.getGroundNormal().Angle());
-			this.getShape().SetStatic(true);
-		}
-		else if (this.isAttached()) //pulled off
-		{
-			this.getShape().SetStatic(false);
 		}
 	}
 }
