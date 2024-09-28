@@ -841,6 +841,9 @@ void Reset(CRules@ this)
 
 	this.Sync("team_" + "0" + "_builder", true);
 	this.Sync("team_" + "1" + "_builder", true);
+
+	this.set_u8("mine_priming_time", 5);
+	this.Sync("mine_priming_time", true);
 }
 
 void onRestart(CRules@ this)

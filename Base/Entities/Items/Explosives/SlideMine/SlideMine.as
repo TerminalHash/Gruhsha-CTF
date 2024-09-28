@@ -3,7 +3,7 @@
 #include "Hitters.as";
 #include "Explosion.as";
 
-const u8 MINE_PRIMING_TIME = 5;
+const u8 MINE_PRIMING_TIME = getRules().get_u8("mine_priming_time");
 
 const string MINE_STATE = "mine_state";
 const string MINE_TIMER = "mine_timer";
@@ -167,10 +167,14 @@ void onDetach(CBlob@ this, CBlob@ detached, AttachmentPoint@ attachedPoint)
 
 void onThisRemoveFromInventory(CBlob@ this, CBlob@ inventoryBlob)
 {
+	getRules().set_u8("mine_priming_time", 65);
+	getRules().Sync("mine_priming_time", true);
+
 	if (getNet().isServer() && !this.isAttached())
 	{
 		this.Tag(MINE_PRIMING);
 		this.set_u8(MINE_TIMER, 0);
+
 	}
 }
 
