@@ -406,7 +406,7 @@ class TagBuilder : ChatCommand
 
 		return (
 			rules.get_string("team_" + caller_team + "_leader") == player.getUsername()
-			&& !isPickingEnded() || player.isRCON()
+			&& !isPickingEnded() || player.isMod()
 		);
 	}
 
@@ -429,5 +429,6 @@ class TagBuilder : ChatCommand
 		if (core is null) return;
 
 		rules.set_string("team_" + player.getTeamNum() + "_builder", tagged_player.getUsername());
+		rules.Sync("team_" + player.getTeamNum() + "_builder", true);
 	}
 }
