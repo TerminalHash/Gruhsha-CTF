@@ -118,6 +118,7 @@ void onInit(CBlob@ this)
 		ShopItem@ s = addShopItem(this, Names::slidemine, getTeamIcon("slidemine", "SlideMine.png", team_num, Vec2f(16, 16), 1), "slidemine", Descriptions::slideminedesc, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::slidemine);
 		AddRequirement(s.requirements, "no more", "slidemine", "Slide Mine", 3);
+		AddRequirement(s.requirements, "buy delay", "slidemine", "Slide Mine");
 	}
 }
 
