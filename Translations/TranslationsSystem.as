@@ -101,6 +101,9 @@ namespace Descriptions
 	peartext						= Translate(en::d_peartext+"\\"+ru::d_peartext),
 	sleeptext						= Translate(en::d_sleeptext+"\\"+ru::d_sleeptext),
 
+	// VehicleShop.as
+	bomberdesc						= Translate(en::d_bomberdesc+"\\"+ru::d_bomberdesc),
+
 	// TimeToEnd.as
 	thirtyminutesleft				= Translate(en::d_thirtyminutesleft+"\\"+ru::d_thirtyminutesleft),
 	suddenactive					= Translate(en::d_suddenactive+"\\"+ru::d_suddenactive),
@@ -208,6 +211,7 @@ namespace Names
 			// Vehicle Shop
 	catapultnmb								 = Translate(en::n_catapultnmb+"\\"+ru::n_catapultnmb),
 	ballistanmb								 = Translate(en::n_ballistanmb+"\\"+ru::n_ballistanmb),
+	bombernmb								 = Translate(en::n_bombernmb+"\\"+ru::n_bombernmb),
 	outpostnmb								 = Translate(en::n_outpostnmb+"\\"+ru::n_outpostnmb),
 	boltsnmb								 = Translate(en::n_boltsnmb+"\\"+ru::n_boltsnmb),
 	shellsnmb								 = Translate(en::n_shellsnmb+"\\"+ru::n_shellsnmb),

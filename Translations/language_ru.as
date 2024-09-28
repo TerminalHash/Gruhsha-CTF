@@ -86,6 +86,9 @@ namespace ru
 	d_peartext								= "Сочная и сладкая груша.",
 	d_sleeptext								= "Прилечь поспать. Бесплатно!",
 
+	// VehicleShop.as
+	d_bomberdesc							= "Воздушное транспортное средство, может перевезти двух человек и некоторое количество груза. Можно сбрасывать предметы на клавишу Space.",
+
 	// TimeToEnd.as
 	d_thirtyminutesleft						= "Осталось 5 минут до конца раунда, поторопитесь!",
 	d_suddenactive							= "РЕЖИМ ВНЕЗАПНОЙ СМЕРТИ АКТИВЕН!",
@@ -191,6 +194,7 @@ namespace ru
 			// Vehicle Shop
 	n_catapultnmb							= "Катапульта",
 	n_ballistanmb							= "Баллиста",
+	n_bombernmb								= "Воздушный шар",
 	n_outpostnmb							= "Аванпост",
 	n_boltsnmb								= "Болты для баллисты",
 	n_shellsnmb								= "Взрывные болты для баллисты",

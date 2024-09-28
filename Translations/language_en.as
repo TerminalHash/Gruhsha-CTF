@@ -86,6 +86,9 @@ namespace en
 	d_peartext								= "A juicy and sweet pear.",
 	d_sleeptext								= "Sleep. Free!",
 
+	// VehicleShop.as
+	d_bomberdesc							= "Air vehicle, can carry two people and some cargo. Can bombard on Space.",
+
 	// TimeToEnd.as
 	d_thirtyminutesleft						= "5 minutes left, hurry up!",
 	d_suddenactive							= "SUDDEN DEATH MODE IS ACTIVE!",
@@ -191,6 +194,7 @@ namespace en
 			// Vehicle Shop
 	n_catapultnmb							= "Catapult",
 	n_ballistanmb							= "Ballista",
+	n_bombernmb								= "Bomber",
 	n_outpostnmb							= "Outpost",
 	n_boltsnmb								= "Ballista Bolts",
 	n_shellsnmb								= "Ballista Shells",

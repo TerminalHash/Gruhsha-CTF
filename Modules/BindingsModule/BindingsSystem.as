@@ -108,11 +108,13 @@ void onInit(CRules@ this)
 		if (!file.exists("vehicle_catapult$2")) file.add_s32("vehicle_catapult$2", -1);
 		if (!file.exists("vehicle_ballista$1")) file.add_s32("vehicle_ballista$1", 50);
 		if (!file.exists("vehicle_ballista$2")) file.add_s32("vehicle_ballista$2", -1);
-		if (!file.exists("vehicle_outpost$1")) file.add_s32("vehicle_outpost$1", 51);
+		if (!file.exists("vehicle_bomber$1")) file.add_s32("vehicle_bomber$1", 51);
+		if (!file.exists("vehicle_bomber$2")) file.add_s32("vehicle_bomber$2", -1);
+		if (!file.exists("vehicle_outpost$1")) file.add_s32("vehicle_outpost$1", 52);
 		if (!file.exists("vehicle_outpost$2")) file.add_s32("vehicle_outpost$2", -1);
-		if (!file.exists("vehicle_bolts$1")) file.add_s32("vehicle_bolts$1", 52);
+		if (!file.exists("vehicle_bolts$1")) file.add_s32("vehicle_bolts$1", 53);
 		if (!file.exists("vehicle_bolts$2")) file.add_s32("vehicle_bolts$2", -1);
-		if (!file.exists("vehicle_shells$1")) file.add_s32("vehicle_shells$1", 53);
+		if (!file.exists("vehicle_shells$1")) file.add_s32("vehicle_shells$1", 54);
 		if (!file.exists("vehicle_shells$2")) file.add_s32("vehicle_shells$2", -1);
 
 		// boat shop

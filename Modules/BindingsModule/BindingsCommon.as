@@ -116,6 +116,7 @@ string[][] button_texts =
 	{							// VEHICLE SHOP
 		Names::catapultnmb,
 		Names::ballistanmb,
+		Names::bombernmb,
 		Names::outpostnmb,
 		Names::boltsnmb,
 		Names::shellsnmb
@@ -224,6 +225,7 @@ string[][] button_file_names =
 	{
 		"vehicle_catapult",
 		"vehicle_ballista",
+		"vehicle_bomber",
 		"vehicle_outpost",
 		"vehicle_bolts",
 		"vehicle_shells",

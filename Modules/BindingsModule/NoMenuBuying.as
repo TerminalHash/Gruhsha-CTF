@@ -313,17 +313,21 @@ void onTick(CBlob@ this)
 					wanna_buy = true;
 					item_id	= 1;
 				}
-				if (b_KeyJustPressed("vehicle_outpost")) {
+				if (b_KeyJustPressed("vehicle_bomber")) {
 					wanna_buy = true;
 					item_id	= 2;
 				}
-				if (b_KeyJustPressed("vehicle_bolts")) {
+				if (b_KeyJustPressed("vehicle_outpost")) {
 					wanna_buy = true;
 					item_id	= 3;
 				}
-				if (b_KeyJustPressed("vehicle_shells")) {
+				if (b_KeyJustPressed("vehicle_bolts")) {
 					wanna_buy = true;
 					item_id	= 4;
+				}
+				if (b_KeyJustPressed("vehicle_shells")) {
+					wanna_buy = true;
+					item_id	= 5;
 				}
 
 				if (wanna_buy) {
@@ -618,18 +622,23 @@ void onRender(CSprite@ this)
 		string[] items = {
 		"vehicle_catapult",
         "vehicle_ballista",
+		"vehicle_bomber",
         "vehicle_outpost",
         "vehicle_bolts",
         "vehicle_shells"
 		};
 
 		if (thevehicle.get("shop array", @shopitems)) {
-			for (int i = 0; i < 5; ++i) {
+			for (int i = 0; i < 6; ++i) {
 				s32 buttonwidth = advance_by.x;
 				s32 buttonheight = advance_by.y;
 				ShopItem @s_item = shopitems[i];
 
 				if (s_item.blobName == "catapult") {
+					buttonwidth = 72;
+					buttonheight = 64;
+				}
+				if (s_item.blobName == "bomber") {
 					buttonwidth = 72;
 					buttonheight = 64;
 				}
