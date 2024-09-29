@@ -474,9 +474,9 @@ class PNGLoader
 
 		// background
 		map.AddBackground("Sprites/Back/BackgroundPlains.png", Vec2f(0.0f, 0.0f), Vec2f(0.3f, 0.3f), color_white );
-		map.AddBackground("Sprites/Back/BackgroundTrees.png", Vec2f(0.0f,  19.0f), Vec2f(0.4f, 0.4f), color_white );
-		//map.AddBackground("Sprites/Back/BackgroundIsland.png", Vec2f(0.0f, -220.0f), Vec2f(0.3f, 180.0f), color_white);
-		map.AddBackground("Sprites/Back/BackgroundCastle.png", Vec2f(0.0f, -160.0f), Vec2f(0.3f, 30.0f), color_white );
+		map.AddBackground("Sprites/Back/BackgroundTrees.png", Vec2f(0.0f,  19.0f), Vec2f(0.18f, 30.0f), color_white );
+		map.AddBackground("Sprites/Back/BackgroundIsland.png", Vec2f(0.0f, -220.0f), Vec2f(0.3f, 180.0f), color_white);
+		//map.AddBackground("Sprites/Back/BackgroundCastle.png", Vec2f(0.0f, -160.0f), Vec2f(0.3f, 30.0f), color_white );
 
 		// fade in
 		SetScreenFlash(255,   0,   0,   0);
