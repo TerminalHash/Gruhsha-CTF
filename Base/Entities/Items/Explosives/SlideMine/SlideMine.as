@@ -3,8 +3,6 @@
 #include "Hitters.as";
 #include "Explosion.as";
 
-const u8 MINE_PRIMING_TIME = getRules().get_u8("mine_priming_time");
-
 const string MINE_STATE = "mine_state";
 const string MINE_TIMER = "mine_timer";
 const string MINE_PRIMING = "mine_priming";
@@ -55,6 +53,8 @@ void onInit(CBlob@ this)
 	this.set_u8(MINE_TIMER, 0);
 	this.addCommandID("mine_primed_client");
 
+	this.set_u8("mine_priming_time", 5);
+
 	this.getCurrentScript().tickIfTag = MINE_PRIMING;
 }
 
@@ -75,7 +75,7 @@ void onTick(CBlob@ this)
 			timer++;
 			this.set_u8(MINE_TIMER, timer);
 
-			if (timer >= MINE_PRIMING_TIME)
+			if (timer >= this.get_u8("mine_priming_time"))
 			{
 				this.Untag(MINE_PRIMING);
 
@@ -167,8 +167,8 @@ void onDetach(CBlob@ this, CBlob@ detached, AttachmentPoint@ attachedPoint)
 
 void onThisRemoveFromInventory(CBlob@ this, CBlob@ inventoryBlob)
 {
-	getRules().set_u8("mine_priming_time", 65);
-	getRules().Sync("mine_priming_time", true);
+	// remove ability to insta-explode enemies while mines droping from corpses
+	this.set_u8("mine_priming_time", 65);
 
 	if (getNet().isServer() && !this.isAttached())
 	{
