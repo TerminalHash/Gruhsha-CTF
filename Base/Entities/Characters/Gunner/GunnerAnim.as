@@ -1,6 +1,7 @@
 // Archer animations
 
 #include "GunnerCommon.as"
+#include "FireCommon.as"
 #include "FireParticle.as"
 #include "RunnerAnimCommon.as";
 #include "RunnerCommon.as";
@@ -13,6 +14,7 @@ const f32 config_offset = -6.0f;
 
 void onInit(CSprite@ this) {
 	LoadSprites(this);
+	this.getCurrentScript().runFlags |= Script::tick_not_infire;
 }
 
 void onPlayerInfoChanged(CSprite@ this) {
