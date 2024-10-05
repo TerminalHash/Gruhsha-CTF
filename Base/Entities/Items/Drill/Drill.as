@@ -470,7 +470,10 @@ void onTick(CBlob@ this)
 
 										if (holder.getConfig() == "builder" && rules.hasTag("sudden death")) {
 											adding = heat_add_constructed_low;
-										} else if (holder.getConfig() != "builder" && rules.hasTag("sudden death")) {
+										} else if (holder.getConfig() != "builder" &&
+													 rules.hasTag("sudden death") &&
+													((holder_x <= left && holder.getTeamNum() == 1) ||
+													 (holder_x >= right && holder.getTeamNum() == 0))) {
 											adding = heat_add_constructed_high;
 										}
 
@@ -486,7 +489,10 @@ void onTick(CBlob@ this)
 
 										if (holder.getConfig() == "builder" && rules.hasTag("sudden death")) {
 											adding = heat_add_blob_low;
-										} else if (holder.getConfig() != "builder" && rules.hasTag("sudden death")) {
+										} else if (holder.getConfig() != "builder" &&
+													 rules.hasTag("sudden death") &&
+													((holder_x <= left && holder.getTeamNum() == 1) ||
+													 (holder_x >= right && holder.getTeamNum() == 0))) {
 											adding = heat_add_blob_high;
 										}
 
@@ -502,7 +508,10 @@ void onTick(CBlob@ this)
 
 										if (holder.getConfig() == "builder" && rules.hasTag("sudden death")) {
 											adding = heat_add_low;
-										} else if (holder.getConfig() != "builder" && rules.hasTag("sudden death")) {
+										} else if (holder.getConfig() != "builder" &&
+													 rules.hasTag("sudden death") &&
+													((holder_x <= left && holder.getTeamNum() == 1) ||
+													 (holder_x >= right && holder.getTeamNum() == 0))) {
 											adding = heat_add_high;
 										}
 
