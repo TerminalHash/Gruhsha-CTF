@@ -405,8 +405,7 @@ class TagBuilder : ChatCommand
 		u8 first_team_picking = 0;
 
 		return (
-			rules.get_string("team_" + caller_team + "_leader") == player.getUsername()
-			&& !isPickingEnded() || player.isMod()
+			rules.get_string("team_" + caller_team + "_leader") == player.getUsername() || player.isMod()
 		);
 	}
 
@@ -430,5 +429,43 @@ class TagBuilder : ChatCommand
 
 		rules.set_string("team_" + player.getTeamNum() + "_builder", tagged_player.getUsername());
 		rules.Sync("team_" + player.getTeamNum() + "_builder", true);
+	}
+}
+
+class UpdateMats : ChatCommand
+{
+	UpdateMats()
+	{
+		super("updmats", "Update material pool for someone team");
+		SetUsage("<team> <wood> <stone>");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		if (args.size() < 1) return;
+
+		const string TEAM = args[0];
+		const s32 WOOD = args.size() > 0 ? parseInt(args[1]) : rules.get_s32("teamwood" + TEAM);
+		const s32 STONE = args.size() > 0 ? parseInt(args[2]) : rules.get_s32("teamstone" + TEAM);
+
+		if (args[1].size() > 1) {
+			rules.set_s32("teamwood" + TEAM, WOOD);
+			rules.Sync("teamwood" + TEAM, true);
+		}
+
+		if (args[2].size() > 1) {
+			rules.set_s32("teamstone" + TEAM, STONE);
+			rules.Sync("teamstone" + TEAM, true);
+		}
 	}
 }
