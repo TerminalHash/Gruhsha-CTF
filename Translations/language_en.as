@@ -58,9 +58,9 @@ namespace en
 	d_preventvoicelinespamtext				= "Disallow annoying voiceline spam from player",
 
 	// KnightShop.as
-	d_stickybombdesc						= "Slime-covered dynamite that sticks to surfaces.\n Designed to demolish structures.",
+	d_stickybombdesc						= "Slime-covered dynamite that sticks to surfaces. Useful in stealth operations and demolition of structures.",
 	d_goldenminedesc						= "More durable version of mine, able to stick to surface.",
-	d_slideminedesc								= "A less durable version of the regular mine, can be primed while moving.",
+	d_slideminedesc							= "A less durable version of the regular mine, can be primed while moving.",
 	d_icebombdesc							= "A snow globe with a mini-keg inside, capable of slowing down an opponent for a small amount of time.",
 
 	// Satchel.as
