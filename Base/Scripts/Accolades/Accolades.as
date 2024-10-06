@@ -138,16 +138,12 @@ shared class Accolades
 
 		// if we're a round table supporter just check in case we have head not specified in accolade data
 		CPlayer@ p = getPlayerByUsername(username);
-		if(p !is null)
+		if (p !is null)
 		{
 			if(p.getSupportTier() >= SUPPORT_TIER_ROUNDTABLE)
 			{
 				customHeadExists = doesCustomHeadExists();
 			}
-		}
-		if(CFileMatcher(customHeadTexture).hasMatch()) 
-		{
-		customHeadExists = CFileImage(customHeadTexture).getWidth() == 64;
 		}
 	}
 
