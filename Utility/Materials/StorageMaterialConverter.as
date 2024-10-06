@@ -26,7 +26,9 @@ void onTick(CBlob@ this)
                 printf("Wood amount in inventory is " + wood_count);
             }*/
 
-            if (name == "mat_stone" && getGameTime() > convert_time_inventory * getTicksASecond() + item.get_s32("storage pickup time")) {
+            if (name == "mat_stone" &&
+                    item.get_s32("storage pickup time") != -1 &&
+                    getGameTime() > convert_time_inventory * getTicksASecond() + item.get_s32("storage pickup time")) {
                 getRules().add_s32("teamstone" + this.getTeamNum(), stone_count);
                 getRules().Sync("teamstone" + this.getTeamNum(), true);
                 //inv.server_RemoveItems("mat_stone", stone_count); // dont working with onRemoveFromInventory hook???
@@ -35,7 +37,9 @@ void onTick(CBlob@ this)
                 item.server_Die();
 
                 this.SendCommand(this.getCommandID("play convert sound"));
-            } else if (name == "mat_wood" && getGameTime() > convert_time_inventory * getTicksASecond() + item.get_s32("storage pickup time")) {
+            } else if (name == "mat_wood" &&
+                    item.get_s32("storage pickup time") != -1 &&
+                    getGameTime() > convert_time_inventory * getTicksASecond() + item.get_s32("storage pickup time")) {
                 getRules().add_s32("teamwood" + this.getTeamNum(), wood_count);
                 getRules().Sync("teamwood" + this.getTeamNum(), true);
                 //inv.server_RemoveItems("mat_wood", wood_count); // dont working with onRemoveFromInventory hook???
@@ -71,6 +75,24 @@ void onAddToInventory(CBlob@ this, CBlob@ blob)
             //printf("Stone pickup time is " + blob.get_s32("pickup time"));
         } else if (blob.getConfig() == "mat_wood") {
             blob.set_s32("storage pickup time", getGameTime());
+            blob.Sync("storage pickup time", true);
+
+            //printf("Wood pickup time is " + blob.get_s32("pickup time"));
+        }
+    }
+}
+
+void onRemoveFromInventory(CBlob@ this, CBlob@ blob) {
+    if (!isServer()) return;
+
+    if (this !is null && blob !is null) {
+        if (blob.getConfig() == "mat_stone") {
+            blob.set_s32("storage pickup time", -1);
+            blob.Sync("storage pickup time", true);
+
+            //printf("Stone pickup time is " + blob.get_s32("pickup time"));
+        } else if (blob.getConfig() == "mat_wood") {
+            blob.set_s32("storage pickup time", -1);
             blob.Sync("storage pickup time", true);
 
             //printf("Wood pickup time is " + blob.get_s32("pickup time"));
