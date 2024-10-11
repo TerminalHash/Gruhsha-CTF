@@ -1062,12 +1062,6 @@ void onTick(CRules@ this)
 		p.set_s32("head index", headIndex);
 		p.set_string("head texture", headTexture);
 		p.set_s32("head team", teamIndex);
-
-		string blobName;
-
-		if (this.exists(p.getUsername() + "_bought_item_" + blobName)) {
-			this.set_s32(p.getUsername() + "_bought_item_" + blobName, -1);
-		}
 	}
 }
 
@@ -1092,6 +1086,12 @@ void onRestart(CRules@ this)
 		if (player is null)
 		{
 			continue;
+		}
+
+		string blobName;
+
+		if (this.exists(player.getUsername() + "_bought_item_" + blobName)) {
+			this.set_s32(player.getUsername() + "_bought_item_" + blobName, -1);
 		}
 
 		// Cache previous game
