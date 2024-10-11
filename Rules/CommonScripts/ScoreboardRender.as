@@ -1088,12 +1088,6 @@ void onRestart(CRules@ this)
 			continue;
 		}
 
-		string blobName;
-
-		if (this.exists(player.getUsername() + "_bought_item_" + blobName)) {
-			this.set_s32(player.getUsername() + "_bought_item_" + blobName, -1);
-		}
-
 		// Cache previous game
 		if (old_player_stats_core !is null)
 		{
