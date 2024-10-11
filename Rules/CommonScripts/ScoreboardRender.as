@@ -1062,6 +1062,12 @@ void onTick(CRules@ this)
 		p.set_s32("head index", headIndex);
 		p.set_string("head texture", headTexture);
 		p.set_s32("head team", teamIndex);
+
+		string blobName;
+
+		if (this.exists(p.getUsername() + "_bought_item_" + blobName)) {
+			this.set_s32(p.getUsername() + "_bought_item_" + blobName, -1);
+		}
 	}
 }
 
