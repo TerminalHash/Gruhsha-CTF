@@ -4,9 +4,6 @@ void Reset(CRules@ this)
 {
     if (!isServer()) return;
 
-    CPlayer@ player;
-    if (player is null) return;
-
     this.set_bool("is_warmup", true);
 	this.Sync("is_warmup", true);
 }
