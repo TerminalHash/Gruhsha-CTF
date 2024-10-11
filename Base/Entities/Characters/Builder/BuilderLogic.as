@@ -89,6 +89,23 @@ void onTick(CBlob@ this)
 	if (this.isInInventory())
 		return;
 
+	/////////////////////////////////////////////////////////////////////////////////////////
+	// Change class for players when limit is zero
+	CRules@ rules = getRules();
+	if (this.getPlayer() !is null && rules.get_u8("builders_limit") == 0 && !rules.get_bool("is_warmup")) {
+		//printf("hi");
+		CBlob@ test = server_CreateBlobNoInit("knight");
+
+		if (test !is null) {
+			test.setPosition(this.getPosition());
+			this.server_Die();
+			test.Init();
+			test.server_SetPlayer(this.getPlayer());
+			test.server_setTeamNum(this.getTeamNum());
+		}
+	}
+	/////////////////////////////////////////////////////////////////////////////////////////
+
 	const bool ismyplayer = this.isMyPlayer();
 
 	if (ismyplayer && getHUD().hasMenus())
