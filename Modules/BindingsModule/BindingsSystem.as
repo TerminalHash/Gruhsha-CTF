@@ -162,7 +162,7 @@ void onInit(CRules@ this)
 
 			if (!sfile.exists("item_pickup"))
 			{
-				sfile.add_string("item_pickup", "new");
+				sfile.add_string("item_pickup", "legacy");
 			}
 
 			if (!sfile.exists("pickdrill_knight"))
@@ -205,7 +205,7 @@ void onInit(CRules@ this)
 			sfile.add_string("grapple_with_charging", "yes");
 			sfile.add_string("disable_class_change_in_shops", "no");
 			sfile.add_string("cycle_with_item", "no");
-			sfile.add_string("item_pickup", "new");
+			sfile.add_string("item_pickup", "legacy");
 			sfile.add_string("pickdrill_knight", "yes");
 			sfile.add_string("pickdrill_builder", "yes");
 			sfile.add_string("pickdrill_archer", "yes");
