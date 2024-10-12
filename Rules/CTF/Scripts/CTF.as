@@ -519,7 +519,7 @@ shared class CTFCore : RulesCore
 		{
 			team = player.getTeamNum();
 		}
-		CTFPlayerInfo p(player.getUsername(), team, (XORRandom(512) >= 256 ? "knight" : "archer"));
+		CTFPlayerInfo p(player.getUsername(), team, "knight");
 		players.push_back(p);
 		ChangeTeamPlayerCount(p.team, 1);
 	}
