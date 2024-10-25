@@ -49,15 +49,15 @@ const u8[]          WEIGHT =
 {
 	30,                     // mat_waterarrows
 	35,                     // mat_firearrows
-	30,                     // mat_blockarrows
-    25,                     // mat_stoneblockarrows
+	25,                     // mat_blockarrows
+    15,                     // mat_stoneblockarrows
 	50,                     // mat_wood
 	45,                     // mat_stone
 	5,                      // mat_gold
 	45,                     // drill
 	55,                     // mat_bombs
 	35,                     // mat_waterbombs
-    5,                      // mat_stickybombs
+    20,                     // mat_stickybombs
     30,                     // satchel
 	25,                     // mine
 	30,                     // food
