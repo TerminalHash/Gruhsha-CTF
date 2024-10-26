@@ -55,6 +55,10 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 		return damage;
 	}
 
+	if (hitterBlob.getConfig() == "icebomb") {
+		return damage;
+	}
+
 	if (hitterBlob.getName() == "bucket") {
 		return damage;
 	}
