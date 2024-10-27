@@ -2,7 +2,7 @@
 // random item on victim's death
 #define SERVER_ONLY
 
-const int TIMER_BEFORE_NEXT_ITEM = 1 * getTicksASecond();
+const int TIMER_BEFORE_NEXT_ITEM = 15 * getTicksASecond();
 
 void dropRandomItem(CBlob@ this) {
 	if (!this.hasTag("dropped random item")) { // double check
@@ -14,11 +14,10 @@ void dropRandomItem(CBlob@ this) {
 		if (kill_count < 1) return;
 	
 		// if player already got item - dont spam with them
-		// CURRENTLY BROKEN
-		/*if (killer !is null && killer.exists("got item from kill")) {
-			if (killer.get_u16("got item from kill") < killer.get_u16("got item from kill") + TIMER_BEFORE_NEXT_ITEM)
+		if (killer.getBlob() !is null && killer.getBlob().exists("got item from kill")) {
+			if (getGameTime() < killer.getBlob().get_u16("got item from kill") + TIMER_BEFORE_NEXT_ITEM)
 				return;
-		}*/
+		}
 
 		int drop_random = XORRandom(256) / 64;
 
@@ -43,8 +42,8 @@ void dropRandomItem(CBlob@ this) {
 						icebomb.setPosition(killerblob.getPosition());
 					}
 
-					//killer.set_u16("got item from kill", getGameTime());
-					//printf("Ice Bomb is droped for " + killer.getUsername() + "!");
+					killer.getBlob().set_u16("got item from kill", getGameTime());
+					//printf("Ice Bomb is dropped for " + killer.getUsername() + "!");
 				}
 			} else {
 				CBlob@ stickybomb = server_CreateBlob("mat_stickybombs", -1, this.getPosition());
@@ -59,8 +58,8 @@ void dropRandomItem(CBlob@ this) {
 						stickybomb.setPosition(killerblob.getPosition());
 					}
 
-					//killer.set_u16("got item from kill", getGameTime());
-					//printf("Sticky Bomb is droped for " + killer.getUsername() + "!");
+					killer.getBlob().set_u16("got item from kill", getGameTime());
+					//printf("Sticky Bomb is dropped for " + killer.getUsername() + "!");
 				}
 			}
 		}
