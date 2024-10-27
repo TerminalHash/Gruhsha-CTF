@@ -2,7 +2,7 @@
 // random item on victim's death
 #define SERVER_ONLY
 
-const int TIMER_BEFORE_NEXT_ITEM = 15 * getTicksASecond();
+const int TIMER_BEFORE_NEXT_ITEM = 5 * getTicksASecond();
 
 void dropRandomItem(CBlob@ this) {
 	if (!this.hasTag("dropped random item")) { // double check
