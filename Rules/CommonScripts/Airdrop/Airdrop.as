@@ -14,7 +14,6 @@ void onInit(CRules@ this) {
 
 void onRestart(CRules@ this) {
 	this.set_s32("airdrop timer", airdrop_interval);
-	this.set_s32("airdrop_in", getGameTime() + airdrop_interval);
 }
 
 void onTick(CRules@ this) {
@@ -26,7 +25,6 @@ void onTick(CRules@ this) {
 	} else if (this.get_s32("airdrop timer") <= 0) {
 		// reset present timer
 		this.set_s32("airdrop timer", airdrop_interval);
-		this.set_s32("airdrop_in", getGameTime() + airdrop_interval);
 
 		CMap@ map = getMap();
 		const f32 mapCenter = map.tilemapwidth * map.tilesize * 0.5;
@@ -37,11 +35,6 @@ void onTick(CRules@ this) {
         }
 	} else {
 		this.sub_s32("airdrop timer", 1);
-
-		s32 airdrop_in = this.get_s32("airdrop_in");
-
-		this.set_s32("airdrop will drop in", (s32(airdrop_in) - s32(getGameTime())) / 30);
-		this.Sync("airdrop will drop in", true);
 	}
 }
 
@@ -59,15 +52,15 @@ void onRender(CRules@ this)
 
 	if (getRules().get_string("airdrop_panel") == "off") return;
 
-	s32 airdrop = this.get_s32("airdrop will drop in");
+	s32 airdrop = this.get_s32("airdrop timer");
 
 	if (airdrop > 0)
 	{
 		GUI::DrawIcon("airdrop_panel.png", Vec2f(12, 190));
 		s32 timeToAirDrop = airdrop;
 
-		s32 secondsToEnd = timeToAirDrop % 60;
-		s32 MinutesToEnd = timeToAirDrop / 60;
+		s32 secondsToEnd = timeToAirDrop / 30 % 60;
+		s32 MinutesToEnd = timeToAirDrop / 60 / 30;
 		drawRulesFont(getTranslatedString("{MIN}:{SEC}")
 						.replace("{MIN}", "" + ((MinutesToEnd < 10) ? "0" + MinutesToEnd : "" + MinutesToEnd))
 						.replace("{SEC}", "" + ((secondsToEnd < 10) ? "0" + secondsToEnd : "" + secondsToEnd)),
