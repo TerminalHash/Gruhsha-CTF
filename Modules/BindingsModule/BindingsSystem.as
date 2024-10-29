@@ -305,6 +305,16 @@ void onInit(CRules@ this)
 			{
 				sfile.add_string("custom_death_and_pain_sounds", "on");
 			}
+
+			if (!sfile.exists("class_panels"))
+			{
+				sfile.add_string("class_panels", "off");
+			}
+
+			if (!sfile.exists("airdrop_panel"))
+			{
+				sfile.add_string("airdrop_panel", "on");
+			}
 		}
 		else // default settings
 		{
@@ -323,6 +333,8 @@ void onInit(CRules@ this)
 			sfile.add_string("annoying_voicelines", "on");
 			sfile.add_string("annoying_tags", "on");
 			sfile.add_string("custom_death_and_pain_sounds", "on");
+			sfile.add_string("class_panels", "off");
+			sfile.add_string("airdrop_panel", "on");
 
 			printf("Creating local visual and sound settings file with default values for Gruhsha.");
 		}
