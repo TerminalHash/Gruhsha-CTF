@@ -251,6 +251,8 @@ namespace Names
 	cyclewithitem						 = Translate(en::n_cyclewithitem+"\\"+ru::n_cyclewithitem),
 	visualitempick						 = Translate(en::n_visualitempick+"\\"+ru::n_visualitempick),
 	pickupsystem						 = Translate(en::n_pickupsystem+"\\"+ru::n_pickupsystem),
+	classpanels						 	 = Translate(en::n_classpanels+"\\"+ru::n_classpanels),
+	airdroppanel						 = Translate(en::n_airdroppanel+"\\"+ru::n_airdroppanel),
 
 		// Other
 	pressdelete		  	       			= Translate(en::n_pressdelete+"\\"+ru::n_pressdelete),

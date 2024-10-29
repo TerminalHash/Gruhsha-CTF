@@ -392,7 +392,9 @@ string[][] vsetting_texts =
 		Names::annoyingnature,
 		Names::annoyingvoicelines,
 		Names::annoyingtags,
-		Names::customdpsounds
+		Names::customdpsounds,
+		Names::classpanels,
+		Names::airdroppanel
 	}
 };
 
@@ -413,7 +415,9 @@ string[][] vsetting_file_names =
 		"annoying_nature",
 		"annoying_voicelines",
 		"annoying_tags",
-		"custom_death_and_pain_sounds"
+		"custom_death_and_pain_sounds",
+		"class_panels",
+		"airdrop_panel"
 	}
 };
 
@@ -481,6 +485,14 @@ string[][][] vsetting_options =
 		},
 		{
 			Descriptions::universaloff,       // DEATH AND PAIN
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // CLASS PANELS
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // AIRDROP PANEL
 			Descriptions::universalon
 		}
 	}
@@ -550,6 +562,14 @@ string[][][] vsetting_option_names =
 		},
 		{
 			"off",       // DEATH AND PAIN
+			"on"
+		},
+		{
+			"off",       // CLASS PANELS
+			"on"
+		},
+		{
+			"off",       // AIRDROP PANEL
 			"on"
 		}
 	}

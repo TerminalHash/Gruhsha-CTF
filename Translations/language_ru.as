@@ -208,13 +208,13 @@ namespace ru
 
 		// Settings
 	n_buildmode								= "Режим строительства",
-	n_blockbar								= "Включить панель с блоками",
+	n_blockbar								= "Показывать панель с блоками",
 	n_dsewnmb								= "NoMenuBuying-фича без эмоций",
-	n_shownomenubuyingpan					= "Включить NoMenuBuying панель",
+	n_shownomenubuyingpan					= "Показывать NoMenuBuying панель",
 	n_nomenubuyingset						= "NoMenuBuying-фича",
 	n_nomenubuyingboldarset					= "NoMenuBuying-фича (Строитель)",
 	n_camerasw								= "Покачивание камеры (По-умол. 5)",
-	n_bodytilt								= "Иммерсивное поведение тела",
+	n_bodytilt								= "Наклон тела при движении",
 	n_headrotating							= "Поворот головы в сторону курсора",
 	n_clusterfuck							= "Отображение частиц и кусков",
 	n_clusterfuck_blood						= "Отображение крови",
@@ -234,6 +234,8 @@ namespace ru
 	n_cyclewithitem							= "Переключение с предметом в руках",
 	n_visualitempick						= "Наглядное расстояние до предмета",
 	n_pickupsystem							= "Система подбора предметов",
+	n_classpanels							= "Показывать панели классов",
+	n_airdroppanel							= "Показывать таймер аирдропа",
 
 		// Other
 	n_pressdelete							= "Выбери клавишу и нажми [DELETE] для очистки хоткея!",

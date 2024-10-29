@@ -159,14 +159,27 @@ void onRender(CRules@ this)
 		GUI::DrawText(Descriptions::thirtyminutesleft, Vec2f(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 7), color_white);
 	}
 
-	Vec2f skull = Vec2f(12, 180);
+	Vec2f skull = Vec2f(12, 230);
+
+	if (getRules().get_string("airdrop_panel") == "off" && getRules().get_string("class_panels") == "off") {
+		skull = Vec2f(12, 180);
+	}
+
+	if (getRules().get_string("airdrop_panel") == "on" && getRules().get_string("class_panels") == "on") {
+		skull = Vec2f(12, 380);
+	}
+
+	if (getRules().get_string("airdrop_panel") == "off" && getRules().get_string("class_panels") == "on") {
+		skull = Vec2f(12, 330);
+	}
+
 	float x = skull.x + 8;
 
 	CControls@ controls = getControls();
 	Vec2f mousePos = controls.getMouseScreenPos();
 
 	if (this.hasTag("sudden death")) {
-		GUI::DrawIcon("MenuItems.png", 18, Vec2f(32, 32), Vec2f(12, 180), 1.5f);
+		GUI::DrawIcon("MenuItems.png", 18, Vec2f(32, 32), skull, 1.5f);
 
 		Vec2f dim = Vec2f(342, 295);
 		Vec2f ul(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12);

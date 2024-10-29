@@ -214,7 +214,7 @@ namespace en
 	n_nomenubuyingset						= "NoMenuBuying-feature",
 	n_nomenubuyingboldarset					= "NoMenuBuying-feature (Builder)",
 	n_camerasw								= "Camera Sway (DEFAULT: 5)",
-	n_bodytilt								= "Immersive body behaviour",
+	n_bodytilt								= "Body tilting",
 	n_headrotating							= "Turning head toward the cursor",
 	n_clusterfuck							= "Toggle particles and gibs",
 	n_clusterfuck_blood						= "Toggle blood",
@@ -234,6 +234,8 @@ namespace en
 	n_cyclewithitem							= "Cycle with item in hand",
 	n_visualitempick						= "Visual item picking",
 	n_pickupsystem							= "Item pickup system",
+	n_classpanels							= "Show class panels",
+	n_airdroppanel							= "Show airdrop timer panel",
 
 		// Other
 	n_pressdelete							= "Choose a bind and press [DELETE] to remove key",
