@@ -6,6 +6,10 @@
 #include "LoaderColors.as";
 #include "LoaderUtilities.as";
 #include "CustomBlocks.as";
+#include "HolidaySprites.as";
+
+string world_file_name;
+string skygradient_file_name;
 
 enum WAROffset
 {
@@ -40,7 +44,7 @@ class PNGLoader
 		@map = _map;
 		@map_random = Random();
 
-		if(!getNet().isServer())
+		if (!isServer())
 		{
 			SetupMap(0, 0);
 			SetupBackgrounds();
@@ -50,7 +54,7 @@ class PNGLoader
 
 		@image = CFileImage( filename );
 
-		if(image.isLoaded())
+		if (image.isLoaded())
 		{
 			SetupMap(image.getWidth(), image.getHeight());
 			SetupBackgrounds();
@@ -463,14 +467,17 @@ class PNGLoader
 
 	void SetupMap(int width, int height)
 	{
-		map.CreateTileMap(width, height, 8.0f, "Sprites/world.png");
+		world_file_name = isAnyHoliday() ? getHolidayVersionFileName("world") : "world.png";
+		map.CreateTileMap(width, height, 8.0f, "Sprites/" + world_file_name);
 	}
 
 	void SetupBackgrounds()
 	{
 		// sky
+		skygradient_file_name = isAnyHoliday() ? getHolidayVersionFileName("skygradient") : "skygradient.png";
+
 		map.CreateSky(color_black, Vec2f(1.0f, 1.0f), 200, "Sprites/Back/cloud", 0);
-		map.CreateSkyGradient("Sprites/skygradient.png"); // override sky color with gradient
+		map.CreateSkyGradient("Sprites/" + skygradient_file_name); // override sky color with gradient
 
 		// background
 		map.AddBackground("Sprites/Back/BackgroundPlains.png", Vec2f(0.0f, 0.0f), Vec2f(0.3f, 0.3f), color_white );
