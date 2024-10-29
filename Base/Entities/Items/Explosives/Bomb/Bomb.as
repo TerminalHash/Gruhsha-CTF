@@ -3,6 +3,7 @@
 #include "Hitters.as";
 #include "BombCommon.as";
 #include "ShieldCommon.as";
+#include "HolidayCommon.as";
 
 const s32 bomb_fuse = 120;
 
@@ -50,12 +51,22 @@ void onTick(CSprite@ this)
 
 	if (timer > 30)
 	{
-		this.SetAnimation("default");
+		if (getRules().get_string(holiday_prop) == "Halloween") {
+			this.SetAnimation("default_halloween");
+		} else {
+			this.SetAnimation("default");
+		}
+
 		this.animation.frame = this.animation.getFramesCount() * (1.0f - ((timer - 30) / 220.0f));
 	}
 	else
 	{
-		this.SetAnimation("shes_gonna_blow");
+		if (getRules().get_string(holiday_prop) == "Halloween") {
+			this.SetAnimation("shes_gonna_blow_halloween");
+		} else {
+			this.SetAnimation("shes_gonna_blow");
+		}
+
 		this.animation.frame = this.animation.getFramesCount() * (1.0f - (timer / 30.0f));
 
 		if (timer < 15 && timer > 0)

@@ -9,6 +9,7 @@
 #include "FireplaceCommon.as";
 #include "ActivationThrowCommon.as"
 #include "PlacementCommon.as";
+#include "HolidayCommon.as";
 
 const s32 bomb_fuse = 120;
 const f32 arrowMediumSpeed = 8.0f;
@@ -102,6 +103,14 @@ void onInit(CBlob@ this)
 		Animation@ anim = sprite.addAnimation("stone block arrow", 0, false);
 		anim.AddFrame(17);
 		if (arrowType == ArrowType::stoneblock)
+			sprite.SetAnimation(anim);
+	}
+
+	{
+		Animation@ anim = sprite.addAnimation("bomb arrow halloween", 0, false);
+		anim.AddFrame(18);
+		anim.AddFrame(19);
+		if (arrowType == ArrowType::bomb && getRules().get_string(holiday_prop) == "Halloween")
 			sprite.SetAnimation(anim);
 	}
 }
