@@ -1,17 +1,13 @@
 // Bushy tree Logic
 
 #include "TreeSync.as"
-#include "HolidayCommon.as";
+#include "HolidaySprites.as";
 
 string spritefile;
 
 void onInit(CBlob@ this)
 {
-    if (getRules().get_string(holiday_prop) == "Halloween") {
-        spritefile = "BushyTreeHalloween.png";
-    } else {
-        spritefile = "BushyTree.png";
-    }
+	spritefile = isAnyHoliday() ? getHolidayVersionFileName("BushyTree") : "BushyTree.png";
 
 	InitVars(this);
 

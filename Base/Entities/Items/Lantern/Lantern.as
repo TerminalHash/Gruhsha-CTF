@@ -1,5 +1,6 @@
 // Lantern script
 #include "ActivationThrowCommon.as"
+#include "HolidayCommon.as";
 
 void onInit(CBlob@ this)
 {
@@ -26,7 +27,12 @@ void onInit(CBlob@ this)
 
 bool onReceiveCreateData(CBlob@ this, CBitStream@ stream)
 {
-	this.getSprite().SetAnimation(this.get_bool("lantern lit") ? "fire" : "nofire");
+	if (getRules().get_string(holiday_prop) == "Halloween") {
+		this.getSprite().SetAnimation(this.get_bool("lantern lit") ? "fire_halloween" : "nofire_halloween");
+	} else {
+		this.getSprite().SetAnimation(this.get_bool("lantern lit") ? "fire" : "nofire");
+	}
+
 	this.inventoryIconFrame = this.get_bool("lantern lit") ? 0 : 3;
 	return true;
 }
@@ -44,7 +50,12 @@ void Light(CBlob@ this, const bool &in lit)
 	this.SetLight(lit);
 	this.inventoryIconFrame = lit ? 0 : 3;
 
-	this.getSprite().SetAnimation(lit ? "fire" : "nofire");
+	if (getRules().get_string(holiday_prop) == "Halloween") {
+		this.getSprite().SetAnimation(lit ? "fire_halloween" : "nofire_halloween");
+	} else {
+		this.getSprite().SetAnimation(lit ? "fire" : "nofire");
+	}
+
 	this.getSprite().PlaySound("SparkleShort.ogg");
 	
 	this.set_bool("lantern lit", lit);

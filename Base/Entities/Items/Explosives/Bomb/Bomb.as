@@ -27,6 +27,21 @@ void onInit(CBlob@ this)
 	this.SetMapEdgeFlags(CBlob::map_collide_left | CBlob::map_collide_right);
 }
 
+void onInit(CSprite@ this)
+{
+	CBlob@ blob = this.getBlob();
+
+	if (blob !is null && blob.getName() == "waterbomb") {
+		if (getRules().get_string(holiday_prop) == "Halloween") {
+			this.SetAnimation("default_halloween");
+		} else if (getRules().get_string(holiday_prop) == "Christmas") {
+			this.SetAnimation("default_christmas");
+		} else {
+			this.SetAnimation("default");
+		}
+	}
+}
+
 //start ugly bomb logic :)
 
 void set_delay(CBlob@ this, string field, s32 delay)

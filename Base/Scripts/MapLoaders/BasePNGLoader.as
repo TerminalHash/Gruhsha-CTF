@@ -468,7 +468,7 @@ class PNGLoader
 	void SetupMap(int width, int height)
 	{
 		world_file_name = isAnyHoliday() ? getHolidayVersionFileName("world") : "world.png";
-		map.CreateTileMap(width, height, 8.0f, "Sprites/" + world_file_name);
+		map.CreateTileMap(width, height, 8.0f, "Sprites/Misc/" + world_file_name);
 	}
 
 	void SetupBackgrounds()
@@ -477,7 +477,7 @@ class PNGLoader
 		skygradient_file_name = isAnyHoliday() ? getHolidayVersionFileName("skygradient") : "skygradient.png";
 
 		map.CreateSky(color_black, Vec2f(1.0f, 1.0f), 200, "Sprites/Back/cloud", 0);
-		map.CreateSkyGradient("Sprites/" + skygradient_file_name); // override sky color with gradient
+		map.CreateSkyGradient("Sprites/Misc/" + skygradient_file_name); // override sky color with gradient
 
 		// background
 		map.AddBackground("Sprites/Back/BackgroundPlains.png", Vec2f(0.0f, 0.0f), Vec2f(0.3f, 0.3f), color_white );

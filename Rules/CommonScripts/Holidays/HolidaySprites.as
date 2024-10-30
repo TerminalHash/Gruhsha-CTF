@@ -3,14 +3,14 @@
 string active_holiday;
 bool holiday_fetched = false;
 
-const string[] christmas_version_exists = {"Hall", "GenericGibs", "TraderMale", "TraderFemale", "world", "Chicken", "Bushes", "Trees", 
+const string[] christmas_version_exists = {"Hall", "GenericGibs", "TraderMale", "TraderFemale", "world", "Chicken", "Bushes", "PineTree",
 											"Tent", "TDM_Ruins", "BackgroundCastle", "BackgroundIsland", "BackgroundTrees", "skygradient", 
 											"world_intro", "KAGWorld1-1a", "KAGWorld1-2a", "KAGWorld1-3a", "KAGWorld1-4a", "KAGWorld1-5a", 
 											"KAGWorld1-6a", "KAGWorld1-7a", "KAGWorld1-8a", "KAGWorld1-9a", "KAGWorld1-10a", "KAGWorld1-11a", 
 											"KAGWorld1-12a", "KAGWorld1-13", "KAGWorld1-14", "KAGWorld1-14outro", "TradingPostChristmas"};
 const string[] birthday_version_exists 	= {};
-const string[] halloween_version_exists = {"TraderMale", "TraderFemale", "WaterBomb", "Heart", "Lantern", "Bushes", "Grain", "world", "Trees",
-											"Flowers"};
+const string[] halloween_version_exists = {"TraderMale", "TraderFemale", "WaterBomb", "Heart", "Lantern", "Bushes", "Grain", "world", "BushyTree",
+											"Flowers", "PineTree", "skygradient"};
 
 string getHolidayVersionFileName(string file_name, string suffix = "png")
 {
