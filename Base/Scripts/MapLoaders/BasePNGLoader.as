@@ -429,7 +429,9 @@ class PNGLoader
 			// load trees only at the ground
 			if(!map.isTileSolid(map.getTile(offset + map.tilemapwidth))) return;
 
-			CBlob@ tree = server_CreateBlobNoInit( map_random.NextRanged(35) < 21 ? "tree_pine" : "tree_bushy" );
+			string default_tree 	= map_random.NextRanged(35) < 21 ? "tree_pine" : "tree_bushy";
+			string christmas_tree 	= "tree_pine";
+			CBlob@ tree = server_CreateBlobNoInit(isChristmas() ? christmas_tree : default_tree);
 			if(tree !is null)
 			{
 				tree.Tag("startbig");
