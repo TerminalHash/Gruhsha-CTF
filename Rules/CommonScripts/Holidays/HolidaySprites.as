@@ -10,7 +10,7 @@ const string[] christmas_version_exists = {"Hall", "GenericGibs", "TraderMale", 
 											"KAGWorld1-12a", "KAGWorld1-13", "KAGWorld1-14", "KAGWorld1-14outro", "TradingPostChristmas"};
 const string[] birthday_version_exists 	= {};
 const string[] halloween_version_exists = {"TraderMale", "TraderFemale", "WaterBomb", "Heart", "Lantern", "Bushes", "Grain", "world", "BushyTree",
-											"Flowers", "PineTree", "skygradient"};
+											"Flowers", "PineTree", "skygradient", "Keg"};
 
 string getHolidayVersionFileName(string file_name, string suffix = "png")
 {

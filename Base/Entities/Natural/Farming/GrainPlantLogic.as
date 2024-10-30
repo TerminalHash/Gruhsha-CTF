@@ -53,7 +53,9 @@ void GrowGrain(CBlob @this)
 			case 2: offset = Vec2f(-4 + v, -5); break;
 		}
 
-		CSpriteLayer@ grain = this.getSprite().addSpriteLayer("grain", grain_file_name , 8, 8);
+		string grain_item = isAnyHoliday() ? getHolidayVersionFileName("Grain") : "Grain.png";
+
+		CSpriteLayer@ grain = this.getSprite().addSpriteLayer("grain", grain_item, 8, 8);
 
 		if (grain !is null)
 		{
