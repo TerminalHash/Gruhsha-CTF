@@ -7,10 +7,11 @@ const string[] christmas_version_exists = {"Hall", "GenericGibs", "TraderMale", 
 											"Tent", "TDM_Ruins", "BackgroundCastle", "BackgroundIsland", "BackgroundTrees", "skygradient", 
 											"world_intro", "KAGWorld1-1a", "KAGWorld1-2a", "KAGWorld1-3a", "KAGWorld1-4a", "KAGWorld1-5a", 
 											"KAGWorld1-6a", "KAGWorld1-7a", "KAGWorld1-8a", "KAGWorld1-9a", "KAGWorld1-10a", "KAGWorld1-11a", 
-											"KAGWorld1-12a", "KAGWorld1-13", "KAGWorld1-14", "KAGWorld1-14outro", "TradingPostChristmas"};
+											"KAGWorld1-12a", "KAGWorld1-13", "KAGWorld1-14", "KAGWorld1-14outro", "TradingPostChristmas", "ArcherIcons",
+											"KnightIcons"};
 const string[] birthday_version_exists 	= {};
 const string[] halloween_version_exists = {"TraderMale", "TraderFemale", "WaterBomb", "Heart", "Lantern", "Bushes", "Grain", "world", "BushyTree",
-											"Flowers", "PineTree", "skygradient", "Keg"};
+											"Flowers", "PineTree", "skygradient", "Keg", "ArcherIcons", "KnightIcons"};
 
 string getHolidayVersionFileName(string file_name, string suffix = "png")
 {
