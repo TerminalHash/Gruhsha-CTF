@@ -11,7 +11,7 @@ const string[] christmas_version_exists = {"Hall", "GenericGibs", "TraderMale", 
 											"KnightIcons"};
 const string[] birthday_version_exists 	= {};
 const string[] halloween_version_exists = {"TraderMale", "TraderFemale", "WaterBomb", "Heart", "Lantern", "Bushes", "Grain", "world", "BushyTree",
-											"Flowers", "PineTree", "skygradient", "Keg", "ArcherIcons", "KnightIcons"};
+											"Flowers", "PineTree", "skygradient", "Keg", "ArcherIcons", "KnightIcons", "Tent"};
 
 string getHolidayVersionFileName(string file_name, string suffix = "png")
 {
