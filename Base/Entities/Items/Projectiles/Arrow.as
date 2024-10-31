@@ -118,6 +118,14 @@ void onInit(CBlob@ this)
 		if (arrowType == ArrowType::bomb && getRules().get_string(holiday_prop) == "Halloween")
 			sprite.SetAnimation(anim);
 	}
+
+	{
+		Animation@ anim = sprite.addAnimation("bomb arrow christmas", 0, false);
+		anim.AddFrame(20);
+		anim.AddFrame(21);
+		if (arrowType == ArrowType::bomb && getRules().get_string(holiday_prop) == "Christmas")
+			sprite.SetAnimation(anim);
+	}
 }
 
 void turnOffFire(CBlob@ this)

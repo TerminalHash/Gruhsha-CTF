@@ -68,6 +68,8 @@ void onTick(CSprite@ this)
 	{
 		if (getRules().get_string(holiday_prop) == "Halloween") {
 			this.SetAnimation("default_halloween");
+		} else if (getRules().get_string(holiday_prop) == "Christmas") {
+			this.SetAnimation("default_christmas");
 		} else {
 			this.SetAnimation("default");
 		}
@@ -78,6 +80,8 @@ void onTick(CSprite@ this)
 	{
 		if (getRules().get_string(holiday_prop) == "Halloween") {
 			this.SetAnimation("shes_gonna_blow_halloween");
+		} else if (getRules().get_string(holiday_prop) == "Christmas") {
+			this.SetAnimation("shes_gonna_blow_christmas");
 		} else {
 			this.SetAnimation("shes_gonna_blow");
 		}

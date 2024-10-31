@@ -121,6 +121,8 @@ void LoadSprites(CSprite@ this)
 
 		if (getRules().get_string(holiday_prop) == "Halloween") {
 			anim.AddFrame(18); //bomb halloween
+		} else if (getRules().get_string(holiday_prop) == "Christmas") {
+			anim.AddFrame(20); //bomb christmas
 		} else {
 			anim.AddFrame(14); //bomb
 		}
