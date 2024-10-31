@@ -2,7 +2,7 @@
 //script for a chicken
 
 #include "AnimalConsts.as";
-#include "HolidayCommon.as";
+#include "HolidaySprites.as";
 
 const u8 DEFAULT_PERSONALITY = SCARED_BIT;
 const int MAX_EGGS = 2; //maximum symultaneous eggs
@@ -16,8 +16,11 @@ int g_layEggInterval = 0;
 
 void onInit(CSprite@ this)
 {
-	this.ReloadSprites(0, 0); //always blue
-
+	if (isAnyHoliday())
+	{
+		chicken_file_name = getHolidayVersionFileName("Chicken");
+		this.ReloadSprite(chicken_file_name);
+	}
 }
 
 void onTick(CSprite@ this)
@@ -32,61 +35,33 @@ void onTick(CSprite@ this)
 			AttachmentPoint@ ap = blob.getAttachmentPoint(0);
 			if (ap !is null && ap.getOccupied() !is null)
 			{
-				if (Maths::Abs(ap.getOccupied().getVelocity().y) > 0.2f) {
-					if (getRules().get_string(holiday_prop) == "Christmas") {
-						this.SetAnimation("fly_christmas");
-					} else {
-						this.SetAnimation("fly");
-					}
-				} else {
-					if (getRules().get_string(holiday_prop) == "Christmas") {
-						this.SetAnimation("idle_christmas");
-					} else {
-						this.SetAnimation("idle");
-					}
+				if (Maths::Abs(ap.getOccupied().getVelocity().y) > 0.2f)
+				{
+					this.SetAnimation("fly");
 				}
+				else
+					this.SetAnimation("idle");
 			}
 		}
 		else if (!blob.isOnGround())
 		{
-			if (getRules().get_string(holiday_prop) == "Christmas") {
-				this.SetAnimation("fly_christmas");
-			} else {
-				this.SetAnimation("fly");
-			}
+			this.SetAnimation("fly");
 		}
 		else if (x > 0.02f)
 		{
-			if (getRules().get_string(holiday_prop) == "Christmas") {
-				this.SetAnimation("walk_christmas");
-			} else {
-				this.SetAnimation("walk");
-			}
+			this.SetAnimation("walk");
 		}
 		else
 		{
 			if (this.isAnimationEnded())
 			{
 				uint r = XORRandom(20);
-				if (r == 0) {
-					if (getRules().get_string(holiday_prop) == "Christmas") {
-						this.SetAnimation("peck_twice_christmas");
-					} else {
-						this.SetAnimation("peck_twice");
-					}
-				} else if (r < 5) {
-					if (getRules().get_string(holiday_prop) == "Christmas") {
-						this.SetAnimation("peck_christmas");
-					} else {
-						this.SetAnimation("peck");
-					}
-				} else {
-					if (getRules().get_string(holiday_prop) == "Christmas") {
-						this.SetAnimation("idle_christmas");
-					} else {
-						this.SetAnimation("idle");
-					}
-				}
+				if (r == 0)
+					this.SetAnimation("peck_twice");
+				else if (r < 5)
+					this.SetAnimation("peck");
+				else
+					this.SetAnimation("idle");
 			}
 		}
 	}
