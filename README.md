@@ -23,7 +23,7 @@
 TerminalHash, kussakaa, egor0928931, Vagrament aka FeeRant, Skemonde
 
 #### Художники:
-TerminalHash, kussakaa, Skemonde
+TerminalHash, kussakaa, Skemonde, cosm_akylka
 
 ## Большое спасибо:
 Bunnie - с её разрешения были взяты некоторые изменения из VanillaNoRequiem и EU Captains;
