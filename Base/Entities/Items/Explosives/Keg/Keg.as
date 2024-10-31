@@ -27,6 +27,8 @@ void onInit(CBlob@ this)
 
     if (getRules().get_string(holiday_prop) == "Halloween") {
         sprite.SetAnimation("default_halloween");
+	} else if (getRules().get_string(holiday_prop) == "Christmas") {
+		sprite.SetAnimation("default_christmas");
     } else {
         sprite.SetAnimation("default");
     }
