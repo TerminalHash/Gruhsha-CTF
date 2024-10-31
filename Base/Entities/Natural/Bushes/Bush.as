@@ -83,7 +83,7 @@ void LoadSprite(CSprite@ this)
 		this.SetAnimation(anim_wiggle);
 	}
 
-	if (isHalloween())
+	if (isAnyHoliday())
 	{
 		bush_file_name = getHolidayVersionFileName("Bushes");
 		this.ReloadSprite(bush_file_name);

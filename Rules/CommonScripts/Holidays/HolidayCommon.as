@@ -42,9 +42,9 @@ string getActiveHolidayName()
 	u8 server_leap = ((server_year % 4 == 0 && server_year % 100 != 0) || server_year % 400 == 0)? 1 : 0;
 
 	Holiday[] calendar = {
-		Holiday(scriptlist[0], 116 + server_leap - 1, 3)
-		, Holiday(scriptlist[1], 301 + server_leap - 1, 8)
-		, Holiday(scriptlist[2], 357 + server_leap - 2, 16)
+		  Holiday(scriptlist[0], 116 + server_leap - 1, 3)
+		, Holiday(scriptlist[1], 301 + server_leap - 1, 21)
+		, Holiday(scriptlist[2], 357 + server_leap - 2, 31)
 	};
 
 	s16 holiday_start;
