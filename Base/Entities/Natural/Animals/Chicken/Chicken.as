@@ -4,6 +4,8 @@
 #include "AnimalConsts.as";
 #include "HolidaySprites.as";
 
+string chicken_file_name;
+
 const u8 DEFAULT_PERSONALITY = SCARED_BIT;
 const int MAX_EGGS = 2; //maximum symultaneous eggs
 const int MAX_CHICKENS = 6;
