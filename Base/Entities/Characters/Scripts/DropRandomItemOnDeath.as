@@ -27,7 +27,7 @@ void dropRandomItem(CBlob@ this) {
 		//printf("Current " + killer.getUsername() + "'s" + " killstreak: " + kill_count);
 		//printf("Drop Random is " + drop_random);
 
-		if (killer !is null) {
+		if (killer.getBlob() !is null) {
 			if (drop_random >= 2.5) {
 				CBlob@ icebomb = server_CreateBlob("mat_icebombs", -1, this.getPosition());
 
