@@ -3,7 +3,6 @@
 #include "Hitters.as";
 #include "BombCommon.as";
 #include "ShieldCommon.as";
-#include "HolidayCommon.as";
 
 const s32 bomb_fuse = 120;
 
@@ -25,21 +24,6 @@ void onInit(CBlob@ this)
 	}
 	this.Tag("activated"); // make it lit already and throwable
 	this.SetMapEdgeFlags(CBlob::map_collide_left | CBlob::map_collide_right);
-}
-
-void onInit(CSprite@ this)
-{
-	CBlob@ blob = this.getBlob();
-
-	if (blob !is null && blob.getName() == "waterbomb") {
-		if (getRules().get_string(holiday_prop) == "Halloween") {
-			this.SetAnimation("default_halloween");
-		} else if (getRules().get_string(holiday_prop) == "Christmas") {
-			this.SetAnimation("default_christmas");
-		} else {
-			this.SetAnimation("default");
-		}
-	}
 }
 
 //start ugly bomb logic :)
@@ -66,26 +50,12 @@ void onTick(CSprite@ this)
 
 	if (timer > 30)
 	{
-		if (getRules().get_string(holiday_prop) == "Halloween") {
-			this.SetAnimation("default_halloween");
-		} else if (getRules().get_string(holiday_prop) == "Christmas") {
-			this.SetAnimation("default_christmas");
-		} else {
-			this.SetAnimation("default");
-		}
-
+		this.SetAnimation("default");
 		this.animation.frame = this.animation.getFramesCount() * (1.0f - ((timer - 30) / 220.0f));
 	}
 	else
 	{
-		if (getRules().get_string(holiday_prop) == "Halloween") {
-			this.SetAnimation("shes_gonna_blow_halloween");
-		} else if (getRules().get_string(holiday_prop) == "Christmas") {
-			this.SetAnimation("shes_gonna_blow_christmas");
-		} else {
-			this.SetAnimation("shes_gonna_blow");
-		}
-
+		this.SetAnimation("shes_gonna_blow");
 		this.animation.frame = this.animation.getFramesCount() * (1.0f - (timer / 30.0f));
 
 		if (timer < 15 && timer > 0)
