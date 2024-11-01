@@ -4,6 +4,7 @@
     Erzats-airdrop system for Gruhsha CTF
     Loot table in AirdropCommon.as, here only logic for airdrop itself!
 */
+#define SERVER_ONLY
 
 const int airdrop_interval = getTicksASecond() * 60 * 8; // 8 minutes
 const int crates_to_spawn = 1;
@@ -14,6 +15,7 @@ void onInit(CRules@ this) {
 
 void onRestart(CRules@ this) {
 	this.set_s32("airdrop timer", airdrop_interval);
+	this.Sync("airdrop timer", true);
 }
 
 void onTick(CRules@ this) {
@@ -25,6 +27,7 @@ void onTick(CRules@ this) {
 	} else if (this.get_s32("airdrop timer") <= 0) {
 		// reset present timer
 		this.set_s32("airdrop timer", airdrop_interval);
+		this.Sync("airdrop timer", true);
 
 		CMap@ map = getMap();
 		const f32 mapCenter = map.tilemapwidth * map.tilesize * 0.5;
@@ -35,35 +38,10 @@ void onTick(CRules@ this) {
         }
 	} else {
 		this.sub_s32("airdrop timer", 1);
+		this.Sync("airdrop timer", true);
 	}
 }
 
-CBlob@ spawnAirdrop(Vec2f spawnpos, u8 team)
-{
+CBlob@ spawnAirdrop(Vec2f spawnpos, u8 team) {
 	return server_CreateBlob("airdropcrate", team, spawnpos);
-}
-
-void onRender(CRules@ this)
-{
-	if (g_videorecording)
-		return;
-
-	if (!this.isMatchRunning() || !this.exists("airdrop timer")) return;
-
-	if (getRules().get_string("airdrop_panel") == "off") return;
-
-	s32 airdrop = this.get_s32("airdrop timer");
-
-	if (airdrop > 0)
-	{
-		GUI::DrawIcon("airdrop_panel.png", Vec2f(12, 190));
-		s32 timeToAirDrop = airdrop;
-
-		s32 secondsToEnd = timeToAirDrop / 30 % 60;
-		s32 MinutesToEnd = timeToAirDrop / 60 / 30;
-		drawRulesFont(getTranslatedString("{MIN}:{SEC}")
-						.replace("{MIN}", "" + ((MinutesToEnd < 10) ? "0" + MinutesToEnd : "" + MinutesToEnd))
-						.replace("{SEC}", "" + ((secondsToEnd < 10) ? "0" + secondsToEnd : "" + secondsToEnd)),
-		              SColor(255, 255, 255, 255), Vec2f(10, 207), Vec2f(150, 180), true, false);
-	}
 }
