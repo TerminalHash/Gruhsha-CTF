@@ -711,6 +711,7 @@ void onCommand( CRules@ this, u8 cmd, CBitStream @params )
 
 	if (cmd == this.getCommandID("b buttonclick") && isClient())
 	{
+		return;
 		bool selected = params.read_bool();
 		u16 id = params.read_u16();
 		string username = params.read_string();
