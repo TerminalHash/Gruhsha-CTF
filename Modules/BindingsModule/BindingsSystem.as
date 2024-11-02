@@ -681,58 +681,6 @@ void InitMenu()
 
 void onCommand( CRules@ this, u8 cmd, CBitStream @params )
 {
-	if (cmd == this.getCommandID("p buttonclick"))
-	{
-		return;
-		bool selected = params.read_bool();
-		u16 id = params.read_u16();
-		string username = params.read_string();
-
-		if (getLocalPlayer().getUsername() != username) return;
-
-		for (int i=0; i<BindingGUI.page_buttons.length; ++i)
-		{
-			if (i != id)
-				BindingGUI.page_buttons[i].m_selected = false;
-		}
-
-		for (int i=0; i<BindingGUI.buttons.length; ++i)
-		{
-			for (int g=0; g<BindingGUI.buttons[i].length; ++g)
-			{
-				BindingGUI.buttons[i][g].m_selected = false;
-			}
-		}
-
-		BindingGUI.current_page = id;
-
-		//printf("hi, id: " + id);
-	}
-
-	if (cmd == this.getCommandID("b buttonclick"))
-	{
-		bool selected = params.read_bool();
-		u16 id = params.read_u16();
-		string username = params.read_string();
-
-		if (getLocalPlayer().getUsername() != username) return;
-
-		u16 binding_index = 0;
-
-		for (int i=0; i<BindingGUI.buttons.length; ++i)
-		{
-			for (int g=0; g<BindingGUI.buttons[i].length; ++g)
-			{
-				if (binding_index != id)
-					BindingGUI.buttons[i][g].m_selected = false;
-
-				binding_index++;
-			}
-		}
-
-		//printf("hi, id: " + id);
-	}
-
 	if (cmd == this.getCommandID("sync drill autopickup") && isServer()) {
 		u8 action; // class: 1 knight 2 builder 3 archer
 		if (!params.saferead_u8(action)) return;
