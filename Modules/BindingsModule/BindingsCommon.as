@@ -686,7 +686,7 @@ void LoadFileSettings()
 				if (file.exists(file_entry)) {
 					getRules().set_string(file_entry, file.read_string(file_entry));
 
-					if (isClient()) {
+					/*if (isClient()) {
 						if (file_entry == "pickdrill_knight") {
 							CBitStream params;
 							params.write_u8(1);
@@ -751,7 +751,7 @@ void LoadFileSettings()
 
 							getRules().SendCommand(getRules().getCommandID("sync bomb autopickup"), params);
 						}
-					}
+					}*/
 				}
 			}
 		}
