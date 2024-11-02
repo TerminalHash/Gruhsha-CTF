@@ -62,8 +62,8 @@ void onTick(CRules@ this)
 
 		if (greg_time <= 0)
 		{
-			if (spawnRand.Next() % 2 == 0)
-			{
+			//if (spawnRand.Next() % 2 == 0)
+			//{
 				CBitStream bt;
 				this.SendCommand(this.getCommandID("necrolaugh"), bt);
 				Vec2f spawnPos(getMap().tilemapwidth*8.0f/2.0f, 32.0f);
@@ -75,7 +75,7 @@ void onTick(CRules@ this)
 				{
 					server_CreateBlob("greg", 255, spawnPos);
 				}
-			}
+			//}
 			this.set_s32("greg time", greg_interval);
 		}
 	}
