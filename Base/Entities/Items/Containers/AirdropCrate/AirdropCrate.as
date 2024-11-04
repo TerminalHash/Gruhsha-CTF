@@ -17,6 +17,8 @@ void onInit(CBlob@ this)
 
 	AddIconToken("$chest_open$", "InteractionIcons.png", Vec2f(32, 32), 20);
 	AddIconToken("$chest_close$", "InteractionIcons.png", Vec2f(32, 32), 13);
+
+	this.set_f32("important-pickup", 30.0f);
 }
 
 void onTick(CBlob@ this)
