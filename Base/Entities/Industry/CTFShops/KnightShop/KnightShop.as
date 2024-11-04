@@ -84,7 +84,7 @@ void onInit(CBlob@ this)
 	{
 		ShopItem@ s = addShopItem(this, "Mine", getTeamIcon("mine", "Mine.png", team_num, Vec2f(16, 16), 1), "mine", Descriptions::mine, false);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::mine);
-		AddRequirement(s.requirements, "no more", "mine", "Mine", 5);
+		AddRequirement(s.requirements, "no more", "mine", "Mine", 3);
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Keg", getTeamIcon("keg", "Keg.png", team_num, Vec2f(16, 16), 0), "keg", Descriptions::keg, false);
