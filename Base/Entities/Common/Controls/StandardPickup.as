@@ -375,7 +375,7 @@ f32 getPriorityPickupScale(CBlob@ this, CBlob@ b)
 		factor_resource_critical = 0.3f;
 
 	// Generic scale factor constants
-	const float factor_very_boring = 10.0f,
+	const float factor_very_boring = 99.0f,
 		factor_common = 0.9f,
 		factor_boring = 0.8f,
 		factor_important = 0.025f,
