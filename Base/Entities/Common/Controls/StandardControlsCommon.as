@@ -1,25 +1,6 @@
 funcdef void ControlsSwitch(CBitStream@);
 funcdef void ControlsCycle(CBitStream@);
 
-void server_Pickup(CBlob@ this, CBlob@ picker, CBlob@ pickBlob)
-{
-	if (pickBlob is null || picker is null || pickBlob.isAttached())
-		return;
-	CBitStream params;
-	params.write_netid(picker.getNetworkID());
-	params.write_netid(pickBlob.getNetworkID());
-	this.SendCommand(this.getCommandID("pickup"), params);
-}
-
-void server_PutInHeld(CBlob@ this, CBlob@ picker)
-{
-	if (picker is null)
-		return;
-	CBitStream params;
-	params.write_netid(picker.getNetworkID());
-	this.SendCommand(this.getCommandID("putinheld"), params);
-}
-
 void client_Pickup(CBlob@ this, CBlob@ pickBlob)
 {
     if (!isClient()) return;
