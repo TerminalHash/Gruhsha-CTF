@@ -11,9 +11,6 @@ int zoomLevel = 1; // we can declare a global because this script is just used b
 void onInit(CBlob@ this)
 {
 	this.set_s32("tap_time", getGameTime());
-	CBlob@[] blobs;
-	this.set("pickup blobs", blobs);
-	this.set_u16("hover netid", 0);
 	this.set_bool("release click", false);
 	this.set_bool("can button tap", true);
 	this.addCommandID("pickup");
@@ -56,25 +53,27 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 	}
 	else if (cmd == this.getCommandID("pickup"))
 	{
-		CBlob@ owner = getBlobByNetworkID(params.read_netid());
-		CBlob@ pick = getBlobByNetworkID(params.read_netid());
+		CPlayer@ callerp = getNet().getActiveCommandPlayer();
+		if (callerp is null) return;
 
-		if (owner !is null
-		    && !owner.isInInventory()
-		    && !owner.isAttached()
-		    && pick !is null
-		    && !pick.isAttached()
-		    && pick.canBePickedUp(owner))
-		{
-			f32 distance = (owner.getPosition() - pick.getPosition()).Length();
-			if (distance < 50.0f)
-			{
-				if (!getMap().rayCastSolid(owner.getPosition(), pick.getPosition()))
-				{
-					owner.server_Pickup(pick);
-				}
-			}
-		}
+		CBlob@ caller = callerp.getBlob();
+		if (caller is null) return;
+		if (caller !is this) return;
+		if (caller.isInInventory()) return;
+		if (caller.isAttached()) return;
+
+		u16 pickedup_id;
+		if (!params.saferead_u16(pickedup_id)) return;
+
+		CBlob@ pickedup = getBlobByNetworkID(pickedup_id);
+		if (pickedup is null) return;
+
+		if (!pickedup.canBePickedUp(caller)) return;
+
+		if (pickedup.isAttached()) return;
+
+		pickedup.setPosition(caller.getPosition());
+		caller.server_Pickup(pickedup);
 	}
 	else if (cmd == this.getCommandID("detach"))
 	{

@@ -160,10 +160,10 @@ void onInit(CRules@ this)
 				sfile.add_string("cycle_with_item", "no");
 			}
 
-			if (!sfile.exists("item_pickup"))
-			{
-				sfile.add_string("item_pickup", "legacy");
-			}
+			//if (!sfile.exists("item_pickup"))
+			//{
+			//	sfile.add_string("item_pickup", "legacy");
+			//}
 
 			if (!sfile.exists("pickdrill_knight"))
 			{
@@ -205,7 +205,7 @@ void onInit(CRules@ this)
 			sfile.add_string("grapple_with_charging", "yes");
 			sfile.add_string("disable_class_change_in_shops", "no");
 			sfile.add_string("cycle_with_item", "no");
-			sfile.add_string("item_pickup", "legacy");
+			//sfile.add_string("item_pickup", "legacy");
 			sfile.add_string("pickdrill_knight", "yes");
 			sfile.add_string("pickdrill_builder", "yes");
 			sfile.add_string("pickdrill_archer", "yes");
@@ -251,10 +251,10 @@ void onInit(CRules@ this)
 				sfile.add_string("dse_while_using_nomenu_buying", "yes");
 			}
 
-			if (!sfile.exists("visual_item_pick"))
-			{
-				sfile.add_string("visual_item_pick", "off");
-			}
+			//if (!sfile.exists("visual_item_pick"))
+			//{
+			//	sfile.add_string("visual_item_pick", "off");
+			//}
 
 			if (!sfile.exists("body_tilting"))
 			{
@@ -322,7 +322,7 @@ void onInit(CRules@ this)
 			sfile.add_string("shownomenupanel", "yes");
 			sfile.add_string("dse_while_using_nomenu_buying", "yes");
 			sfile.add_string("camera_sway", "5");
-			sfile.add_string("visual_item_pick", "off");
+			//sfile.add_string("visual_item_pick", "off");
 			sfile.add_string("body_tilting", "on");
 			sfile.add_string("head_rotating", "on");
 			sfile.add_string("clusterfuck", "on");

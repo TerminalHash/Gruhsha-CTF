@@ -246,7 +246,7 @@ string[][] setting_texts =
 		Names::grapplewhilecharging,
 		Names::switchclasschanginginshop,
 		Names::cyclewithitem,
-		Names::pickupsystem,
+		//Names::pickupsystem,
 		Names::drillknight,
 		Names::drillbuilder,
 		Names::drillarcher,
@@ -263,7 +263,7 @@ string[][] setting_file_names =
 		"grapple_with_charging",
 		"disable_class_change_in_shops",
 		"cycle_with_item",
-		"item_pickup",
+		//"item_pickup",
 		"pickdrill_knight",
 		"pickdrill_builder",
 		"pickdrill_archer",
@@ -289,10 +289,10 @@ string[][][] setting_options =
 			Descriptions::universalno, // 10	CYCLE WITH ITEM IN HAND
 			Descriptions::universalyes // 20
 		},
-		{
-			Descriptions::universalold, // 10	ITEM PICKUP SYSTEM
-			Descriptions::universalnew // 20
-		},
+		//{
+		//	Descriptions::universalold, // 10	ITEM PICKUP SYSTEM
+		//	Descriptions::universalnew // 20
+		//},
 		{
 			Descriptions::universalno, // 10	DRILL AUTOPICKUP FOR KNIGHT
 			Descriptions::universalyes // 20
@@ -339,10 +339,10 @@ string[][][] setting_option_names =
 			"no", // 10    CYCLE WITH ITEM IN HAND
 			"yes" // 20
 		},
-		{
-			"legacy", // 10    ITEM PICKUP SYSTEM
-			"new" // 20
-		},
+		//{
+		//	"legacy", // 10    ITEM PICKUP SYSTEM
+		//	"new" // 20
+		//},
 		{
 			"no", // 10    DRILL AUTOPICKUP FOR KNIGHT
 			"yes" // 20
@@ -382,7 +382,7 @@ string[][] vsetting_texts =
 		Names::shownomenubuyingpan,
 		Names::dsewnmb,
 		Names::camerasw,
-		Names::visualitempick,
+		//Names::visualitempick,
 		Names::bodytilt,
 		Names::headrotating,
 		Names::clusterfuck,
@@ -405,7 +405,7 @@ string[][] vsetting_file_names =
 		"shownomenupanel",
 		"dse_while_using_nomenu_buying",
 		"camera_sway",
-		"visual_item_pick",
+		//"visual_item_pick",
 		"body_tilting",
 		"head_rotating",
 		"clusterfuck",
@@ -443,10 +443,10 @@ string[][][] vsetting_options =
 			"4", // 4
 			"5" // 5
 		},
-		{
-			Descriptions::universaloff,       // VISUAL ITEM PICKING
-			Descriptions::universalon
-		},
+		//{
+		////	Descriptions::universaloff,       // VISUAL ITEM PICKING
+		//	Descriptions::universalon
+		//},
 		{
 			Descriptions::universaloff,       // BODY TILTING
 			Descriptions::universalon
@@ -520,10 +520,10 @@ string[][][] vsetting_option_names =
 			"4", // 4
 			"5" // 5
 		},
-		{
-			"off",       // VISUAL ITEM PICKING
-			"on"
-		},
+		//{
+		//	"off",       // VISUAL ITEM PICKING
+		//	"on"
+		//},
 		{
 			"off",       // BODY TILTING
 			"on"
