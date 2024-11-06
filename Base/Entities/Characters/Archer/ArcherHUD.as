@@ -4,9 +4,12 @@
 #include "ActorHUDStartPos.as";
 #include "ArcherResupplyHUD.as";
 #include "MaterialIndicatorHUD.as";
+#include "HolidaySprites.as";
 #include "pathway.as";
 
 const string iconsFilename = "Entities/Characters/Archer/ArcherIcons.png";
+string icons_file_name;
+
 const int slotsSize = 6;
 
 void onInit(CSprite@ this)
@@ -94,5 +97,12 @@ void onRender(CSprite@ this)
 	DrawPersonalMats();
 
 	// class weapon icon
-	GUI::DrawIcon(iconsFilename, arrow_frame, Vec2f(16, 32), tl + Vec2f(8 + (slotsSize - 1) * 40, -16), 1.0f, blob.getTeamNum());
+	if (isAnyHoliday()) {
+		icons_file_name = getHolidayVersionFileName("ArcherIcons");
+		GUI::DrawIcon(icons_file_name, arrow_frame, Vec2f(16, 32), tl + Vec2f(8 + (slotsSize - 1) * 40, -16), 1.0f, blob.getTeamNum());
+	} else {
+		GUI::DrawIcon(iconsFilename, arrow_frame, Vec2f(16, 32), tl + Vec2f(8 + (slotsSize - 1) * 40, -16), 1.0f, blob.getTeamNum());
+	}
+
+	//GUI::DrawIcon(iconsFilename, frame, Vec2f(16, 32), tl + Vec2f(8 + (slotsSize - 1) * 40, -16), 1.0f, blob.getTeamNum());
 }
