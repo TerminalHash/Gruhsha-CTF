@@ -1028,28 +1028,22 @@ void onRenderScoreboard(CRules@ this) {
 	mouseWasPressed2 = controls.mousePressed2;
 }
 
-void onTick(CRules@ this)
-{
-
-	if (!isPlayerListShowing() && hovered_card>-1)
-	{
+void onTick(CRules@ this) {
+	if (!isPlayerListShowing() && hovered_card > -1) {
 		hovered_card = -1; //deactivate any cards
 	}
 
-	if (this.getCurrentState() == GAME)
-	{
+	if (this.getCurrentState() == GAME) {
 		this.add_u32("match_time", 1);
 
-		if (isServer() && this.get_u32("match_time") % (10 * getTicksASecond()) == 0)
-		{
+		if (isServer() && this.get_u32("match_time") % (10 * getTicksASecond()) == 0) {
 			this.Sync("match_time", true);
 		}
 	}
 
 	// plain stupidity to track player heads even when dead
 	const int playerCount = getPlayersCount();
-	for (int i = 0; i < playerCount; ++i)
-	{
+	for (int i = 0; i < playerCount; ++i) {
 		CPlayer@ p = getPlayer(i);
 		if (p is null) { continue; }
 
@@ -1059,9 +1053,17 @@ void onTick(CRules@ this)
 		const int headIndex = b.get_s32("head index");
 		const string headTexture = b.get_string("head texture");
 		const int teamIndex = b.get_s32("head team");
+
 		p.set_s32("head index", headIndex);
+		p.Sync("head index", true);
+
 		p.set_string("head texture", headTexture);
+		p.Sync("head texture", true);
+
+		//printf("Player " + p.getUsername() + " has head: " + p.get_string("head texture"));
+
 		p.set_s32("head team", teamIndex);
+		p.Sync("head team", true);
 	}
 }
 
