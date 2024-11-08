@@ -9,7 +9,6 @@
 #include "Help.as";
 #include "Requirements.as"
 #include "StandardControlsCommon.as";
-#include "HolidaySprites.as";
 
 //attacks limited to the one time per-actor before reset.
 
@@ -1907,15 +1906,9 @@ void Callback_PickBomb(CBitStream@ params)
 	blob.SendCommand(blob.getCommandID("pick " + matname));
 }
 
-string icons_file_name;
-
 // bomb pick menu
 void onCreateInventoryMenu(CBlob@ this, CBlob@ forBlob, CGridMenu @gridmenu)
 {
-	icons_file_name = isAnyHoliday() ? getHolidayVersionFileName("KnightIcons") : "KnightIcons.png";
-
-	AddIconToken("$Bomb$", icons_file_name, Vec2f(16, 32), 0, this.getTeamNum());
-	AddIconToken("$WaterBomb$", icons_file_name, Vec2f(16, 32), 2, this.getTeamNum());
 	AddIconToken("$StickyBomb$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 5, this.getTeamNum());
 	AddIconToken("$IceBomb$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 6, this.getTeamNum());
 

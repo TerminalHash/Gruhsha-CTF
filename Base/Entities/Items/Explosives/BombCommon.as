@@ -3,7 +3,6 @@
 #include "Hitters.as"
 #include "MakeDustParticle.as"
 #include "KnockedCommon.as"
-#include "HolidaySprites.as";
 
 void SetupBomb(CBlob@ this, const int fuseTicks, const f32 explRadius, const f32 explosive_damage, const f32 map_damage_radius, const f32 map_damage_ratio, const bool map_damage_raycast)
 {
@@ -43,13 +42,7 @@ bool UpdateBomb(CBlob@ this)
 		{
 			this.getSprite().SetEmitSound("WaterSparkle.ogg");
 			this.getSprite().SetEmitSoundPaused(false);
-
-			if (this.getConfig() == "waterbomb") {
-				lightColor = isHalloween() ? SColor(255, 100, 113, 96) : SColor(255, 44, 175, 222);
-			} else {
-				lightColor = SColor(255, 44, 175, 222);
-			}
-
+			lightColor = SColor(255, 44, 175, 222);
 			this.SetLight(false);
 		}
 		else

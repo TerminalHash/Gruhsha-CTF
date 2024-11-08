@@ -1,8 +1,5 @@
 // Lantern script
 #include "ActivationThrowCommon.as"
-#include "HolidaySprites.as";
-
-string lantern_file_name;
 
 void onInit(CBlob@ this)
 {
@@ -27,16 +24,9 @@ void onInit(CBlob@ this)
 	this.getCurrentScript().runFlags |= Script::tick_inwater;
 }
 
-void onInit(CSprite@ this)
-{
-	if (isAnyHoliday()){
-		lantern_file_name = getHolidayVersionFileName("Lantern");
-		this.ReloadSprite(lantern_file_name);
-	}
-}
-
 bool onReceiveCreateData(CBlob@ this, CBitStream@ stream)
 {
+	this.getSprite().SetAnimation(this.get_bool("lantern lit") ? "fire" : "nofire");
 	this.inventoryIconFrame = this.get_bool("lantern lit") ? 0 : 3;
 	return true;
 }
@@ -54,6 +44,7 @@ void Light(CBlob@ this, const bool &in lit)
 	this.SetLight(lit);
 	this.inventoryIconFrame = lit ? 0 : 3;
 
+	this.getSprite().SetAnimation(lit ? "fire" : "nofire");
 	this.getSprite().PlaySound("SparkleShort.ogg");
 	
 	this.set_bool("lantern lit", lit);

@@ -1,8 +1,6 @@
 // Bush logic
-#include "canGrow.as";
-#include "HolidaySprites.as";
 
-string bush_file_name;
+#include "canGrow.as";
 
 void onInit(CBlob@ this)
 {
@@ -40,6 +38,8 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 {
 	if (v_fastrender)	return;
 
+
+
 	CSprite@ s = this.getSprite();
 
 	if (blob !is null 
@@ -59,7 +59,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 }
 
 void onInit(CSprite@ this)
-{
+{	
 	LoadSprite(this);
 }
 
@@ -82,12 +82,6 @@ void LoadSprite(CSprite@ this)
 		anim_wiggle.frame = 2;
 		this.SetAnimation(anim_wiggle);
 	}
-
-	if (isAnyHoliday())
-	{
-		bush_file_name = getHolidayVersionFileName("Bushes");
-		this.ReloadSprite(bush_file_name);
-	} else {
-		this.ReloadSprite("Bushes.png");
-	}
+	
+	this.ReloadSprite("Bushes.png");
 }
