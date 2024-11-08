@@ -8,7 +8,7 @@
 #include "PixelOffsets.as"
 #include "RunnerTextures.as"
 #include "Accolades.as"
-
+#include "HolidayCommon.as";
 
 const f32 config_offset = -6.0f;
 const string shiny_layer = "shiny bit";
@@ -118,7 +118,16 @@ void LoadSprites(CSprite@ this)
 		anim.AddFrame(1); //normal
 		anim.AddFrame(9); //water
 		anim.AddFrame(8); //fire
-		anim.AddFrame(14); //bomb
+
+		if (getRules().get_string(holiday_prop) == "Halloween") {
+			anim.AddFrame(18); //bomb halloween
+		} else if (getRules().get_string(holiday_prop) == "Christmas") {
+			anim.AddFrame(20); //bomb christmas
+		} else {
+			anim.AddFrame(14); //bomb
+		}
+
+		//anim.AddFrame(14); //bomb
 		anim.AddFrame(16); //wooden block
 		anim.AddFrame(17); //stone block
 		arrow.SetOffset(Vec2f(-1.0f, 5.0f + config_offset));

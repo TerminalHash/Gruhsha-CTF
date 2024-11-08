@@ -1,6 +1,10 @@
 // Keg logic
 #include "Hitters.as";
 #include "ActivationThrowCommon.as"
+#include "HolidayCommon.as";
+#include "HolidaySprites.as";
+
+string keg_sprite_file;
 
 void onInit(CBlob@ this)
 {
@@ -21,7 +25,17 @@ void onInit(CBlob@ this)
 
 	CSprite@ sprite = this.getSprite();
 
-	CSpriteLayer@ fuse = this.getSprite().addSpriteLayer("fuse", "Keg.png" , 16, 16, 0, 0);
+    if (getRules().get_string(holiday_prop) == "Halloween") {
+        sprite.SetAnimation("default_halloween");
+	} else if (getRules().get_string(holiday_prop) == "Christmas") {
+		sprite.SetAnimation("default_christmas");
+    } else {
+        sprite.SetAnimation("default");
+    }
+
+    keg_sprite_file = isAnyHoliday() ? getHolidayVersionFileName("Keg") : "Keg.png";
+
+	CSpriteLayer@ fuse = this.getSprite().addSpriteLayer("fuse", keg_sprite_file, 16, 16, 0, 0);
 
 	if (fuse !is null)
 	{

@@ -3,6 +3,10 @@
 #include "Hitters.as";
 #include "BombCommon.as";
 #include "ShieldCommon.as";
+#include "HolidaySprites.as";
+
+string bomb_file_name;
+string waterbomb_file_name;
 
 const s32 bomb_fuse = 120;
 
@@ -24,6 +28,20 @@ void onInit(CBlob@ this)
 	}
 	this.Tag("activated"); // make it lit already and throwable
 	this.SetMapEdgeFlags(CBlob::map_collide_left | CBlob::map_collide_right);
+}
+
+void onInit(CSprite@ this)
+{
+	if (isAnyHoliday() && this.getBlob().getConfig() == "waterbomb") {
+		waterbomb_file_name = getHolidayVersionFileName("WaterBomb");
+		this.ReloadSprite(waterbomb_file_name);
+	}
+
+	if (isAnyHoliday() && this.getBlob().getConfig() == "bomb")
+	{
+		bomb_file_name = getHolidayVersionFileName("Bomb");
+		this.ReloadSprite(bomb_file_name);
+	}
 }
 
 //start ugly bomb logic :)
@@ -51,11 +69,13 @@ void onTick(CSprite@ this)
 	if (timer > 30)
 	{
 		this.SetAnimation("default");
+
 		this.animation.frame = this.animation.getFramesCount() * (1.0f - ((timer - 30) / 220.0f));
 	}
 	else
 	{
 		this.SetAnimation("shes_gonna_blow");
+
 		this.animation.frame = this.animation.getFramesCount() * (1.0f - (timer / 30.0f));
 
 		if (timer < 15 && timer > 0)
