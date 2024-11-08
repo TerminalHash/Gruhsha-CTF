@@ -46,7 +46,13 @@ shared class Accolades
 		string file_path = getPath() + "Base/Entities/Characters/Sprites/CustomHeads/";
 		string head_file = file_path + username + ".png";
 
-		customHeadTexture = CFileMatcher(head_file).hasMatch();
+		customHeadExists = CFileMatcher(head_file).hasMatch();
+
+		if (customHeadExists) {
+			customHeadTexture = head_file;
+		} else {
+			customHeadTexture = "";
+		}
 
 		array<string> slices;
 		if(cfg.readIntoArray_string(slices, username))
