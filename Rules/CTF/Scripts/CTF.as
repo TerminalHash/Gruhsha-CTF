@@ -31,7 +31,7 @@ void Config(CTFCore@ this)
 
 	//how long for the game to play out?
 	//s32 gameDurationMinutes = 60; // 1 hour
-	s32 gameDurationMinutes = 48; // 45 minutes + 3 minutes of warmup
+	s32 gameDurationMinutes = 38; // 35 minutes + 3 minutes of warmup
 	if (gameDurationMinutes <= 0)
 	{
 		this.gameDuration = 0;
