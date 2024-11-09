@@ -34,6 +34,20 @@ Banner@ getGameBanner(int team=0)
 	return banner;
 }
 
+Banner@ getTieBanner()
+{
+	u32 duration = tieBannerDuration * getTicksASecond();
+	string text = "Tie!";
+	string secondary_text = "Time's up, you'll definitely get it next time!";
+
+	Icon@ left_icon = Icon("GoldenClock.png", 0, Vec2f(32, 32), Vec2f(160, 36), 0);
+	Icon@ right_icon = Icon("GoldenClock.png", 0, Vec2f(32, 32), Vec2f(96, -36), 0);
+
+	Banner banner(duration, text, left_icon, right_icon, true, secondary_text);
+
+	return banner;
+}
+
 Banner@ getWinBanner(int team=0)
 {
 	u32 duration = winBannerDuration * getTicksASecond();
@@ -46,20 +60,6 @@ Banner@ getWinBanner(int team=0)
 	Icon@ right_icon = Icon("MenuItems.png", 31, Vec2f(32, 32), Vec2f(128, -32), team);
 
 	Banner banner(duration, text, left_icon, right_icon, team, true, team_icon);
-
-	return banner;
-}
-
-Banner@ getTieBanner()
-{
-	u32 duration = tieBannerDuration * getTicksASecond();
-	string text = "Tie!";
-	string secondary_text = "Time's up, you'll definitely get it next time!";
-
-	Icon@ left_icon = Icon("GoldenClock.png", 0, Vec2f(32, 32), Vec2f(160, 36), 0);
-	Icon@ right_icon = Icon("GoldenClock.png", 0, Vec2f(32, 32), Vec2f(96, -36), 0);
-
-	Banner banner(duration, text, left_icon, right_icon, true, secondary_text);
 
 	return banner;
 }

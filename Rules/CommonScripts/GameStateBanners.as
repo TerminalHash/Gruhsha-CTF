@@ -13,7 +13,7 @@ enum BannerType
 	WARMUP_START = 0,
 	GAME_START,
 	GAME_END,
-	GAME_TIE,
+	GAME_END_TIE,
 	NONE
 };
 
@@ -216,11 +216,13 @@ void SetBanner(CRules@ this)
 		this.set_bool("Draw Banner", true);
 		this.set_u32("Banner Start", getGameTime());
 
+		if (state == GAME_OVER && this.getTeamWon() == -1) {
+			this.set_u8("Animate Banner", BannerType::GAME_END_TIE);
+			this.minimap = false;
+		}
+
 		if (state == GAME_OVER && this.getTeamWon() >= 0) {
 			this.set_u8("Animate Banner", BannerType::GAME_END);
-			this.minimap = false;
-		} else if (state == GAME_OVER && (this.getTeamWon() != 0 || this.getTeamWon() != 1)) {
-			this.set_u8("Animate Banner", BannerType::GAME_TIE);
 			this.minimap = false;
 		}
 
