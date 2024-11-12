@@ -916,6 +916,9 @@ void onRenderScoreboard(CRules@ this) {
 
 	Vec2f mousePos = controls.getMouseScreenPos();
 	bool left_side = mousePos.x<getScreenWidth()/2;
+	const f32 screenMidX = getScreenWidth()/2;
+
+	drawManualPointer(screenMidX, tl.y + 50);
 
 	///////////////////////////////////////////////
 	// matetials section
@@ -1254,4 +1257,23 @@ void ScoreboardField(Vec2f tl, Vec2f br, const string&in text)
 {
 	GUI::DrawPane(tl, br, 0xffcfcfcf);
  	GUI::DrawTextCentered(text, Vec2f(tl.x + ((br.x - tl.x) * 0.50f), tl.y + ((br.y - tl.y) * 0.50f)), 0xffffffff);
+}
+
+void drawManualPointer(const f32&in x, const f32&in y)
+{
+	const string openHelp = Descriptions::helptip.replace("{KEY}", "["+getControls().getActionKeyKeyName(AK_MENU)+"]");
+	
+	Vec2f dim;
+	GUI::GetTextDimensions(openHelp, dim);
+	
+	Vec2f pos(x, y);
+	const f32 width = dim.x + 15;
+	pos.x -= width / 2;
+	
+	Vec2f bot = pos;
+	bot.x += width;
+	bot.y += 25;
+	
+	GUI::DrawPane(pos, bot, SColor(0xffcccccc));
+	GUI::DrawTextCentered(openHelp, Vec2f(x, y+12), color_white);
 }

@@ -38,6 +38,33 @@ namespace en
 	d_universalold							= "Old",
 	d_universalnew							= "New",
 
+	// GameHelp.as
+	d_header1									= "Gruhsha CTF - Russian Captains",
+	d_header2									= "Tips: Sudden Death",
+	d_header3									= "Tips: Materials",
+	d_header4									= "Tips: Airdrop",
+	d_header5									= "Tips: Trampolines",
+	d_header6									= "Tips: Class and Vehicle Changes",
+	d_header7									= "Tips: New Items",
+	d_header8									= "Tips: Settings",
+
+		// Main page
+	d_tiptext1								= "\n\n\n\n\n\nWelcome to Gruhsha CTF!\n\nThis is a competitive version of the CTF mode, where the balance has been changed,\nadded new items, various improvements and fixed the most unbearable bugs.\n\nYour goal is still capture the flag, but it is limited by time - you have 35 minutes\nto complete your goal, otherwise you'll see a banner like the one below ;)\n\nTo learn more, read this help.",
+		// Sudden Death
+	d_tiptext2								= "Five minutes before the end of the match, Sudden Death begins.\n\nDuring it, various buffs and debuffs are activated, recognize which you can\nby hovering over the skull icon in the left corner of the screen and reading the note.",
+		// Materials
+	d_tiptext3								= "\n\nThe main material system is a virtual team system.\nThis means you don't have to deal with inventory management most of your time.\n\nBut the real materials is still falling off the builders' backs,\nit can be converted either by the builder or in storage.\n\nP.S. gold is only there as a real blob and is of high value, don't lose it.",
+		// Airdrop
+	d_tiptext4								= "Every 6 minutes a crate will appear in the center of the map.\nIt's in your best interest to pick him up as soon as possible -\nhe gives very useful things!\n\n(can only be opened at the base)",
+		// Trampolines
+	d_tiptext5								= "Physics of jumping on the trampoline has been changed - it accelerates\nyou more than once, it pushes back at the speed and height you hit it.\n\nIf you want to use it, put it at the bottom of your base,\nmake sure there's nothing in your way and jump off the tower roof onto it.",
+		// Class & Vehicles
+	d_tiptext6								= "\n\nAll three classes received various useful changes:\n* Builders build faster and can throw bombs;\n* Archers can use the hook and shoot at the same time, can use drill and throw bombs;\n* Knights have gotten a lot of new items in their arsenal and can use the drill;\n* And much more.\n\nIn addition, a couple of new vehicles have been added and shops to buy them\ncan be freely built (limit one per team).",
+		// Items
+	d_tiptext7								= "Various new lore-friendly items have been added, which will help quite nicely\nin both regular and stealthy pushes.\n\nDon't be afraid to try something new, some items can effectively\nhalt the enemy push ;)",
+		// Settings
+	d_tiptext8								= "The mod has its own settings system.\n\nDon't like the tilt of the body when moving? Don't like the turn of the head?\nWant to use tags, reassign emotions, or turn off some features?\n\nOpen the scoreboard (default TAB) and click on the button to the left of the\nserver information panels.",
+
 	// PickingCommands.as
 	d_bindingscom							= "Show mod bindings menu",
 	d_togglechcomtext						= "Switch change of classes in shops",
@@ -62,6 +89,7 @@ namespace en
 	d_goldenminedesc						= "More durable version of mine, able to stick to surface.",
 	d_slideminedesc							= "A less durable version of the regular mine, can be primed while moving.",
 	d_icebombdesc							= "A snow globe with a mini-keg inside, capable of slowing down an opponent for a small amount of time.",
+	d_fumokegdesc							= "The last thing, you'll be able to see in your life.",
 
 	// Satchel.as
 	d_satcheldesc							= "Ignites flammable blocks, activated by throw key",
@@ -76,6 +104,7 @@ namespace en
 
 	// ScoreboardRender.as
 	d_currentversiontext					= "Current version: ",
+	d_helptip								= "Press {KEY} to toggle the help manual on/off.",
 
 	// ClassSelectMenu.as
 	d_totaltext								= "Total ",
@@ -248,6 +277,7 @@ namespace en
 	n_goldenmine							= "Golden Mine",
 	n_slidemine							    = "Slide Mine",
 	n_icebomb								= "Ice Bomb",
+	n_fumokegname							= "Fumo Keg",
 
 	// KIWI_Playercard.as
 	n_medalsn								= "Medals",

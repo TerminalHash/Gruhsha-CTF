@@ -53,6 +53,24 @@ namespace Descriptions
 	universalold		  	  		= Translate(en::d_universalold+"\\"+ru::d_universalold),
 	universalnew		  	  		= Translate(en::d_universalnew+"\\"+ru::d_universalnew),
 
+	// GameHelp.as
+	header1		  	  				= Translate(en::d_header1+"\\"+ru::d_header1),
+	header2		  	  				= Translate(en::d_header2+"\\"+ru::d_header2),
+	header3		  	  				= Translate(en::d_header3+"\\"+ru::d_header3),
+	header4		  	  				= Translate(en::d_header4+"\\"+ru::d_header4),
+	header5		  	  				= Translate(en::d_header5+"\\"+ru::d_header5),
+	header6		  	  				= Translate(en::d_header6+"\\"+ru::d_header6),
+	header7		  	  				= Translate(en::d_header7+"\\"+ru::d_header7),
+	header8		  	  				= Translate(en::d_header8+"\\"+ru::d_header8),
+	tiptext1		  	  			= Translate(en::d_tiptext1+"\\"+ru::d_tiptext1),
+	tiptext2		  	  			= Translate(en::d_tiptext2+"\\"+ru::d_tiptext2),
+	tiptext3		  	  			= Translate(en::d_tiptext3+"\\"+ru::d_tiptext3),
+	tiptext4		  	  			= Translate(en::d_tiptext4+"\\"+ru::d_tiptext4),
+	tiptext5		  	  			= Translate(en::d_tiptext5+"\\"+ru::d_tiptext5),
+	tiptext6		  	  			= Translate(en::d_tiptext6+"\\"+ru::d_tiptext6),
+	tiptext7		  	  			= Translate(en::d_tiptext7+"\\"+ru::d_tiptext7),
+	tiptext8		  	  			= Translate(en::d_tiptext8+"\\"+ru::d_tiptext8),
+
 	// PickingCommands.as
 	bindingscom		  	       		= Translate(en::d_bindingscom+"\\"+ru::d_bindingscom),
 	togglechcomtext		  	       	= Translate(en::d_togglechcomtext+"\\"+ru::d_togglechcomtext),
@@ -77,6 +95,7 @@ namespace Descriptions
 	goldenminedesc					= Translate(en::d_goldenminedesc+"\\"+ru::d_goldenminedesc),
 	slideminedesc					= Translate(en::d_slideminedesc+"\\"+ru::d_slideminedesc),
 	icebombdesc						= Translate(en::d_icebombdesc+"\\"+ru::d_icebombdesc),
+	fumokegdesc						= Translate(en::d_fumokegdesc+"\\"+ru::d_fumokegdesc),
 
 	// Satchel.as
 	satcheldesc			  	       	= Translate(en::d_satcheldesc+"\\"+ru::d_satcheldesc),
@@ -91,6 +110,7 @@ namespace Descriptions
 
 	// ScoreboardRender.as
 	currentversiontext				= Translate(en::d_currentversiontext+"\\"+ru::d_currentversiontext),
+	helptip							= Translate(en::d_helptip+"\\"+ru::d_helptip),
 
 	// ClassSelectMenu.as
 	totaltext						= Translate(en::d_totaltext+"\\"+ru::d_totaltext),
@@ -265,6 +285,7 @@ namespace Names
 	goldenmine							= Translate(en::n_goldenmine+"\\"+ru::n_goldenmine),
 	slidemine							= Translate(en::n_slidemine+"\\"+ru::n_slidemine),
 	icebomb								= Translate(en::n_icebomb+"\\"+ru::n_icebomb),
+	fumokegname							= Translate(en::n_fumokegname+"\\"+ru::n_fumokegname),
 
 	// KIWI_Playercard.as
 	medalsn		  	       				= Translate(en::n_medalsn+"\\"+ru::n_medalsn),
