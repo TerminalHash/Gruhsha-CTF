@@ -594,7 +594,7 @@ void DirectionalExplosion(CBlob@ this, f32 radius, f32 damage, f32 map_damage_ra
 	else if (this.getAngleDegrees() >= -360 && this.getAngleDegrees() < -180) {
 		LinearExplosion(this, Vec2f(-1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
 		LinearExplosion(this, Vec2f(1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-	} else if (this.getAngleDegrees() >= 180 && this.getAngleDegrees() < 360) {
+	} else if (this.getAngleDegrees() > 180 && this.getAngleDegrees() < 360) {
 		LinearExplosion(this, Vec2f(-1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
 		LinearExplosion(this, Vec2f(1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
 	}
