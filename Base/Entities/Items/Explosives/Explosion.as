@@ -20,6 +20,7 @@
 #include "Hitters.as";
 #include "ShieldCommon.as";
 #include "SplashWater.as";
+#include "MaterialCommon.as";
 
 bool isOwnerBlob(CBlob@ this, CBlob@ that)
 {
@@ -326,14 +327,52 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 								{
 									if (!map.isTileBedrock(tile))
 									{
-										if (dist >= rad_thresh ||
-										        !canExplosionDestroy(map, tpos, tile))
+									//if (dist >= rad_thresh ||
+										//        !canExplosionDestroy(map, tpos, tile))
+
+										if (false)
 										{
 											map.server_DestroyTile(tpos, 1.0f, this);
+											Material::fromTile(this, tile, 1.0f);
 										}
 										else
 										{
-											map.server_DestroyTile(tpos, 100.0f, this);
+											int castle_account = (map.isTileCastle(tile)?-2:0);
+											int	tile_type_account = castle_account;
+											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/8)+2+tile_type_account);
+											for (int idx = 0; idx < max_hits; ++idx)
+											{
+												if (!canExplosionDamage(map, tpos, map.getTile(tpos).type)) break;
+
+												//do the check BEFORE hitting
+												bool was_solid = map.isTileSolid(tpos);
+												//
+												map.server_DestroyTile(tpos, 1.0f, this);
+												//
+												bool has_destroyed_solid_tile = !map.isTileSolid(tpos);
+												//need at least one hit
+												//so if we killed an almost killed tile - nothing will happen
+												bool damaged_enough = idx > 0;
+
+												//breaking the cycle
+												if (has_destroyed_solid_tile)
+												{
+													//creation of a tile entity
+													if (was_solid && damaged_enough)
+													{
+														CBlob@ tileblob = server_CreateBlob("tileentity", -3, tpos);
+														if (tileblob is null) break;
+
+														//tileblob.AddScript("MortarLaunched.as");
+														f32 flip_factor = (tpos.y>pos.y?-1:1);
+														f32 angle_flip_factor = (tpos.y>pos.y?0:0);
+														tileblob.setVelocity(Vec2f(-damage/2*flip_factor, 0).RotateBy(-(pos-tpos).getAngle()+angle_flip_factor));
+														tileblob.set_s32("tile_frame", tile);
+													}
+													break;
+												}
+												//Material::fromTile(this, tile, 1.0f);
+											}
 										}
 									}
 								}
@@ -668,7 +707,7 @@ bool HitBlob(CBlob@ this, Vec2f mapPos, CBlob@ hit_blob, f32 radius, f32 damage,
 		}
 	}
 
-	if (bother_raycasting && this.getName() != "keg") // have we already checked the rays?
+	if (bother_raycasting) // have we already checked the rays?
 	{
 		// no wall in front
 
