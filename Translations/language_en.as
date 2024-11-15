@@ -192,6 +192,7 @@ namespace en
 	n_goldenminenmb							= "Golden Mine",
 	n_icebombnmb							= "Ice Bomb",
 	n_slideminenmb							= "Slide Mine",
+	n_fumokegnmb							= "Fumo Keg",
 
 			// Builder Shop
 	n_drillbnmb								= "Drill",

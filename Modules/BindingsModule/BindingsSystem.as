@@ -52,6 +52,8 @@ void onInit(CRules@ this)
 		if (!file.exists("k_goldmine$2")) file.add_s32("k_goldmine$2", -1);
 		if (!file.exists("k_slidemine$1")) file.add_s32("k_slidemine$1", 48);
 		if (!file.exists("k_slidemine$2")) file.add_s32("k_slidemine$2", -1);
+		if (!file.exists("k_fumokeg$1")) file.add_s32("k_fumokeg$1", 189);
+		if (!file.exists("k_fumokeg$2")) file.add_s32("k_fumokeg$2", -1);
 
 		// builder shop
 		if (!file.exists("b_drill$1")) file.add_s32("b_drill$1", 49);

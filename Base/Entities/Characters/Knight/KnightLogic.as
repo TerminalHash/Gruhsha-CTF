@@ -92,6 +92,7 @@ void onInit(CBlob@ this)
 	this.addCommandID("activate/throw bomb");
 
 	this.push("names to activate", "keg");
+	this.push("names to activate", "fumokeg");
 	this.push("names to activate", "satchel");
 
 	this.set_u8("bomb type", 255);

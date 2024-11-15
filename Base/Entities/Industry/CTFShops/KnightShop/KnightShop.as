@@ -120,6 +120,12 @@ void onInit(CBlob@ this)
 		AddRequirement(s.requirements, "no more", "slidemine", "Slide Mine", 3);
 		AddRequirement(s.requirements, "buy delay", "slidemine", "Slide Mine");
 	}
+	{
+		ShopItem@ s = addShopItem(this, Names::fumokegname, getTeamIcon("fumokeg", "FumoKegIcon.png", team_num, Vec2f(16, 16), 0), "fumokeg", Descriptions::fumokegdesc, true);
+		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::fumokeg);
+		AddRequirement(s.requirements, "blob", "mat_gold", "Gold", CTFCosts::fumokeg_gold);
+		AddRequirement(s.requirements, "no more", "fumokeg", "Fumo Keg", 1);
+	}
 }
 
 void GetButtonsFor(CBlob@ this, CBlob@ caller)

@@ -8,6 +8,7 @@
 #include "MakeCrate.as"
 #include "CheckSpam.as"
 #include "GenericButtonCommon.as"
+#include "ChatCommand.as"
 
 void onInit(CBlob@ this)
 {
@@ -360,6 +361,13 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 					}
 					//////////////////////////////////////
 					//////////////////////////////////////
+
+					// HACK: notify players about fumo
+					if (s.blobName == "fumokeg") {
+						if (caller !is null) {
+								server_AddToChat("Player " + callerPlayer.getUsername() + " bought Fumo Keg!", SColor(0xff474ac6));
+						}
+					}
 
 					this.SendCommand(this.getCommandID("shop made item client"), params);
 				}

@@ -83,7 +83,8 @@ string[][] button_texts =
 		Names::stickybombnmb,
 		Names::goldenminenmb,
 		Names::icebombnmb,
-		Names::slideminenmb
+		Names::slideminenmb,
+		Names::fumokegnmb
 	},
 	{							// ARCHER SHOP
 		Names::arrowsnmb,
@@ -193,7 +194,8 @@ string[][] button_file_names =
 		"k_sticky",
 		"k_icebomb",
 		"k_goldmine",
-		"k_slidemine"
+		"k_slidemine",
+		"k_fumokeg"
 	},
 	{
 		"a_arrows",
@@ -1444,6 +1446,7 @@ class ClickableButtonThree
 			else
 			{
 				this.m_state[i] = (m_selecteds[i] ? ClickableButtonStates::Selected : ClickableButtonStates::None);
+
 			}
 
 			current_tl += Vec2f(onebuttonwidth, 0);

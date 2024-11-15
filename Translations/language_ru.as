@@ -192,6 +192,7 @@ namespace ru
 	n_goldenminenmb							= "Золотая мина",
 	n_icebombnmb							= "Ледяная бомба",
 	n_slideminenmb							= "Слайд-мина",
+	n_fumokegnmb							= "Фумо-кега",
 
 			// Builder Shop
 	n_drillbnmb								= "Бур",

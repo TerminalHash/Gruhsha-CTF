@@ -200,6 +200,7 @@ namespace Names
 	goldenminenmb						= Translate(en::n_goldenminenmb+"\\"+ru::n_goldenminenmb),
 	icebombnmb							= Translate(en::n_icebombnmb+"\\"+ru::n_icebombnmb),
 	slideminenmb						= Translate(en::n_slideminenmb+"\\"+ru::n_slideminenmb),
+	fumokegnmb							= Translate(en::n_fumokegnmb+"\\"+ru::n_fumokegnmb),
 
 			// Builder Shop
 	drillbnmb							= Translate(en::n_drillbnmb+"\\"+ru::n_drillbnmb),

@@ -12,18 +12,6 @@ void onInit(CSprite@ this)
 	this.SetEmitSoundPaused(false);
 }
 
-void onTick (CSprite@ this)
-{
-	if (getRules().get_string("annoying_voicelines") == "off")
-	{
-		this.SetEmitSoundPaused(true);
-	}
-	else
-	{
-		this.SetEmitSoundPaused(false);
-	}
-}
-
 void onRender(CSprite@ this)
 {
 	if (g_videorecording)

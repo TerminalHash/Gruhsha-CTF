@@ -68,6 +68,7 @@ void onInit(CBlob@ this)
 	this.getCurrentScript().removeIfTag = "dead";
 
 	this.push("names to activate", "keg");
+	this.push("names to activate", "fumokeg");
 	this.push("names to activate", "satchel");
 	
 }
