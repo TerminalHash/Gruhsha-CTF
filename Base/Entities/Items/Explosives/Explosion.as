@@ -55,7 +55,17 @@ void makeLargeExplosionParticle(Vec2f pos)
 void Explode(CBlob@ this, f32 radius, f32 damage)
 {
 	this.set_f32("explosion blob radius", radius);
-	kiwiExplosionEffects(this);
+
+	//actor damage
+	u8 hitter = Hitters::explosion;
+
+	if (this.exists("custom_hitter"))
+	{
+		hitter = this.get_u8("custom_hitter");
+	}
+
+	if (hitter != Hitters::water)
+		kiwiExplosionEffects(this);
 
 	Vec2f pos = this.getPosition();
 	CMap@ map = this.getMap();
@@ -116,14 +126,6 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 
 	const bool bomberman = this.hasTag("bomberman_style");
 	const bool directional = this.hasTag("directional_style");
-
-	//actor damage
-	u8 hitter = Hitters::explosion;
-
-	if (this.exists("custom_hitter"))
-	{
-		hitter = this.get_u8("custom_hitter");
-	}
 
 	bool should_teamkill = this.exists("explosive_teamkill") && this.get_bool("explosive_teamkill");
 
@@ -849,7 +851,7 @@ void kiwiExplosionEffects(CBlob@ this)
 	//this.SetMinimapVars("kiwi_minimap_icons.png", 14, Vec2f(8, 8));
 	//this.SetMinimapOutsideBehaviour(CBlob::minimap_none);
 
-	if (getRules().get_string("custom_boom_effects") == "off") return;
+	if (this.getConfig() == "stickybomb") return;
 	
 	f32 radius = this.get_f32("map_damage_radius")*0.75;
 	
@@ -893,6 +895,8 @@ void kiwiExplosionEffects(CBlob@ this)
 		
 		this.Tag("exploded");
 	}
+
+	if (getRules().get_string("custom_boom_effects") == "off") return;
 	
 	int fire_amount = Maths::Max(1, radius/2.6);
 	
@@ -918,12 +922,16 @@ void kiwiExplosionEffects(CBlob@ this)
 void MakeExplodeParticles(CBlob@ this, const Vec2f pos, const Vec2f vel, const string filename = "SmallSteam")
 {
 	if (this is null) return;
+
 	MakeExplodeParticles(this.getPosition()+pos, vel, filename);
 }
 
 void MakeExplodeParticles(const Vec2f pos, const Vec2f vel, const string filename = "SmallSteam")
 {
 	if (!isClient()) return;
+
+	if (getRules().get_string("custom_boom_effects") == "off") return;
+
 	CParticle@ p = ParticleAnimated(
 	"explosion64.png",                   	// file name
 	pos,            						// position
