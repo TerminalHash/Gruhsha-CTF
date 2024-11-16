@@ -24,7 +24,7 @@ void onInit(CBlob@ this)
 	}
 	else
 	{
-		SetupBomb(this, bomb_fuse, 48.0f, 3.0f, 58.0f, 0.5f, true);
+		SetupBomb(this, bomb_fuse, 48.0f, 3.0f, 24.0f, 0.5f, true);
 	}
 	this.Tag("activated"); // make it lit already and throwable
 	this.SetMapEdgeFlags(CBlob::map_collide_left | CBlob::map_collide_right);

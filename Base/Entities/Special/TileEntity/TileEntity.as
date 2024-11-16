@@ -40,7 +40,8 @@ void RotateOnFly(CBlob@ this)
 
 void onTick(CBlob@ this)
 {
-	RotateOnFly(this);
+	if (!this.hasTag("no_rotations"))
+		RotateOnFly(this);
 	
 	SetTileFrame(this);
 }
@@ -71,19 +72,33 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 			};
 			this.getSprite().PlaySound(hit_sounds[Maths::Round(XORRandom(hit_sounds.size()*10)/10)]);
 		}
+		else
+		{
+			this.setPosition(this.getPosition()+Vec2f(XORRandom(8)-4, 0));
+		}
 	}
 
-	if (blob !is null && blob.getShape().isStatic()) {
-		if (blob.getConfig() == "flag_base") {
+	CBlob@[] blobs_nearby;
+	if (getMap().getBlobsInRadius(this.getPosition(), 6, @blobs_nearby))
+	{
+		for (int idx = 0; idx < blobs_nearby.size(); ++idx)
+		{
+			CBlob@ c_blob = blobs_nearby[idx];
+			if (c_blob is null) continue;
+
+			if (!c_blob.getShape().isStatic()) continue;
+
+			if (c_blob.getShape().getConsts().collidable) continue;
+
 			this.set_bool("collided with structure", true);
-			printf("Colliding with structure");
+			//printf("Colliding with structure");
 		}
 	}
 
 
 	if (blob is null) return;
 		
-	if (this.getOldVelocity().Length()<4) return;
+	if (this.getOldVelocity().Length()<2) return;
 
 	this.server_Hit(blob, point1, this.getOldVelocity(), 5+this.getOldVelocity().Length(), Hitters::fall, true);
 }

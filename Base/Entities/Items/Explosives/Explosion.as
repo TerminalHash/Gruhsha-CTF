@@ -21,6 +21,7 @@
 #include "ShieldCommon.as";
 #include "SplashWater.as";
 #include "MaterialCommon.as";
+#include "MakeBangEffect.as";
 
 bool isOwnerBlob(CBlob@ this, CBlob@ that)
 {
@@ -53,6 +54,9 @@ void makeLargeExplosionParticle(Vec2f pos)
 
 void Explode(CBlob@ this, f32 radius, f32 damage)
 {
+	this.set_f32("explosion blob radius", radius);
+	//kiwiExplosionEffects(this);
+
 	Vec2f pos = this.getPosition();
 	CMap@ map = this.getMap();
 
@@ -65,7 +69,7 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 		Sound::Play(this.get_string("custom_explosion_sound"), this.getPosition());
 	}
 
-	if (this.isInInventory())
+	if (this.isInInventory() && false)
 	{
 		CBlob@ doomed = this.getInventoryBlob();
 		if (doomed !is null)
@@ -212,6 +216,20 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 					makeLargeExplosionParticle(endpos);
 				}
 			}
+			if (!map.rayCastSolid(pos, partpos, endpos))
+				makeSmallExplosionParticle(endpos);
+		}
+	}
+
+	for (int i = 0; i < radius * 0.16; i++)
+	{
+		Vec2f partpos = pos + Vec2f(XORRandom(r * 2) - r, XORRandom(r * 2) - r);
+		Vec2f endpos = partpos;
+
+		if (map !is null)
+		{
+			if (!map.rayCastSolid(pos, partpos, endpos))
+				makeSmallExplosionParticle(endpos);
 		}
 	}
 
@@ -327,23 +345,31 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 								{
 									if (!map.isTileBedrock(tile))
 									{
-									//if (dist >= rad_thresh ||
+										//if (dist >= rad_thresh ||
 										//        !canExplosionDestroy(map, tpos, tile))
-
-										if (false)
+										
+										if (!map.isTileSolid(tpos))
 										{
-											map.server_DestroyTile(tpos, 1.0f, this);
-											Material::fromTile(this, tile, 1.0f);
+											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/8)+2);
+
+											for (int idx = 0; idx < max_hits; ++idx)
+											{
+												map.server_DestroyTile(tpos, 1.0f, this);
+											}
+											//Material::fromTile(this, tile, 1.0f);
 										}
 										else
 										{
+											int steel_account = (false?-5:0);
 											int castle_account = (map.isTileCastle(tile)?-2:0);
+
 											int	tile_type_account = castle_account;
-											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/8)+2+tile_type_account);
+											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/8)+4+tile_type_account);
+
 											for (int idx = 0; idx < max_hits; ++idx)
 											{
 												if (!canExplosionDamage(map, tpos, map.getTile(tpos).type)) break;
-
+												
 												//do the check BEFORE hitting
 												bool was_solid = map.isTileSolid(tpos);
 												//
@@ -353,7 +379,7 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 												//need at least one hit
 												//so if we killed an almost killed tile - nothing will happen
 												bool damaged_enough = idx > 0;
-
+												
 												//breaking the cycle
 												if (has_destroyed_solid_tile)
 												{
@@ -362,11 +388,17 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 													{
 														CBlob@ tileblob = server_CreateBlob("tileentity", -3, tpos);
 														if (tileblob is null) break;
-
+														CPlayer@ killer = this.getDamageOwnerPlayer();
+														if (killer !is null)
+														{
+															tileblob.SetDamageOwnerPlayer(killer);
+														}
+														
 														//tileblob.AddScript("MortarLaunched.as");
-														f32 flip_factor = (tpos.y>pos.y?-1:1);
+														f32 flip_factor = (tpos.y>pos.y?1:1);
 														f32 angle_flip_factor = (tpos.y>pos.y?0:0);
-														tileblob.setVelocity(Vec2f(-damage/2*flip_factor, 0).RotateBy(-(pos-tpos).getAngle()+angle_flip_factor));
+														
+														tileblob.setVelocity(Vec2f(-radius/5*flip_factor, 0).RotateBy(-(pos-tpos).getAngle()+angle_flip_factor));
 														tileblob.set_s32("tile_frame", tile);
 													}
 													break;
@@ -392,13 +424,36 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 		for (uint i = 0; i < blobs.length; i++)
 		{
 			CBlob@ hit_blob = blobs[i];
-			if (hit_blob is this)
-				continue;
+			CPlayer@ attacker = this.getDamageOwnerPlayer();
+			CPlayer@ hit_player = hit_blob.getPlayer();
+			CBlob@ attacker_blob = this;
+			
+			if (hit_blob is this || (hit_blob.hasTag("self explosion immune")&&(this.getName()==hit_blob.getName()))) continue;
+			
+			CMap@ map = getMap();
+			Vec2f ray_hitpos;
+				
+			const bool flip = this.getPosition().x<hit_blob.getPosition().x;
+			const f32 flip_factor = flip ? -1 : 1;
+			bool hitting_myself = attacker !is null && hit_player !is null && attacker is hit_player;
+			
+			//for when a rocket hits the ground below us right after creation
+			bool rocket_jump = hitting_myself && this.getTickSinceCreated()<5;
+			
+			f32 angle = (hit_blob.getPosition()-this.getPosition()).Angle();
+			Vec2f dir = Vec2f(1, 0).RotateBy(-angle);
 
-			HitBlob(this, m_pos, hit_blob, radius, damage, hitter, true, should_teamkill);
+			//(proning?damage/3:hitting_myself?damage*0.8f:damage)
+			//if (!map.rayCastSolid(pos, hit_blob.getPosition(), ray_hitpos))
+			//hit_blob.getPosition()-dir*hit_blob.getRadius()
+			if (!HitBlob(attacker_blob, pos, hit_blob, radius, damage, hitter, true, should_teamkill))
+			{
+				//continue;
+			}
+
+			//HitBlob(this, m_pos, hit_blob, radius, damage, hitter, true, should_teamkill);
 		}
 	}
-
 }
 
 void onHitBlob(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitBlob, u8 customData)
@@ -787,4 +842,93 @@ bool HitBlob(CBlob@ this, Vec2f mapPos, CBlob@ hit_blob, f32 radius, f32 damage,
 					(this.isInInventory() && this.getInventoryBlob() is hit_blob) //is the inventory container
 	               );
 	return true;
+}
+
+void kiwiExplosionEffects(CBlob@ this)
+{
+	//this.SetMinimapVars("kiwi_minimap_icons.png", 14, Vec2f(8, 8));
+	//this.SetMinimapOutsideBehaviour(CBlob::minimap_none);
+	
+	f32 radius = this.get_f32("map_damage_radius")*0.75;
+	
+	int flares = this.exists("custom flare amount")?this.get_s32("custom flare amount"):3;
+	if (!this.exists("custom_explosion_pos")) this.set_Vec2f("custom_explosion_pos", this.getPosition());
+	
+	if (isServer() && false)
+	for (int idx = 0; idx < flares; ++idx) {
+		CBlob@ flare = server_CreateBlob("napalm", this.getTeamNum(), this.get_Vec2f("custom_explosion_pos")+Vec2f(0, -4));
+		if (flare is null) continue;
+		flare.set_f32("particle_scale", 1.5f);
+		flare.setVelocity(getRandomVelocity(90, (8+XORRandom(14)), 10));
+		flare.SetDamageOwnerPlayer(this.getDamageOwnerPlayer());
+	}
+	
+	if (isServer())
+	for (int idx = 0; idx < flares; ++idx)
+	{
+		CBlob@ smoke_blob = server_CreateBlob("smokegas", this.getTeamNum(), this.get_Vec2f("custom_explosion_pos")+getRandomVelocity(0, flares*8, 360));
+		if (smoke_blob is null) continue;
+		smoke_blob.set_f32("flares", flares);
+	}
+	
+	Vec2f ray_hitpos;
+	if (getMap().rayCastSolid(this.get_Vec2f("custom_explosion_pos"), this.getPosition(), ray_hitpos)) return;
+	
+	f32 scale = radius/16;
+	
+	if (isClient())
+	{
+		Vec2f pos = this.getPosition();
+		CMap@ map = getMap();
+		
+		MakeBangEffect(this, "kaboom", radius/15);
+		//Sound::Play("handgrenade_blast2", this.getPosition(), 2, 1.0f + XORRandom(2)*0.1);
+		u8 particle_amount = radius/6;
+		for (int i = 0; i < particle_amount; i++)
+		{
+			MakeExplodeParticles(this, Vec2f(radius-16, 0).RotateBy(360/particle_amount*i), getRandomVelocity(360/particle_amount*i, 0, 90));
+		}
+		
+		this.Tag("exploded");
+	}
+	
+	int fire_amount = Maths::Max(1, radius/2.6);
+	
+	for (int idx = 0; idx < fire_amount; ++idx) {
+		CParticle@ p = ParticleAnimated(
+		"kiwi_fire_v2_no_smoke.png",							// file name
+		this.getPosition() + Vec2f(scale*(idx>fire_amount/2?7:3)+XORRandom(idx), 0).RotateBy(360/(1.0f*fire_amount/2)*idx),	// position
+		Vec2f((XORRandom(60)-30)*0.01, 0),      				// velocity
+		0,                              						// rotation
+		scale*(idx>fire_amount/2?1.7:1)/2/2,		            // scale
+		2+XORRandom(2),                        					// ticks per frame
+		0,                										// gravity
+		true);
+		if (p !is null) {
+			p.setRenderStyle(RenderStyle::additive);
+			p.Z=1500+XORRandom(30)*0.01;
+			p.growth = -0.015;
+			p.freerotation = true;
+		}
+	}
+}
+
+void MakeExplodeParticles(CBlob@ this, const Vec2f pos, const Vec2f vel, const string filename = "SmallSteam")
+{
+	if (this is null) return;
+	MakeExplodeParticles(this.getPosition()+pos, vel, filename);
+}
+
+void MakeExplodeParticles(const Vec2f pos, const Vec2f vel, const string filename = "SmallSteam")
+{
+	if (!isClient()) return;
+	CParticle@ p = ParticleAnimated(
+	"explosion64.png",                   	// file name
+	pos,            						// position
+	vel,                         			// velocity
+	float(XORRandom(360)),                  // rotation
+	0.5f + XORRandom(100) * 0.01f,			// scale
+	5,                                  	// ticks per frame
+	0.0f,                               	// gravity
+	true);
 }
