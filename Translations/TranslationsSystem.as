@@ -274,6 +274,7 @@ namespace Names
 	pickupsystem						 = Translate(en::n_pickupsystem+"\\"+ru::n_pickupsystem),
 	classpanels						 	 = Translate(en::n_classpanels+"\\"+ru::n_classpanels),
 	airdroppanel						 = Translate(en::n_airdroppanel+"\\"+ru::n_airdroppanel),
+	customboomeffects					 = Translate(en::n_customboomeffects+"\\"+ru::n_customboomeffects),
 
 		// Other
 	pressdelete		  	       			= Translate(en::n_pressdelete+"\\"+ru::n_pressdelete),

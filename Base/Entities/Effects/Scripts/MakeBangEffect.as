@@ -6,6 +6,7 @@ void MakeBangEffect (
 	const Vec2f vel = Vec2f((XORRandom(10)-5) * 0.1, -(3/2)),
 	Vec2f pos = Vec2f_zero )
 {
+	if (getRules().get_string("custom_boom_effects") == "off") return;
 	u8 sus = 4;
 
 	CParticle@ bang = ParticleAnimated(

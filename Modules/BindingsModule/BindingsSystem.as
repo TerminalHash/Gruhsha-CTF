@@ -233,110 +233,116 @@ void onInit(CRules@ this)
 		{
 			printf("Settings file exists.");
 
-			if (!sfile.exists("camera_sway"))
+			if (!sfile2.exists("camera_sway"))
 			{
-				sfile.add_string("camera_sway", "5");
+				sfile2.add_string("camera_sway", "5");
 			}
 
-			if (!sfile.exists("blockbar_hud"))
+			if (!sfile2.exists("blockbar_hud"))
 			{
-				sfile.add_string("blockbar_hud", "yes");
+				sfile2.add_string("blockbar_hud", "yes");
 			}
 
-			if (!sfile.exists("shownomenupanel"))
+			if (!sfile2.exists("shownomenupanel"))
 			{
-				sfile.add_string("shownomenupanel", "yes");
+				sfile2.add_string("shownomenupanel", "yes");
 			}
 
-			if (!sfile.exists("dse_while_using_nomenu_buying"))
+			if (!sfile2.exists("dse_while_using_nomenu_buying"))
 			{
-				sfile.add_string("dse_while_using_nomenu_buying", "yes");
+				sfile2.add_string("dse_while_using_nomenu_buying", "yes");
 			}
 
-			//if (!sfile.exists("visual_item_pick"))
+			//if (!sfile2.exists("visual_item_pick"))
 			//{
-			//	sfile.add_string("visual_item_pick", "off");
+			//	sfile2.add_string("visual_item_pick", "off");
 			//}
 
-			if (!sfile.exists("body_tilting"))
+			if (!sfile2.exists("body_tilting"))
 			{
-				sfile.add_string("body_tilting", "on");
+				sfile2.add_string("body_tilting", "on");
 			}
 
-			if (!sfile.exists("head_rotating"))
+			if (!sfile2.exists("head_rotating"))
 			{
-				sfile.add_string("head_rotating", "on");
+				sfile2.add_string("head_rotating", "on");
 			}
 
-			if (!sfile.exists("clusterfuck"))
+			if (!sfile2.exists("clusterfuck"))
 			{
-				sfile.add_string("clusterfuck", "on");
+				sfile2.add_string("clusterfuck", "on");
 			}
 
-			if (!sfile.exists("clusterfuck_blood"))
+			if (!sfile2.exists("clusterfuck_blood"))
 			{
-				sfile.add_string("clusterfuck_blood", "on");
+				sfile2.add_string("clusterfuck_blood", "on");
 			}
 
-			if (!sfile.exists("clusterfuck_smoke"))
+			if (!sfile2.exists("clusterfuck_smoke"))
 			{
-				sfile.add_string("clusterfuck_smoke", "on");
+				sfile2.add_string("clusterfuck_smoke", "on");
 			}
 
-			if (!sfile.exists("drillzone_borders"))
+			if (!sfile2.exists("drillzone_borders"))
 			{
-				sfile.add_string("drillzone_borders", "on");
+				sfile2.add_string("drillzone_borders", "on");
 			}
 
-			if (!sfile.exists("annoying_nature"))
+			if (!sfile2.exists("annoying_nature"))
 			{
-				sfile.add_string("annoying_nature", "on");
+				sfile2.add_string("annoying_nature", "on");
 			}
 
-			if (!sfile.exists("annoying_voicelines"))
+			if (!sfile2.exists("annoying_voicelines"))
 			{
-				sfile.add_string("annoying_voicelines", "on");
+				sfile2.add_string("annoying_voicelines", "on");
 			}
 
-			if (!sfile.exists("annoying_tags"))
+			if (!sfile2.exists("annoying_tags"))
 			{
-				sfile.add_string("annoying_tags", "on");
+				sfile2.add_string("annoying_tags", "on");
 			}
 
-			if (!sfile.exists("custom_death_and_pain_sounds"))
+			if (!sfile2.exists("custom_death_and_pain_sounds"))
 			{
-				sfile.add_string("custom_death_and_pain_sounds", "on");
+				sfile2.add_string("custom_death_and_pain_sounds", "on");
 			}
 
-			if (!sfile.exists("class_panels"))
+			if (!sfile2.exists("class_panels"))
 			{
-				sfile.add_string("class_panels", "off");
+				sfile2.add_string("class_panels", "off");
 			}
 
-			if (!sfile.exists("airdrop_panel"))
+			if (!sfile2.exists("airdrop_panel"))
 			{
-				sfile.add_string("airdrop_panel", "on");
+				sfile2.add_string("airdrop_panel", "on");
+			}
+
+			if (!sfile2.exists("custom_boom_effects"))
+			{
+				sfile2.add_string("custom_boom_effects", "on");
 			}
 		}
 		else // default settings
 		{
-			sfile.add_string("blockbar_hud", "yes");
-			sfile.add_string("shownomenupanel", "yes");
-			sfile.add_string("dse_while_using_nomenu_buying", "yes");
-			sfile.add_string("camera_sway", "5");
-			//sfile.add_string("visual_item_pick", "off");
-			sfile.add_string("body_tilting", "on");
-			sfile.add_string("head_rotating", "on");
-			sfile.add_string("clusterfuck", "on");
-			sfile.add_string("clusterfuck_blood", "on");
-			sfile.add_string("clusterfuck_smoke", "on");
-			sfile.add_string("drillzone_borders", "on");
-			sfile.add_string("annoying_nature", "on");
-			sfile.add_string("annoying_voicelines", "on");
-			sfile.add_string("annoying_tags", "on");
-			sfile.add_string("custom_death_and_pain_sounds", "on");
-			sfile.add_string("class_panels", "off");
-			sfile.add_string("airdrop_panel", "on");
+			sfile2.add_string("blockbar_hud", "yes");
+			sfile2.add_string("shownomenupanel", "yes");
+			sfile2.add_string("dse_while_using_nomenu_buying", "yes");
+			sfile2.add_string("camera_sway", "5");
+			//sfile2.add_string("visual_item_pick", "off");
+			sfile2.add_string("body_tilting", "on");
+			sfile2.add_string("head_rotating", "on");
+			sfile2.add_string("clusterfuck", "on");
+			sfile2.add_string("clusterfuck_blood", "on");
+			sfile2.add_string("clusterfuck_smoke", "on");
+			sfile2.add_string("drillzone_borders", "on");
+			sfile2.add_string("annoying_nature", "on");
+			sfile2.add_string("annoying_voicelines", "on");
+			sfile2.add_string("annoying_tags", "on");
+			sfile2.add_string("custom_death_and_pain_sounds", "on");
+			sfile2.add_string("class_panels", "off");
+			sfile2.add_string("airdrop_panel", "on");
+			sfile2.add_string("custom_boom_effects", "on");
 
 			printf("Creating local visual and sound settings file with default values for Gruhsha.");
 		}

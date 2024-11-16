@@ -55,7 +55,7 @@ void makeLargeExplosionParticle(Vec2f pos)
 void Explode(CBlob@ this, f32 radius, f32 damage)
 {
 	this.set_f32("explosion blob radius", radius);
-	//kiwiExplosionEffects(this);
+	kiwiExplosionEffects(this);
 
 	Vec2f pos = this.getPosition();
 	CMap@ map = this.getMap();
@@ -848,6 +848,8 @@ void kiwiExplosionEffects(CBlob@ this)
 {
 	//this.SetMinimapVars("kiwi_minimap_icons.png", 14, Vec2f(8, 8));
 	//this.SetMinimapOutsideBehaviour(CBlob::minimap_none);
+
+	if (getRules().get_string("custom_boom_effects") == "off") return;
 	
 	f32 radius = this.get_f32("map_damage_radius")*0.75;
 	

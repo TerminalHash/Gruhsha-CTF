@@ -266,6 +266,7 @@ namespace en
 	n_pickupsystem							= "Item pickup system",
 	n_classpanels							= "Show class panels",
 	n_airdroppanel							= "Show airdrop timer panel",
+	n_customboomeffects						= "KIWI-like explosion effects",
 
 		// Other
 	n_pressdelete							= "Choose a bind and press [DELETE] to remove key",

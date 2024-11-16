@@ -266,6 +266,7 @@ namespace ru
 	n_pickupsystem							= "Система подбора предметов",
 	n_classpanels							= "Показывать панели классов",
 	n_airdroppanel							= "Показывать таймер аирдропа",
+	n_customboomeffects						= "KIWI-like эффекты взрыва",
 
 		// Other
 	n_pressdelete							= "Выбери клавишу и нажми [DELETE] для очистки хоткея!",

@@ -396,7 +396,8 @@ string[][] vsetting_texts =
 		Names::annoyingtags,
 		Names::customdpsounds,
 		Names::classpanels,
-		Names::airdroppanel
+		Names::airdroppanel,
+		Names::customboomeffects
 	}
 };
 
@@ -419,7 +420,8 @@ string[][] vsetting_file_names =
 		"annoying_tags",
 		"custom_death_and_pain_sounds",
 		"class_panels",
-		"airdrop_panel"
+		"airdrop_panel",
+		"custom_boom_effects"
 	}
 };
 
@@ -495,6 +497,10 @@ string[][][] vsetting_options =
 		},
 		{
 			Descriptions::universaloff,       // AIRDROP PANEL
+			Descriptions::universalon
+		},
+		{
+			Descriptions::universaloff,       // CUSTOM BOOM EFFECTS
 			Descriptions::universalon
 		}
 	}
@@ -572,6 +578,10 @@ string[][][] vsetting_option_names =
 		},
 		{
 			"off",       // AIRDROP PANEL
+			"on"
+		},
+		{
+			"off",       // CUSTOM BOOM EFFECTS
 			"on"
 		}
 	}
