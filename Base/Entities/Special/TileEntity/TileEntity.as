@@ -1,5 +1,7 @@
 // TileEntity.as
 #include "Hitters.as"
+#include "KnightCommon.as";
+#include "ShieldCommon.as";
 
 void onInit(CBlob@ this)
 {
@@ -40,7 +42,8 @@ void RotateOnFly(CBlob@ this)
 
 void onTick(CBlob@ this)
 {
-	RotateOnFly(this);
+	if (!this.hasTag("no_rotations"))
+		RotateOnFly(this);
 	
 	SetTileFrame(this);
 }
@@ -71,21 +74,68 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 			};
 			this.getSprite().PlaySound(hit_sounds[Maths::Round(XORRandom(hit_sounds.size()*10)/10)]);
 		}
-	}
-
-	if (blob !is null && blob.getShape().isStatic()) {
-		if (blob.getConfig() == "flag_base") {
-			this.set_bool("collided with structure", true);
-			printf("Colliding with structure");
+		else
+		{
+			this.setPosition(this.getPosition()+Vec2f(XORRandom(8)-4, 0));
 		}
 	}
 
+	CBlob@[] blobs_nearby;
+	if (getMap().getBlobsInRadius(this.getPosition(), 6, @blobs_nearby))
+	{
+		for (int idx = 0; idx < blobs_nearby.size(); ++idx)
+		{
+			CBlob@ c_blob = blobs_nearby[idx];
+			if (c_blob is null) continue;
+
+			if (!c_blob.getShape().isStatic()) continue;
+
+			if (c_blob.getShape().getConsts().collidable) continue;
+
+			this.set_bool("collided with structure", true);
+		}
+	}
 
 	if (blob is null) return;
 		
-	if (this.getOldVelocity().Length()<4) return;
+	if (this.getOldVelocity().Length()<2) return;
 
-	this.server_Hit(blob, point1, this.getOldVelocity(), 5+this.getOldVelocity().Length(), Hitters::fall, true);
+	bool shielding = false;
+
+	if (blob !is null && blob.getConfig() == "knight")
+	{
+		KnightInfo@ knight;
+		if (!blob.get("knightInfo", @knight))
+		{
+			return;
+		}
+		ShieldVars@ shieldVars = getShieldVars(blob);
+		if (shieldVars is null) return;
+
+		Vec2f vec;
+		const int direction = blob.getAimDirection(vec);
+		bool shieldState = isShieldState(knight.state);
+
+		// if player is knight and his shield is upwards - spikes should ignore him
+		if (blob !is null &&
+			this !is null &&
+			//state == falling &&
+			blob.getConfig() == "knight" &&
+			shieldState &&
+			((knight.state == KnightStates::shielding && shieldVars.direction == this.getOldVelocity().RotateByDegrees(0)))
+			)
+		{
+			shielding = true;
+		}
+	}
+
+	if (shielding)
+	{
+		print("successfully shielded a flying tile");
+		this.server_Die();
+	}
+	else
+		this.server_Hit(blob, point1, this.getOldVelocity(), (5+this.getOldVelocity().Length())/4.5f, Hitters::fall, true);
 }
 
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params) 
