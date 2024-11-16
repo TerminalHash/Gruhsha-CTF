@@ -153,6 +153,16 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 		}
 	}
 }
+
+// Fix "Sticky Drill" meta
+bool canBePutInInventory(CBlob@ this, CBlob@ inventoryBlob) {
+	if (this.hasTag("exploding"))
+		return false;
+
+	return true;
+}
+
+
 /*
 bool canBePickedUp(CBlob@ this, CBlob@ byBlob)
 {
