@@ -157,10 +157,8 @@ void onTick(CRules@ this)
 
 	s32 gametime = getGameTime();
 
-	if (this.getCurrentState() == WARMUP)
-	{
-		if (getGameTime() == 60)
-		{
+	if (this.getCurrentState() == WARMUP) {
+		if (getGameTime() == 60) {
 			this.set_s32("teamwood" + 0, 6000);
 			this.Sync("teamwood" + 0, true);
 			this.set_s32("teamwood" + 1, 6000);
@@ -174,8 +172,7 @@ void onTick(CRules@ this)
 
 		u32 pog = 30 * 179;
 
-		if (getGameTime() == pog && this.hasTag("offi match"))
-		{
+		if (getGameTime() == pog && this.hasTag("offi match")) {
 			this.set_s32("teamwood" + 0, 1000);
 			this.Sync("teamwood" + 0, true);
 			this.set_s32("teamwood" + 1, 1000);
@@ -186,9 +183,7 @@ void onTick(CRules@ this)
 			this.set_s32("teamstone" + 1, 400);
 			this.Sync("teamstone" + 1, true);
 		}
-	}
-	else
-	{
+	} else {
 		CBlob@[] spots;
 		getBlobsByName(base_name(),   @spots);
 		getBlobsByName("outpost",	@spots);
@@ -196,8 +191,7 @@ void onTick(CRules@ this)
 		getBlobsByName("buildershop", @spots);
 		//getBlobsByName("archershop",  @spots);
 		// getBlobsByName("knightshop",  @spots);
-		for (uint step = 0; step < spots.length; ++step)
-		{
+		for (uint step = 0; step < spots.length; ++step) {
 			CBlob@ spot = spots[step];
 			if (spot is null) continue;
 
@@ -207,8 +201,7 @@ void onTick(CRules@ this)
 			string name = spot.getName();
 			bool isShop = (name.find("shop") != -1);
 
-			for (uint o_step = 0; o_step < overlapping.length; ++o_step)
-			{
+			for (uint o_step = 0; o_step < overlapping.length; ++o_step) {
 				CBlob@ overlapped = overlapping[o_step];
 				if (overlapped is null) continue;
 				
@@ -216,25 +209,30 @@ void onTick(CRules@ this)
 				CPlayer@ p = overlapped.getPlayer();
 				if (p is null) continue;
 
+				CBlob@ player_blob = p.getBlob();
+
+				u8 team = player_blob.getTeamNum();
+
 				string class_name = overlapped.getName();
 				
 				if (isShop && name.find(class_name) == -1) continue; // NOTE: builder doesn't get wood+stone at archershop, archer doesn't get arrows at buildershop
 
-				doGiveSpawnMats(this, p, overlapped);
+				if (this.get_s32("teamwood" + team) < 2000 && this.get_s32("teamstone" + team) < 1000)
+					doGiveSpawnMats(this, p, overlapped);
 			}
 		}
 	}
 
-	if (this.getCurrentState() == GAME) // automatic resupplies for builders
-	{
-		for (int i = 0; i < getPlayerCount(); i++)
-		{
+	if (this.getCurrentState() == GAME) { // automatic resupplies for builders
+		for (int i = 0; i < getPlayerCount(); i++) {
 			CPlayer@ player = getPlayer(i);
 			CBlob@ blob = player.getBlob();
 
-			if (blob !is null && blob.getConfig() == "builder")
-			{
-				doGiveSpawnMats(this, player, blob);
+			u8 team = blob.getTeamNum();
+
+			if (blob !is null && blob.getConfig() == "builder") {
+				if (this.get_s32("teamwood" + team) < 2000 && this.get_s32("teamstone" + team) < 1000)
+					doGiveSpawnMats(this, player, blob);
 			}
 		}
 	}
