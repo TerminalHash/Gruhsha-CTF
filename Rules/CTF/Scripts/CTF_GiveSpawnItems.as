@@ -210,6 +210,7 @@ void onTick(CRules@ this)
 				if (p is null) continue;
 
 				CBlob@ player_blob = p.getBlob();
+				if (player_blob is null) continue;
 
 				u8 team = player_blob.getTeamNum();
 
