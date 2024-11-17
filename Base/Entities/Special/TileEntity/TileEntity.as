@@ -1,5 +1,8 @@
 // TileEntity.as
 #include "Hitters.as"
+#include "KnightCommon.as";
+#include "ShieldCommon.as";
+#include "ParticleSparks.as";
 
 void onInit(CBlob@ this)
 {
@@ -79,10 +82,8 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 	}
 
 	CBlob@[] blobs_nearby;
-	if (getMap().getBlobsInRadius(this.getPosition(), 6, @blobs_nearby))
-	{
-		for (int idx = 0; idx < blobs_nearby.size(); ++idx)
-		{
+	if (getMap().getBlobsInRadius(this.getPosition(), 6, @blobs_nearby)) {
+		for (int idx = 0; idx < blobs_nearby.size(); ++idx) {
 			CBlob@ c_blob = blobs_nearby[idx];
 			if (c_blob is null) continue;
 
@@ -95,12 +96,44 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 		}
 	}
 
+	if (blob !is null && blob.getConfig() == "knight") {
+		KnightInfo@ knight;
+		if (!blob.get("knightInfo", @knight)) {
+			return;
+		}
+
+		ShieldVars@ shieldVars = getShieldVars(blob);
+		if (shieldVars is null) return;
+
+		bool shieldState = isShieldState(knight.state);
+
+		// if player is knight and his shield is upwards - spikes should ignore him
+		if (blob !is null &&
+			this !is null &&
+			blob.getConfig() == "knight" &&
+			shieldState &&
+			(	shieldVars.direction == Vec2f(-1, 0)  || // LEFT
+				shieldVars.direction == Vec2f(1, 0)   || // RIGHT
+				shieldVars.direction == Vec2f(1, -3)  || // UP RIGHT
+				shieldVars.direction == Vec2f(-1, -3) || // UP LEFT
+				shieldVars.direction == Vec2f(0, -1)     // UP
+			)){
+			Sound::Play("Entities/Characters/Knight/ShieldHit.ogg", this.getPosition());
+
+			this.set_bool("collided with shield", true);
+		}
+	}
 
 	if (blob is null) return;
 		
 	if (this.getOldVelocity().Length()<2) return;
 
-	this.server_Hit(blob, point1, this.getOldVelocity(), 5+this.getOldVelocity().Length(), Hitters::fall, true);
+	if (!this.get_bool("collided with shield")) {
+		this.server_Hit(blob, point1, this.getOldVelocity(), 5 + this.getOldVelocity().Length(), GruhshaHitters::tile_entity, true);
+	} else {
+		printf("Collided with shield!");
+		//this.server_Die();
+	}
 }
 
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params) 
@@ -110,7 +143,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 void onDie(CBlob@ this)
 {
 	if (this.get_bool("collided with structure")) {
-		printf("Tile Entity despawned");
+		//printf("Tile Entity despawned");
 		return;
 	} else {
 
