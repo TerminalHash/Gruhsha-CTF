@@ -764,7 +764,7 @@ bool HitBlob(CBlob@ this, Vec2f mapPos, CBlob@ hit_blob, f32 radius, f32 damage,
 		}
 	}
 
-	if (bother_raycasting) // have we already checked the rays?
+	if (bother_raycasting && this.getConfig() != "keg") // have we already checked the rays?
 	{
 		// no wall in front
 
