@@ -217,8 +217,13 @@ void onTick(CRules@ this)
 				
 				if (isShop && name.find(class_name) == -1) continue; // NOTE: builder doesn't get wood+stone at archershop, archer doesn't get arrows at buildershop
 
-				if (this.get_s32("teamwood" + team) < 2000 && this.get_s32("teamstone" + team) < 1000)
-					doGiveSpawnMats(this, p, overlapped);
+				if (this.get_u8("builders_limit") == 1) {
+					if (this.get_s32("teamwood" + team) < 2000 && this.get_s32("teamstone" + team) < 1000)
+						doGiveSpawnMats(this, p, overlapped);
+				} else if (this.get_u8("builders_limit") > 1) {
+					if (this.get_s32("teamwood" + team) < 4000 && this.get_s32("teamstone" + team) < 2000)
+						doGiveSpawnMats(this, p, overlapped);
+				}
 			}
 		}
 	}
@@ -231,8 +236,13 @@ void onTick(CRules@ this)
 			u8 team = blob.getTeamNum();
 
 			if (blob !is null && blob.getConfig() == "builder") {
-				if (this.get_s32("teamwood" + team) < 2000 && this.get_s32("teamstone" + team) < 1000)
-					doGiveSpawnMats(this, player, blob);
+				if (this.get_u8("builders_limit") == 1) {
+					if (this.get_s32("teamwood" + team) < 2000 && this.get_s32("teamstone" + team) < 1000)
+						doGiveSpawnMats(this, player, blob);
+				} else if (this.get_u8("builders_limit") > 1) {
+					if (this.get_s32("teamwood" + team) < 4000 && this.get_s32("teamstone" + team) < 2000)
+						doGiveSpawnMats(this, player, blob);
+				}
 			}
 		}
 	}
