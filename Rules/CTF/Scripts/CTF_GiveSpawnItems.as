@@ -232,7 +232,10 @@ void onTick(CRules@ this)
 	if (this.getCurrentState() == GAME) { // automatic resupplies for builders
 		for (int i = 0; i < getPlayerCount(); i++) {
 			CPlayer@ player = getPlayer(i);
+			if (player is null) continue;
+
 			CBlob@ blob = player.getBlob();
+			if (blob is null) return;
 
 			u8 team = blob.getTeamNum();
 
