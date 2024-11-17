@@ -33,7 +33,7 @@ void MakeParticle(CBlob@ this, const string filename = "LargeSmokeGray")
 
 	if (getRules().get_string("custom_boom_effects") == "off") return;
 
-	CParticle@ p = ParticleAnimated(filename, this.getPosition() + Vec2f(XORRandom(200) / 10.0f - 10.0f, XORRandom(200) / 10.0f - 10.0f), Vec2f(), float(XORRandom(360)), 0.2f * this.get_f32("flares") + (XORRandom(50) / 100.0f), 14, 0.0f, false);
+	CParticle@ p = ParticleAnimated(filename, this.getPosition() + Vec2f(XORRandom(200) / 10.0f - 10.0f, XORRandom(200) / 10.0f - 10.0f), Vec2f(), float(XORRandom(360)), 0.2f * this.get_f32("flares") + (XORRandom(50) / 100.0f), 5, 0.0f, false);
 	if (p !is null) {
 		//p.setRenderStyle(RenderStyle::additive);
 		p.Z=260+XORRandom(30)*0.01;
