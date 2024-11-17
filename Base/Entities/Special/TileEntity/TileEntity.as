@@ -131,7 +131,7 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 	if (!this.get_bool("collided with shield")) {
 		this.server_Hit(blob, point1, this.getOldVelocity(), 5 + this.getOldVelocity().Length(), Hitters::fall, true);
 	} else {
-		printf("Collided with shield!");
+		//printf("Collided with shield!");
 		//this.server_Die();
 	}
 }
