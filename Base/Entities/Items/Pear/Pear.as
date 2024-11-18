@@ -4,3 +4,7 @@ void onInit(CBlob@ this)
 	this.Tag("ignore_arrow");
 	this.Tag("ignore_saw");
 }
+
+void onTick(CSprite@ this) {
+	this.SetFacingLeft(false);
+}
