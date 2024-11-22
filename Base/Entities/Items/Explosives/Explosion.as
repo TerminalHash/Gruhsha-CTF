@@ -352,7 +352,7 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 										
 										if (!map.isTileSolid(tpos))
 										{
-											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/8)+2);
+											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/7));
 
 											for (int idx = 0; idx < max_hits; ++idx)
 											{
@@ -362,15 +362,21 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 										}
 										else
 										{
+											int castle_hp = 7;
 											int steel_account = (false?-5:0);
 											int castle_account = (map.isTileCastle(tile)?-2:0);
 
 											int	tile_type_account = castle_account;
 											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/8)+4+tile_type_account);
 
+											u16 type_to_spawn = tile;
+
 											for (int idx = 0; idx < max_hits; ++idx)
 											{
 												if (!canExplosionDamage(map, tpos, map.getTile(tpos).type)) break;
+												
+												//int current_tile_hp = castle_hp;
+												//bool should_destroy_earlier = max_hits >= current_tile_hp && idx >= (0.75f*current_tile_hp);
 												
 												//do the check BEFORE hitting
 												bool was_solid = map.isTileSolid(tpos);
@@ -382,6 +388,9 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 												//so if we killed an almost killed tile - nothing will happen
 												bool damaged_enough = idx > 0;
 												
+												//if (XORRandom(100) < (100.0f*(idx/max_hits)))
+												//	type_to_spawn = map.getTile(tpos).type;
+
 												//breaking the cycle
 												if (has_destroyed_solid_tile)
 												{
@@ -396,12 +405,16 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 															tileblob.SetDamageOwnerPlayer(killer);
 														}
 														
-														//tileblob.AddScript("MortarLaunched.as");
-														f32 flip_factor = (tpos.y>pos.y?1:1);
-														f32 angle_flip_factor = (tpos.y>pos.y?0:0);
+														Vec2f explosion_dir = tpos-pos;
+														explosion_dir.Normalize();
+														Vec2f ds_dir = Vec2f(0, 1);
+
+														f32 exp_dot = explosion_dir.x*ds_dir.x + explosion_dir.y*ds_dir.y;
+
+														f32 angle_factor_account = exp_dot >= 0.87 ? 180 : 0;
 														
-														tileblob.setVelocity(Vec2f(-radius/5*flip_factor, 0).RotateBy(-(pos-tpos).getAngle()+angle_flip_factor));
-														tileblob.set_s32("tile_frame", tile);
+														tileblob.setVelocity(Vec2f(-radius/3.5, 0).RotateBy(-(pos-tpos).getAngle()+angle_factor_account));
+														tileblob.set_s32("tile_frame", type_to_spawn);
 													}
 													break;
 												}
@@ -417,6 +430,19 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 			}
 
 			//end loops
+			
+			//hit blobs
+			CBlob@[] tile_entities_around;
+			if (map.getBlobsInRadius(pos, this.get_f32("map_damage_radius"), @tile_entities_around))
+			{
+				for (int idx = 0; idx < tile_entities_around.size(); ++idx)
+				{
+					CBlob@ e_tile = tile_entities_around[idx];
+					if (e_tile is null) continue;
+					
+					e_tile.setVelocity(Vec2f(-radius/5, 0).RotateBy(-(pos-e_tile.getPosition()).getAngle()));
+				}
+			}
 		}
 
 		//hit blobs
@@ -750,6 +776,8 @@ bool HitBlob(CBlob@ this, Vec2f mapPos, CBlob@ hit_blob, f32 radius, f32 damage,
         return false;
     }
 
+	f32 map_radius = this.get_f32("map_damage_radius");
+
 	Vec2f pos = this.getPosition();
 	CMap@ map = this.getMap();
 	Vec2f hit_blob_pos = hit_blob.getPosition();
@@ -764,7 +792,7 @@ bool HitBlob(CBlob@ this, Vec2f mapPos, CBlob@ hit_blob, f32 radius, f32 damage,
 		}
 	}
 
-	if (bother_raycasting && this.getConfig() != "keg") // have we already checked the rays?
+	if (bother_raycasting) // have we already checked the rays?
 	{
 		// no wall in front
 
@@ -810,11 +838,16 @@ bool HitBlob(CBlob@ this, Vec2f mapPos, CBlob@ hit_blob, f32 radius, f32 damage,
                         }
                         continue;
                     }
+					
+					//printf("radius "+map_radius+" diff "+(map_radius-(hi.hitpos-pos).Length())+" radperc "+(radius));
 
 					// only shield and heavy things block explosions
-					if (hi.blob.hasTag("heavy weight") ||
-					        hi.blob.getMass() > 500 || hi.blob.getShape().isStatic() ||
-					        (hi.blob.hasTag("shielded") && blockAttack(hi.blob, hitvec, 0.0f)))
+					if (
+							hi.blob.hasTag("heavy weight")
+							|| hi.blob.getMass() > 500
+							|| hi.blob.getShape().isStatic() && (map_radius-radius)<=0
+							|| (hi.blob.hasTag("shielded") && blockAttack(hi.blob, hitvec, 0.0f))
+						)
 					{
 						return false;
 					}

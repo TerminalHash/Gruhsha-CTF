@@ -9,6 +9,7 @@ void onInit(CBlob@ this)
 	this.server_SetTimeToDie(10);
 	
 	this.Tag("no mortar rotations");
+	this.Tag("collides_over_crouching");
 }
 
 void SetTileFrame(CBlob@ this)
@@ -41,8 +42,30 @@ void RotateOnFly(CBlob@ this)
 	
 }
 
+void CollapsingTileLogic(CBlob@ this)
+{
+	if (!this.hasTag("collapsing_tile")) return;
+	if (this.getTickSinceCreated()>15)
+	{
+		StartCollapsing(this);
+		return;
+	}
+
+	this.getShape().SetGravityScale(0);
+}
+
+void StartCollapsing(CBlob@ this)
+{
+	if (this.hasTag("started_collapsing")) return;
+	this.getShape().SetGravityScale(1);
+	this.setPosition(this.getPosition()+Vec2f(XORRandom(80)-40, 0)*0.03f);
+	this.Tag("started_collapsing");
+}
+
 void onTick(CBlob@ this)
 {
+	CollapsingTileLogic(this);
+
 	if (!this.hasTag("no_rotations"))
 		RotateOnFly(this);
 	
@@ -61,6 +84,12 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 			{
 				this.getShape().PutOnGround();
 				this.server_Die();
+
+				f32 max_hits = this.getVelocity().Length()*1.5+XORRandom(2);
+				for (int idx = 0; idx < max_hits; ++idx)
+				{
+					getMap().server_DestroyTile(vel_pos+Vec2f(0, 8), 1.0f, this);
+				}
 			}
 			else
 				this.server_SetTimeToDie(3);
@@ -82,6 +111,7 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 	}
 
 	CBlob@[] blobs_nearby;
+	if (this.getVelocity().Length()<3)
 	if (getMap().getBlobsInRadius(this.getPosition(), 6, @blobs_nearby)) {
 		for (int idx = 0; idx < blobs_nearby.size(); ++idx) {
 			CBlob@ c_blob = blobs_nearby[idx];
@@ -128,6 +158,8 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 		
 	if (this.getOldVelocity().Length()<2) return;
 
+	if (blob.hasTag("player") && blob.getPosition().y < this.getPosition().y && this.getVelocity().y>=0) return;
+
 	if (!this.get_bool("collided with shield")) {
 		this.server_Hit(blob, point1, this.getOldVelocity(), (5 + this.getOldVelocity().Length()) / 4.5f, Hitters::fall, true);
 	} else {
@@ -149,7 +181,10 @@ void onDie(CBlob@ this)
 
 	//if (!this.isOnGround()) return;
 	//if (getMap().getSector("no build") !is null) return;
-		getMap().server_SetTile(this.getPosition(), this.get_s32("tile_frame"));
+		if (getMap().isTileSolid(this.getPosition()+Vec2f(0, 8)))
+		{
+			getMap().server_SetTile(this.getPosition(), this.get_s32("tile_frame"));
+		}
 	}
 	
 	return;

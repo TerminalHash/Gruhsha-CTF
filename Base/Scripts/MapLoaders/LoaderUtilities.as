@@ -12,12 +12,12 @@ bool onMapTileCollapse(CMap@ map, u32 offset)
 
 	if (!was_solid) return true;
 	
-	CBlob@ tileblob = server_CreateBlob("tileentity", -3, pos);
+	CBlob@ tileblob = server_CreateBlob("tileentity", -3, pos+Vec2f(1, 2)*map.tilesize/2);
 	if (tileblob is null) return true;
 
 	tileblob.getShape().SetGravityScale(0.4f);
 	tileblob.Tag("no_rotations");
-	tileblob.setPosition(pos+Vec2f(XORRandom(80)-40, 0)*0.03f);
+	tileblob.Tag("collapsing_tile");
 	
 	tileblob.set_s32("tile_frame", type);
 	tileblob.set_u32("tile_flags", map.getTileFlags(offset));
