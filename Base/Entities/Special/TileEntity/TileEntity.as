@@ -149,16 +149,18 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 		if (blob !is null &&
 			this !is null &&
 			blob.getConfig() == "knight" &&
-			shieldState &&
-			(	shieldVars.direction == Vec2f(-1, 0)  || // LEFT
-				shieldVars.direction == Vec2f(1, 0)   || // RIGHT
-				shieldVars.direction == Vec2f(1, -3)  || // UP RIGHT
-				shieldVars.direction == Vec2f(-1, -3) || // UP LEFT
-				shieldVars.direction == Vec2f(0, -1)     // UP
-			)){
-			Sound::Play("Entities/Characters/Knight/ShieldHit.ogg", this.getPosition());
+			shieldState) {
 
-			this.set_bool("collided with shield", true);
+			Vec2f tileVec = this.getVelocity();
+			tileVec.Normalize();
+			Vec2f shieldVec = shieldVars.direction;
+			shieldVec.Normalize();
+			f32 dot = tileVec.x * shieldVec.x + tileVec.y * shieldVec.y;
+
+			if(dot < -0.71) {
+				Sound::Play("Entities/Characters/Knight/ShieldHit.ogg", this.getPosition());
+				this.set_bool("collided with shield", true);
+			}
 		}
 	}
 
