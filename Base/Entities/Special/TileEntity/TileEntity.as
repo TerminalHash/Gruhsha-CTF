@@ -1,5 +1,6 @@
 // TileEntity.as
 #include "Hitters.as"
+#include "GruhshaHitters.as"
 #include "KnightCommon.as";
 #include "ShieldCommon.as";
 #include "ParticleSparks.as";
@@ -161,7 +162,7 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 	if (blob.hasTag("player") && blob.getPosition().y < this.getPosition().y && this.getVelocity().y>=0) return;
 
 	if (!this.get_bool("collided with shield")) {
-		this.server_Hit(blob, point1, this.getOldVelocity(), (5 + this.getOldVelocity().Length()) / 4.5f, Hitters::fall, true);
+		this.server_Hit(blob, point1, this.getOldVelocity(), (5 + this.getOldVelocity().Length()) / 4.5f, GruhshaHitters::tile_entity, true);
 	} else {
 		//printf("Collided with shield!");
 		//this.server_Die();

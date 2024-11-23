@@ -1,6 +1,7 @@
 // SHOW KILL MESSAGES ON CLIENT
 
 #include "Hitters.as";
+#include "GruhshaHitters.as";
 #include "TeamColour.as";
 #include "HoverMessage.as";
 #include "AssistCommon.as";
@@ -190,6 +191,9 @@ class KillFeed
 				case Hitters::drill:			hitterIcon = "$killfeed_drill$"; break;
 				case Hitters::saw:				hitterIcon = "$killfeed_saw$"; break;
 
+				// Custom hitters
+				case GruhshaHitters::tile_entity:		hitterIcon = "$killfeed_tile_entity$"; break;
+
 				default: 						hitterIcon = "$killfeed_fall$";
 			}
 
@@ -277,6 +281,9 @@ void onInit(CRules@ this)
 
 	AddIconToken("$killfeed_drill$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 19);
 	AddIconToken("$killfeed_saw$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 20);
+
+	// Custom hitters
+	AddIconToken("$killfeed_tile_entity$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 24);
 }
 
 void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customdata)
