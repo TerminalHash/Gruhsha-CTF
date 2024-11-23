@@ -75,25 +75,32 @@ void onTick(CBlob@ this)
 
 void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point1, Vec2f point2 )
 {
+	if (this.hasTag("collapsing_tile") && this.getTickSinceCreated()<15) return;
+
 	if (solid)
 	{
 		if (this.getVelocity().Length()<3)
 		{
 			Vec2f vel_pos = this.getPosition()-this.getOldVelocity();
-			
-			if (getMap().isTileSolid(vel_pos+Vec2f(0, 8)))
-			{
-				this.getShape().PutOnGround();
-				this.server_Die();
 
-				f32 max_hits = this.getVelocity().Length()*1.5+XORRandom(2);
-				for (int idx = 0; idx < max_hits; ++idx)
+			for (int idx = 0; idx < 4; ++idx)
+			{
+				Vec2f dir = Vec2f(8, 0).RotateBy(90*idx);
+				
+				if (getMap().hasSupportAtPos(this.getPosition()+dir))
 				{
-					getMap().server_DestroyTile(vel_pos+Vec2f(0, 8), 1.0f, this);
+					this.getShape().PutOnGround();
 				}
+				
+				this.server_SetTimeToDie(0.5f);
 			}
-			else
-				this.server_SetTimeToDie(3);
+			f32 max_hits = 2+this.getVelocity().Length()*1.5;
+			for (int idx = 0; idx < max_hits; ++idx)
+			{
+				Vec2f tile_pos = this.getPosition()+this.getOldVelocity().Normalize()*8;
+				if (getMap().isTileSolid(tile_pos)&&!getMap().isTileGroundStuff(getMap().getTile(tile_pos).type))
+					getMap().server_DestroyTile(tile_pos, 1.0f, this);
+			}
 		}
 		else if (this.getVelocity().Length()>=0.2f)
 		{
@@ -162,10 +169,26 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 	if (blob.hasTag("player") && blob.getPosition().y < this.getPosition().y && this.getVelocity().y>=0) return;
 
 	if (!this.get_bool("collided with shield")) {
-		this.server_Hit(blob, point1, this.getOldVelocity(), (5 + this.getOldVelocity().Length()) / 4.5f, GruhshaHitters::tile_entity, true);
+		
+		f32 tile_damage = (5 + this.getOldVelocity().Length()) / 4.5f;
+		bool hitting_important_thing = false;
+
+		if (!blob.hasTag("flesh"))
+		{
+			if (blob.hasTag("building"))
+			{
+				hitting_important_thing = true;
+				tile_damage /= 2;
+			}
+			else
+				tile_damage *= 3;
+		}
+		
+		this.server_Hit(blob, point1, this.getOldVelocity(), tile_damage, GruhshaHitters::tile_entity, true);
+		if (hitting_important_thing)
+			this.server_Die();
 	} else {
 		//printf("Collided with shield!");
-		//this.server_Die();
 	}
 }
 
@@ -178,11 +201,25 @@ void onDie(CBlob@ this)
 	if (this.get_bool("collided with structure")) {
 		//printf("Tile Entity despawned");
 		return;
-	} else {
+	}
+	else
+	{
+		bool should_be_placed = false;
 
-	//if (!this.isOnGround()) return;
-	//if (getMap().getSector("no build") !is null) return;
-		if (getMap().isTileSolid(this.getPosition()+Vec2f(0, 8)))
+		//if (getMap().isTileSolid(this.getPosition()+Vec2f(0, 8)))
+		//	should_be_placed = true;
+		//
+		//for (int idx = 0; idx < 16; idx += 4)
+		//if (getMap().isTileBackgroundNonEmpty(getMap().getTile(this.getPosition()+Vec2f(-8+idx, 0))))
+		//	should_be_placed = true;
+		for (int idx = 0; idx < 4; ++idx)
+		{
+			Vec2f dir = Vec2f(8, 0).RotateBy(90*idx);
+			if (getMap().hasSupportAtPos(this.getPosition()+dir))
+				should_be_placed = true;
+		}
+
+		if (should_be_placed)
 		{
 			getMap().server_SetTile(this.getPosition(), this.get_s32("tile_frame"));
 		}

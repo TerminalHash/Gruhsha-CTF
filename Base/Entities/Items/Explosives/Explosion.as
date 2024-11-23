@@ -248,6 +248,8 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 			int tile_rad = int(map_damage_radius / map.tilesize) + 1;
 			f32 rad_thresh = map_damage_radius * map_damage_ratio;
 
+			CBlob@ collapse_checker = server_CreateBlob("collapsechecker", -3, pos);
+		
 			//explode outwards
 			for (int x_step = 0; x_step <= tile_rad; ++x_step)
 			{
@@ -327,8 +329,8 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 
                                             }*/
 
-                                            canHit = false;
-                                            break;
+                                            //canHit = false;
+                                            //break;
                                         }
 
                                         if(map.isTileSolid(hi.tile))
@@ -370,6 +372,12 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/8)+4+tile_type_account);
 
 											u16 type_to_spawn = tile;
+
+											
+											if (collapse_checker !is null)
+											{
+												collapse_checker.set_f32("expl_radius", radius);
+											}
 
 											for (int idx = 0; idx < max_hits; ++idx)
 											{
@@ -430,21 +438,6 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 			}
 
 			//end loops
-			
-			//hit blobs
-			CBlob@[] tile_entities_around;
-			if (map.getBlobsInRadius(pos, this.get_f32("map_damage_radius"), @tile_entities_around))
-			{
-				for (int idx = 0; idx < tile_entities_around.size(); ++idx)
-				{
-					CBlob@ e_tile = tile_entities_around[idx];
-					if (e_tile is null) continue;
-
-					if (e_tile.getConfig() != "tileentity") continue;
-					
-					e_tile.setVelocity(Vec2f(-radius/5, 0).RotateBy(-(pos-e_tile.getPosition()).getAngle()));
-				}
-			}
 		}
 
 		//hit blobs
