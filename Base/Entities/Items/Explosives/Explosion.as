@@ -439,6 +439,8 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 				{
 					CBlob@ e_tile = tile_entities_around[idx];
 					if (e_tile is null) continue;
+
+					if (e_tile.getConfig() != "tileentity") continue;
 					
 					e_tile.setVelocity(Vec2f(-radius/5, 0).RotateBy(-(pos-e_tile.getPosition()).getAngle()));
 				}
