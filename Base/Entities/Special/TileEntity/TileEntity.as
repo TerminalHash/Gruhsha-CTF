@@ -79,7 +79,25 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 
 	if (solid)
 	{
-		if (this.getVelocity().Length()<3)
+		f32 max_hits = this.getOldVelocity().Length();
+		//
+		{
+			HitInfo@[] hitInfos;
+			if(getMap().getHitInfosFromRay(this.getPosition(), (point2-this.getPosition()).AngleDegrees(), 12, this, hitInfos))
+			{
+				for (int idx = 0; idx < hitInfos.size(); ++idx)
+				{
+					HitInfo@ hi = hitInfos[idx];
+					if (hi.blob !is null) continue;
+					
+					for (int hit_i = 0; hit_i < max_hits; ++hit_i)
+						getMap().server_DestroyTile(hi.hitpos, 1.0f, this);
+					break;
+				}
+			}
+		}
+
+		if (this.getOldVelocity().Length()<3)
 		{
 			Vec2f vel_pos = this.getPosition()-this.getOldVelocity();
 
@@ -87,22 +105,16 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 			{
 				Vec2f dir = Vec2f(8, 0).RotateBy(90*idx);
 				
-				if (getMap().hasSupportAtPos(this.getPosition()+dir))
+				if (getMap().hasSupportAtPos(this.getPosition()+dir) && blob is null)
 				{
 					this.getShape().PutOnGround();
+					this.server_Die();
 				}
-				
-				this.server_SetTimeToDie(0.5f);
-			}
-			f32 max_hits = 2+this.getVelocity().Length()*1.5;
-			for (int idx = 0; idx < max_hits; ++idx)
-			{
-				Vec2f tile_pos = this.getPosition()+this.getOldVelocity().Normalize()*8;
-				if (getMap().isTileSolid(tile_pos)&&!getMap().isTileGroundStuff(getMap().getTile(tile_pos).type))
-					getMap().server_DestroyTile(tile_pos, 1.0f, this);
+				else
+					this.server_SetTimeToDie(3);
 			}
 		}
-		else if (this.getVelocity().Length()>=0.2f)
+		else if (this.getOldVelocity().Length()>=0.2f)
 		{
 			string[] hit_sounds =
 			{
@@ -115,22 +127,6 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 		else
 		{
 			this.setPosition(this.getPosition()+Vec2f(XORRandom(8)-4, 0));
-		}
-	}
-
-	CBlob@[] blobs_nearby;
-	if (this.getVelocity().Length()<3)
-	if (getMap().getBlobsInRadius(this.getPosition(), 6, @blobs_nearby)) {
-		for (int idx = 0; idx < blobs_nearby.size(); ++idx) {
-			CBlob@ c_blob = blobs_nearby[idx];
-			if (c_blob is null) continue;
-
-			if (!c_blob.getShape().isStatic()) continue;
-
-			if (c_blob.getShape().getConsts().collidable) continue;
-
-			this.set_bool("collided with structure", true);
-			//printf("Colliding with structure");
 		}
 	}
 
@@ -198,13 +194,31 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
 }
 
+bool shouldBePlacedOnDeath(CBlob@ this)
+{
+	CBlob@[] blobs_nearby;
+
+	if (getMap().getBlobsInRadius(this.getPosition(), 6, @blobs_nearby)) {
+		for (int idx = 0; idx < blobs_nearby.size(); ++idx) {
+			CBlob@ c_blob = blobs_nearby[idx];
+			if (c_blob is null) continue;
+
+			if (!c_blob.getShape().isStatic()) continue;
+
+			if (c_blob.getShape().getConsts().collidable) continue;
+
+			printf("Colliding with structure");
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void onDie(CBlob@ this)
 {
-	if (this.get_bool("collided with structure")) {
-		//printf("Tile Entity despawned");
-		return;
-	}
-	else
+	if (shouldBePlacedOnDeath(this)) return;
+
 	{
 		bool should_be_placed = false;
 

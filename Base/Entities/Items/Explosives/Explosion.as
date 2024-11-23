@@ -372,7 +372,6 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/8)+4+tile_type_account);
 
 											u16 type_to_spawn = tile;
-
 											
 											if (collapse_checker !is null)
 											{
