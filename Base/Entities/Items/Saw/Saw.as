@@ -123,7 +123,7 @@ void Blend(CBlob@ this, CBlob@ tobeblended)
 
 			if (this !is null)
 			{
-				getRules().add_s32("teamwood" + team, 35);
+				getRules().add_s32("teamwood" + team, 50);
 				getRules().Sync("teamwood" + team, true);
 			}
 		}
