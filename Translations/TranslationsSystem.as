@@ -96,6 +96,7 @@ namespace Descriptions
 	slideminedesc					= Translate(en::d_slideminedesc+"\\"+ru::d_slideminedesc),
 	icebombdesc						= Translate(en::d_icebombdesc+"\\"+ru::d_icebombdesc),
 	fumokegdesc						= Translate(en::d_fumokegdesc+"\\"+ru::d_fumokegdesc),
+	boosterdesc						= Translate(en::d_boosterdesc+"\\"+ru::d_boosterdesc),
 
 	// Satchel.as
 	satcheldesc			  	       	= Translate(en::d_satcheldesc+"\\"+ru::d_satcheldesc),
@@ -200,6 +201,7 @@ namespace Names
 	goldenminenmb						= Translate(en::n_goldenminenmb+"\\"+ru::n_goldenminenmb),
 	icebombnmb							= Translate(en::n_icebombnmb+"\\"+ru::n_icebombnmb),
 	slideminenmb						= Translate(en::n_slideminenmb+"\\"+ru::n_slideminenmb),
+	boosternmb							= Translate(en::n_boosternmb+"\\"+ru::n_boosternmb),
 	fumokegnmb							= Translate(en::n_fumokegnmb+"\\"+ru::n_fumokegnmb),
 
 			// Builder Shop
@@ -288,6 +290,7 @@ namespace Names
 	slidemine							= Translate(en::n_slidemine+"\\"+ru::n_slidemine),
 	icebomb								= Translate(en::n_icebomb+"\\"+ru::n_icebomb),
 	fumokegname							= Translate(en::n_fumokegname+"\\"+ru::n_fumokegname),
+	booster								= Translate(en::n_booster+"\\"+ru::n_booster),
 
 	// KIWI_Playercard.as
 	medalsn		  	       				= Translate(en::n_medalsn+"\\"+ru::n_medalsn),

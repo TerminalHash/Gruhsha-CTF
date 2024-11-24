@@ -90,6 +90,7 @@ namespace ru
 	d_slideminedesc							= "Менее прочная версия обычной мины, взводится в боевое состояние при движении.",
 	d_icebombdesc							= "Снежный шар с мини-кегой внутри, способен замедлить противника на небольшое время.",
 	d_fumokegdesc							= "Последнее, что вы сможете увидеть в своей жизни.",
+	d_boosterdesc							= "Бутылка сжатого воздуха, толкающая предметы и игроков в противополжную от вас сторону.",
 
 	// Satchel.as
 	d_satcheldesc							= "Поджигает горючие блоки, активируется при помощи клавиши броска",
@@ -192,6 +193,7 @@ namespace ru
 	n_goldenminenmb							= "Золотая мина",
 	n_icebombnmb							= "Ледяная бомба",
 	n_slideminenmb							= "Слайд-мина",
+	n_boosternmb							= "Бустер",
 	n_fumokegnmb							= "Фумо-кега",
 
 			// Builder Shop
@@ -280,6 +282,7 @@ namespace ru
 	n_slidemine							    = "Слайд-мина",
 	n_icebomb								= "Ледяная бомба",
 	n_fumokegname							= "Фумо-кега",
+	n_booster								= "Бустер",
 
 	// KIWI_Playercard.as
 	n_medalsn								= "Медали",

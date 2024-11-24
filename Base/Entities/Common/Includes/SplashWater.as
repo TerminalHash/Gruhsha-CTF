@@ -5,7 +5,9 @@ void Splash(CBlob@ this, const uint splash_halfwidth, const uint splash_halfheig
 {
 	//extinguish fire
 	CMap@ map = this.getMap();
-	Sound::Play("SplashSlow.ogg", this.getPosition(), 3.0f);
+	if (this.getConfig() != "booster") {
+		Sound::Play("SplashSlow.ogg", this.getPosition(), 3.0f);
+	}
 
 
     //bool raycast = this.hasTag("splash ray cast");
@@ -39,7 +41,8 @@ void Splash(CBlob@ this, const uint splash_halfwidth, const uint splash_halfheig
 				        y_step >= -splash_halfheight && y_step < splash_halfheight &&
 				        (random_fact || y_step == 0 || x_step == 0))
 				{
-					map.SplashEffect(wpos, Vec2f(0, 10), 8.0f);
+					if (this.getConfig() != "booster")
+						map.SplashEffect(wpos, Vec2f(0, 10), 8.0f);
 				}
 			}
 		}

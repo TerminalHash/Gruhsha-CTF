@@ -26,7 +26,7 @@ void Take(CBlob@ this, CBlob@ blob)
 		}
 	}
 
-    if (blobName == "mat_bombs" || (blobName == "satchel" && !blob.hasTag("exploding")) || blobName == "mat_waterbombs" || blobName == "mat_stickybombs" || blobName == "mat_icebombs")
+    if (blobName == "mat_bombs" || (blobName == "satchel" && !blob.hasTag("exploding")) || blobName == "mat_waterbombs" || blobName == "mat_stickybombs" || blobName == "mat_icebombs" || blobName == "mat_boosters")
     {
 		CPlayer@ p = this.getPlayer();
 

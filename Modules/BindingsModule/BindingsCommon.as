@@ -84,6 +84,7 @@ string[][] button_texts =
 		Names::goldenminenmb,
 		Names::icebombnmb,
 		Names::slideminenmb,
+		Names::boosternmb,
 		Names::fumokegnmb
 	},
 	{							// ARCHER SHOP
@@ -195,6 +196,7 @@ string[][] button_file_names =
 		"k_icebomb",
 		"k_goldmine",
 		"k_slidemine",
+		"k_booster",
 		"k_fumokeg"
 	},
 	{

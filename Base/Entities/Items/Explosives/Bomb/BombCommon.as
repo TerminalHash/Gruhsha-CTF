@@ -39,13 +39,20 @@ bool UpdateBomb(CBlob@ this)
 		SColor lightColor;
 		const u8 hitter = this.get_u8("custom_hitter");
 
-		if (hitter == Hitters::water || this.getConfig() == "icebomb")
+		if (hitter == Hitters::water || this.getConfig() == "icebomb" || this.getConfig() == "booster")
 		{
-			this.getSprite().SetEmitSound("WaterSparkle.ogg");
-			this.getSprite().SetEmitSoundPaused(false);
+			if (this.getConfig() != "booster") {
+				this.getSprite().SetEmitSound("WaterSparkle.ogg");
+				this.getSprite().SetEmitSoundPaused(false);
+			} else {
+				this.getSprite().SetEmitSound("compressedair.ogg");
+				this.getSprite().SetEmitSoundPaused(false);
+			}
 
 			if (this.getConfig() == "waterbomb") {
 				lightColor = isHalloween() ? SColor(255, 100, 113, 96) : SColor(255, 44, 175, 222);
+			} else if (this.getConfig() == "booster") {
+				this.SetLight(false);
 			} else {
 				lightColor = SColor(255, 44, 175, 222);
 			}
@@ -58,7 +65,7 @@ bool UpdateBomb(CBlob@ this)
 			this.SetLightColor(lightColor);
 		}
 
-		if (XORRandom(2) == 0)
+		if (XORRandom(2) == 0 && this.getConfig() != "booster")
 		{
 			sparks(this.getPosition(), this.getAngleDegrees(), 3.5f + (XORRandom(10) / 5.0f), lightColor);
 		}

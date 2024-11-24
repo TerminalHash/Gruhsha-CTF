@@ -121,6 +121,10 @@ void onInit(CBlob@ this)
 		AddRequirement(s.requirements, "buy delay", "slidemine", "Slide Mine");
 	}
 	{
+		ShopItem@ s = addShopItem(this, Names::booster, "$booster$", "mat_boosters", Descriptions::boosterdesc, true);
+		AddRequirement(s.requirements, "coin", "", "Coins", 30);
+	}
+	{
 		ShopItem@ s = addShopItem(this, Names::fumokegname, getTeamIcon("fumokeg", "FumoKegIcon.png", team_num, Vec2f(16, 16), 0), "fumokeg", Descriptions::fumokegdesc, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::fumokeg);
 		AddRequirement(s.requirements, "blob", "mat_gold", "Gold", CTFCosts::fumokeg_gold);

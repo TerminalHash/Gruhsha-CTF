@@ -22,6 +22,10 @@ void onInit(CBlob@ this)
 	{
 		SetupBomb(this, bomb_fuse, 48.0f, 3.0f, 24.0f, 0.5f, true);
 	}
+	else if (this.getConfig() == "booster")
+	{
+		SetupBomb(this, bomb_fuse, 48.0f, 3.0f, 24.0f, 0.5f, true);
+	}
 	else
 	{
 		SetupBomb(this, bomb_fuse, 48.0f, 3.0f, 24.0f, 0.5f, true);
@@ -115,7 +119,7 @@ bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
 		const u8 hitter = this.get_u8("custom_hitter");
 
 		//all water bombs collide with enemies
-		if (hitter == Hitters::water || this.getConfig() == "icebomb")
+		if (hitter == Hitters::water || this.getConfig() == "icebomb" || this.getConfig() == "booster")
 			return blob.getTeamNum() != this.getTeamNum();
 
 		//collide with shielded enemies

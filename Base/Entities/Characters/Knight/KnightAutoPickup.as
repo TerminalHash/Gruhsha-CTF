@@ -16,7 +16,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 
 	string blobName = blob.getName();
 
-	if (blobName == "mat_bombs" || (blobName == "satchel" && !blob.hasTag("exploding")) || blobName == "mat_waterbombs" || blobName == "mat_stickybombs" || blobName == "mat_icebombs")
+	if (blobName == "mat_bombs" || (blobName == "satchel" && !blob.hasTag("exploding")) || blobName == "mat_waterbombs" || blobName == "mat_stickybombs" || blobName == "mat_icebombs" || blobName == "mat_boosters")
 	{
 		if (this.server_PutInInventory(blob))
 		{

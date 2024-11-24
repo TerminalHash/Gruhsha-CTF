@@ -114,9 +114,13 @@ void onTick(CBlob@ this)
 					wanna_buy = true;
 					item_id	= 9;
 				}
-				if (b_KeyJustPressed("k_fumokeg")) {
+				if (b_KeyJustPressed("k_booster")) {
 					wanna_buy = true;
 					item_id	= 10;
+				}
+				if (b_KeyJustPressed("k_fumokeg")) {
+					wanna_buy = true;
+					item_id	= 11;
 				}
 
 				if (wanna_buy) {
@@ -471,6 +475,7 @@ void onRender(CSprite@ this)
 		"k_icebomb",
 		"k_goldmine",
 		"k_slidemine",
+		"k_booster",
 		"k_fumokeg"
 		};
 

@@ -90,6 +90,7 @@ namespace en
 	d_slideminedesc							= "A less durable version of the regular mine, can be primed while moving.",
 	d_icebombdesc							= "A snow globe with a mini-keg inside, capable of slowing down an opponent for a small amount of time.",
 	d_fumokegdesc							= "The last thing, you'll be able to see in your life.",
+	d_boosterdesc							= "Bottle of compressed air that pushes objects and players in the opposite direction from you.",
 
 	// Satchel.as
 	d_satcheldesc							= "Ignites flammable blocks, activated by throw key",
@@ -192,6 +193,7 @@ namespace en
 	n_goldenminenmb							= "Golden Mine",
 	n_icebombnmb							= "Ice Bomb",
 	n_slideminenmb							= "Slide Mine",
+	n_boosternmb							= "Booster",
 	n_fumokegnmb							= "Fumo Keg",
 
 			// Builder Shop
@@ -280,6 +282,7 @@ namespace en
 	n_slidemine							    = "Slide Mine",
 	n_icebomb								= "Ice Bomb",
 	n_fumokegname							= "Fumo Keg",
+	n_booster								= "Booster",
 
 	// KIWI_Playercard.as
 	n_medalsn								= "Medals",
