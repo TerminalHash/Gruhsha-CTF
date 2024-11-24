@@ -115,7 +115,7 @@ class SpawnCommand : BlobCommand
 			return;
 		}
 
-		if (blobName == "cirnu")
+		if (blobName == "cirnu" || blobName == "noko")
 		{
 			server_AddToChat("You not allowed to spawn fumo", ConsoleColour::ERROR, player);
 			return;
@@ -157,5 +157,32 @@ class GiveCirnu : BlobCommand
 	{
 		u8 team = player.getBlob().getTeamNum();
 		CBlob@ newBlob = server_CreateBlob("cirnu", team, pos + Vec2f(0, -5));
+	}
+}
+
+class GiveNoko : BlobCommand
+{
+	GiveNoko()
+	{
+		super("noko", "Spawn Noko Fumo");
+		AddAlias("shikanoko");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		if (player.getUsername() == "TerminalHash") {
+			return true;
+		}
+		/*return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);*/
+		return false;
+	}
+
+	void SpawnBlobAt(Vec2f pos, string[] args, CPlayer@ player)
+	{
+		u8 team = player.getBlob().getTeamNum();
+		CBlob@ newBlob = server_CreateBlob("noko", team, pos + Vec2f(0, -5));
 	}
 }

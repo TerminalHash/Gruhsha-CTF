@@ -55,6 +55,7 @@ void RegisterDefaultChatCommands(ChatCommandManager@ manager)
 	manager.RegisterCommand(SpawnCommand());
 	manager.RegisterCommand(TimeCommand());
 	manager.RegisterCommand(GiveCirnu());
+	manager.RegisterCommand(GiveNoko());
 	manager.RegisterCommand(AddMatchTime());
 	manager.RegisterCommand(AddMatchTimeMinutes());
 	manager.RegisterCommand(ToggleSuddenDeath());
