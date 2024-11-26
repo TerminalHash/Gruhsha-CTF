@@ -1,5 +1,5 @@
-#include "HolidayCommon"
-#include "pathway.as"
+// HeadCommon.as
+#include "HolidayCommon.as"
 
 const s32 NUM_HEADFRAMES = 4;
 const s32 NUM_UNIQUEHEADS = 30;
@@ -11,10 +11,10 @@ int getHeadSpecs(CPlayer@ player, string &out head_file)
 	if (player is null)
 	{
 		head_file = "Entities/Characters/Sprites/Heads.png";
-		return (NUM_UNIQUEHEADS+2)*NUM_HEADFRAMES; //knight male head
+		return (NUM_UNIQUEHEADS + 2) * NUM_HEADFRAMES; //knight male head
 		return 255;
 	}
-
+	
 	int headIndex = player.getHead();
 
 	// get dlc pack info
@@ -36,23 +36,40 @@ int getHeadSpecs(CPlayer@ player, string &out head_file)
 		u8 head_idx = 0;
 		if (player !is null)
 		{
-			string file_path = getPath() + "Base/Entities/Characters/Sprites/CustomHeads/";
-			string head_file = file_path + player.getUsername() + ".png";
-
+			string head_file = player.getUsername() + ".png";
+				
 			bool customFileExists = CFileMatcher(head_file).hasMatch();
 			bool isHeadValid = false;
 			if (customFileExists) {
 				//isHeadValid = CFileImage(head_file).getWidth()==64;
-				isHeadValid = CFileMatcher(head_file).getFirst().find("Headpacks")>-1;
+				string gruhsha_heads = "PersonalHeads";
+				string vanilla_heads = "CustomHeads";
+				string bot_heads = "BotHeads";
+				
+				bool bot_has_head = player.isBot() && CFileMatcher(head_file).getFirst().find(bot_heads + "/" + player.getUsername() + ".png") > -1;
+				bool has_head_in_gruhsha = CFileMatcher(head_file).getFirst().find(gruhsha_heads + "/" + player.getUsername() + ".png") > -1;
+				bool has_head_in_vanilla = CFileMatcher(head_file).getFirst().find(vanilla_heads + "/" + player.getUsername() + ".png") > -1;
+				
+				if (g_debug == 1)
+				{
+					if (has_head_in_vanilla)
+						print(player.getUsername()+" has a head file in vanilla!");
+					if (has_head_in_gruhsha)
+						print(player.getUsername()+" has a head file in gruhsha!");
+				}
+				
+				// the mod check comes first so i can update peoples' heads and this logic would take mod files first
+				isHeadValid = has_head_in_gruhsha || has_head_in_vanilla || bot_has_head;
 			}
+			
 			Accolades@ acc = getPlayerAccolades(player.getUsername());
 			bool gotAccoladeHead = acc.hasCustomHead();
-
-			if (g_debug > 0) {
-				print("headfile "+head_file);
+			
+			if (g_debug>0) {
+				//print("headfile "+head_file);
 			}
 			//print("got accolade head "+gotAccoladeHead);
-
+				
 			if(customFileExists&&isHeadValid)
 			{
 				if (g_debug>0) {
@@ -67,17 +84,19 @@ int getHeadSpecs(CPlayer@ player, string &out head_file)
 					texture_file = rules.get_string(player.getUsername() + "Headpack");
 				else
 					texture_file = head_file;
+				
 				headIndex = head_idx;
 				headsPackIndex = 0;
 				override_frame = true;
 				//player.Tag("custom_head");
-				rules.set_bool("custom_head"+player.getUsername(), true);
+				rules.set_bool("custom_head" + player.getUsername(), true);
+				
 			} else if (gotAccoladeHead) {
 				texture_file = acc.customHeadTexture;
 				headIndex = acc.customHeadIndex;
 				headsPackIndex = 0;
 				override_frame = true;
-				rules.set_bool("custom_head"+player.getUsername(), true);
+				rules.set_bool("custom_head" + player.getUsername(), true);
 			}
 			else if (rules.exists(holiday_prop))
 			{
@@ -94,7 +113,7 @@ int getHeadSpecs(CPlayer@ player, string &out head_file)
 						headIndex += player.getSex();
 						//sex for bots
 						if (player.isBot())
-							headIndex += player.getNetworkID()%512<256?0:1;
+							headIndex += player.getNetworkID() % 512 < 256 ? 0 : 1;
 					}
 				}
 			}
@@ -116,10 +135,6 @@ int getHeadSpecs(CPlayer@ player, string &out head_file)
 
 	int team = doTeamColour(headsPackIndex) ? player.getTeamNum() : 0;
 	int skin = doSkinColour(headsPackIndex) ? player.getSkin() : 0;
-
-	//if player is a mere grunt or doesn't have a cool head to show off in role of CO they get a super basic head (commanders will still have a cool hat though)
-	if (g_debug > 0)
-		print("head n "+headIndex);
 
 	//
 	headIndex = headIndex % 256; // wrap DLC heads into "pack space"
@@ -215,10 +230,10 @@ int getHeadFrame(CPlayer@ player, int headIndex, bool default_pack)
 	}
 
 	return (((headIndex - NUM_UNIQUEHEADS / 2) * 2) +
-	        ((player.getSex() == 0 || (is_bot&&bot_sex==0)) ? 0 : 1)) * NUM_HEADFRAMES;
+	        ((player.getSex() == 0 || (is_bot && bot_sex == 0)) ? 0 : 1)) * NUM_HEADFRAMES;
 }
 
 bool isFlagHead(int head_id)
 {
-	return head_id>=287&&head_id<=363;
+	return head_id >= 287 && head_id <= 363;
 }

@@ -43,10 +43,7 @@ shared class Accolades
 	Accolades(ConfigFile@ cfg, string _username)
 	{
 		username = _username;
-		string file_path = getPath() + "Base/Entities/Characters/Sprites/CustomHeads/";
-		string head_file = file_path + username + ".png";
-
-		customHeadTexture = head_file;
+		customHeadTexture = "Entities/Characters/Sprites/CustomHeads/" + username + ".png";
 
 		array<string> slices;
 		if(cfg.readIntoArray_string(slices, username))
@@ -140,10 +137,6 @@ shared class Accolades
 			{
 				customHeadExists = doesCustomHeadExists();
 			}
-		}
-
-		if (CFileMatcher(customHeadTexture).hasMatch()) {
-			customHeadExists = CFileImage(customHeadTexture).getWidth() >= 48;
 		}
 	}
 

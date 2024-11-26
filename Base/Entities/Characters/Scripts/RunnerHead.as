@@ -109,7 +109,7 @@ void onTick(CSprite@ this)
 	CSpriteLayer@ head = this.getSpriteLayer("head");
 
 	// load head when player is set or it is AI
-	if (head is null && (blob.getPlayer() !is null || (blob.getBrain() !is null && blob.getBrain().isActive()) || blob.getTickSinceCreated() > 3))
+	if (head is null && (player !is null || (blob.getBrain() !is null && blob.getBrain().isActive()) || blob.getTickSinceCreated() > 3) || (blob.get_s32("headIndex") != blob.getHeadNum()))
 	{
 		@head = LoadHead(this, blob.getHeadNum());
 	}
