@@ -153,8 +153,9 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 			shieldVec.Normalize();
 			f32 dot = tileVec.x * shieldVec.x + tileVec.y * shieldVec.y;
 
-			if(dot < -0.71) {
+			if (dot < -0.71) {
 				Sound::Play("Entities/Characters/Knight/ShieldHit.ogg", this.getPosition());
+				sparks(this.getPosition(), shieldVec.Angle() - 45.0f + XORRandom(90), 1 + XORRandom(6));
 				this.set_bool("collided with shield", true);
 			}
 		}
