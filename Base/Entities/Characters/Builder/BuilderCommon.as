@@ -192,16 +192,13 @@ CBlob@ server_BuildBlob(CBlob@ this, BuildBlock[]@ blocks, const u32 &in index)
 		if (!b.buildOnGround)
 		{
 			this.server_Pickup(blockBlob);
+			blockBlob.Tag("temp blob");
 		}
 		else
 		{
 			shape.server_SetActive(true); // have it enable if its a shop
 		}
 
-		if (b.temporaryBlob)
-		{
-			blockBlob.Tag("temp blob");
-		}
 		return blockBlob;
 	}
 
