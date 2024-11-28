@@ -26,7 +26,7 @@ void onTick(CRules@ this)
 	CMap@ map = getMap();
 		
 	CControls@ controls = p.getControls();
-	bool op = (isServer()&&isClient()) || p.isMod();
+	bool op = p.isMod() || (isServer() && isClient()) ;
 	//if player cannot use the editor we cut it here
 	if (!op) return;
 
