@@ -371,10 +371,15 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/8)+2+tile_type_account);
 
 											u16 type_to_spawn = tile;
+											CPlayer@ killer = this.getDamageOwnerPlayer();
 											
 											if (collapse_checker !is null)
 											{
 												collapse_checker.set_f32("expl_radius", radius);
+												if (killer !is null)
+												{
+													collapse_checker.SetDamageOwnerPlayer(killer);
+												}
 											}
 
 											for (int idx = 0; idx < max_hits; ++idx)
@@ -399,7 +404,6 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 													{
 														CBlob@ tileblob = server_CreateBlob("tileentity", -3, tpos);
 														if (tileblob is null) break;
-														CPlayer@ killer = this.getDamageOwnerPlayer();
 														if (killer !is null)
 														{
 															tileblob.SetDamageOwnerPlayer(killer);

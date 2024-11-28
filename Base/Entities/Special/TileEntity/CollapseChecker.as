@@ -30,6 +30,13 @@ void onTick(CBlob@ this)
 			//if (e_tile.getConfig() != "tileentity") continue;
 			if (!e_tile.hasTag("collapsing_tile")) continue;
 
+			CPlayer@ killer = this.getDamageOwnerPlayer();
+
+			if (killer !is null)
+			{
+				e_tile.SetDamageOwnerPlayer(killer);
+			}
+
 			amount_of_tiles_pushed += 1;
 			
 			this.getShape().SetGravityScale(1);
