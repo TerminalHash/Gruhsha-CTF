@@ -200,7 +200,10 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 
 	if (!this.get_bool("collided with shield")) {
 		
-		f32 tile_damage = (5 + this.getOldVelocity().Length()) / 4.5f;
+		//if tile entity goes faster than 2 pxls a tick, then we add 25% of it to the damage
+		f32 velocity_damage = this.getOldVelocity().Length()>2?(this.getOldVelocity().Length()/4):0;
+		f32 tile_damage = 2+velocity_damage;
+
 		bool hitting_important_thing = false;
 
 		if (!blob.hasTag("flesh"))
@@ -213,8 +216,13 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 			else
 				tile_damage *= 3;
 		}
+
+		bool wooden = getMap().isTileWood(this.get_s32("tile_frame"));
+
+		if (wooden) tile_damage /= 2;
 		
 		this.server_Hit(blob, point1, this.getOldVelocity(), tile_damage, GruhshaHitters::tile_entity, true);
+
 		if (hitting_important_thing)
 		{
 			setDeadStatus(this);
