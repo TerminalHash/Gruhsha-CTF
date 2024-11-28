@@ -354,6 +354,7 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 										
 										if (!map.isTileSolid(tpos))
 										{
+											//times we hit a backtile
 											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/7));
 
 											for (int idx = 0; idx < max_hits; ++idx)
@@ -364,12 +365,10 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 										}
 										else
 										{
-											int castle_hp = 7;
-											int steel_account = (false?-5:0);
 											int castle_account = (map.isTileCastle(tile)?-2:0);
 
 											int	tile_type_account = castle_account;
-											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/8)+4+tile_type_account);
+											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/8)+2+tile_type_account);
 
 											u16 type_to_spawn = tile;
 											
@@ -382,9 +381,6 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 											{
 												if (!canExplosionDamage(map, tpos, map.getTile(tpos).type)) break;
 												
-												//int current_tile_hp = castle_hp;
-												//bool should_destroy_earlier = max_hits >= current_tile_hp && idx >= (0.75f*current_tile_hp);
-												
 												//do the check BEFORE hitting
 												bool was_solid = map.isTileSolid(tpos);
 												//
@@ -394,15 +390,12 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 												//need at least one hit
 												//so if we killed an almost killed tile - nothing will happen
 												bool damaged_enough = idx > 0;
-												
-												//if (XORRandom(100) < (100.0f*(idx/max_hits)))
-												//	type_to_spawn = map.getTile(tpos).type;
 
 												//breaking the cycle
 												if (has_destroyed_solid_tile)
 												{
 													//creation of a tile entity
-													if (was_solid && damaged_enough)
+													if (was_solid && damaged_enough && canExplosionCreateRubble(type_to_spawn))
 													{
 														CBlob@ tileblob = server_CreateBlob("tileentity", -3, tpos);
 														if (tileblob is null) break;
@@ -425,7 +418,8 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 													}
 													break;
 												}
-												//Material::fromTile(this, tile, 1.0f);
+
+												Material::fromTile(this, map.getTile(tpos).type, 1.0f);
 											}
 										}
 									}
@@ -735,6 +729,11 @@ void DirectionalExplosion(CBlob@ this, f32 radius, f32 damage, f32 map_damage_ra
 		LinearExplosion(this, Vec2f(1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
 }
 
+bool canExplosionCreateRubble(TileType t)
+{
+	return !getMap().isTileGold(t);
+}
+
 bool canExplosionDamage(CMap@ map, Vec2f tpos, TileType t)
 {
 	CBlob@[] blist;
@@ -753,7 +752,7 @@ bool canExplosionDamage(CMap@ map, Vec2f tpos, TileType t)
 		}
 	}
 	//return (t != 29 && t != 30 && t != 31 && t != CMap::tile_ground && t != CMap::tile_stone_d0);
-	return (t != 29 && t != 30 && t != 31 && t != CMap::tile_ground && t != CMap::tile_stone_d0 && !(hasValidFrontBlob && isBackwall));
+	return (t != 29 && t != 30 && t != 31 && t != CMap::tile_stone_d0 && !(hasValidFrontBlob && isBackwall));
 }
 
 bool canExplosionDestroy(CMap@ map, Vec2f tpos, TileType t)

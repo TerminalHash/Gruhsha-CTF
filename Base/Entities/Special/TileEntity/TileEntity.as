@@ -65,12 +65,52 @@ void StartCollapsing(CBlob@ this)
 
 void onTick(CBlob@ this)
 {
+	if (this.getTickSinceCreated()<5)
+		this.getShape().setElasticity(1);
+	else
+		this.getShape().setElasticity(0.2);
+	
 	CollapsingTileLogic(this);
 
 	if (!this.hasTag("no_rotations"))
 		RotateOnFly(this);
 	
 	SetTileFrame(this);
+}
+
+bool canExplosionDestroy(TileType t)
+{
+	return !(getMap().isTileGroundStuff(t));
+}
+
+bool canTileBePlaced(Vec2f pos)
+{
+	//align it
+	pos = getMap().getAlignedWorldPos(pos)+Vec2f(1, 1)*4;
+	//printf("tile pos "+pos);
+
+	for (int idx = 0; idx < 4; ++idx)
+	{
+		Vec2f dir = Vec2f(6, 0).RotateBy(90*idx);
+		
+		if (getMap().isTileSolid(pos+dir) && getMap().getSectorAtPosition(pos, "no build") is null)
+			return true;
+	}
+
+	return false;
+}
+
+void TryToPlaceTile(CBlob@ this)
+{
+	Vec2f vel_pos = this.getPosition();
+
+	if (canTileBePlaced(vel_pos))
+	{
+		setDeadStatus(this);
+		this.server_Die();
+	}
+	else
+		this.server_SetTimeToDie(3);
 }
 
 void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point1, Vec2f point2 )
@@ -91,7 +131,10 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 					if (hi.blob !is null) continue;
 					
 					for (int hit_i = 0; hit_i < max_hits; ++hit_i)
-						getMap().server_DestroyTile(hi.hitpos, 1.0f, this);
+					{
+						if (canExplosionDestroy(getMap().getTile(hi.hitpos).type))
+							getMap().server_DestroyTile(hi.hitpos, 1.0f, this);
+					}
 					break;
 				}
 			}
@@ -99,20 +142,8 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 
 		if (this.getOldVelocity().Length()<3)
 		{
-			Vec2f vel_pos = this.getPosition()-this.getOldVelocity();
-
-			for (int idx = 0; idx < 4; ++idx)
-			{
-				Vec2f dir = Vec2f(8, 0).RotateBy(90*idx);
-				
-				if (getMap().hasSupportAtPos(this.getPosition()+dir) && blob is null)
-				{
-					this.getShape().PutOnGround();
-					this.server_Die();
-				}
-				else
-					this.server_SetTimeToDie(3);
-			}
+			if (blob is null)
+				TryToPlaceTile(this);
 		}
 		else if (this.getOldVelocity().Length()>=0.2f)
 		{
@@ -185,21 +216,27 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 		
 		this.server_Hit(blob, point1, this.getOldVelocity(), tile_damage, GruhshaHitters::tile_entity, true);
 		if (hitting_important_thing)
+		{
+			setDeadStatus(this);
 			this.server_Die();
+		}
 	} else {
 		//printf("Collided with shield!");
 	}
 }
 
-void onCommand(CBlob@ this, u8 cmd, CBitStream @params) 
+void setDeadStatus(CBlob@ this)
 {
+	this.setVelocity(Vec2f());
+	this.setPosition(getMap().getAlignedWorldPos(this.getPosition())+Vec2f(1, 1)*4);
 }
 
 bool shouldBePlacedOnDeath(CBlob@ this)
 {
 	CBlob@[] blobs_nearby;
+	Vec2f pos = getMap().getAlignedWorldPos(this.getPosition())+Vec2f(1, 1)*4;
 
-	if (getMap().getBlobsInRadius(this.getPosition(), 6, @blobs_nearby)) {
+	if (getMap().getBlobsInRadius(pos, 7, @blobs_nearby)) {
 		for (int idx = 0; idx < blobs_nearby.size(); ++idx) {
 			CBlob@ c_blob = blobs_nearby[idx];
 			if (c_blob is null) continue;
@@ -208,38 +245,28 @@ bool shouldBePlacedOnDeath(CBlob@ this)
 
 			if (c_blob.getShape().getConsts().collidable) continue;
 
-			printf("Colliding with structure");
-			return true;
+			//printf("Colliding with structure");
+			return false;
 		}
 	}
 
-	return false;
+	return true;
+}
+
+f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData)
+{
+	if (customData==Hitters::builder||customData==Hitters::drill) return damage;
+
+	return 0;
 }
 
 void onDie(CBlob@ this)
 {
-	if (shouldBePlacedOnDeath(this)) return;
+	if (!shouldBePlacedOnDeath(this)) return;
 
+	if (canTileBePlaced(this.getPosition()))
 	{
-		bool should_be_placed = false;
-
-		//if (getMap().isTileSolid(this.getPosition()+Vec2f(0, 8)))
-		//	should_be_placed = true;
-		//
-		//for (int idx = 0; idx < 16; idx += 4)
-		//if (getMap().isTileBackgroundNonEmpty(getMap().getTile(this.getPosition()+Vec2f(-8+idx, 0))))
-		//	should_be_placed = true;
-		for (int idx = 0; idx < 4; ++idx)
-		{
-			Vec2f dir = Vec2f(8, 0).RotateBy(90*idx);
-			if (getMap().hasSupportAtPos(this.getPosition()+dir))
-				should_be_placed = true;
-		}
-
-		if (should_be_placed)
-		{
-			getMap().server_SetTile(this.getPosition(), this.get_s32("tile_frame"));
-		}
+		getMap().server_SetTile(this.getPosition(), this.get_s32("tile_frame"));
 	}
 	
 	return;

@@ -48,7 +48,7 @@ void onTick(CBlob@ this)
 
 	if (amount_of_tiles_pushed > 0)
 	{
-		printf(" pushed like "+amount_of_tiles_pushed+" tiles");
+		//printf(" pushed like "+amount_of_tiles_pushed+" tiles");
 		this.server_Die();
 	}
 }
