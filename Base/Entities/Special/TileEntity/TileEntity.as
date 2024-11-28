@@ -161,6 +161,8 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 		}
 	}
 
+	bool shield_hit = false;
+
 	if (blob !is null && blob.getConfig() == "knight") {
 		KnightInfo@ knight;
 		if (!blob.get("knightInfo", @knight)) {
@@ -187,7 +189,7 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 			if (dot < -0.71) {
 				Sound::Play("Entities/Characters/Knight/ShieldHit.ogg", this.getPosition());
 				sparks(this.getPosition(), shieldVec.Angle() - 45.0f + XORRandom(90), 1 + XORRandom(6));
-				this.set_bool("collided with shield", true);
+				shield_hit = true;
 			}
 		}
 	}
@@ -198,7 +200,7 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 
 	if (blob.hasTag("player") && blob.getPosition().y < this.getPosition().y && this.getVelocity().y>=0) return;
 
-	if (!this.get_bool("collided with shield")) {
+	if (!shield_hit) {
 		
 		//if tile entity goes faster than 2 pxls a tick, then we add 25% of it to the damage
 		f32 velocity_damage = this.getOldVelocity().Length()>2?(this.getOldVelocity().Length()/4):0;
@@ -229,6 +231,7 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 			this.server_Die();
 		}
 	} else {
+		shield_hit = false;
 		//printf("Collided with shield!");
 	}
 }
