@@ -531,6 +531,14 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 
 					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 					this.set_u32(player.getUsername() + "soundcooldown", 60);
+			} else if (textIn == "Груши" || textIn == "Груши мои груши" || textIn == "груши" || textIn == "груши мои груши" || textIn.toUpper() == "GRUSHI MOI GRUSHI") {
+					if (annoying_voicelines_sounds == "on")
+					{
+						Sound::Play(soundrandom + "grushi.ogg", pos, 2.0f);
+					}
+
+					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+					this.set_u32(player.getUsername() + "soundcooldown", 60);
 			}
 		}
 
