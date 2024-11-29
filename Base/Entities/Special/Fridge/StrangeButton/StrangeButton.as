@@ -1,0 +1,83 @@
+// StrangeButton.as
+
+void onInit(CBlob@ this)
+{
+	this.Tag("ignore_saw");
+	
+	this.server_setTeamNum(-1);
+	//team - force blue unless special
+	int team = (this.exists("team colour") ? this.get_u8("team colour") : 0);
+
+	this.addCommandID("activate");
+}
+
+void onTick(CBlob@ this) {
+	if (this.isAttachedToPoint("PICKUP")) {
+		AttachmentPoint@ point = this.getAttachments().getAttachmentPointByName("PICKUP");
+
+		CBlob@ holder = point.getOccupied();
+		if (holder is null || holder.isAttached()) return;
+
+		CControls@ controls = holder.getControls();
+
+		if (controls.isKeyJustPressed(KEY_MBUTTON)) {
+			CMap@ map = getMap();
+			const f32 mapCenter = map.tilemapwidth * map.tilesize * 0.5;
+
+			CBlob@ fridge = server_CreateBlob("fridge", holder.getTeamNum(), Vec2f(mapCenter, 0));
+			if (fridge !is null) {
+				fridge.SetDamageOwnerPlayer(holder.getPlayer());
+			}
+
+			this.server_Die();
+		}
+
+		if (controls.ActionKeyPressed(AK_ACTION2)) {
+			CBlob@ fridge = server_CreateBlob("fridge", holder.getTeamNum(), Vec2f(holder.getPosition().x, 0));
+			if (fridge !is null) {
+				fridge.SetDamageOwnerPlayer(holder.getPlayer());
+			}
+
+			this.server_Die();
+		}
+
+		if (controls.ActionKeyPressed(AK_ACTION1)) {
+			CMap@ map = getMap();
+			const f32 mapCenter = map.tilemapwidth * map.tilesize * 0.5;
+
+			CBlob@ fridge = server_CreateBlob("fridge", holder.getTeamNum(), Vec2f(holder.getAimPos().x, 0));
+			if (fridge !is null) {
+				fridge.SetDamageOwnerPlayer(holder.getPlayer());
+			}
+
+			this.server_Die();
+		}
+	}
+}
+
+void onAttach(CBlob@ this, CBlob@ attached, AttachmentPoint @attachedPoint)
+{
+	this.server_setTeamNum(attached.getTeamNum());
+}
+
+void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
+{
+	if (cmd == this.getCommandID("activate") && isServer())
+	{
+		CPlayer@ p = getNet().getActiveCommandPlayer();
+		if (p is null) return;
+
+		CBlob@ caller = p.getBlob();
+		if (caller is null) return;
+
+		CMap@ map = getMap();
+		const f32 mapCenter = map.tilemapwidth * map.tilesize * 0.5;
+
+		CBlob@ fridge = server_CreateBlob("fridge", caller.getTeamNum(), Vec2f(mapCenter, 0));
+		if (fridge !is null) {
+			fridge.SetDamageOwnerPlayer(caller.getPlayer());
+		}
+
+		this.server_Die();
+	}
+}
