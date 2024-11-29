@@ -30,6 +30,9 @@ void onTick(CRules@ this)
 	//if player cannot use the editor we cut it here
 	if (!op) return;
 
+	// Editor in offi-matches is not allowed
+	if (!sv_test) return;
+
 	//displaying fancy cursor
 	if (controls.isKeyJustPressed(KEY_RCONTROL)) {
 		p.set_bool("editor_cursor", !p.get_bool("editor_cursor"));
