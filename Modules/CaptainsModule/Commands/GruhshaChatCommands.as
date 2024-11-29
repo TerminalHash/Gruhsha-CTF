@@ -17,5 +17,6 @@ void RegisterGruhshaChatCommands(ChatCommandManager@ manager)
 	manager.RegisterCommand(PreventVoicelineSpamming());
 	manager.RegisterCommand(ToggleOffi());
 	manager.RegisterCommand(TagBuilder());
+	manager.RegisterCommand(ToggleEditor());
 	manager.RegisterCommand(UpdateMats());
 }

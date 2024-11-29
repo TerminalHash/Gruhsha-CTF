@@ -1,3 +1,5 @@
+#define SERVER_ONLY
+
 #include "SocialStatus.as";
 
 const string editor_place 	= "editor place";
@@ -17,6 +19,9 @@ void onInit( CRules@ this )
 
 void onTick(CRules@ this)
 {
+	// editor should be disabled by default
+	if (!this.hasTag("editor is active")) return;
+
 	CPlayer@ p = getLocalPlayer();
 	if (p is null) return;
 	
@@ -29,9 +34,6 @@ void onTick(CRules@ this)
 	bool op = (p.isMod() || p.isRCON()) || (isServer() && isClient()) ;
 	//if player cannot use the editor we cut it here
 	if (!op) return;
-
-	// Editor in offi-matches is not allowed
-	if (!sv_test) return;
 
 	//displaying fancy cursor
 	if (controls.isKeyJustPressed(KEY_RCONTROL)) {

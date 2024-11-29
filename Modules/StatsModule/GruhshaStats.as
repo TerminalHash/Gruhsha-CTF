@@ -6,6 +6,7 @@
 #define SERVER_ONLY
 
 #include "Hitters.as";
+#include "GruhshaHitters.as";
 
 const string mapStatsTag = "map stats";
 
@@ -25,6 +26,10 @@ bool onServerProcessChat( CRules@ this, const string& in text_in, string& out te
 			this.Tag("offi match");
 			this.Sync("offi match", true);
 			printf("[INFO] This match tagged as offi by " + player.getUsername());
+
+			// disable internal map editor
+			this.Untag("editor is active");
+			this.Sync("editor is active", true);
 
 			tcpr("MatchBegin" + " " + getGameTime());
 
@@ -137,6 +142,8 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 
 				case Hitters::drill:			hitter_string = "drill"; break;
 				case Hitters::saw:				hitter_string = "saw"; break;
+
+				case GruhshaHitters::tile_entity:	hitter_string = "tile entity"; break;
 
 				default: 						hitter_string = "fall";
 			}

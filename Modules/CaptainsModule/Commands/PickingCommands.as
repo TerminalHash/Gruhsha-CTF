@@ -432,6 +432,43 @@ class TagBuilder : ChatCommand
 	}
 }
 
+class ToggleEditor : ChatCommand
+{
+	ToggleEditor()
+	{
+		super("editor", "Toggle map editor");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		if (!rules.hasTag("editor is active")) {
+			rules.Tag("editor is active");
+			rules.Sync("editor is active", true);
+		} else {
+			rules.Untag("editor is active");
+			rules.Sync("editor is active", true);
+		}
+
+		if (isServer()) {
+			if (!rules.hasTag("editor is active")) {
+				server_AddToChat("Map editor is disabled", SColor(0xff474ac6));
+			} else {
+				server_AddToChat("Map editor is enabled", SColor(0xff474ac6));
+			}
+		}
+	}
+}
+
 class UpdateMats : ChatCommand
 {
 	UpdateMats()
