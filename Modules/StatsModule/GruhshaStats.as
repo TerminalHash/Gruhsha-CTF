@@ -31,6 +31,10 @@ bool onServerProcessChat( CRules@ this, const string& in text_in, string& out te
 			this.Untag("editor is active");
 			this.Sync("editor is active", true);
 
+			// disable sv_test
+			if (sv_test)
+				sv_test = false;
+
 			tcpr("MatchBegin" + " " + getGameTime());
 
 			for (int i=0; i < getPlayerCount(); i++) 
