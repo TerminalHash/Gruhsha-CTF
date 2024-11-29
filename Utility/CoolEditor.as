@@ -1,5 +1,3 @@
-#define SERVER_ONLY
-
 #include "SocialStatus.as";
 
 const string editor_place 	= "editor place";
