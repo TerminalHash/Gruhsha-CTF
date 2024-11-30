@@ -23,16 +23,6 @@ void onInit(CBlob@ this)
 
 	this.set_u16("_keg_carrier_id", 0xffff);
 
-	CSprite@ sprite = this.getSprite();
-
-    if (getRules().get_string(holiday_prop) == "Halloween") {
-        sprite.SetAnimation("default_halloween");
-	} else if (getRules().get_string(holiday_prop) == "Christmas") {
-		sprite.SetAnimation("default_christmas");
-    } else {
-        sprite.SetAnimation("default");
-    }
-
     keg_sprite_file = isAnyHoliday() ? getHolidayVersionFileName("Keg") : "Keg.png";
 
 	CSpriteLayer@ fuse = this.getSprite().addSpriteLayer("fuse", keg_sprite_file, 16, 16, 0, 0);
@@ -47,6 +37,15 @@ void onInit(CBlob@ this)
 	}
 
 	this.set_f32("important-pickup", 30.0f);
+}
+
+void onInit(CSprite@ this)
+{
+	if (isAnyHoliday())
+	{
+		keg_sprite_file = getHolidayVersionFileName("Keg");
+		this.ReloadSprite(keg_sprite_file);
+	}
 }
 
 //sprite update
