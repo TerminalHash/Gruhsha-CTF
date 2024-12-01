@@ -644,6 +644,19 @@ void LoadFileBindings()
 				}
 			}
 		}
+
+		string file_entry1 = "sv_deltapos_modifier_check";
+		if (file.exists(file_entry1)) {
+			CBitStream params;
+
+			if (file.read_f32("sv_deltapos_modifier_check") > 1) {
+				params.write_u8(1);
+			} else {
+				params.write_u8(0);
+			}
+
+			getRules().SendCommand(getRules().getCommandID("lagswitch check"), params);
+		}
 	}
 }
 

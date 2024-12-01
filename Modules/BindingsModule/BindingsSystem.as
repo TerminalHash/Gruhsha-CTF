@@ -131,6 +131,14 @@ void onInit(CRules@ this)
 		if (!file.exists("boat_warboat$1")) file.add_s32("boat_warboat$1", 51);
 		if (!file.exists("boat_warboat$2")) file.add_s32("boat_warboat$2", -1);
 
+		// HACK: checking sv_deltapos_modifier for >1
+		if (!file.exists("sv_deltapos_modifier_check")) {
+			file.add_s32("sv_deltapos_modifier_check", sv_deltapos_modifier);
+		} else { // if player updated this parameter, update entry to new number
+			file.remove("sv_deltapos_modifier_check");
+			file.add_s32("sv_deltapos_modifier_check", sv_deltapos_modifier);
+		}
+
 		if(!file.saveFile(BINDINGSFILE + ".cfg"))
 		{
 			print("Failed to save GRUHSHA_playerbindings.cfg");
