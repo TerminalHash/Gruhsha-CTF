@@ -3,6 +3,7 @@
 #include "GameplayEventsCommon.as";
 #include "AssistCommon.as"
 #include "Hitters.as"
+#include "GruhshaHitters.as"
 
 const int coinsOnDamageAdd = 6;
 const int coinsOnAssistAdd = 8;
@@ -146,7 +147,7 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 					plcl = killer.getBlob().getName();
 				}
 
-				if (customData != Hitters::keg) {
+				if (customData != Hitters::keg && customData != GruhshaHitters::tile_entity) {
 					killer.server_setCoins(killer.getCoins() + (coinsOnKillAdd * Maths::Pow(killstreakFactor, killer.get_u8("killstreak"))) * getArcherMultiplier(plcl) * getMultiplier());
 					//printf("Give coins KILL");
 				}
