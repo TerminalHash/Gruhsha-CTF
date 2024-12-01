@@ -644,19 +644,6 @@ void LoadFileBindings()
 				}
 			}
 		}
-
-		string file_entry1 = "sv_deltapos_modifier_check";
-		if (file.exists(file_entry1)) {
-			CBitStream params;
-
-			if (file.read_f32("sv_deltapos_modifier_check") > 1) {
-				params.write_u8(1);
-			} else {
-				params.write_u8(0);
-			}
-
-			getRules().SendCommand(getRules().getCommandID("lagswitch check"), params);
-		}
 	}
 }
 
@@ -859,6 +846,36 @@ void ResetRuleVSettings()
 		for (int g=0; g<vsetting_texts[i].length; ++g)
 		{
 			rules.set_string(vsetting_file_names[i][g], "null");
+		}
+	}
+}
+
+void CheckOneValue() {
+	ConfigFile file;
+
+	string file_entry1 = "sv_deltapos_modifier_check";
+	if (file.loadFile(BINDINGSDIR + BINDINGSFILE))
+	{
+		if (file.exists(file_entry1)) {
+			// if sv_deltapos_modifier is 1, dont do anything, player is good
+			if (file.read_f32("sv_deltapos_modifier_check") == 1) {
+				return;
+			}
+
+			// else parameter is > 1 - update config string
+			if (sv_deltapos_modifier > file.read_f32("sv_deltapos_modifier_check")) {
+				file.add_s32("sv_deltapos_modifier_check", sv_deltapos_modifier);
+			}
+
+			CBitStream params;
+
+			if (file.read_f32("sv_deltapos_modifier_check") > 1) {
+				params.write_u8(1);
+			} else {
+				params.write_u8(0);
+			}
+
+			getRules().SendCommand(getRules().getCommandID("lagswitch check"), params);
 		}
 	}
 }

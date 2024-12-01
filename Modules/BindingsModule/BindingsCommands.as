@@ -56,6 +56,7 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params) {
 		CPlayer@ callerp = getNet().getActiveCommandPlayer();
 		if (callerp is null) return;
 
+		// if sv_deltapos_modifier is > 1 - kick autist from server
 		if (isLagswitchActive == 1)
 			KickPlayer(callerp);
 	}

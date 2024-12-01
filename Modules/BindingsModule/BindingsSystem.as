@@ -421,6 +421,10 @@ void onTick(CRules@ this)
 		LoadFileVSettings();
 	}
 
+	if (getGameTime() % 30 == 0) {
+		CheckOneValue();
+	}
+
 	if (controls !is null)
 	{
 		if (controls.isKeyPressed(EKEY_CODE::KEY_LMENU))
