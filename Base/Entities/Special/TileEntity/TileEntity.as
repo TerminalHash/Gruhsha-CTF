@@ -65,11 +65,6 @@ void StartCollapsing(CBlob@ this)
 
 void onTick(CBlob@ this)
 {
-	if (this.getTickSinceCreated()<5)
-		this.getShape().SetMass(1);
-	else
-		this.getShape().SetMass(10000);
-	
 	CollapsingTileLogic(this);
 
 	if (!this.hasTag("no_rotations"))
