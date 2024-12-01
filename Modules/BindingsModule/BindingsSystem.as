@@ -132,12 +132,12 @@ void onInit(CRules@ this)
 		if (!file.exists("boat_warboat$2")) file.add_s32("boat_warboat$2", -1);
 
 		// HACK: checking sv_deltapos_modifier for >1
-		if (!file.exists("sv_deltapos_modifier_check")) {
+		/*if (!file.exists("sv_deltapos_modifier_check")) {
 			file.add_s32("sv_deltapos_modifier_check", sv_deltapos_modifier);
 		} else { // if player updated this parameter, update entry to new number
 			file.remove("sv_deltapos_modifier_check");
 			file.add_s32("sv_deltapos_modifier_check", sv_deltapos_modifier);
-		}
+		}*/
 
 		if(!file.saveFile(BINDINGSFILE + ".cfg"))
 		{
@@ -421,9 +421,9 @@ void onTick(CRules@ this)
 		LoadFileVSettings();
 	}
 
-	if (getGameTime() % 30 == 0) {
+	/*if (getGameTime() % 30 == 0) {
 		CheckOneValue();
-	}
+	}*/
 
 	if (controls !is null)
 	{
