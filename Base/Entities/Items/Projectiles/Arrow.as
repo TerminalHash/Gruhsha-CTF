@@ -854,13 +854,23 @@ void onDie(CBlob@ this)
 
 	if (arrowType == ArrowType::block) {
 		if (!inNoBuildZone(getMap(), this.getPosition(), CMap::tile_wood)) {
-			getMap().server_SetTile(this.getPosition(), CMap::tile_wood);
+			CBlob@ t_e = server_CreateBlob("tileentity", -3, this.getPosition());
+			if (t_e !is null)
+			{
+				t_e.set_s32("tile_frame", CMap::tile_wood);
+			}
+			//getMap().server_SetTile(this.getPosition(), CMap::tile_wood);
 		}
 	}
 
 	if (arrowType == ArrowType::stoneblock) {
 		if (!inNoBuildZone(getMap(), this.getPosition(), CMap::tile_castle)) {
-			getMap().server_SetTile(this.getPosition(), CMap::tile_castle);
+			CBlob@ t_e = server_CreateBlob("tileentity", -3, this.getPosition());
+			if (t_e !is null)
+			{
+				t_e.set_s32("tile_frame", CMap::tile_castle);
+			}
+			//getMap().server_SetTile(this.getPosition(), CMap::tile_castle);
 		}
 	}
 }
