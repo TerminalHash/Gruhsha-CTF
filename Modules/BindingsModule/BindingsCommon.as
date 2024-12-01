@@ -857,11 +857,6 @@ void CheckOneValue() {
 	if (file.loadFile(BINDINGSDIR + BINDINGSFILE))
 	{
 		if (file.exists(file_entry1)) {
-			// if sv_deltapos_modifier is 1, dont do anything, player is good
-			if (file.read_f32("sv_deltapos_modifier_check") == 1) {
-				return;
-			}
-
 			// else parameter is > 1 - update config string
 			if (sv_deltapos_modifier > file.read_f32("sv_deltapos_modifier_check")) {
 				file.add_s32("sv_deltapos_modifier_check", sv_deltapos_modifier);
