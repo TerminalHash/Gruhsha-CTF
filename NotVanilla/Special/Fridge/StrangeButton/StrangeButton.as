@@ -1,4 +1,5 @@
 // StrangeButton.as
+const int fridges_to_spawn = 1;
 
 void onInit(CBlob@ this)
 {
@@ -23,15 +24,21 @@ void onTick(CBlob@ this) {
 		CControls@ controls = holder.getControls();
 
 		if (controls.isKeyJustPressed(KEY_MBUTTON)) {
-			this.SendCommand(this.getCommandID("spawn on middle"));
+			for (uint i = 0; i < fridges_to_spawn; i++) {
+				this.SendCommand(this.getCommandID("spawn on middle"));
+			}
 		}
 
 		if (controls.ActionKeyPressed(AK_ACTION2)) {
-			this.SendCommand(this.getCommandID("spawn above player"));
+			for (uint i = 0; i < fridges_to_spawn; i++) {
+				this.SendCommand(this.getCommandID("spawn above player"));
+			}
 		}
 
 		if (controls.ActionKeyPressed(AK_ACTION1)) {
-			this.SendCommand(this.getCommandID("spawn on cursor position"));
+			for (uint i = 0; i < fridges_to_spawn; i++) {
+				this.SendCommand(this.getCommandID("spawn on cursor position"));
+			}
 		}
 	}
 }
