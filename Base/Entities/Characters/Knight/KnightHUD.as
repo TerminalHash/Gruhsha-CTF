@@ -94,6 +94,8 @@ void onRender(CSprite@ this)
 		frame = 5;
 	} else if (type == 3) {
 		frame = 6;
+	} else if (type == 4) {
+		frame = 8;
 	}
 
 	// draw coins
