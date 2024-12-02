@@ -180,6 +180,7 @@ namespace ru
 	n_markbuildercommand					= "Отмечать позицию строителя",
 	n_activateorthrowbomb					= "Активация предметов",
 	n_putitemcommand						= "Положить предмет в инвентарь",
+	n_blockrotatecommand					= "Повернуть блок",
 
 		// NoMenuBuying Binds
 			// Knight Shop

@@ -7,6 +7,7 @@
 #include "GameplayEventsCommon.as";
 #include "Requirements.as"
 #include "RunnerTextures.as"
+#include "BindingsCommon.as"
 
 bool PlaceBlob(CBlob@ this, CBlob@ blob, Vec2f cursorPos, bool repairing = false, CBlob@ repairBlob = null)
 {
@@ -446,8 +447,13 @@ void onTick(CBlob@ this)
 				}
 			}
 
-			if (this.isKeyJustPressed(key_action3))
-			{
+            bool keypress = this.isKeyJustPressed(key_action3);
+
+            if (getRules().get_s32("blob_rotate$1") != -1) {
+                keypress = b_KeyJustPressed("blob_rotate");
+            }
+			
+			if (keypress) {
 				s8 rotateDir = controls.ActionKeyPressed(AK_BUILD_MODIFIER) ? -1 : 1;
 
 				u16 new_angle = (360 + this.get_u16("build_angle") + 90 * rotateDir) % 360;
@@ -459,7 +465,6 @@ void onTick(CBlob@ this)
 			}
 		}
 	}
-
 }
 
 void onInit(CSprite@ this)

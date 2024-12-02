@@ -180,6 +180,7 @@ namespace en
 	n_markbuildercommand					= "Mark builder position",
 	n_activateorthrowbomb					= "Activate/throw item",
 	n_putitemcommand						= "Put item into inventory",
+	n_blockrotatecommand					= "Rotate block",
 
 		// NoMenuBuying Binds
 			// Knight Shop

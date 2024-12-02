@@ -188,6 +188,7 @@ namespace Names
 	markbuildercommand					= Translate(en::n_markbuildercommand+"\\"+ru::n_markbuildercommand),
 	activateorthrowbomb					= Translate(en::n_activateorthrowbomb+"\\"+ru::n_activateorthrowbomb),
 	putitemcommand						= Translate(en::n_putitemcommand+"\\"+ru::n_putitemcommand),
+	blockrotatecommand					= Translate(en::n_blockrotatecommand+"\\"+ru::n_blockrotatecommand),
 
 		// NoMenuBuying Binds
 			// Knight Shop

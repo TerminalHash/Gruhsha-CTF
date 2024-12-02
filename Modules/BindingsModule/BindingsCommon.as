@@ -64,7 +64,8 @@ string[][] button_texts =
 		Names::drillcommand,
 		Names::cancelarrowschargingcommand,
 		Names::markbuildercommand,
-		Names::putitemcommand
+		Names::putitemcommand,
+		Names::blockrotatecommand
 		//Names::activateorthrowbomb
 	},
 	{
@@ -176,7 +177,8 @@ string[][] button_file_names =
 		"take_out_drill",
 		"cancel_charging",
 		"mark_team_builder",
-		"put_item"
+		"put_item",
+		"blob_rotate"
 		//"activate_or_throw_bomb"
 	},
 	{
