@@ -10,6 +10,7 @@
 #include "Requirements.as"
 #include "StandardControlsCommon.as";
 #include "HolidaySprites.as";
+#include "BindingsCommon.as"
 
 //attacks limited to the one time per-actor before reset.
 
@@ -327,47 +328,103 @@ void onTick(CBlob@ this)
 	if (myplayer)
 	{
 		// space
-		if (this.isKeyJustPressed(key_action3))
-		{
-			CBlob@ carried = this.getCarriedBlob();
-			bool holding = carried !is null;// && carried.hasTag("exploding");
+        if (getRules().get_s32("bomb_key$1") != -1) {
+			if (this.isKeyJustPressed(key_action3)) {
+				CBlob@ carried = this.getCarriedBlob();
 
-			CInventory@ inv = this.getInventory();
-			bool thrown = false;
-			u8 bombType = this.get_u8("bomb type");
-			if (bombType == 255)
-			{
-				SetFirstAvailableBomb(this);
-				bombType = this.get_u8("bomb type");
-			}
-			if (bombType < bombTypeNames.length)
-			{
-				for (int i = 0; i < inv.getItemsCount(); i++)
-				{
-					CBlob@ item = inv.getItem(i);
-					const string itemname = item.getName();
-					if (!holding && bombTypeNames[bombType] == itemname)
-					{
-						if (bombType >= 5)
-						{
-							this.server_Pickup(item);
-							client_SendThrowOrActivateCommand(this);
-							thrown = true;
-						}
-						else
-						{
-							client_SendThrowOrActivateCommandBomb(this, bombType);
-							thrown = true;
-						}
-						break;
-					}
+				if (carried is null || !carried.hasTag("temp blob")) {
+					client_SendThrowOrActivateCommand(this);
 				}
 			}
 
-			if (!thrown)
-			{
-				client_SendThrowOrActivateCommand(this);
-				SetFirstAvailableBomb(this);
+			if (b_KeyJustPressed("bomb_key")) {
+				CBlob@ carried = this.getCarriedBlob();
+				bool holding = carried !is null;// && carried.hasTag("exploding");
+
+				CInventory@ inv = this.getInventory();
+				bool thrown = false;
+				u8 bombType = this.get_u8("bomb type");
+
+				if (bombType == 255)
+				{
+					SetFirstAvailableBomb(this);
+					bombType = this.get_u8("bomb type");
+				}
+
+				if (bombType < bombTypeNames.length)
+				{
+					for (int i = 0; i < inv.getItemsCount(); i++)
+					{
+						CBlob@ item = inv.getItem(i);
+						const string itemname = item.getName();
+						if (!holding && bombTypeNames[bombType] == itemname)
+						{
+							if (bombType >= 5)
+							{
+								this.server_Pickup(item);
+								client_SendThrowOrActivateCommand(this);
+								thrown = true;
+							}
+							else
+							{
+								client_SendThrowOrActivateCommandBomb(this, bombType);
+								thrown = true;
+							}
+							break;
+						}
+					}
+				}
+
+				if (!thrown)
+				{
+					client_SendThrowOrActivateCommand(this);
+					SetFirstAvailableBomb(this);
+				}
+			}
+        } else {
+			if (this.isKeyJustPressed(key_action3)) {
+				CBlob@ carried = this.getCarriedBlob();
+				bool holding = carried !is null;// && carried.hasTag("exploding");
+
+				CInventory@ inv = this.getInventory();
+				bool thrown = false;
+				u8 bombType = this.get_u8("bomb type");
+
+				if (bombType == 255)
+				{
+					SetFirstAvailableBomb(this);
+					bombType = this.get_u8("bomb type");
+				}
+
+				if (bombType < bombTypeNames.length)
+				{
+					for (int i = 0; i < inv.getItemsCount(); i++)
+					{
+						CBlob@ item = inv.getItem(i);
+						const string itemname = item.getName();
+						if (!holding && bombTypeNames[bombType] == itemname)
+						{
+							if (bombType >= 5)
+							{
+								this.server_Pickup(item);
+								client_SendThrowOrActivateCommand(this);
+								thrown = true;
+							}
+							else
+							{
+								client_SendThrowOrActivateCommandBomb(this, bombType);
+								thrown = true;
+							}
+							break;
+						}
+					}
+				}
+
+				if (!thrown)
+				{
+					client_SendThrowOrActivateCommand(this);
+					SetFirstAvailableBomb(this);
+				}
 			}
 		}
 

@@ -178,7 +178,7 @@ namespace ru
 	n_drillcommand							= "Достать/Убрать дрель",
 	n_cancelarrowschargingcommand			= "Перестать заряжать лук",
 	n_markbuildercommand					= "Отмечать позицию строителя",
-	n_activateorthrowbomb					= "Активация предметов",
+	n_activateorthrowbomb					= "Активировать/бросить предмет",
 	n_putitemcommand						= "Положить предмет в инвентарь",
 	n_blockrotatecommand					= "Повернуть блок",
 

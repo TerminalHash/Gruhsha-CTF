@@ -119,73 +119,128 @@ void onTick(CBlob@ this)
 	if (ismyplayer)
 	{
 		Pickaxe(this);
-		if (this.isKeyJustPressed(key_action3)) {
-			/*CBlob@ carried = this.getCarriedBlob();
+        if (getRules().get_s32("bomb_key$1") != -1) {
+			if (this.isKeyJustPressed(key_action3)) {
+				CBlob@ carried = this.getCarriedBlob();
 
-			if (carried is null || !carried.hasTag("temp blob")) {
-				client_SendThrowOrActivateCommand(this);
-			}
-		}
-
-		if (b_KeyJustPressed("activate_or_throw_bomb")) {*/
-			CBlob@ carried = this.getCarriedBlob();
-			bool holding = carried !is null;// && carried.hasTag("exploding");
-
-			CInventory@ inv = this.getInventory();
-			bool thrown = false;
-			u8 bombType = this.get_u8("bomb type");
-
-			if (bombType == 255)
-			{
-				SetFirstAvailableBomb(this);
-				bombType = this.get_u8("bomb type");
-			}
-
-			if (bombType < bombTypeNames.length)
-			{
-				for (int i = 0; i < inv.getItemsCount(); i++)
-				{
-					CBlob@ item = inv.getItem(i);
-					const string itemname = item.getName();
-					if (!holding && bombTypeNames[bombType] == itemname)
-					{
-						if (bombType >= 5)
-						{
-							this.server_Pickup(item);
-							client_SendThrowOrActivateCommand(this);
-							thrown = true;
-						}
-						else
-						{
-							client_SendThrowOrActivateCommandBomb(this, bombType);
-							thrown = true;
-						}
-						break;
-					}
+				if (carried is null || !carried.hasTag("temp blob")) {
+					client_SendThrowOrActivateCommand(this);
 				}
 			}
 
-			if (!thrown)
-			{
-				// wtf???
-				if (carried is null) return;
+			if (b_KeyJustPressed("bomb_key")) {
+				CBlob@ carried = this.getCarriedBlob();
+				bool holding = carried !is null;// && carried.hasTag("exploding");
 
-				// dont "activate" temp blobs like ladders or doors
-				if ((carried is null || carried.hasTag("temp blob")) &&
-					(
-						carried.getConfig() == "ladder" ||
-						carried.getConfig() == "stone_door" ||
-						carried.getConfig() == "wooden_door" ||
-						carried.getConfig() == "wooden_platform"
-					)
-				) return;
+				CInventory@ inv = this.getInventory();
+				bool thrown = false;
+				u8 bombType = this.get_u8("bomb type");
 
-				// dont activate keg and satchel via this
-				//if (carried !is null && carried.getConfig() == "keg") return;
-				//if (carried !is null && carried.getConfig() == "satchel") return;
+				if (bombType == 255)
+				{
+					SetFirstAvailableBomb(this);
+					bombType = this.get_u8("bomb type");
+				}
 
-				client_SendThrowOrActivateCommand(this);
-				SetFirstAvailableBomb(this);
+				if (bombType < bombTypeNames.length)
+				{
+					for (int i = 0; i < inv.getItemsCount(); i++)
+					{
+						CBlob@ item = inv.getItem(i);
+						const string itemname = item.getName();
+						if (!holding && bombTypeNames[bombType] == itemname)
+						{
+							if (bombType >= 5)
+							{
+								this.server_Pickup(item);
+								client_SendThrowOrActivateCommand(this);
+								thrown = true;
+							}
+							else
+							{
+								client_SendThrowOrActivateCommandBomb(this, bombType);
+								thrown = true;
+							}
+							break;
+						}
+					}
+				}
+
+				if (!thrown)
+				{
+					client_SendThrowOrActivateCommand(this);
+					SetFirstAvailableBomb(this);
+				}
+			}
+        } else {
+			if (this.isKeyJustPressed(key_action3)) {
+				/*CBlob@ carried = this.getCarriedBlob();
+
+				if (carried is null || !carried.hasTag("temp blob")) {
+					client_SendThrowOrActivateCommand(this);
+				}
+			}
+
+			if (b_KeyJustPressed("activate_or_throw_bomb")) {*/
+				CBlob@ carried = this.getCarriedBlob();
+				bool holding = carried !is null;// && carried.hasTag("exploding");
+
+				CInventory@ inv = this.getInventory();
+				bool thrown = false;
+				u8 bombType = this.get_u8("bomb type");
+
+				if (bombType == 255)
+				{
+					SetFirstAvailableBomb(this);
+					bombType = this.get_u8("bomb type");
+				}
+
+				if (bombType < bombTypeNames.length)
+				{
+					for (int i = 0; i < inv.getItemsCount(); i++)
+					{
+						CBlob@ item = inv.getItem(i);
+						const string itemname = item.getName();
+						if (!holding && bombTypeNames[bombType] == itemname)
+						{
+							if (bombType >= 5)
+							{
+								this.server_Pickup(item);
+								client_SendThrowOrActivateCommand(this);
+								thrown = true;
+							}
+							else
+							{
+								client_SendThrowOrActivateCommandBomb(this, bombType);
+								thrown = true;
+							}
+							break;
+						}
+					}
+				}
+
+				if (!thrown)
+				{
+					// wtf???
+					if (carried is null) return;
+
+					// dont "activate" temp blobs like ladders or doors
+					if ((carried is null || carried.hasTag("temp blob")) &&
+						(
+							carried.getConfig() == "ladder" ||
+							carried.getConfig() == "stone_door" ||
+							carried.getConfig() == "wooden_door" ||
+							carried.getConfig() == "wooden_platform"
+						)
+					) return;
+
+					// dont activate keg and satchel via this
+					//if (carried !is null && carried.getConfig() == "keg") return;
+					//if (carried !is null && carried.getConfig() == "satchel") return;
+
+					client_SendThrowOrActivateCommand(this);
+					SetFirstAvailableBomb(this);
+				}
 			}
 		}
 	}
