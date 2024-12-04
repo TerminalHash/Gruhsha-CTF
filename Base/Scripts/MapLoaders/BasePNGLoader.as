@@ -410,6 +410,10 @@ class PNGLoader
 			case map_colors::mook_spawner:    autotile(offset); AddMarker(map, offset, "mook spawner"); break;
 			case map_colors::mook_spawner_10: autotile(offset); AddMarker(map, offset, "mook spawner 10"); break;
 			case map_colors::dummy:           autotile(offset); spawnBlob(map, "dummy", offset, 1, true); break;
+
+			// Mod blobs
+			case map_colors::fridge:          autotile(offset); spawnBlob(map, "fridge",         offset + 2); break;
+
 			default:
 				HandleCustomTile( map, offset, pixel );
 			};
