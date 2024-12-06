@@ -147,7 +147,7 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 				case Hitters::drill:			hitter_string = "drill"; break;
 				case Hitters::saw:				hitter_string = "saw"; break;
 
-				case GruhshaHitters::tile_entity:	hitter_string = "tile entity"; break;
+				case GruhshaHitters::tile_entity:	hitter_string = "tile_entity"; break;
 
 				default: 						hitter_string = "fall";
 			}
