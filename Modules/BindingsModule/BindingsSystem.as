@@ -421,9 +421,9 @@ void onTick(CRules@ this)
 		LoadFileVSettings();
 	}
 
-	/*if (getGameTime() % 30 == 0) {
+	if (getGameTime() % 60 == 0) {
 		CheckOneValue();
-	}*/
+	}
 
 	if (controls !is null)
 	{
