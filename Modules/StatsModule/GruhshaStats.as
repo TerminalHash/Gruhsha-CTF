@@ -215,7 +215,7 @@ void onStateChange( CRules@ this, const u8 oldState )
 			
 			string player_name = p.getUsername();
 
-			tcpr("PlayerDamage" + player_name + " " +  player_damage);
+			tcpr("PlayerDamage " + player_name + " " +  player_damage);
 
 			tcpr("PlayerLeave " + player_name + " " + p.getTeamNum() + " " + getGameTime());
 		}
