@@ -11,7 +11,7 @@
     ---------------------------------------
     Emotes                  All keys
     Blocks                  All keys
-    Pings                   Almost all keys (except one)
+    Pings                   All keys
     Misc                    Only few keys
     Archer Shop             All keys except wooden block arrows
     Builder Shop            All keys
@@ -23,7 +23,7 @@
 
     GRUHSHA-Related
     ---------------------------------------
-    Tags                    Almost all keys (except one)
+    Tags                    All keys
     Blocks                  All keys
     Emotes                  All keys
     Actions                 Only few keys
