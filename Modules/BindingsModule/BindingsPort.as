@@ -125,7 +125,7 @@ bool onClientProcessChat(CRules@ this, const string &in textIn, string &out text
         client_AddToChat("How to use: .importconfig <option>", SColor(255, 180, 24, 94));
         client_AddToChat(" ", SColor(255, 180, 24, 94));
         client_AddToChat("Available options:", SColor(255, 180, 24, 94));
-        client_AddToChat("all - import bindings and settings", SColor(255, 180, 24, 94));
+        client_AddToChat("all - import bindings and settings (it can reset some visual settings)", SColor(255, 180, 24, 94));
         client_AddToChat("bindings - import bindings only", SColor(255, 180, 24, 94));
         client_AddToChat("settings - import settings only", SColor(255, 180, 24, 94));
         client_AddToChat("vsettigs - import visual settings only", SColor(255, 180, 24, 94));
