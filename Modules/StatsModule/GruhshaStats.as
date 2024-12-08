@@ -221,7 +221,7 @@ void onStateChange( CRules@ this, const u8 oldState )
 		if (this.getTeamWon() >= 0)
 			tcpr("MatchEnd " + this.getTeamWon() + " " + mapName + " " + getGameTime());
 		else
-			tcpr("MatchEnd " + " TIE " + " " + mapName + " " + getGameTime());
+			tcpr("MatchEnd " + "TIE" + " " + mapName + " " + getGameTime());
 
 		this.Untag("track_stats");
 		this.Sync("track_stats", true);
