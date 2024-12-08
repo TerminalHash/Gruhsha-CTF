@@ -226,7 +226,7 @@ void onSetPlayer(CBlob@ this, CPlayer@ player)
 	}
 	else if (player.getUsername() == "cosm_akylka")
 	{
-		this.set_string("death_sound", "mm_clocktower_bell.ogg");
-		this.set_string("death_sound_short", "mm_clocktower_bell.ogg");
+		this.set_string("death_sound", "mm_clocktower_bell_boosted.ogg");
+		this.set_string("death_sound_short", "mm_clocktower_bell_boosted.ogg");
 	}
 }
