@@ -181,6 +181,7 @@ namespace ru
 	n_activateorthrowbomb					= "Активировать/бросить предмет",
 	n_putitemcommand						= "Положить предмет в инвентарь",
 	n_blockrotatecommand					= "Повернуть блок",
+	n_showinvkey							= "Показать инвентарь блоба",
 
 		// NoMenuBuying Binds
 			// Knight Shop

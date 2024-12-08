@@ -66,7 +66,8 @@ string[][] button_texts =
 		Names::markbuildercommand,
 		Names::putitemcommand,
 		Names::blockrotatecommand,
-		Names::activateorthrowbomb
+		Names::activateorthrowbomb,
+		Names::showinvkey
 	},
 	{
 		"Go away"								// TECHNICAL LINE DONT TOUCH PLEASE
@@ -179,7 +180,8 @@ string[][] button_file_names =
 		"mark_team_builder",
 		"put_item",
 		"blob_rotate",
-		"bomb_key"
+		"bomb_key",
+		"showinv"
 	},
 	{
 		"go away"								// TECHNICAL LINE DONT TOUCH PLEASE

@@ -181,6 +181,7 @@ namespace en
 	n_activateorthrowbomb					= "Activate/throw item",
 	n_putitemcommand						= "Put item into inventory",
 	n_blockrotatecommand					= "Rotate block",
+	n_showinvkey							= "Show blob's inventory",
 
 		// NoMenuBuying Binds
 			// Knight Shop

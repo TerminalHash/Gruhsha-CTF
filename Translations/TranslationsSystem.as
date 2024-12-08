@@ -189,6 +189,7 @@ namespace Names
 	activateorthrowbomb					= Translate(en::n_activateorthrowbomb+"\\"+ru::n_activateorthrowbomb),
 	putitemcommand						= Translate(en::n_putitemcommand+"\\"+ru::n_putitemcommand),
 	blockrotatecommand					= Translate(en::n_blockrotatecommand+"\\"+ru::n_blockrotatecommand),
+	showinvkey							= Translate(en::n_showinvkey+"\\"+ru::n_showinvkey),
 
 		// NoMenuBuying Binds
 			// Knight Shop
