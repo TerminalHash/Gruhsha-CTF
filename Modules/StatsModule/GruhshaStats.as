@@ -200,12 +200,10 @@ void onStateChange( CRules@ this, const u8 oldState )
 {
 	if (!this.hasTag("track_stats")) return;
 
-	if (this.isGameOver() && this.getTeamWon() >= 0)
-	{
+	if (this.isGameOver()) {
 		string mapName = getFilenameWithoutExtension(getFilenameWithoutPath(getMap().getMapName()));
 
-		for (int i=0; i < getPlayerCount(); i++) 
-		{
+		for (int i=0; i < getPlayerCount(); i++)  {
 			CPlayer@ p = getPlayer(i);
 			if (p is null) continue;
 
@@ -220,7 +218,10 @@ void onStateChange( CRules@ this, const u8 oldState )
 			tcpr("PlayerLeave " + player_name + " " + p.getTeamNum() + " " + getGameTime());
 		}
 
-		tcpr("MatchEnd " + this.getTeamWon() + " " + mapName + " " + getGameTime());
+		if (this.getTeamWon() >= 0)
+			tcpr("MatchEnd " + this.getTeamWon() + " " + mapName + " " + getGameTime());
+		else
+			tcpr("MatchEnd " + " TIE " + " " + mapName + " " + getGameTime());
 
 		this.Untag("track_stats");
 		this.Sync("track_stats", true);
