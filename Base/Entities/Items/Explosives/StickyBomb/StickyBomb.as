@@ -91,9 +91,9 @@ bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
 		return blob.getTeamNum() != this.getTeamNum() && blob.hasTag("shielded") && blockAttack(blob, blob.getPosition() - this.getPosition(), 0.0f);
 	}
 
-	string name = blob.getName();
+	string name = blob.getConfig();
 
-	if (name == "fishy" || name == "food" || name == "steak" || name == "grain" || name == "heart" || name == "saw")
+	if (name == this.getConfig() || name == "fishy" || name == "food" || name == "steak" || name == "grain" || name == "heart" || name == "saw")
 	{
 		return false;
 	}
@@ -121,14 +121,16 @@ void onTick(CBlob@ this)
 void RememberVelAng(CBlob@ this)
 {
 	f32 velang = -this.getOldVelocity().Angle();
-	f32 modulo = velang%45;
-	velang = Maths::Floor(velang/45)*45;
+	//f32 modulo = velang%45;
+	velang = Maths::Floor((velang+45/2)/45)*45;
 	
 	this.set_f32("velang", velang);
 }
 
 void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point1, Vec2f point2 )
 {
+	if (blob !is null && blob.getConfig() == this.getConfig()) return;
+
 	if (solid)
 	{
 		RememberVelAng(this);
@@ -141,6 +143,7 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 		this.setAngleDegrees(velang+90);
 		this.setPosition(Vec2f(Maths::Round(point2.x/8)*8, Maths::Round(point2.y/8)*8));
 		this.getShape().SetStatic(true);
+		//this.getShape().getConsts().collidable = false;
 		
 		int new_z = this.isInWater()?100:300;
 		

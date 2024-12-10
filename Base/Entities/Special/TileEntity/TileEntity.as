@@ -114,7 +114,10 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 
 	if (solid)
 	{
-		f32 max_hits = this.getOldVelocity().Length();
+		f32 max_hits = this.getOldVelocity().Length()*2;
+		bool wooden = getMap().isTileWood(this.get_s32("tile_frame"));
+		if (wooden) max_hits /= 2;
+
 		//
 		{
 			HitInfo@[] hitInfos;
