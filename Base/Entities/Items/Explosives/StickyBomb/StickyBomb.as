@@ -8,10 +8,10 @@ const s32 bomb_fuse = 120;
 
 void onInit(CBlob@ this)
 {
-	this.Tag("directional_style");
+	//this.Tag("directional_style");
 	this.set_u16("explosive_parent", 0);
 	this.getShape().getConsts().net_threshold_multiplier = 2.0f;
-	SetupBomb(this, bomb_fuse, 96.0f, 2.0f, 96.0f, 0.8f, true);
+	SetupBomb(this, bomb_fuse, 48.0f, 2.0f, 0.0f, 0.0f, true);
 	//
 	this.Tag("activated"); // make it lit already and throwable
 }
@@ -118,15 +118,33 @@ void onTick(CBlob@ this)
 	}
 }
 
-void onCollision(CBlob@ this, CBlob@ blob, bool solid)
+void RememberVelAng(CBlob@ this)
 {
-	if (blob !is null)
+	f32 velang = -this.getOldVelocity().Angle();
+	f32 modulo = velang%45;
+	velang = Maths::Floor(velang/45)*45;
+	
+	this.set_f32("velang", velang);
+}
+
+void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point1, Vec2f point2 )
+{
+	if (solid)
 	{
-		if (blob.getShape().isStatic())
-		{
-			this.setAngleDegrees(90 - (this.getPosition() - blob.getPosition()).Angle());
-			this.getShape().SetStatic(true);
-		}
+		RememberVelAng(this);
+	}
+
+	if (solid || blob !is null && blob.getShape().isStatic() && blob.getShape().getConsts().collidable)
+	{
+		f32 velang = this.get_f32("velang")+180;
+		//this.setAngleDegrees(90 - (this.getPosition() - blob.getPosition()).Angle());
+		this.setAngleDegrees(velang+90);
+		this.setPosition(Vec2f(Maths::Round(point2.x/8)*8, Maths::Round(point2.y/8)*8));
+		this.getShape().SetStatic(true);
+		
+		int new_z = this.isInWater()?100:300;
+		
+		this.getSprite().SetZ(new_z);
 	}
 
 	if (!solid)

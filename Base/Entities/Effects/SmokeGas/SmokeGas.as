@@ -14,7 +14,7 @@ void onInit(CBlob@ this)
 
 	if (!this.exists("toxicity")) this.set_f32("toxicity", 0.50f);
 	
-	this.server_SetTimeToDie(1.5f);
+	this.server_SetTimeToDie(0.5f);
 	
 	CShape@ shape = this.getShape();
 	//shape.getConsts().mapCollisions = false;
