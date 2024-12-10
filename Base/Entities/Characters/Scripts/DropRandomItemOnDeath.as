@@ -29,7 +29,7 @@ void dropRandomItem(CBlob@ this) {
 
 		if (killer.getBlob() !is null) {
 			if (drop_random >= 2.5) {
-				CBlob@ icebomb = server_CreateBlob("mat_icebombs", -1, this.getPosition());
+				CBlob@ icebomb = server_CreateBlob("mat_bombs", -1, this.getPosition());
 
 				if (icebomb !is null) {
 					Vec2f vel(XORRandom(2) == 0 ? -2.0 : 2.0f, -5.0f);
