@@ -55,7 +55,7 @@ void onInit(CBlob@ this)
 
 	if (arrowType == ArrowType::bomb)
 	{
-		SetupBomb(this, bomb_fuse, 48.0f, 1.5f, 24.0f, 0.5f, true);
+		SetupBomb(this, bomb_fuse, 48.0f, 1.5f, 36.0f, 0.5f, true);
 		this.set_u8("custom_hitter", Hitters::bomb_arrow);
 	}
 	else if (arrowType == ArrowType::water)
