@@ -240,6 +240,15 @@ namespace ru
 	n_longboatnmb							= "Большая лодка",
 	n_warboatnmb							= "Военная лодка",
 
+			// Editor
+	n_edmenu								= "Редактор",
+	n_edmodifier							= "Модификатор",
+	n_edonceaction							= "Модификатор (одно действие)",
+	n_edmode								= "Режим редактора",
+	n_eddestroy								= "Разрушение блоков/блобов",
+	n_edplace								= "Установка блоков/спаун блобов",
+	n_edcopy								= "Копировать блок/блоб",
+
 		// Settings
 	n_buildmode								= "Режим строительства",
 	n_blockbar								= "Показывать панель с блоками",

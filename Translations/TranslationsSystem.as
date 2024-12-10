@@ -248,6 +248,15 @@ namespace Names
 	longboatnmb							 = Translate(en::n_longboatnmb+"\\"+ru::n_longboatnmb),
 	warboatnmb							 = Translate(en::n_warboatnmb+"\\"+ru::n_warboatnmb),
 
+			// Editor
+	edmenu							 	 = Translate(en::n_edmenu+"\\"+ru::n_edmenu),
+	edmodifier							 = Translate(en::n_edmodifier+"\\"+ru::n_edmodifier),
+	edonceaction						 = Translate(en::n_edonceaction+"\\"+ru::n_edonceaction),
+	edmode							 	 = Translate(en::n_edmode+"\\"+ru::n_edmode),
+	eddestroy							 = Translate(en::n_eddestroy+"\\"+ru::n_eddestroy),
+	edplace							 	 = Translate(en::n_edplace+"\\"+ru::n_edplace),
+	edcopy							 	 = Translate(en::n_edcopy+"\\"+ru::n_edcopy),
+
 		// Settings
 	buildmode		  	      			 = Translate(en::n_buildmode+"\\"+ru::n_buildmode),
 	blockbar		  	      			 = Translate(en::n_blockbar+"\\"+ru::n_blockbar),

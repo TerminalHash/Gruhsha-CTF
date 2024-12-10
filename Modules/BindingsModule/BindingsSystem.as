@@ -519,7 +519,7 @@ void onTick(CRules@ this)
 
 Vec2f MENU_SIZE = Vec2f(1000, 700);
 Vec2f ENTRY_SIZE = Vec2f(900, 30);
-Vec2f PAGE_BUTTON_SIZE = Vec2f(130, 40);
+Vec2f PAGE_BUTTON_SIZE = Vec2f(120, 40);
 
 void InitMenu()
 {

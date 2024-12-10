@@ -240,6 +240,15 @@ namespace en
 	n_longboatnmb							= "Long Boat",
 	n_warboatnmb							= "War Boat",
 
+			// Editor
+	n_edmenu								= "Editor",
+	n_edmodifier							= "Modifier",
+	n_edonceaction							= "Modifier (once action)",
+	n_edmode								= "Change editor mode",
+	n_eddestroy								= "Destroying blocks/blobs",
+	n_edplace								= "Placing blocks/blobs",
+	n_edcopy								= "Copy block/blob",
+
 		// Settings
 	n_buildmode								= "Build Mode",
 	n_blockbar								= "Show block bar HUD",

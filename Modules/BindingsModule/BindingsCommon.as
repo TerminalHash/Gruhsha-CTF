@@ -18,7 +18,8 @@ string[] page_texts =
 	Names::buildernmb,
 	Names::quartersnmb,
 	Names::vehiclenmb,
-	Names::boatnmb
+	Names::boatnmb,
+	Names::edmenu
 };
 
 string[][] button_texts =
@@ -130,6 +131,14 @@ string[][] button_texts =
 		Names::dinghynmb,
 		Names::longboatnmb,
 		Names::warboatnmb
+	},
+	{
+		Names::edmodifier,
+		Names::edonceaction,
+		Names::edmode,
+		Names::eddestroy,
+		Names::edplace,
+		Names::edcopy
 	}
 };
 
@@ -244,6 +253,14 @@ string[][] button_file_names =
 		"boat_dinghy",
 		"boat_longboat",
 		"boat_warboat"
+	},
+	{
+		"ed_modifier",
+		"ed_once_action",
+		"ed_mode",
+		"ed_destroying",
+		"ed_placing",
+		"ed_copy"
 	}
 };
 
@@ -1889,7 +1906,7 @@ class ClickableButtonGUI
 		GUI::SetFont("menu");
 
 		Vec2f start_offset = Vec2f(50, 600);
-		Vec2f start_offset_p = Vec2f(70, 550);
+		Vec2f start_offset_p = Vec2f(40, 550);
 
 		closebutton.Render(m_clickable_origin + Vec2f(1000 - 40, 0), Vec2f(40, 40));
 
@@ -1912,7 +1929,7 @@ class ClickableButtonGUI
 
 			if (i == 5)
 			{
-				start_offset_p = Vec2f(70, 600);
+				start_offset_p = Vec2f(40, 600);
 			}
 		}
 
@@ -1960,7 +1977,7 @@ class ClickableButtonGUI
 		u8 scale = screen_height / 720.0;
 
 		Vec2f start_offset = Vec2f(50, 600);
-		Vec2f start_offset_p = Vec2f(70, 550);
+		Vec2f start_offset_p = Vec2f(40, 550);
 
 		closebutton.Update(m_clickable_origin + Vec2f(1000 - 40, 0), Vec2f(40, 40));
 
@@ -1983,7 +2000,7 @@ class ClickableButtonGUI
 
 			if (i == 5)
 			{
-				start_offset_p = Vec2f(70, 600);
+				start_offset_p = Vec2f(40, 600);
 			}
 		}
 

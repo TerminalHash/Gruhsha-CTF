@@ -1,4 +1,5 @@
 #include "SocialStatus.as";
+#include "BindingsCommon.as";
 
 const string editor_place 	= "editor place";
 const string editor_destroy = "editor destroy";
@@ -37,23 +38,24 @@ void onTick(CRules@ this)
 	if (controls.isKeyJustPressed(KEY_RCONTROL)) {
 		p.set_bool("editor_cursor", !p.get_bool("editor_cursor"));
 	}
+
 	//changing mode BLOBS/TILES
-	if (controls.isKeyPressed(KEY_LMENU) && controls.isKeyJustPressed(KEY_KEY_1)) {
+	if (b_KeyJustPressed("ed_mode")) {
 		CBitStream params;
 		params.write_u16(p.getNetworkID());
 		this.SendCommand(this.getCommandID(change_mode), params);
 	}
 	
-	if (!controls.isKeyPressed(KEY_MBUTTON)) return;
+	if (!b_KeyPressed("ed_modifier")) return;
 	//placing/destroing by single item
-	if (controls.isKeyPressed(KEY_LSHIFT)) {
-		if (controls.isKeyJustPressed(KEY_KEY_X)) {
+	if (b_KeyPressed("ed_once_action")) {
+		if (b_KeyJustPressed("ed_placing")) {
 			CBitStream params;
 			params.write_u16(p.getNetworkID());
 			params.write_Vec2f(controls.getMouseWorldPos());
 			this.SendCommand(this.getCommandID(editor_place), params);
 		}
-		if (controls.isKeyJustPressed(KEY_KEY_Z)) {
+		if (b_KeyJustPressed("ed_destroying")) {
 			CBitStream params;
 			params.write_u16(p.getNetworkID());
 			params.write_Vec2f(controls.getMouseWorldPos());
@@ -62,20 +64,20 @@ void onTick(CRules@ this)
 	}
 	//placing/destroying continuously
 	else {
-		if (controls.isKeyPressed(KEY_KEY_X)) {
+		if (b_KeyPressed("ed_placing")) {
 			CBitStream params;
 			params.write_u16(p.getNetworkID());
 			params.write_Vec2f(controls.getMouseWorldPos());
 			this.SendCommand(this.getCommandID(editor_place), params);
 		}
-		if (controls.isKeyPressed(KEY_KEY_Z)) {
+		if (b_KeyPressed("ed_destroying")) {
 			CBitStream params;
 			params.write_u16(p.getNetworkID());
 			params.write_Vec2f(controls.getMouseWorldPos());
 			this.SendCommand(this.getCommandID(editor_destroy), params);
 		}
 	}
-	if (controls.isKeyJustPressed(KEY_KEY_B)) {
+	if (b_KeyJustPressed("ed_copy")) {
 		CBitStream params;
 		params.write_u16(p.getNetworkID());
 		params.write_Vec2f(controls.getMouseWorldPos());
