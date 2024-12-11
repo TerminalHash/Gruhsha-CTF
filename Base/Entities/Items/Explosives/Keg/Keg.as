@@ -2,9 +2,6 @@
 #include "Hitters.as";
 #include "ActivationThrowCommon.as"
 #include "HolidayCommon.as";
-#include "HolidaySprites.as";
-
-string keg_sprite_file;
 
 void onInit(CBlob@ this)
 {
@@ -23,9 +20,7 @@ void onInit(CBlob@ this)
 
 	this.set_u16("_keg_carrier_id", 0xffff);
 
-    keg_sprite_file = isAnyHoliday() ? getHolidayVersionFileName("Keg") : "Keg.png";
-
-	CSpriteLayer@ fuse = this.getSprite().addSpriteLayer("fuse", keg_sprite_file, 16, 16, 0, 0);
+	CSpriteLayer@ fuse = this.getSprite().addSpriteLayer("fuse", "Keg.png", 16, 16, 0, 0);
 
 	if (fuse !is null)
 	{
@@ -39,17 +34,7 @@ void onInit(CBlob@ this)
 	this.set_f32("important-pickup", 30.0f);
 }
 
-void onInit(CSprite@ this)
-{
-	if (isAnyHoliday())
-	{
-		keg_sprite_file = getHolidayVersionFileName("Keg");
-		this.ReloadSprite(keg_sprite_file);
-	}
-}
-
 //sprite update
-
 void onTick(CSprite@ this)
 {
 	CBlob@ blob = this.getBlob();

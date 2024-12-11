@@ -1,11 +1,4 @@
 #include "Hitters.as"
-#include "HolidaySprites.as";
-
-string gibs_file_name;
-
-void onInit(CBlob@ this) {
-	gibs_file_name = isAnyHoliday() ? getHolidayVersionFileName("GenericGibs") : "GenericGibs.png";
-}
 
 f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData)
 {
@@ -25,7 +18,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 
 				for (int i = 0; i < (damage + 1); ++i)
 				{
-					makeGibParticle(gibs_file_name,
+					makeGibParticle("GenericGibs.png",
 					                this.getPosition(), getRandomVelocity(-90, (Maths::Min(Maths::Max(0.5f, damage), 2.0f) * 4.0f) , 270),
 					                7, 3 + XORRandom(4), Vec2f(8, 8),
 					                1.0f, 0, "", 0);
