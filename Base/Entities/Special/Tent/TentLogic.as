@@ -3,8 +3,8 @@
 #include "StandardRespawnCommand.as"
 #include "StandardControlsCommon.as"
 #include "GenericButtonCommon.as"
-#include "HolidayCommon.as"
 
+// blob
 void onInit(CBlob@ this)
 {
 #ifdef STAGING

@@ -25,6 +25,13 @@ string holiday = "";
 string holiday_cache = "";
 bool sync = false;
 
+// QUICK FIX: Whitelist scripts as a quick sanitization check
+string[] scriptlist = {
+	"Birthday",
+	"Halloween",
+	"Christmas",
+};
+
 void onInit(CRules@ this)
 {
 	this.addCommandID(SYNC_HOLIDAY_ID);
@@ -38,42 +45,8 @@ void onRestart(CRules@ this)
 		print("Checking any holidays...");
 
 		holiday_cache = this.get_string(holiday_prop);
-		holiday = "";
-
-		u16 server_year = Time_Year();
-		s16 server_date = Time_YearDate();
-		u8 server_leap = ((server_year % 4 == 0 && server_year % 100 != 0) || server_year % 400 == 0)? 1 : 0;
-
-		Holiday[] calendar = {
-			  Holiday(scriptlist[0], 116 + server_leap - 1, 3)
-			, Holiday(scriptlist[1], 301 + server_leap - 1, 8)
-			, Holiday(scriptlist[2], 352 + server_leap - 2, 36)
-		};
-
-		s16 holiday_start;
-		s16 holiday_end;
-		for (u8 i = 0; i < calendar.length; i++)
-		{
-			holiday_start = calendar[i].m_date;
-			holiday_end = (holiday_start + calendar[i].m_length) % (365 + server_leap);
-
-			bool holiday_active = false;
-			if (holiday_start <= holiday_end)
-			{
-				holiday_active = server_date >= holiday_start && server_date < holiday_end;
-			}
-			else
-			{
-				holiday_active = server_date >= holiday_start || server_date < holiday_end;
-			}
-
-			if (holiday_active)
-			{
-				holiday = calendar[i].m_name;
-				print("Holiday: "+holiday);
-				break;
-			}
-		}
+		holiday = GetCurrentHoliday();
+		
 		sync = true;
 	}
 }
@@ -98,6 +71,9 @@ void SyncHoliday(CRules@ this, string _holiday, string _holiday_cache)
 #ifdef STAGING
 			CFileMatcher::RemoveOverlay(_holiday_cache);
 #endif
+#ifdef STAGING
+			CFileMatcher::RemoveOverlay(_holiday_cache);
+#endif
 			if (isServer())
 			{
 				holiday_cache = "";
@@ -113,6 +89,10 @@ void SyncHoliday(CRules@ this, string _holiday, string _holiday_cache)
 			print("adding " + _holiday + " holiday script");
 			//adds the holiday script
 			this.AddScript(_holiday+".as");
+
+#ifdef STAGING
+			CFileMatcher::AddOverlay(_holiday);
+#endif
 
 #ifdef STAGING
 			CFileMatcher::AddOverlay(_holiday);
@@ -166,9 +146,9 @@ string GetCurrentHoliday()
 	u8 server_leap = ((server_year % 4 == 0 && server_year % 100 != 0) || server_year % 400 == 0)? 1 : 0;
 
 	Holiday[] calendar = {
-			Holiday(HolidayList[Holidays::Birthday], 116 + server_leap - 1, 3)
-		, Holiday(HolidayList[Holidays::Halloween], 301 + server_leap - 1, 8)
-		, Holiday(HolidayList[Holidays::Christmas], 357 + server_leap - 2, 16)
+			Holiday(scriptlist[0], 116 + server_leap - 1, 3)
+		, Holiday(scriptlist[1], 301 + server_leap - 1, 8)
+		, Holiday(scriptlist[2], 357 + server_leap - 2, 16)
 	};
 
 	s16 holiday_start;

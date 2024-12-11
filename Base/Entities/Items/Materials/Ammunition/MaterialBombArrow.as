@@ -1,5 +1,4 @@
 #include "ArrowCommon.as"
-#include "HolidayCommon.as"
 
 void onInit(CBlob@ this) {
     this.set_u16("decay time", 300);
