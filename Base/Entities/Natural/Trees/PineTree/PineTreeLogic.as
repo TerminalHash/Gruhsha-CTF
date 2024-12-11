@@ -1,14 +1,8 @@
 // Pine tree Logic
-
 #include "TreeSync.as"
-#include "HolidaySprites.as";
-
-string spritefile;
 
 void onInit(CBlob@ this)
 {
-	spritefile = isAnyHoliday() ? getHolidayVersionFileName("PineTree") : "PineTree.png";
-
 	InitVars(this);
 
 	u32 seed = 0;
@@ -105,7 +99,7 @@ void GrowSprite(CSprite@ this, TreeVars@ vars)
 
 			if (segment.grown_times == 1)
 			{
-				CSpriteLayer@ newsegment = this.addSpriteLayer("segment " + i, "Entities/Natural/Trees/PineTree/" + spritefile, 16, 16, 0, 0);
+				CSpriteLayer@ newsegment = this.addSpriteLayer("segment " + i, "Entities/Natural/Trees/PineTree/" + "PineTree.png", 16, 16, 0, 0);
 
 				if (newsegment !is null)
 				{
@@ -144,7 +138,7 @@ void GrowSprite(CSprite@ this, TreeVars@ vars)
 			else if (segment.grown_times == 2 && segment.height > 2)
 			{
 				string layerName = "leaves " + i;
-				CSpriteLayer@ newsegment = this.addSpriteLayer(layerName, "Entities/Natural/Trees/PineTree/" + spritefile, 32, 32, 0, 0);
+				CSpriteLayer@ newsegment = this.addSpriteLayer(layerName, "Entities/Natural/Trees/PineTree/" + "PineTree.png", 32, 32, 0, 0);
 
 				if (newsegment !is null)
 				{
@@ -178,7 +172,7 @@ void GrowSprite(CSprite@ this, TreeVars@ vars)
 				if (i == 0) //add roots
 				{
 					f32 flipsign = 1.0f;
-					CSpriteLayer@ newsegment = this.addSpriteLayer("roots", "Entities/Natural/Trees/PineTree/" + spritefile, 32, 16, 0, 0);
+					CSpriteLayer@ newsegment = this.addSpriteLayer("roots", "Entities/Natural/Trees/PineTree/" + "PineTree.png", 32, 16, 0, 0);
 
 					if (newsegment !is null)
 					{
@@ -197,7 +191,7 @@ void GrowSprite(CSprite@ this, TreeVars@ vars)
 				{
 					bool flipped = (segment.r.NextRanged(2) == 0);
 					string layerName = "leaves side " + i;
-					CSpriteLayer@ newsegment1 = this.addSpriteLayer(layerName, "Entities/Natural/Trees/PineTree/" + spritefile, 32, 32, 0, 0);
+					CSpriteLayer@ newsegment1 = this.addSpriteLayer(layerName, "Entities/Natural/Trees/PineTree/" + "PineTree.png", 32, 32, 0, 0);
 
 					if (newsegment1 !is null)
 					{
@@ -210,7 +204,7 @@ void GrowSprite(CSprite@ this, TreeVars@ vars)
 						newsegment1.SetOffset(segment.start_pos + Vec2f(((vars.max_height - i * 2) + segment.r.NextRanged(8)) * 0.5 + 8.0f , 4.0f));
 					}
 					
-					CSpriteLayer@ newsegment2 = this.addSpriteLayer("leaves doubleside " + i, "Entities/Natural/Trees/PineTree/" + spritefile, 32, 32, 0, 0);
+					CSpriteLayer@ newsegment2 = this.addSpriteLayer("leaves doubleside " + i, "Entities/Natural/Trees/PineTree/" + "PineTree.png", 32, 32, 0, 0);
 
 					if (newsegment2 !is null)
 					{

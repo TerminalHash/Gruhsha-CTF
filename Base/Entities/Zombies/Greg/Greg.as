@@ -1,8 +1,5 @@
 #include "EmotesCommon.as"
 #include "KnockedCommon.as"
-#include "HolidaySprites.as";
-
-string gibs_file_name;
 
 Random gregRand(Time());
 
@@ -96,8 +93,6 @@ void onInit(CBlob@ this)
     this.set_s32("statue time", 0);
 
     this.getShape().setFriction(0.7);
-
-    gibs_file_name = isAnyHoliday() ? getHolidayVersionFileName("GenericGibs") : "GenericGibs.png";
 }
 
 void onTick(CBlob@ this)
@@ -534,7 +529,7 @@ f32 onHit( CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hit
         this.getSprite().PlaySound("dig_stone", Maths::Min(1.25f, Maths::Max(0.5f, damage)));
     }
 
-    makeGibParticle(gibs_file_name, worldPoint, getRandomVelocity((this.getPosition() - worldPoint).getAngle(), 1.0f + damage, 90.0f) + Vec2f(0.0f, -2.0f),
+    makeGibParticle("GenericGibs.png", worldPoint, getRandomVelocity((this.getPosition() - worldPoint).getAngle(), 1.0f + damage, 90.0f) + Vec2f(0.0f, -2.0f),
         2, 4 + XORRandom(4), Vec2f(8, 8), 2.0f, 0, "", 0);
 
     return damage;

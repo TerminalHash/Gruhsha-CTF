@@ -3,12 +3,8 @@
 #include "StandardRespawnCommand.as"
 #include "StandardControlsCommon.as"
 #include "GenericButtonCommon.as"
-#include "HolidaySprites.as"
-
-string tent_file_name;
 
 // blob
-
 void onInit(CBlob@ this)
 {
 	this.getSprite().SetZ(-50.0f);
@@ -64,15 +60,4 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
 	onRespawnCommand(this, cmd, params);
-}
-
-// sprite
-
-void onInit(CSprite@ this)
-{
-	if (isAnyHoliday())
-	{
-		tent_file_name = getHolidayVersionFileName("Tent");
-		this.ReloadSprite(tent_file_name);
-	}
 }
