@@ -375,7 +375,7 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 											
 											if (collapse_checker !is null)
 											{
-												collapse_checker.set_f32("expl_radius", this.get_f32("map_damage_radius"));
+												collapse_checker.set_f32("expl_radius", radius);
 												if (killer !is null)
 												{
 													collapse_checker.SetDamageOwnerPlayer(killer);
@@ -417,7 +417,7 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 
 														f32 angle_factor_account = exp_dot >= 0.87 ? 180 : 0;
 														
-														tileblob.setVelocity(Vec2f(-(this.get_f32("map_damage_radius"))/3.5, 0).RotateBy(-(pos-tpos).getAngle()+angle_factor_account));
+														tileblob.setVelocity(Vec2f(-radius/3.5, 0).RotateBy(-(pos-tpos).getAngle()+angle_factor_account));
 														tileblob.set_s32("tile_frame", type_to_spawn);
 													}
 													break;
