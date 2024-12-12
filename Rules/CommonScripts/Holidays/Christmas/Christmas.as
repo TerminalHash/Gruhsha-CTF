@@ -5,6 +5,8 @@
 #include "TreeCommon.as";
 #include "HolidayCommon.as";
 
+#include "TreeCommon.as";
+
 const int present_interval = getTicksASecond() * 60 * 10; // 10 minutes
 const int gifts_per_hoho = 3;
 
@@ -53,7 +55,7 @@ void onTick(CRules@ this)
 			this.set_s16("snow_render_id", Render::addScript(Render::layer_background, "Christmas.as", "DrawSnow", 0));
 #endif
 		} 
-		else if (renderId != 0 && v_fastrender || this.get_string(holiday_prop) != "Christmas") // Have we just enabled fast render OR is holiday over
+		else if (renderId != 0 && v_fastrender || getHoliday() != Holidays::Christmas) // Have we just enabled fast render OR is holiday over
 		{
 			Render::RemoveScript(renderId);
 			this.set_s16("snow_render_id", 0);

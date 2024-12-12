@@ -119,9 +119,9 @@ void LoadSprites(CSprite@ this)
 		anim.AddFrame(9); //water
 		anim.AddFrame(8); //fire
 
-		if ((getHoliday() == Holidays::Christmas) == "Halloween") {
+		if (getHoliday() == Holidays::Christmas) == "Halloween") {
 			anim.AddFrame(18); //bomb halloween
-		} else if ((getHoliday() == Holidays::Christmas) == "Christmas") {
+		} else if (getHoliday() == Holidays::Christmas) == "Christmas") {
 			anim.AddFrame(20); //bomb christmas
 		} else {
 			anim.AddFrame(14); //bomb
