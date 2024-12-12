@@ -1,8 +1,10 @@
+#include "HolidayCommon.as"
+
 void onInit(CBlob@ this) {
     this.set_u16("decay time", 300);
     this.getCurrentScript().runFlags |= Script::remove_after_this;
 
-    if (getRules().get_string(holiday_prop) == "Christmas") {
+    if (getHoliday() == Holidays::Christmas) {
         this.AddScript("SetTeamToCarrier.as");
     }
 }
