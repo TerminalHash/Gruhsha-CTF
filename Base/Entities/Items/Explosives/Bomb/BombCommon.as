@@ -3,6 +3,7 @@
 #include "Hitters.as"
 #include "MakeDustParticle.as"
 #include "KnockedCommon.as"
+#include "HolidayCommon.as"
 
 void SetupBomb(CBlob@ this, const int fuseTicks, const f32 explRadius, const f32 explosive_damage, const f32 map_damage_radius, const f32 map_damage_ratio, const bool map_damage_raycast)
 {
@@ -49,7 +50,12 @@ bool UpdateBomb(CBlob@ this)
 			}
 
 			if (this.getConfig() == "waterbomb") {
-				lightColor = isHalloween() ? SColor(255, 100, 113, 96) : SColor(255, 44, 175, 222);
+			#ifdef STAGING
+				if (getHoliday() == Holidays::Halloween)
+					lightColor = SColor(255, 100, 113, 96);
+				else 
+			#endif
+				lightColor = SColor(255, 44, 175, 222);
 			} else if (this.getConfig() == "booster") {
 				this.SetLight(false);
 			} else {

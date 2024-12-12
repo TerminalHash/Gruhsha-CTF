@@ -25,6 +25,13 @@ string holiday = "";
 string holiday_cache = "";
 bool sync = false;
 
+// QUICK FIX: Whitelist scripts as a quick sanitization check
+string[] scriptlist = {
+	"Birthday",
+	"Halloween",
+	"Christmas",
+};
+
 void onInit(CRules@ this)
 {
 	this.addCommandID(SYNC_HOLIDAY_ID);
@@ -50,7 +57,7 @@ void SyncHoliday(CRules@ this, string _holiday, string _holiday_cache)
 	{
 		if (_holiday_cache != "")
 		{
-			if (HolidayList.find(_holiday_cache) == -1) {
+			if (scriptlist.find(_holiday_cache) == -1) {
 				warn("script " + _holiday_cache + " cache not found inside script list");
 				return;
 			} 
@@ -67,7 +74,7 @@ void SyncHoliday(CRules@ this, string _holiday, string _holiday_cache)
 		}
 		if (_holiday != "")
 		{
-			if (HolidayList.find(_holiday) == -1) {
+			if (scriptlist.find(_holiday) == -1) {
 				warn("script " + _holiday + " not found inside script list");
 				return;
 			}
@@ -87,8 +94,7 @@ void SyncHoliday(CRules@ this, string _holiday, string _holiday_cache)
 				holiday_cache = _holiday;
 			}
 		}
-		print(getHolidayFromString(holiday) + " | " + holiday);
-		this.set_s8(holiday_prop, getHolidayFromString(holiday));
+		this.set_string(holiday_prop, holiday);
 	}
 }
 
@@ -125,9 +131,9 @@ string GetCurrentHoliday()
 	u8 server_leap = ((server_year % 4 == 0 && server_year % 100 != 0) || server_year % 400 == 0)? 1 : 0;
 
 	Holiday[] calendar = {
-			Holiday(HolidayList[Holidays::Birthday], 116 + server_leap - 1, 3)
-		, Holiday(HolidayList[Holidays::Halloween], 301 + server_leap - 1, 8)
-		, Holiday(HolidayList[Holidays::Christmas], 357 + server_leap - 2, 16)
+			Holiday(scriptlist[0], 116 + server_leap - 1, 3)
+		, Holiday(scriptlist[1], 301 + server_leap - 1, 8)
+		, Holiday(scriptlist[2], 357 + server_leap - 2, 16)
 	};
 
 	s16 holiday_start;
@@ -153,5 +159,5 @@ string GetCurrentHoliday()
 		}
 	}
 
-	return "Christmas";
+	return "";
 }
