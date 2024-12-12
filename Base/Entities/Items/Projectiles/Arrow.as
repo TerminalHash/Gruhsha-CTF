@@ -512,11 +512,15 @@ void AddArrowLayer(CBlob@ this, CBlob@ hitBlob, CSprite@ sprite, Vec2f worldPoin
 		arrow.SetIgnoreParentFacing(true); //dont flip when parent flips
 
 
-		arrow.SetOffset(soffset);
-		arrow.SetRelativeZ(-0.01f);
+		arrow.SetOffset(Vec2f(-(Maths::Max(hitBlob.getRadius()*0.35f+2, normal.Length())+XORRandom(20)/10), 0).RotateBy(normal.Angle()));
+		arrow.SetRelativeZ(-arrow.getOffset().Length()/3);
 
-		f32 angle = velocity.Angle();
-		arrow.RotateBy(-angle - hitBlob.getAngleDegrees(), Vec2f(0, 0));
+		f32 angle = normal.Angle()+180;
+		angle = -angle - hitBlob.getAngleDegrees();
+		arrow.RotateBy(angle, Vec2f(0, 0));
+		this.set_f32(arrow.name, angle);
+		this.set_Vec2f(arrow.name+"offset", arrow.getOffset());
+		//printf("sosal2 "+arrow.name);
 
 		//track time until arrow is destroyed
 

@@ -420,10 +420,11 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 														tileblob.setVelocity(Vec2f(-(this.get_f32("map_damage_radius"))/3.5, 0).RotateBy(-(pos-tpos).getAngle()+angle_factor_account));
 														tileblob.set_s32("tile_frame", type_to_spawn);
 													}
+													
+													Material::fromTile(this, type_to_spawn, 1.0f*(idx+1));
 													break;
 												}
 
-												Material::fromTile(this, map.getTile(tpos).type, 1.0f);
 											}
 										}
 									}

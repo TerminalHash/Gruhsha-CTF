@@ -28,6 +28,8 @@ void onTick(CSprite@ this)
 			||	s_layer.name=="backarm"
 			||	s_layer.name=="frontarm"
 			||	s_layer.name=="held arrow") continue;
+
+		if (s_layer.name.find("arrow")>=0) continue;
 		
 		if (s_layer.name=="head")
 		{
@@ -42,7 +44,25 @@ void onTick(CSprite@ this)
 		
 		Vec2f offset = s_layer.getOffset();
 		Vec2f rotoff = -Vec2f(offset.x*FLIP_FACTOR, offset.y);
+		
+		//i'm way too stupid to finish this
+		/*
+		Vec2f arrow_rotoff = -Vec2f(offset.x, offset.y);
+		if (s_layer.name.find("arrow")>=0)
+		{
+			rotoff = arrow_rotoff;
+			string current_arrow_name = "arrow"+s_layer.name.substr("arrow".size());
+
+			//printf("sosal "+current_arrow_name);
+
+			s_layer.ResetTransform();
+			s_layer.SetOffset(blob.get_Vec2f(current_arrow_name+"offset"));
+			body_angle += blob.get_f32(current_arrow_name);
+		}
+		*/
+
 		s_layer.RotateBy(body_angle, rotoff);
+		//s_layer.setRenderStyle(RenderStyle::normal);
 	}
 
 	this.RotateBy(body_angle, Vec2f_zero);

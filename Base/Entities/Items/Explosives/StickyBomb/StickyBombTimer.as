@@ -112,7 +112,11 @@ void MetroBoominMakeItBoom(CBlob@ this)
 				HitInfo@ c_info = infos[jdx];
 
 				//we only need to hit tiles
-				if (c_info.blob !is null) continue;
+				if (c_info.blob !is null)
+				{
+					if (c_info.blob.getShape().isStatic() && c_info.blob.getShape().getConsts().collidable && c_info.blob.getConfig() != this.getConfig())
+						break;
+				}
 
 				Vec2f tile_pos = getMap().getAlignedWorldPos(c_info.hitpos)+Vec2f(1, 1)*4;
 
