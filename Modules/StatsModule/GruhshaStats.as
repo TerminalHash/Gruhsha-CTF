@@ -15,7 +15,7 @@ bool onServerProcessChat( CRules@ this, const string& in text_in, string& out te
 	if (player is null)
 		return true;
 
-    if (text_in == "*offi" && (player.getUsername() == "TerminalHash" || player.getUsername() == "Pnext" || player.getUsername() == "egor0928931" || player.getUsername() == "kusaka79"))
+    if (text_in == "*offi" && (player.getUsername() == "TerminalHash" || player.getUsername() == "Pnext" || player.getUsername() == "egor0928931" || player.getUsername() == "kusaka79") || player.getUsername() == "H1996R"))
 	{
 		if(!this.hasTag("track_stats"))
 		{
@@ -227,3 +227,23 @@ void onStateChange( CRules@ this, const u8 oldState )
 		this.Sync("track_stats", true);
 	}
 }
+
+// Wrong limit message
+/*void onRender(CRules@ this) {
+	CPlayer@ my_player = getLocalPlayer();
+	if (my_player is null) return;
+
+	// dont show message to non-admin users
+	if (my_player.getUsername() != "TerminalHash") return;
+
+	if (this.hasTag("track_stats") && this.get_u8("archers_limit") > 2 && this.get_u8("builders_limit") > 2) {
+		GUI::SetFont("Balkara_Condensed");
+		GUI::DrawTextCentered("DOLBAEB FIX LIMIT INACHE SOSAL", Vec2f(getScreenWidth()/2, 450), color_white);
+		GUI::DrawTextCentered("DOLBAEB FIX LIMIT INACHE SOSAL", Vec2f(getScreenWidth()/2, 500), color_white);
+		GUI::DrawTextCentered("DOLBAEB FIX LIMIT INACHE SOSAL", Vec2f(getScreenWidth()/2, 550), color_white);
+		GUI::DrawTextCentered("DOLBAEB FIX LIMIT INACHE SOSAL", Vec2f(getScreenWidth()/2, 600), color_white);
+		GUI::DrawTextCentered("DOLBAEB FIX LIMIT INACHE SOSAL", Vec2f(getScreenWidth()/2, 650), color_white);
+		GUI::DrawTextCentered("DOLBAEB FIX LIMIT INACHE SOSAL", Vec2f(getScreenWidth()/2, 700), color_white);
+	}
+
+}*/
