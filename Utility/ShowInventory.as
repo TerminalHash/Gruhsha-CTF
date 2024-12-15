@@ -25,7 +25,9 @@ void onRender(CSprite@ this)
 
 				if (blob.getInventory() !is null) {
 					if (blob.getTeamNum() == this.getBlob().getTeamNum()) {
-						int coins = player.getCoins();
+						if (blob.getPlayer() is null) return;
+
+						int coins = blob.getPlayer().getCoins();
 						CInventory@ inv = blob.getInventory();
 						if (inv is null) return;
 
