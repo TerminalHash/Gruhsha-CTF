@@ -123,7 +123,7 @@ class SpawnCommand : BlobCommand
 
 		if (blobName == "fridge")
 		{
-			server_AddToChat("Fridge can spawned only with Strange Button", ConsoleColour::ERROR, player);
+			server_AddToChat("Fridge can be spawned only with Strange Button", ConsoleColour::ERROR, player);
 			return;
 		}
 
