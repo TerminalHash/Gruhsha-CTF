@@ -121,6 +121,12 @@ class SpawnCommand : BlobCommand
 			return;
 		}
 
+		if (blobName == "fridge")
+		{
+			server_AddToChat("Fridge can spawned only with Strange Button", ConsoleColour::ERROR, player);
+			return;
+		}
+
 		u8 team = player.getBlob().getTeamNum();
 		CBlob@ newBlob = server_CreateBlob(blobName, team, pos + Vec2f(0, -5));
 
