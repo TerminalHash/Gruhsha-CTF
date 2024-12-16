@@ -27,11 +27,11 @@ void onTick(CBlob@ this) {
 			this.SendCommand(this.getCommandID("spawn on middle"));
 		}
 
-		if (controls.ActionKeyPressed(AK_ACTION2)) {
+		if (controls.isKeyJustPressed(KEY_RBUTTON)) {
 			this.SendCommand(this.getCommandID("spawn above player"));
 		}
 
-		if (controls.ActionKeyPressed(AK_ACTION1)) {
+		if (controls.isKeyJustPressed(KEY_LBUTTON)) {
 			this.SendCommand(this.getCommandID("spawn on cursor position"));
 		}
 	}
