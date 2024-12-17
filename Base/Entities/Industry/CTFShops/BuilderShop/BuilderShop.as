@@ -81,7 +81,7 @@ void onInit(CBlob@ this)
 		s.buttonheight = 1;
 		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", CTFCosts::saw_wood);
 		AddRequirement(s.requirements, "blob", "mat_stone", "Stone", CTFCosts::saw_stone);
-		AddRequirement(s.requirements, "no more", "saw", "Saw", 3);
+		//AddRequirement(s.requirements, "no more", "saw", "Saw", 3);
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Crate (wood)", getTeamIcon("crate", "Crate.png", team_num, Vec2f(32, 16), 5), "crate", Descriptions::crate, false);
