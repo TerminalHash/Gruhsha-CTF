@@ -14,6 +14,11 @@ void onInit(CBlob@ this)
 	this.addCommandID("spawn on cursor position");
 }
 
+void onInit(CSprite@ this)
+{
+	this.ScaleBy(0.5f, 0.5f);
+}
+
 void onTick(CBlob@ this) {
 	if (this.isAttachedToPoint("PICKUP")) {
 		AttachmentPoint@ point = this.getAttachments().getAttachmentPointByName("PICKUP");
