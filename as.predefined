@@ -1,3 +1,22 @@
+namespace RenderStyle {
+	enum Style {
+		normal,
+		light,
+		outline,
+		outline_front,
+		additive,
+		subtractive,
+		shadow,
+		solid
+	}
+}
+namespace Sound::FilterParamType {
+	enum FilterParamType {
+		FLOAT_PARAM,
+		INT_PARAM,
+		BOOL_PARAM
+	}
+}
 enum EKEY_CODE {
 	KEY_LBUTTON,
 	KEY_RBUTTON,
@@ -175,68 +194,6 @@ enum E_ACTIONKEYS {
 	AK_PICKUP_MODIFIER,
 	AK_NUM
 }
-namespace Tile {
-enum TileFlags {
-	SPARE_0,
-	SOLID,
-	BACKGROUND,
-	LADDER,
-	LIGHT_PASSES,
-	WATER_PASSES,
-	FLAMMABLE,
-	PLATFORM,
-	LIGHT_SOURCE,
-	MIRROR,
-	FLIP,
-	ROTATE,
-	COLLISION,
-	SPARE_2,
-	SPARE_3,
-	SPARE_4
-}
-}
-namespace CMap {
-enum TileEnum {
-	tile_empty,
-	tile_ground,
-	tile_ground_d1,
-	tile_ground_d0,
-	tile_ground_back,
-	tile_grass,
-	tile_castle,
-	tile_castle_d0,
-	tile_castle_d1,
-	tile_castle_moss,
-	tile_castle_back,
-	tile_castle_back_moss,
-	tile_gold,
-	tile_stone,
-	tile_stone_d1,
-	tile_stone_d0,
-	tile_thickstone,
-	tile_thickstone_d1,
-	tile_thickstone_d0,
-	tile_bedrock,
-	tile_ladder,
-	tile_wood,
-	tile_wood_d1,
-	tile_wood_d0,
-	tile_wood_back,
-	tile_sand
-}
-}
-namespace RenderStyle {
-enum Style {
-	normal,
-	light,
-	outline,
-	outline_front,
-	additive,
-	subtractive,
-	shadow,
-	solid
-}
-}
 enum keys {
 	key_up,
 	key_down,
@@ -255,34 +212,6 @@ enum keys {
 	key_bubbles,
 	key_crouch
 }
-namespace CBlob {
-enum MinimapEnum {
-	minimap_none,
-	minimap_snap,
-	minimap_arrow
-}
-}
-namespace CBlob {
-enum EdgeEnum {
-	map_collide_none,
-	map_collide_up,
-	map_collide_down,
-	map_collide_left,
-	map_collide_right,
-	map_collide_sides,
-	map_collide_nodeath,
-	map_collide_bounce
-}
-}
-namespace CBrain {
-enum BrainState {
-	idle,
-	searching,
-	wrong_path,
-	has_path,
-	stuck
-}
-}
 enum PlayerStats {
 	PS_SCORE,
 	PS_KILLS,
@@ -297,30 +226,6 @@ enum PlayerArmourSet {
 	PLAYER_ARMOUR_GOLD,
 	PLAYER_ARMOUR_NUM
 }
-namespace GameState {
-enum State {
-	game,
-	menu
-}
-}
-namespace Sound::FilterParamType {
-enum FilterParamType {
-	FLOAT_PARAM,
-	INT_PARAM,
-	BOOL_PARAM
-}
-}
-namespace Sound::SpeechWaveform {
-enum SpeechWaveform {
-	SAW,
-	TRIANGLE,
-	SIN,
-	SQUARE,
-	PULSE,
-	NOISE,
-	WARBLE
-}
-}
 enum SupportTier {
 	SUPPORT_TIER_NONE,
 	SUPPORT_TIER_SQUIRE,
@@ -328,159 +233,240 @@ enum SupportTier {
 	SUPPORT_TIER_ROYALGUARD,
 	SUPPORT_TIER_ROUNDTABLE
 }
+namespace SMesh {
+	enum Map {
+		NONE,
+		STATIC,
+		DYNAMIC,
+		STREAM
+	}
+	enum Buffer {
+		NONE,
+		VERTEX,
+		INDEX,
+		VERTEX_INDEX
+	}
+	enum FogType {
+		EXP,
+		EXP2,
+		LINEAR
+	}
+}
+namespace Sound::SpeechWaveform {
+	enum SpeechWaveform {
+		SAW,
+		TRIANGLE,
+		SIN,
+		SQUARE,
+		PULSE,
+		NOISE,
+		WARBLE
+	}
+}
+namespace GameState {
+	enum State {
+		game,
+		menu
+	}
+}
+namespace SMaterial {
+	enum MFlag {
+		WIREFRAME,
+		POINTCLOUD,
+		GOURAUD_SHADING,
+		LIGHTING,
+		ZBUFFER,
+		ZWRITE_ENABLE,
+		BACK_FACE_CULLING,
+		FRONT_FACE_CULLING,
+		BILINEAR_FILTER,
+		TRILINER_FILTER,
+		ANISOTROPIC_FILTER,
+		FOG_ENABLE,
+		NORMALIZE_NORMALS,
+		TEXTURE_WRAP,
+		ANTI_ALIASING,
+		COLOR_MASK,
+		COLOR_MATERIAL,
+		USE_MIP_MAPS,
+		BLEND_OPERATION,
+		POLYGON_OFFSET
+	}
+	enum CMask {
+		NONE,
+		ALPHA,
+		RED,
+		GREEN,
+		BLUE,
+		RGB,
+		ALL
+	}
+	enum CMaterial {
+		NONE,
+		DIFFUSE,
+		EMISSIVE,
+		SPECULAR,
+		DIFFUSE_AND_AMBIENT
+	}
+	enum MType {
+		SOLID,
+		SOLID_2_LAYER,
+		LIGHTMAP,
+		LIGHTMAP_ADD,
+		LIGHTMAP_M2,
+		LIGHTMAP_M4,
+		LIGHTMAP_LIGHTING,
+		LIGHTMAP_LIGHTING_M2,
+		LIGHTMAP_LIGHTING_M4,
+		DETAIL_MAP,
+		SPHERE_MAP,
+		REFLECTION_2_LAYER,
+		TRANSPARENT_ADD_COLOR,
+		TRANSPARENT_ALPHA_CHANNEL,
+		TRANSPARENT_ALPHA_CHANNEL_REF,
+		TRANSPARENT_VERTEX_ALPHA,
+		TRANSPARENT_REFLECTION_2_LAYER,
+		NORMAL_MAP_SOLID,
+		NORMAL_MAP_TRANSPARENT_ADD_COLOR,
+		NORMAL_MAP_TRANSPARENT_VERTEX_ALPHA,
+		PARALLAX_MAP_SOLID,
+		PARRLLAX_MAP_TRANSPARENT_ADD_COLOR,
+		PARALLAX_MAP_TRANSPARENT_VERTEX_ALPHA,
+		ONETEXTURE_BLEND
+	}
+	enum BlendType {
+		NONE,
+		ADD,
+		SUBTRACT,
+		REVSUBTRACT,
+		MIN,
+		MAX,
+		MIN_FACTOR,
+		MAX_FACTOR,
+		MIN_ALPHA,
+		MAX_ALPHA
+	}
+}
+namespace CBlob {
+	enum MinimapEnum {
+		minimap_none,
+		minimap_snap,
+		minimap_arrow
+	}
+	enum EdgeEnum {
+		map_collide_none,
+		map_collide_up,
+		map_collide_down,
+		map_collide_left,
+		map_collide_right,
+		map_collide_sides,
+		map_collide_nodeath,
+		map_collide_bounce
+	}
+}
+namespace CMap {
+	enum TileEnum {
+		tile_empty,
+		tile_ground,
+		tile_ground_d1,
+		tile_ground_d0,
+		tile_ground_back,
+		tile_grass,
+		tile_castle,
+		tile_castle_d0,
+		tile_castle_d1,
+		tile_castle_moss,
+		tile_castle_back,
+		tile_castle_back_moss,
+		tile_gold,
+		tile_stone,
+		tile_stone_d1,
+		tile_stone_d0,
+		tile_thickstone,
+		tile_thickstone_d1,
+		tile_thickstone_d0,
+		tile_bedrock,
+		tile_ladder,
+		tile_wood,
+		tile_wood_d1,
+		tile_wood_d0,
+		tile_wood_back,
+		tile_sand
+	}
+}
 namespace Script {
-enum RunFlags {
-	tick_sleeping,
-	tick_onscreen,
-	tick_inwater,
-	tick_not_inwater,
-	tick_onground,
-	tick_not_onground,
-	tick_moving,
-	tick_not_moving,
-	tick_infire,
-	tick_not_infire,
-	tick_overlapping,
-	tick_not_overlapping,
-	tick_blob_in_proximity,
-	remove_after_this,
-	tick_not_sleeping,
-	tick_attached,
-	tick_not_attached,
-	tick_onladder,
-	tick_not_onladder,
-	tick_myplayer,
-	tick_onmap,
-	tick_not_onmap,
-	tick_hasattached,
-	tick_not_hasattached,
-	tick_ininventory,
-	tick_not_ininventory
+	enum RunFlags {
+		tick_sleeping,
+		tick_onscreen,
+		tick_inwater,
+		tick_not_inwater,
+		tick_onground,
+		tick_not_onground,
+		tick_moving,
+		tick_not_moving,
+		tick_infire,
+		tick_not_infire,
+		tick_overlapping,
+		tick_not_overlapping,
+		tick_blob_in_proximity,
+		remove_after_this,
+		tick_not_sleeping,
+		tick_attached,
+		tick_not_attached,
+		tick_onladder,
+		tick_not_onladder,
+		tick_myplayer,
+		tick_onmap,
+		tick_not_onmap,
+		tick_hasattached,
+		tick_not_hasattached,
+		tick_ininventory,
+		tick_not_ininventory
+	}
 }
-}
-namespace SMaterial {
-enum MFlag {
-	WIREFRAME,
-	POINTCLOUD,
-	GOURAUD_SHADING,
-	LIGHTING,
-	ZBUFFER,
-	ZWRITE_ENABLE,
-	BACK_FACE_CULLING,
-	FRONT_FACE_CULLING,
-	BILINEAR_FILTER,
-	TRILINER_FILTER,
-	ANISOTROPIC_FILTER,
-	FOG_ENABLE,
-	NORMALIZE_NORMALS,
-	TEXTURE_WRAP,
-	ANTI_ALIASING,
-	COLOR_MASK,
-	COLOR_MATERIAL,
-	USE_MIP_MAPS,
-	BLEND_OPERATION,
-	POLYGON_OFFSET
-}
-}
-namespace SMaterial {
-enum CMask {
-	NONE,
-	ALPHA,
-	RED,
-	GREEN,
-	BLUE,
-	RGB,
-	ALL
-}
-}
-namespace SMaterial {
-enum CMaterial {
-	NONE,
-	DIFFUSE,
-	EMISSIVE,
-	SPECULAR,
-	DIFFUSE_AND_AMBIENT
-}
-}
-namespace SMaterial {
-enum MType {
-	SOLID,
-	SOLID_2_LAYER,
-	LIGHTMAP,
-	LIGHTMAP_ADD,
-	LIGHTMAP_M2,
-	LIGHTMAP_M4,
-	LIGHTMAP_LIGHTING,
-	LIGHTMAP_LIGHTING_M2,
-	LIGHTMAP_LIGHTING_M4,
-	DETAIL_MAP,
-	SPHERE_MAP,
-	REFLECTION_2_LAYER,
-	TRANSPARENT_ADD_COLOR,
-	TRANSPARENT_ALPHA_CHANNEL,
-	TRANSPARENT_ALPHA_CHANNEL_REF,
-	TRANSPARENT_VERTEX_ALPHA,
-	TRANSPARENT_REFLECTION_2_LAYER,
-	NORMAL_MAP_SOLID,
-	NORMAL_MAP_TRANSPARENT_ADD_COLOR,
-	NORMAL_MAP_TRANSPARENT_VERTEX_ALPHA,
-	PARALLAX_MAP_SOLID,
-	PARRLLAX_MAP_TRANSPARENT_ADD_COLOR,
-	PARALLAX_MAP_TRANSPARENT_VERTEX_ALPHA,
-	ONETEXTURE_BLEND
-}
-}
-namespace SMaterial {
-enum BlendType {
-	NONE,
-	ADD,
-	SUBTRACT,
-	REVSUBTRACT,
-	MIN,
-	MAX,
-	MIN_FACTOR,
-	MAX_FACTOR,
-	MIN_ALPHA,
-	MAX_ALPHA
-}
-}
-namespace SMesh {
-enum Map {
-	NONE,
-	STATIC,
-	DYNAMIC,
-	STREAM
-}
-}
-namespace SMesh {
-enum Buffer {
-	NONE,
-	VERTEX,
-	INDEX,
-	VERTEX_INDEX
-}
-}
-namespace SMesh {
-enum FogType {
-	EXP,
-	EXP2,
-	LINEAR
-}
+namespace Tile {
+	enum TileFlags {
+		SPARE_0,
+		SOLID,
+		BACKGROUND,
+		LADDER,
+		LIGHT_PASSES,
+		WATER_PASSES,
+		FLAMMABLE,
+		PLATFORM,
+		LIGHT_SOURCE,
+		MIRROR,
+		FLIP,
+		ROTATE,
+		COLLISION,
+		SPARE_2,
+		SPARE_3,
+		SPARE_4
+	}
 }
 namespace Render {
-enum ScriptLayer {
-	layer_background,
-	layer_tiles,
-	layer_objects,
-	layer_floodlayers,
-	layer_postworld,
-	layer_prehud,
-	layer_posthud,
-	layer_last,
-	layer_count
+	enum ScriptLayer {
+		layer_background,
+		layer_tiles,
+		layer_objects,
+		layer_floodlayers,
+		layer_postworld,
+		layer_prehud,
+		layer_posthud,
+		layer_last,
+		layer_count
+	}
 }
+namespace CBrain {
+	enum BrainState {
+		idle,
+		searching,
+		wrong_path,
+		has_path,
+		stuck
+	}
 }
-class string{
+class string {
 	~string();
 	string();
 	string(const string&in);
@@ -534,7 +520,7 @@ class string{
 	string replace(const string&in, const string&in) const;
 	int getHash() const;
 }
-class array<T>{
+class array<T> {
 	T& opIndex(uint index);
 	const T& opIndex(uint index) const;
 	T[]& opAssign(const T[]&in);
@@ -570,7 +556,7 @@ class array<T>{
 	void erase(uint);
 	funcdef bool less(const T&in, const T&in);
 }
-class any{
+class any {
 	any& opAssign(any&in);
 	void store(?&in);
 	void store(const int64&in);
@@ -579,7 +565,7 @@ class any{
 	bool retrieve(int64&out);
 	bool retrieve(double&out);
 }
-class dictionary{
+class dictionary {
 	dictionary& opAssign(const dictionary&in);
 	void set(const string&in, ?&in);
 	bool get(const string&in, ?&out) const;
@@ -599,7 +585,7 @@ class dictionary{
 	void erase(const string&in);
 	void clear();
 }
-class Vec2f{
+class Vec2f {
 	~Vec2f();
 	Vec2f();
 	Vec2f(float, float);
@@ -652,7 +638,7 @@ class Vec2f{
 	float x;
 	float y;
 }
-class SColor{
+class SColor {
 	~SColor();
 	SColor();
 	SColor(SColor);
@@ -678,7 +664,7 @@ class SColor{
 	void setRed(uint);
 	uint color;
 }
-class Vertex{
+class Vertex {
 	Vertex();
 	Vertex(Vec2f pos, float z, Vec2f uv, SColor col);
 	Vertex(float x, float y, float z, float u, float v, SColor col);
@@ -695,7 +681,7 @@ class Vertex{
 	float nz;
 	SColor col;
 }
-class CPlayer{
+class CPlayer {
 	string getUsername();
 	string getClantag();
 	string getCharacterName();
@@ -814,7 +800,7 @@ class CPlayer{
 	bool freeze;
 	string lastBlobName;
 }
-class CBlob{
+class CBlob {
 	void server_SetActive(bool active);
 	bool isActive() const;
 	bool RemoveScript(const string&in fileName);
@@ -1103,7 +1089,7 @@ class CBlob{
 	Vec2f chatBubbleOffset;
 	int maxChatBubbleLines;
 }
-class CMap{
+class CMap {
 	void server_SetTile(Vec2f posWorldspace, const Tile&in tile);
 	void server_SetTile(Vec2f posWorldspace, const uint16 type);
 	void SetTile(uint offset, uint t);
@@ -1310,7 +1296,7 @@ class CMap{
 	bool debugRaycasts;
 	int debugRaycastsMax;
 }
-class CBitStream{
+class CBitStream {
 	void write_s8(int8 v);
 	int8 read_s8();
 	bool saferead_s8(int8&out);
@@ -1379,7 +1365,7 @@ class CBitStream{
 	void Compress(int level);
 	void Decompress();
 }
-class ConfigFile{
+class ConfigFile {
 	ConfigFile& opAssign(const ConfigFile&in);
 	bool loadFile(string file);
 	bool saveFile(string file);
@@ -1432,7 +1418,7 @@ class ConfigFile{
 	bool readIntoArray_string(string[]&inout arr, const string&in key);
 	void ExtractToBitStream(CBitStream&inout bt);
 }
-class CFileMatcher{
+class CFileMatcher {
 	string search(const string&in);
 	string getFirst();
 	string getCurrent();
@@ -1442,7 +1428,7 @@ class CFileMatcher{
 	void printMatches();
 	bool hasMatch();
 }
-class CFileImage{
+class CFileImage {
 	bool isLoaded();
 	void ResetPixel();
 	bool canRead();
@@ -1464,25 +1450,25 @@ class CFileImage{
 	void setPixelAndAdvance(SColor col);
 	void setPixelAtPosition(uint x, uint y, SColor col, bool blend_alpha);
 }
-class Random{
+class Random {
 	uint Next();
 	uint NextRanged(uint range);
 	float NextFloat();
 	uint getSeed();
 	void Reset(uint seed);
 }
-class Noise{
+class Noise {
 	float Sample(float x, float y);
 	float Sample(const Vec2f&in pos);
 	float Fractal(float x, float y);
 	float Fractal(const Vec2f&in pos);
 }
-class CRules{
+class CRules {
 	void server_setShowHoverNames(bool canshow);
 	bool canShowHoverNames();
 	void RestartRules();
 	void SetCurrentState(uint8 state);
-	RuleState getCurrentState();
+	uint8 getCurrentState();
 	void SetTeamWon(int8 team);
 	int8 getTeamWon();
 	void SetGlobalMessage(string message);
@@ -1593,11 +1579,11 @@ class CRules{
 	bool engine_floodlayer_updates;
 	const bool allow_suicide;
 }
-class CTeam{
+class CTeam {
 	string getName();
 	SColor color;
 }
-class CControls{
+class CControls {
 	bool isMenuOpened();
 	bool NoKeysPressed();
 	void ClearKeys();
@@ -1631,17 +1617,17 @@ class CControls{
 	float hat1intensity;
 	float hat2intensity;
 }
-class CMapZoneTile{
+class CMapZoneTile {
 	uint8 edge;
 	uint8 cost;
 	bool solid;
 }
-class CHighMapNode{
+class CHighMapNode {
 	Vec2f getWorldPosition();
 	int getCost();
 	int getDistanceFromGround();
 }
-class Tile{
+class Tile {
 	~Tile();
 	Tile();
 	Tile& opAssign(const Tile&in);
@@ -1656,25 +1642,14 @@ class Tile{
 	uint16 backblobid1;
 	uint16 backblobid2;
 }
-class HitInfo{
+class HitInfo {
 	CBlob@ blob;
 	uint16 tile;
 	uint tileOffset;
 	Vec2f hitpos;
 	float distance;
 }
-namespace CMap {
-class Sector{
-	Vec2f center;
-	Vec2f upperleft;
-	Vec2f lowerright;
-	float radius;
-	string name;
-	string scriptFile;
-	uint16 ownerID;
-}
-}
-class ScriptData{
+class ScriptData {
 	uint tickFrequency;
 	uint runFlags;
 	string runProximityTag;
@@ -1682,7 +1657,7 @@ class ScriptData{
 	string removeIfTag;
 	string tickIfTag;
 }
-class CMovement{
+class CMovement {
 	CBlob@ getBlob();
 	void server_SetActive(bool active);
 	bool isActive() const;
@@ -1693,14 +1668,14 @@ class CMovement{
 	MovementVars@ getVars();
 	bool doTickScripts;
 }
-class MovementVars{
+class MovementVars {
 	uint16 keys;
 	uint16 old_keys;
 	int aircount;
 	bool facing_left;
 	Vec2f aimpos;
 }
-class CAttachment{
+class CAttachment {
 	CBlob@ getBlob();
 	void server_SetActive(bool active);
 	bool isActive() const;
@@ -1720,7 +1695,7 @@ class CAttachment{
 	AttachmentPoint@ AddAttachmentPoint(const string&in name, bool socket);
 	bool doTickScripts;
 }
-class AttachmentPoint{
+class AttachmentPoint {
 	CBlob@ getOccupied();
 	Vec2f getPosition();
 	void SetKeysToTake(uint16 keys);
@@ -1743,7 +1718,7 @@ class AttachmentPoint{
 	bool controller;
 	int customData;
 }
-class CButton{
+class CButton {
 	CBlob@ getOwner();
 	void SetEnabled(bool enabled);
 	bool getEnabled();
@@ -1755,7 +1730,7 @@ class CButton{
 	float radius;
 	float enableRadius;
 }
-class CGridButton{
+class CGridButton {
 	void SetHoverText(const string&in);
 	void SetSelected(int selType);
 	void SetNumber(int);
@@ -1770,7 +1745,7 @@ class CGridButton{
 	SColor captionColor;
 	string shortcut;
 }
-class CGridMenu{
+class CGridMenu {
 	CBlob@ getOwner();
 	string getName();
 	int getButtonsCount();
@@ -1815,9 +1790,9 @@ class CGridMenu{
 	bool modal;
 	bool kill;
 }
-class CBanner{
+class CBanner {
 }
-class CInventory{
+class CInventory {
 	CBlob@ getBlob();
 	void server_SetActive(bool active);
 	bool isActive() const;
@@ -1841,7 +1816,7 @@ class CInventory{
 	Vec2f getInventorySlots();
 	bool doTickScripts;
 }
-class CBrain{
+class CBrain {
 	CBlob@ getBlob();
 	void server_SetActive(bool active);
 	bool isActive() const;
@@ -1882,7 +1857,7 @@ class CBrain{
 	int lowLevelSteps;
 	int lowLevelMaxSteps;
 }
-class PlannerState{
+class PlannerState {
 	void Print();
 	bool hasSameProperties(PlannerState@ state);
 	PlannerState& opAssign(const PlannerState&in);
@@ -1955,11 +1930,11 @@ class PlannerState{
 	CHighMapNode@ highlevelnode;
 	bool solution;
 }
-class BrainVars{
+class BrainVars {
 	Vec2f lastPathPos;
 	Vec2f lastPathPos2;
 }
-class ShapeConsts{
+class ShapeConsts {
 	float mass;
 	float radius;
 	float buoyancy;
@@ -1979,7 +1954,7 @@ class ShapeConsts{
 	uint8 support;
 	float net_threshold_multiplier;
 }
-class ShapeVars{
+class ShapeVars {
 	Vec2f pos;
 	Vec2f oldpos;
 	Vec2f vel;
@@ -2002,12 +1977,12 @@ class ShapeVars{
 	int customData;
 	bool isladder;
 }
-class ShapePlatformDirection{
+class ShapePlatformDirection {
 	Vec2f direction;
 	float angleLimit;
 	bool ignore_rotations;
 }
-class CShape{
+class CShape {
 	CBlob@ getBlob();
 	void server_SetActive(bool active);
 	bool isActive() const;
@@ -2066,7 +2041,7 @@ class CShape{
 	int aircount;
 	float vellen;
 }
-class LightParams{
+class LightParams {
 	bool castsShadow;
 	int shadowIterations;
 	float shadowCastInit;
@@ -2074,7 +2049,7 @@ class LightParams{
 	Vec2f castBoxOrigin;
 	float castBoxWidth;
 }
-class CSprite{
+class CSprite {
 	CBlob@ getBlob();
 	void server_SetActive(bool active);
 	bool isActive() const;
@@ -2175,7 +2150,7 @@ class CSprite{
 	bool force_onrender;
 	Animation@ animation;
 }
-class Animation{
+class Animation {
 	bool ended();
 	int getFramesCount();
 	void AddFrame(uint16 frame);
@@ -2191,7 +2166,7 @@ class Animation{
 	bool backward;
 	string name;
 }
-class CSpriteLayer{
+class CSpriteLayer {
 	Animation@ getAnimation(const string&in);
 	void SetAnimation(Animation@ anim);
 	void SetAnimation(const string&in);
@@ -2248,21 +2223,21 @@ class CSpriteLayer{
 	string name;
 	Animation@ animation;
 }
-class SpriteConsts{
+class SpriteConsts {
 	string filename;
 	int frameWidth;
 	int frameHeight;
 	string sound_emit;
 	bool accurateLighting;
 }
-class SpriteVars{
+class SpriteVars {
 	bool gibbed;
 	bool spawned;
 	bool died;
 	float sound_emit_volume;
 	float sound_emit_pitch;
 }
-class CParticle{
+class CParticle {
 	bool get_outofbounds() const;
 	void set_outofbounds(bool v);
 	bool get_pickable() const;
@@ -2334,15 +2309,15 @@ class CParticle{
 	float width;
 	float height;
 }
-class PixelOffset{
+class PixelOffset {
 	int x;
 	int y;
 	int level;
 }
-class TeamTexture{
+class TeamTexture {
 	PixelOffset@ getPixelOffset(int index);
 }
-class Driver{
+class Driver {
 	TeamTexture@ getTeamTexture(const string&in filename);
 	PixelOffset@ getPixelOffset(const string&in filename, int frame);
 	TeamTexture@ AddTeamTexture(const string&in filename, Vec2f frameDimension);
@@ -2369,7 +2344,7 @@ class Driver{
 	void SetShaderFloat(const string&in name, const string&in valuename, const float value);
 	void SetShaderInt(const string&in name, const string&in valuename, const int value);
 }
-class CRespawnPoint{
+class CRespawnPoint {
 	string actorName;
 	string parentActorName;
 	string parentActorScriptName;
@@ -2378,7 +2353,7 @@ class CRespawnPoint{
 	int team;
 	float radius;
 }
-class CRespawnQueueActor{
+class CRespawnQueueActor {
 	CBlob@ getRespawnBlob();
 	CRespawnPoint@ getRespawnPoint();
 	CPlayer@ getPlayer();
@@ -2390,7 +2365,7 @@ class CRespawnQueueActor{
 	int sex;
 	int skin;
 }
-class CRespawn{
+class CRespawn {
 	CRespawnQueueActor@ QueueOnBlob(CPlayer@ player, int team, int classnum, float seconds, CBlob@ respawnBlob);
 	CRespawnQueueActor@ QueueOnBlob(CPlayer@ player, int team, const string&in actorClassName, const string&in actorConfigfile, float seconds, CBlob@ respawnBlob);
 	CRespawnQueueActor@ QueueOnRandom(CPlayer@ player, int team, int classnum, float seconds);
@@ -2398,100 +2373,7 @@ class CRespawn{
 	CRespawnPoint@ findClosestPoint(Vec2f position, int team);
 	CRespawnPoint@ getPoint(const string&in name, int team);
 }
-namespace Sound {
-class Filter{
-	int getParamCount() const;
-	string getParamName(uint paramIndex) const;
-	Sound::FilterParamType::FilterParamType getParamType(uint paramIndex) const;
-	float getParamMax(uint paramIndex) const;
-	float getParamMin(uint paramIndex) const;
-}
-}
-namespace Sound {
-class Voice{
-	uint seek(double seconds);
-	void stop();
-	void setFilterParameter(uint filterSlot, uint attributeId, float value);
-	float getFilterParameter(uint filterSlot, uint attributeId) const;
-	void fadeFilterParameter(uint filterSlot, uint attributeId, float to, double seconds);
-	void oscillateFilterParameter(uint filterSlot, uint attributeId, float from, float to, double seconds);
-	double getStreamTime() const;
-	double getStreamPosition() const;
-	bool getPause() const;
-	float getVolume() const;
-	float getOverallVolume() const;
-	float getPan() const;
-	float getSampleRate() const;
-	bool getProtect() const;
-	bool isPlaying() const;
-	float getRelativePlaySpeed() const;
-	bool getLooping() const;
-	double getLoopPoint() const;
-	void setLoopPoint(double loop_point);
-	void setLooping(bool);
-	void setPause(bool);
-	void setProtectVoice(bool);
-	void setSampleRate(float rate);
-	void setPan(float pan);
-	void setPanAbsolute(float left, float right);
-	void setVolume(float volume);
-	void fadeVolume(float to, double seconds);
-	void fadePan(float to, double seconds);
-	void fadeRelativePlaySpeed(float to, double seconds);
-	void schedulePause(double seconds);
-	void scheduleStop(double seconds);
-	void oscillateVolume(float from, float to, double seconds);
-	void oscillatePan(float from, float to, double seconds);
-	void oscillateRelativePlaySpeed(float from, float to, double seconds);
-	void set3dSourceParameters(float x, float y, float z, float velx = 0.0f, float vely = 0.0f, float velz = 0.0f);
-	void set3dSourcePosition(float x, float y, float z);
-	void set3dSourceVelocity(float x, float y, float z);
-	void set3dSourceMinMaxDistance(float min, float max);
-	void set3dSourceDopplerFactor(float factor = 1.0f);
-}
-}
-namespace Sound {
-class Speech{
-	void setText(const string&in text);
-	void setParams(uint base_frequency = 1330, float base_speed = 10.0f, float baseDeclination = 5.0f, int baseWaveform = SpeechWaveform :: TRIANGLE);
-	void setLooping(bool);
-	void setSingleInstance(bool);
-	void setFilter(uint slot, Sound::Filter@ filter);
-	void set3dDopplerFactor(float);
-	void set3dListenerRelative(bool);
-	void set3dDistanceDelay(bool);
-	void setLoopPoint(double loopPoint);
-	double getLoopPoint();
-}
-}
-namespace Sound {
-class Vizsn{
-	void setText(const string&in text);
-	void setLooping(bool);
-	void setSingleInstance(bool);
-	void setFilter(uint slot, Sound::Filter@ filter);
-	void set3dDopplerFactor(float);
-	void set3dListenerRelative(bool);
-	void set3dDistanceDelay(bool);
-	void setLoopPoint(double loopPoint);
-	double getLoopPoint();
-}
-}
-namespace Sound {
-class Noise{
-	void setOctaveScale(float, float, float, float, float, float, float, float, float, float);
-	void setType(int type = NoiseType :: WHITE);
-	void setLooping(bool);
-	void setSingleInstance(bool);
-	void setFilter(uint slot, Sound::Filter@ filter);
-	void set3dDopplerFactor(float);
-	void set3dListenerRelative(bool);
-	void set3dDistanceDelay(bool);
-	void setLoopPoint(double loopPoint);
-	double getLoopPoint();
-}
-}
-class CMixer{
+class CMixer {
 	void ResetMixer();
 	bool AddTrack(const string&in filename, uint tag);
 	void StopAll();
@@ -2506,9 +2388,9 @@ class CMixer{
 	uint getLastAddedTag();
 	void SetBeatTicks(int bps);
 }
-class CContextMenu{
+class CContextMenu {
 }
-class CHUD{
+class CHUD {
 	void SetDefaultCursor();
 	void SetCursorImage(const string&in textureFilename, Vec2f frameDimension);
 	void SetCursorImage(const string&in textureFilename);
@@ -2528,7 +2410,7 @@ class CHUD{
 	bool disableButtonsForATick;
 	int menuState;
 }
-class CNet{
+class CNet {
 	bool CreateServer();
 	void DisconnectClient();
 	void DisconnectServer();
@@ -2551,7 +2433,7 @@ class CNet{
 	int joined_reservedslots;
 	bool legacy_cmd;
 }
-class CSecurity{
+class CSecurity {
 	void reloadSecurity();
 	void saveSecurity();
 	void saveWhitelist();
@@ -2605,7 +2487,7 @@ class CSecurity{
 	bool bansExist();
 	bool ignoresExist();
 }
-class CSeclev{
+class CSeclev {
 	void saveSeclev();
 	int print();
 	string getName();
@@ -2613,7 +2495,7 @@ class CSeclev{
 	void addUser(const string username);
 	void removeUser(const string username);
 }
-class CCamera{
+class CCamera {
 	void setTarget(CBlob@ blob);
 	CBlob@ getTarget();
 	void setLocked(bool locked);
@@ -2630,7 +2512,7 @@ class CCamera{
 	float posLag;
 	int mousecamstyle;
 }
-class APIServer{
+class APIServer {
 	void loadMinimap();
 	void drawMinimap(const Vec2f&in pos, const Vec2f&in framePos, const Vec2f&in dim, float scale);
 	Vec2f getMinimapDim();
@@ -2660,7 +2542,7 @@ class APIServer{
 	uint16 gameState;
 	uint16 DNState;
 }
-class APIPlayer{
+class APIPlayer {
 	string username;
 	bool banned;
 	bool active;
@@ -2674,7 +2556,7 @@ class APIPlayer{
 	int16 role;
 	int16 supportTier;
 }
-class CScriptedBrowser{
+class CScriptedBrowser {
 	void RequestList();
 	bool getServersList(APIServer@[]@ servers);
 	void Close();
@@ -2682,7 +2564,7 @@ class CScriptedBrowser{
 	bool ping;
 	string filter;
 }
-class ImageData{
+class ImageData {
 	int width() const;
 	int height() const;
 	int size() const;
@@ -2692,7 +2574,7 @@ class ImageData{
 	SColor& opIndex(int);
 	const SColor& opIndex(int) const;
 }
-class SMaterial{
+class SMaterial {
 	void AddTexture(const string&in texture);
 	void AddTexture(const string&in texture, uint8 layer);
 	void RegenMipMap(uint8 layer);
@@ -2714,7 +2596,7 @@ class SMaterial{
 	void SetMaterialType(SMaterial::MType type);
 	void SetBlendOperation(SMaterial::BlendType operation);
 }
-class SMesh{
+class SMesh {
 	void SetVertex(const Vertex[]&in vertexs);
 	void SetIndices(const uint16[]&in indices);
 	void SetMaterial(SMaterial@ material);
@@ -2729,13 +2611,429 @@ class SMesh{
 	void SetDirty(SMesh::Buffer buffer);
 	void SetHardwareMapping(SMesh::Map type);
 }
-class HeadsPack{
+class HeadsPack {
 	const string name;
 	const string display_name;
 	const string filename;
 	const int count;
 	const int required_tier;
 	const int steam_dlcnumber;
+}
+namespace Sound {
+	class Filter {
+		int getParamCount() const;
+		string getParamName(uint paramIndex) const;
+		Sound::FilterParamType::FilterParamType getParamType(uint paramIndex) const;
+		float getParamMax(uint paramIndex) const;
+		float getParamMin(uint paramIndex) const;
+	}
+	class Voice {
+		uint seek(double seconds);
+		void stop();
+		void setFilterParameter(uint filterSlot, uint attributeId, float value);
+		float getFilterParameter(uint filterSlot, uint attributeId) const;
+		void fadeFilterParameter(uint filterSlot, uint attributeId, float to, double seconds);
+		void oscillateFilterParameter(uint filterSlot, uint attributeId, float from, float to, double seconds);
+		double getStreamTime() const;
+		double getStreamPosition() const;
+		bool getPause() const;
+		float getVolume() const;
+		float getOverallVolume() const;
+		float getPan() const;
+		float getSampleRate() const;
+		bool getProtect() const;
+		bool isPlaying() const;
+		float getRelativePlaySpeed() const;
+		bool getLooping() const;
+		double getLoopPoint() const;
+		void setLoopPoint(double loop_point);
+		void setLooping(bool);
+		void setPause(bool);
+		void setProtectVoice(bool);
+		void setSampleRate(float rate);
+		void setPan(float pan);
+		void setPanAbsolute(float left, float right);
+		void setVolume(float volume);
+		void fadeVolume(float to, double seconds);
+		void fadePan(float to, double seconds);
+		void fadeRelativePlaySpeed(float to, double seconds);
+		void schedulePause(double seconds);
+		void scheduleStop(double seconds);
+		void oscillateVolume(float from, float to, double seconds);
+		void oscillatePan(float from, float to, double seconds);
+		void oscillateRelativePlaySpeed(float from, float to, double seconds);
+		void set3dSourceParameters(float x, float y, float z, float velx = 0.0f, float vely = 0.0f, float velz = 0.0f);
+		void set3dSourcePosition(float x, float y, float z);
+		void set3dSourceVelocity(float x, float y, float z);
+		void set3dSourceMinMaxDistance(float min, float max);
+		void set3dSourceDopplerFactor(float factor = 1.0f);
+	}
+	class Speech {
+		void setText(const string&in text);
+		void setParams(uint base_frequency = 1330, float base_speed = 10.0f, float baseDeclination = 5.0f, int baseWaveform = SpeechWaveform :: TRIANGLE);
+		void setLooping(bool);
+		void setSingleInstance(bool);
+		void setFilter(uint slot, Sound::Filter@ filter);
+		void set3dDopplerFactor(float);
+		void set3dListenerRelative(bool);
+		void set3dDistanceDelay(bool);
+		void setLoopPoint(double loopPoint);
+		double getLoopPoint();
+	}
+	class Vizsn {
+		void setText(const string&in text);
+		void setLooping(bool);
+		void setSingleInstance(bool);
+		void setFilter(uint slot, Sound::Filter@ filter);
+		void set3dDopplerFactor(float);
+		void set3dListenerRelative(bool);
+		void set3dDistanceDelay(bool);
+		void setLoopPoint(double loopPoint);
+		double getLoopPoint();
+	}
+	class Noise {
+		void setOctaveScale(float, float, float, float, float, float, float, float, float, float);
+		void setType(int type = NoiseType :: WHITE);
+		void setLooping(bool);
+		void setSingleInstance(bool);
+		void setFilter(uint slot, Sound::Filter@ filter);
+		void set3dDopplerFactor(float);
+		void set3dListenerRelative(bool);
+		void set3dDistanceDelay(bool);
+		void setLoopPoint(double loopPoint);
+		double getLoopPoint();
+	}
+}
+namespace CMap {
+	class Sector {
+		Vec2f center;
+		Vec2f upperleft;
+		Vec2f lowerright;
+		float radius;
+		string name;
+		string scriptFile;
+		uint16 ownerID;
+	}
+}
+namespace Maths {
+	bool isValid(float v);
+	float FastCos(float v);
+	float FastSin(float v);
+	float Cos(float v);
+	float Sin(float v);
+	float ACos(float v);
+	float ASin(float v);
+	float Tan(float v);
+	float ATan(float v);
+	float ATan2(float y, float x);
+	float FastSqrt(float v);
+	float Sqrt(float v);
+	float InvSqrt(float v);
+	float Floor(float v);
+	float Ceil(float v);
+	bool Equals(float a, float b);
+	float Min(float a, float b);
+	float Max(float a, float b);
+	float Clamp(float v, float min, float max);
+	float Clamp01(float v);
+	float Abs(float v);
+	int Abs(int v);
+	float Pow(float a, float n);
+	float Pow(double a, double n);
+	float Pow(float a, int n);
+	float Lerp(float start, float end, float time);
+	float Log(float a);
+	float FMod(float a, float around);
+	float Roundf(float a);
+	int Round(float a);
+	uint8 get256DegreesFrom360(float degrees);
+	uint8 get360DegreesFrom256(uint8 angle);
+	float SmoothStep(float x);
+}
+namespace Matrix {
+	void Multiply(const float[]&in a, const float[]&in b, float[]&inout into);
+	void MultiplyImmediate(const float[]&inout a, const float[]&in b);
+	void SetScale(const float[]&inout a, float x, float y, float z);
+	void SetTranslation(const float[]&inout a, float x, float y, float z);
+	void SetRotationRadians(const float[]&inout a, float x, float y, float z);
+	void SetRotationDegrees(const float[]&inout a, float x, float y, float z);
+	void MakeIdentity(const float[]&inout a);
+	void MakeOrtho(const float[]&inout a, float w, float h, float d);
+	void MakePerspective(const float[]&inout a, float fov_rad, float aspect, float znear, float zfar);
+}
+namespace GUI {
+	bool LoadSkin(const string&in);
+	bool LoadSkin(const string&in, const string&in);
+	void DrawPane(Vec2f upperleft, Vec2f lowerright);
+	void DrawPane(Vec2f upperleft, Vec2f lowerright, SColor color);
+	void DrawWindow(Vec2f upperleft, Vec2f lowerright);
+	void DrawSunkenPane(Vec2f upperleft, Vec2f lowerright);
+	void DrawFramedPane(Vec2f upperleft, Vec2f lowerright);
+	void DrawButton(Vec2f upperleft, Vec2f lowerright);
+	void DrawButtonPressed(Vec2f upperleft, Vec2f lowerright);
+	void DrawButtonHover(Vec2f upperleft, Vec2f lowerright);
+	void DrawRectangle(Vec2f upperleft, Vec2f lowerright);
+	void DrawRectangle(Vec2f upperleft, Vec2f lowerright, SColor color);
+	void DrawProgressBar(Vec2f upperleft, Vec2f lowerright, float percent);
+	void DrawBubble(Vec2f upperleft, Vec2f lowerright);
+	void DrawLine(Vec2f a, Vec2f b, SColor color);
+	void DrawArrow(Vec2f a, Vec2f b, SColor color);
+	void DrawSpline(Vec2f a, Vec2f b, Vec2f h1, Vec2f h2, int steps, SColor color);
+	void DrawSplineArrow(Vec2f a, Vec2f b, SColor color);
+	void DrawLine2D(Vec2f a, Vec2f b, SColor color);
+	void DrawArrow2D(Vec2f a, Vec2f b, SColor color);
+	void DrawSpline2D(Vec2f a, Vec2f b, Vec2f h1, Vec2f h2, int steps, SColor color);
+	void DrawSplineArrow2D(Vec2f a, Vec2f b, SColor color);
+	void DrawCircle(Vec2f pos, float b, SColor color);
+	void DrawIconByName(const string&in iconName, Vec2f pos);
+	void DrawIconByName(const string&in iconName, Vec2f pos, float scale);
+	bool hasIconName(const string&in iconName);
+	void DrawIconByName(const string&in iconName, Vec2f pos, float scaleX, float scaleY, int team_num, SColor color);
+	void DrawIcon(const string&in textureFilename, int iconFrame, Vec2f frameDimension, Vec2f pos, float scale, int team_num);
+	void DrawIcon(const string&in textureFilename, int iconFrame, Vec2f frameDimension, Vec2f pos, float scale, SColor color);
+	void DrawIcon(const string&in textureFilename, int iconFrame, Vec2f frameDimension, Vec2f pos, float scaleX, float scaleY, SColor color);
+	void DrawIcon(const string&in textureFilename, int iconFrame, Vec2f frameDimension, Vec2f pos, float scaleX, float scaleY, int team_num, SColor color);
+	void DrawIcon(const string&in textureFilename, int iconFrame, Vec2f frameDimension, Vec2f pos, float scale);
+	void DrawIcon(const string&in textureFilename, int iconFrame, Vec2f frameDimension, Vec2f pos);
+	void DrawIcon(const string&in textureFilename, int iconFrame, Vec2f pos, float scale);
+	void DrawIcon(const string&in textureFilename, Vec2f pos);
+	void DrawIcon(const string&in textureFilename, Vec2f pos, float scale);
+	void DrawIconDirect(const string&in textureFilename, Vec2f pos, Vec2f framePos, Vec2f frameDimension);
+	void DrawIconDirect(const string&in textureFilename, Vec2f pos, Vec2f framePos, Vec2f frameDimension, float scale, int team_num, SColor color);
+	void DrawText(const string&in text, Vec2f upperleft, Vec2f lowerright, SColor color, bool HorCenter, bool VerCenter, bool drawBackgroundPane);
+	void DrawText(const string&in text, Vec2f upperleft, Vec2f lowerright, SColor color, bool HorCenter, bool VerCenter);
+	void DrawText(const string&in text, Vec2f pos, SColor color);
+	void DrawTextCentered(const string&in text, Vec2f pos, SColor color);
+	void DrawTranslatedText(const string&in text, Vec2f upperleft, Vec2f lowerright, SColor color, bool HorCenter, bool VerCenter, bool drawBackgroundPane);
+	void DrawTranslatedText(const string&in text, Vec2f upperleft, Vec2f lowerright, SColor color, bool HorCenter, bool VerCenter);
+	void DrawTranslatedText(const string&in text, Vec2f pos, SColor color);
+	void DrawTranslatedTextCentered(const string&in text, Vec2f pos, SColor color);
+	void DrawShadowedText(const string&in text, Vec2f upperleft, Vec2f lowerright, SColor color, bool HorCenter, bool VerCenter, bool drawBackgroundPane);
+	void DrawShadowedText(const string&in text, Vec2f upperleft, Vec2f lowerright, SColor color, bool HorCenter, bool VerCenter);
+	void DrawShadowedText(const string&in text, Vec2f pos, SColor color);
+	void DrawShadowedTextCentered(const string&in text, Vec2f pos, SColor color);
+	void DrawShadowedTranslatedText(const string&in text, Vec2f upperleft, Vec2f lowerright, SColor color, bool HorCenter, bool VerCenter, bool drawBackgroundPane);
+	void DrawShadowedTranslatedText(const string&in text, Vec2f upperleft, Vec2f lowerright, SColor color, bool HorCenter, bool VerCenter);
+	void DrawShadowedTranslatedText(const string&in text, Vec2f pos, SColor color);
+	void DrawShadowedTranslatedTextCentered(const string&in text, Vec2f pos, SColor color);
+	void GetTextDimensions(const string&in text, Vec2f&out dim);
+	void GetIconDimensions(const string&in iconName, Vec2f&out dim);
+	void GetImageDimensions(const string&in fileName, Vec2f&out dim);
+	void SetFont(const string&in name);
+	void LoadFont(const string&in name, const string&in filename, uint size, bool antialias);
+	void LoadFont(const string&in name, const string&in filename, uint size);
+	bool isFontLoaded(const string&in name);
+}
+namespace Engine {
+	void ShowLoginWindow();
+	bool isAuthenticated();
+	bool isLoginWindow();
+	bool usesSteam();
+	bool hasStandardGUIFocus();
+	bool isWindows();
+}
+namespace ImGui {
+	bool Begin(const string&in name, bool&out p_open, int flags = 0);
+	bool Begin(const string&in name, int flags = 0);
+	void End();
+	bool BeginChild(const string&in str_id, const Vec2f&in size = Vec2f_zero, bool border = false, int flags = 0);
+	void EndChild();
+	bool IsWindowAppearing();
+	bool IsWindowCollapsed();
+	bool IsWindowFocused();
+	bool IsWindowHovered();
+	Vec2f GetWindowPos();
+	Vec2f GetWindowSize();
+	float GetWindowWidth();
+	float GetWindowHeight();
+	void SetNextWindowPos(const Vec2f&in pos, int cond = 0, const Vec2f&in pivot = Vec2f_zero);
+	void SetNextWindowSize(const Vec2f&in pos, int cond = 0);
+	void SetNextWindowContentSize(const Vec2f&in size);
+	void SetNextWindowCollapsed(bool collapsed, int cond = 0);
+	void SetNextWindowFocus();
+	void SetNextWindowBgAlpha(float alpha);
+	Vec2f GetContentRegionMax();
+	Vec2f GetContentRegionAvail();
+	Vec2f GetWindowContentRegionMin();
+	Vec2f GetWindowContentRegionMax();
+	float GetWindowContentRegionWidth();
+	float GetScrollX();
+	float GetScrollY();
+	float GetScrollMaxX();
+	float GetScrollMaxY();
+	void SetScrollX(float scroll_x);
+	void SetScrollY(float scroll_y);
+	void SetScrollHereX(float center_x_ratio = 0.5);
+	void SetScrollHereY(float center_y_ratio = 0.5);
+	void SetScrollFromPosX(float local_x, float center_x_ratio = 0.5);
+	void SetScrollFromPosY(float local_y, float center_y_ratio = 0.5);
+	void PushStyleColor(int idx, const SColor&in color);
+	void PopStyleColor(int count = 1);
+	void PushStyleVar(int idx, float val);
+	void PushStyleVar(int idx, const Vec2f&in val);
+	void PopStyleVar(int count = 1);
+	SColor GetStyleColor(int idx);
+	float GetFontSize();
+	Vec2f GetFontTexUvWhitePixel();
+	void PushItemWidth(float item_width);
+	void PopItemWidth();
+	void SetNextItemWidth(float item_width);
+	float CalcItemWidth();
+	void PushTextWrapPos(float wrap_local_pos = 0.0);
+	void PopTextWrapPos();
+	void PushAllowKeyboardFocus(bool allow_keyboard_focus);
+	void PopAllowKeyboardFocus();
+	void PushButtonRepeat(bool repeat);
+	void PopButtonRepeat();
+	void Separator();
+	void SameLine(float offset_from_start_x = 0.0, float spacing = - 1.0);
+	void NewLine();
+	void Spacing();
+	void Dummy(const Vec2f&in size);
+	void Indent(float indent_w = 0.0);
+	void Unindent(float indent_w = 0.0);
+	void BeginGroup();
+	void EndGroup();
+	Vec2f GetCursorPos();
+	Vec2f GetCursorPosX();
+	Vec2f GetCursorPosY();
+	void SetCursorPos(const Vec2f&in local_pos);
+	void SetCursorPosX(float local_x);
+	void SetCursorPosY(float local_y);
+	Vec2f GetCursorStartPos();
+	Vec2f GetCursorScreenPos();
+	void SetCursorScreenPos(const Vec2f&in pos);
+	void AlignTextToFramePadding();
+	float GetTextLineHeight();
+	float GetTextLineHeightWithSpacing();
+	float GetFrameHeight();
+	float GetFrameHeightWithSpacing();
+	void PushID(const string&in str_id);
+	void PushID(int int_id);
+	void PopID();
+	uint GetID(const string&in str_id);
+	void TextUnformatted(const string&in text);
+	void Text(const string&in text);
+	void TextColored(const SColor&in color, const string&in text);
+	void TextDisabled(const string&in text);
+	void LabelText(const string&in label, const string&in text);
+	void BulletText(const string&in text);
+	bool Button(const string&in text, const Vec2f&in size = Vec2f_zero);
+	bool SmallButton(const string&in text);
+	void InvisibleButton(const string&in str_id, const Vec2f&in size);
+	bool ArrowButton(const string&in text, int dir);
+	void Image(const string&in texture_name);
+	void Image(const string&in texture_name, const Vec2f&in size, const Vec2f&in uv0 = Vec2f ( 0 , 0 ), const Vec2f&in uv1 = Vec2f ( - 1 , - 1 ), const SColor&in tint_col = SColor ( 255 , 255 , 255 , 255 ), const SColor&in border_col = SColor ( 0 , 0 , 0 , 0 ));
+	bool ImageButton(const string&in texture_name, const Vec2f&in size, const Vec2f&in uv0 = Vec2f ( 0 , 0 ), const Vec2f&in uv1 = Vec2f ( 1 , 1 ), int frame_padding = - 1, const SColor&in bg_col = SColor ( 0 , 0 , 0 , 0 ), const SColor&in tint_col = SColor ( 255 , 255 , 255 , 255 ));
+	bool Checkbox(const string&in label, bool current_value);
+	void Bullet();
+	float SliderFloat(const string&in str_id, float v, float min, float max, float power = 1.0f);
+	int SliderInt(const string&in str_id, int v, int min, int max);
+	float GetTreeNodeToLabelSpacing();
+	void SetNextItemOpen(bool is_open, int cond = 0);
+	void PushClipRect(const Vec2f&in clip_rect_min, const Vec2f&in clip_rect_max, bool intersect_with_current_clip_rect);
+	void PopClipRect();
+	void SetItemDefaultFocus();
+	void SetKeyboardFocusHere(int offset = 0);
+	bool IsItemHovered(int flags = 0);
+	bool IsItemActive();
+	bool IsItemFocused(int mouse_button = 0);
+	bool IsItemClicked();
+	bool IsItemVisible();
+	bool IsItemEdited();
+	bool IsItemActivated();
+	bool IsItemDeactivated();
+	bool IsItemDeactivatedAfterEdit();
+	bool IsItemToggledOpen();
+	bool IsAnyItemHovered();
+	bool IsAnyItemActive();
+	bool IsAnyItemFocused();
+	Vec2f GetItemRectMin();
+	Vec2f GetItemRectMax();
+	Vec2f GetItemRectSize();
+	void SetItemAllowOverlap();
+	bool IsRectVisible(const Vec2f&in size);
+	bool IsRectVisible(const Vec2f&in rect_min, const Vec2f&in rect_max);
+	double GetTime();
+	int GetFrameCount();
+}
+namespace Menu {
+	CContextMenu@ getMainMenu();
+	void CloseAllMenus();
+	CContextMenu@ addContextMenu(CContextMenu@ parent, const string&in label);
+	void addContextItem(CContextMenu@ menu, const string&in label, const string&in filename, const string&in functionsig);
+	void addContextItemWithParams(CContextMenu@ menu, const string&in label, const string&in filename, const string&in functionsig, CBitStream@ params);
+	void addSeparator(CContextMenu@ menu);
+	void addInfoBox(CContextMenu@ menu, const string&in label, const string&in info);
+}
+namespace Texture {
+	bool systemEnabled();
+	bool createFromFile(const string&in name, const string&in filename);
+	bool createBySize(const string&in name, int w, int h);
+	bool createFromData(const string&in name, const ImageData&in data);
+	bool createFromCopy(const string&in name, const string&in othername);
+	bool destroy(const string&in name);
+	bool exists(const string&in name);
+	int width(const string&in name);
+	int height(const string&in name);
+	ImageData@ data(const string&in name);
+	ImageData@ dataFromSprite(CSprite@ s);
+	ImageData@ dataFromSpriteLayer(CSpriteLayer@ s);
+	bool update(const string&in name, const ImageData&in data);
+}
+namespace Sound {
+	Filter@ CreateBassboostFilter();
+	Filter@ CreateBiquadResonantFilter();
+	Filter@ CreateDCRemovalFilter();
+	Filter@ CreateEchoFilter();
+	Filter@ CreateFlangerFilter();
+	Filter@ CreateFreeverbFilter();
+	Filter@ CreateLofiFilter();
+	Filter@ CreateRobotizeFilter();
+	Filter@ CreateWaveShaperFilter();
+	Speech@ CreateSpeech(const string&in name);
+	void RebindSpeech(const string&in name, Speech@ speech);
+	Vizsn@ CreateVizsn(const string&in name);
+	void RebindVizsn(const string&in name, Vizsn@ vizsn);
+	Noise@ CreateNoise(const string&in name);
+	void RebindNoise(const string&in name, Noise@ vizsn);
+	Voice@ Play(const string&in);
+	Voice@ Play(const string&in, Vec2f position);
+	Voice@ Play(const string&in, Vec2f position, float volume);
+	Voice@ Play(const string&in, Vec2f position, float volume, float pitch);
+	Voice@ Play2D(const string&in, float volume, float pan);
+	void SetScale(float scale);
+	void SetCutOff(float distance);
+	bool isTooFar(Vec2f position);
+	void ResetListenerPositionOverride();
+	void SetListenerPosition(Vec2f pos);
+	void setGlobalFilter(uint slot, Filter@ filter);
+}
+namespace Render {
+	void Triangles(const string&in texture, float z, const Vec2f[]&in pos, const Vec2f[]&in uv);
+	void TrianglesIndexed(const string&in texture, float z, const Vec2f[]&in pos, const Vec2f[]&in uv, const uint16[]&in index);
+	void TrianglesColored(const string&in texture, float z, const Vec2f[]&in pos, const Vec2f[]&in uv, const SColor[]&in rgb);
+	void TrianglesColoredIndexed(const string&in texture, float z, const Vec2f[]&in pos, const Vec2f[]&in uv, const SColor[]&in rgb, const uint16[]&in index);
+	void Quads(const string&in texture, float z, const Vec2f[]&in pos, const Vec2f[]&in uv);
+	void QuadsColored(const string&in texture, float z, const Vec2f[]&in pos, const Vec2f[]&in uv, const SColor[]&in rgb);
+	void RawTriangles(const string&in texture, const Vertex[]&in verts);
+	void RawTrianglesIndexed(const string&in texture, const Vertex[]&in verts, const uint16[]&in index);
+	void RawQuads(const string&in texture, const Vertex[]&in verts);
+	void SetZBuffer(bool ZRead, bool ZWrite);
+	void SetAlphaBlend(bool blend_enabled);
+	void ClearZ();
+	void SetTransform(const float[]&in model, const float[]&in view, const float[]&in projection);
+	void SetModelTransform(const float[]&in mat);
+	void SetViewTransform(const float[]&in mat);
+	void SetProjectionTransform(const float[]&in mat);
+	void SetTransformWorldspace();
+	void SetTransformScreenspace();
+	void SetBackfaceCull(bool cull);
+	int addScript(ScriptLayer layer, const string&in scriptname, const string&in scriptfunction, float z);
+	int addBlobScript(ScriptLayer layer, CBlob@ blob, const string&in scriptname, const string&in scriptfunction);
+	void RemoveScript(int script_callback_id);
+	void SetFog(SColor color, SMesh::FogType fogType, float start, float end, float density, bool pixelFog, bool rangeFog);
+	void SetAmbientLight(SColor color);
 }
 string formatInt(int64 val, const string&in options = "", uint width = 0);
 string formatUInt(uint64 val, const string&in options = "", uint width = 0);
@@ -2748,39 +3046,6 @@ string trim(const string&in);
 string[]@ getCallStack();
 string[]@ getScriptStack();
 void printTrace();
-namespace Maths { bool isValid(float v); }
-namespace Maths { float FastCos(float v); }
-namespace Maths { float FastSin(float v); }
-namespace Maths { float Cos(float v); }
-namespace Maths { float Sin(float v); }
-namespace Maths { float ACos(float v); }
-namespace Maths { float ASin(float v); }
-namespace Maths { float Tan(float v); }
-namespace Maths { float ATan(float v); }
-namespace Maths { float ATan2(float y, float x); }
-namespace Maths { float FastSqrt(float v); }
-namespace Maths { float Sqrt(float v); }
-namespace Maths { float InvSqrt(float v); }
-namespace Maths { float Floor(float v); }
-namespace Maths { float Ceil(float v); }
-namespace Maths { bool Equals(float a, float b); }
-namespace Maths { float Min(float a, float b); }
-namespace Maths { float Max(float a, float b); }
-namespace Maths { float Clamp(float v, float min, float max); }
-namespace Maths { float Clamp01(float v); }
-namespace Maths { float Abs(float v); }
-namespace Maths { int Abs(int v); }
-namespace Maths { float Pow(float a, float n); }
-namespace Maths { float Pow(double a, double n); }
-namespace Maths { float Pow(float a, int n); }
-namespace Maths { float Lerp(float start, float end, float time); }
-namespace Maths { float Log(float a); }
-namespace Maths { float FMod(float a, float around); }
-namespace Maths { float Roundf(float a); }
-namespace Maths { int Round(float a); }
-namespace Maths { uint8 get256DegreesFrom360(float degrees); }
-namespace Maths { uint8 get360DegreesFrom256(uint8 angle); }
-namespace Maths { float SmoothStep(float x); }
 int XORRandom(int max);
 Vec2f Vec2f_lengthdir(float length, float dir);
 Vec2f Vec2f_lengthdir_deg(float length, float dir);
@@ -2788,64 +3053,6 @@ Vec2f Vec2f_lengthdir_rad(float length, float dir);
 Vec2f Vec2f_lerp(Vec2f start, Vec2f end, float time);
 float getDistanceToLine(Vec2f a, Vec2f b, Vec2f p);
 float getDistanceToLine(Vec2f a, Vec2f b, Vec2f p, Vec2f&out pointOnLine);
-namespace GUI { bool LoadSkin(const string&in); }
-namespace GUI { bool LoadSkin(const string&in, const string&in); }
-namespace GUI { void DrawPane(Vec2f upperleft, Vec2f lowerright); }
-namespace GUI { void DrawPane(Vec2f upperleft, Vec2f lowerright, SColor color); }
-namespace GUI { void DrawWindow(Vec2f upperleft, Vec2f lowerright); }
-namespace GUI { void DrawSunkenPane(Vec2f upperleft, Vec2f lowerright); }
-namespace GUI { void DrawFramedPane(Vec2f upperleft, Vec2f lowerright); }
-namespace GUI { void DrawButton(Vec2f upperleft, Vec2f lowerright); }
-namespace GUI { void DrawButtonPressed(Vec2f upperleft, Vec2f lowerright); }
-namespace GUI { void DrawButtonHover(Vec2f upperleft, Vec2f lowerright); }
-namespace GUI { void DrawRectangle(Vec2f upperleft, Vec2f lowerright); }
-namespace GUI { void DrawRectangle(Vec2f upperleft, Vec2f lowerright, SColor color); }
-namespace GUI { void DrawProgressBar(Vec2f upperleft, Vec2f lowerright, float percent); }
-namespace GUI { void DrawBubble(Vec2f upperleft, Vec2f lowerright); }
-namespace GUI { void DrawLine(Vec2f a, Vec2f b, SColor color); }
-namespace GUI { void DrawArrow(Vec2f a, Vec2f b, SColor color); }
-namespace GUI { void DrawSpline(Vec2f a, Vec2f b, Vec2f h1, Vec2f h2, int steps, SColor color); }
-namespace GUI { void DrawSplineArrow(Vec2f a, Vec2f b, SColor color); }
-namespace GUI { void DrawLine2D(Vec2f a, Vec2f b, SColor color); }
-namespace GUI { void DrawArrow2D(Vec2f a, Vec2f b, SColor color); }
-namespace GUI { void DrawSpline2D(Vec2f a, Vec2f b, Vec2f h1, Vec2f h2, int steps, SColor color); }
-namespace GUI { void DrawSplineArrow2D(Vec2f a, Vec2f b, SColor color); }
-namespace GUI { void DrawCircle(Vec2f pos, float b, SColor color); }
-namespace GUI { void DrawIconByName(const string&in iconName, Vec2f pos); }
-namespace GUI { void DrawIconByName(const string&in iconName, Vec2f pos, float scale); }
-namespace GUI { bool hasIconName(const string&in iconName); }
-namespace GUI { void DrawIconByName(const string&in iconName, Vec2f pos, float scaleX, float scaleY, int team_num, SColor color); }
-namespace GUI { void DrawIcon(const string&in textureFilename, int iconFrame, Vec2f frameDimension, Vec2f pos, float scale, int team_num); }
-namespace GUI { void DrawIcon(const string&in textureFilename, int iconFrame, Vec2f frameDimension, Vec2f pos, float scale, SColor color); }
-namespace GUI { void DrawIcon(const string&in textureFilename, int iconFrame, Vec2f frameDimension, Vec2f pos, float scaleX, float scaleY, SColor color); }
-namespace GUI { void DrawIcon(const string&in textureFilename, int iconFrame, Vec2f frameDimension, Vec2f pos, float scaleX, float scaleY, int team_num, SColor color); }
-namespace GUI { void DrawIcon(const string&in textureFilename, int iconFrame, Vec2f frameDimension, Vec2f pos, float scale); }
-namespace GUI { void DrawIcon(const string&in textureFilename, int iconFrame, Vec2f frameDimension, Vec2f pos); }
-namespace GUI { void DrawIcon(const string&in textureFilename, int iconFrame, Vec2f pos, float scale); }
-namespace GUI { void DrawIcon(const string&in textureFilename, Vec2f pos); }
-namespace GUI { void DrawIcon(const string&in textureFilename, Vec2f pos, float scale); }
-namespace GUI { void DrawIconDirect(const string&in textureFilename, Vec2f pos, Vec2f framePos, Vec2f frameDimension); }
-namespace GUI { void DrawIconDirect(const string&in textureFilename, Vec2f pos, Vec2f framePos, Vec2f frameDimension, float scale, int team_num, SColor color); }
-namespace GUI { void DrawText(const string&in text, Vec2f upperleft, Vec2f lowerright, SColor color, bool HorCenter, bool VerCenter, bool drawBackgroundPane); }
-namespace GUI { void DrawText(const string&in text, Vec2f upperleft, Vec2f lowerright, SColor color, bool HorCenter, bool VerCenter); }
-namespace GUI { void DrawText(const string&in text, Vec2f pos, SColor color); }
-namespace GUI { void DrawTextCentered(const string&in text, Vec2f pos, SColor color); }
-namespace GUI { void DrawTranslatedText(const string&in text, Vec2f upperleft, Vec2f lowerright, SColor color, bool HorCenter, bool VerCenter, bool drawBackgroundPane); }
-namespace GUI { void DrawTranslatedText(const string&in text, Vec2f upperleft, Vec2f lowerright, SColor color, bool HorCenter, bool VerCenter); }
-namespace GUI { void DrawTranslatedText(const string&in text, Vec2f pos, SColor color); }
-namespace GUI { void DrawTranslatedTextCentered(const string&in text, Vec2f pos, SColor color); }
-namespace GUI { void DrawShadowedText(const string&in text, Vec2f upperleft, Vec2f lowerright, SColor color, bool HorCenter, bool VerCenter, bool drawBackgroundPane); }
-namespace GUI { void DrawShadowedText(const string&in text, Vec2f upperleft, Vec2f lowerright, SColor color, bool HorCenter, bool VerCenter); }
-namespace GUI { void DrawShadowedText(const string&in text, Vec2f pos, SColor color); }
-namespace GUI { void DrawShadowedTextCentered(const string&in text, Vec2f pos, SColor color); }
-namespace GUI { void DrawShadowedTranslatedText(const string&in text, Vec2f upperleft, Vec2f lowerright, SColor color, bool HorCenter, bool VerCenter, bool drawBackgroundPane); }
-namespace GUI { void DrawShadowedTranslatedText(const string&in text, Vec2f upperleft, Vec2f lowerright, SColor color, bool HorCenter, bool VerCenter); }
-namespace GUI { void DrawShadowedTranslatedText(const string&in text, Vec2f pos, SColor color); }
-namespace GUI { void DrawShadowedTranslatedTextCentered(const string&in text, Vec2f pos, SColor color); }
-namespace GUI { void GetTextDimensions(const string&in text, Vec2f&out dim); }
-namespace GUI { void GetIconDimensions(const string&in iconName, Vec2f&out dim); }
-namespace GUI { void GetImageDimensions(const string&in fileName, Vec2f&out dim); }
-namespace GUI { void SetFont(const string&in name); }
 void print(const string&in);
 void print(const string&in, const SColor&in);
 void printf(const string&in);
@@ -2936,44 +3143,8 @@ bool IsChatVisible();
 bool IsChatPromptActive();
 void SetChatLayout(Vec2f topleft, Vec2f bottomright);
 void ResetChatLayout();
-namespace GUI { void LoadFont(const string&in name, const string&in filename, uint size, bool antialias); }
-namespace GUI { void LoadFont(const string&in name, const string&in filename, uint size); }
-namespace GUI { bool isFontLoaded(const string&in name); }
-namespace Sound { Filter@ CreateBassboostFilter(); }
-namespace Sound { Filter@ CreateBiquadResonantFilter(); }
-namespace Sound { Filter@ CreateDCRemovalFilter(); }
-namespace Sound { Filter@ CreateEchoFilter(); }
-namespace Sound { Filter@ CreateFlangerFilter(); }
-namespace Sound { Filter@ CreateFreeverbFilter(); }
-namespace Sound { Filter@ CreateLofiFilter(); }
-namespace Sound { Filter@ CreateRobotizeFilter(); }
-namespace Sound { Filter@ CreateWaveShaperFilter(); }
-namespace Sound { Speech@ CreateSpeech(const string&in name); }
-namespace Sound { void RebindSpeech(const string&in name, Speech@ speech); }
-namespace Sound { Vizsn@ CreateVizsn(const string&in name); }
-namespace Sound { void RebindVizsn(const string&in name, Vizsn@ vizsn); }
-namespace Sound { Noise@ CreateNoise(const string&in name); }
-namespace Sound { void RebindNoise(const string&in name, Noise@ vizsn); }
-namespace Sound { Voice@ Play(const string&in); }
-namespace Sound { Voice@ Play(const string&in, Vec2f position); }
-namespace Sound { Voice@ Play(const string&in, Vec2f position, float volume); }
-namespace Sound { Voice@ Play(const string&in, Vec2f position, float volume, float pitch); }
-namespace Sound { Voice@ Play2D(const string&in, float volume, float pan); }
-namespace Sound { void SetScale(float scale); }
-namespace Sound { void SetCutOff(float distance); }
-namespace Sound { bool isTooFar(Vec2f position); }
-namespace Sound { void ResetListenerPositionOverride(); }
-namespace Sound { void SetListenerPosition(Vec2f pos); }
-namespace Sound { void setGlobalFilter(uint slot, Filter@ filter); }
 string getFileVariation(const string&in, int lowRange, int hiRange);
 CMixer@ getMixer();
-namespace Menu { CContextMenu@ getMainMenu(); }
-namespace Menu { void CloseAllMenus(); }
-namespace Menu { CContextMenu@ addContextMenu(CContextMenu@ parent, const string&in label); }
-namespace Menu { void addContextItem(CContextMenu@ menu, const string&in label, const string&in filename, const string&in functionsig); }
-namespace Menu { void addContextItemWithParams(CContextMenu@ menu, const string&in label, const string&in filename, const string&in functionsig, CBitStream@ params); }
-namespace Menu { void addSeparator(CContextMenu@ menu); }
-namespace Menu { void addInfoBox(CContextMenu@ menu, const string&in label, const string&in info); }
 bool isServer();
 bool isClient();
 int getChatChannel();
@@ -3034,12 +3205,6 @@ int Time_Year(int time_in);
 int Time_DaysSince(int time);
 uint getGameTime();
 void AddMod(const string&in modname);
-namespace Engine { void ShowLoginWindow(); }
-namespace Engine { bool isAuthenticated(); }
-namespace Engine { bool isLoginWindow(); }
-namespace Engine { bool usesSteam(); }
-namespace Engine { bool hasStandardGUIFocus(); }
-namespace Engine { bool isWindows(); }
 string getTranslatedString(const string&in toBeTranslated);
 void CopyToClipboard(const string&in str);
 string getFromClipboard();
@@ -3058,198 +3223,17 @@ string getCurrentScriptName();
 void AddPathSuccessor(const Vec2f&in tilepos);
 CScriptedBrowser@ getBrowser();
 void PrincessSaved(bool alive);
-namespace Texture { bool systemEnabled(); }
-namespace Texture { bool createFromFile(const string&in name, const string&in filename); }
-namespace Texture { bool createBySize(const string&in name, int w, int h); }
-namespace Texture { bool createFromData(const string&in name, const ImageData&in data); }
-namespace Texture { bool createFromCopy(const string&in name, const string&in othername); }
-namespace Texture { bool destroy(const string&in name); }
-namespace Texture { bool exists(const string&in name); }
-namespace Texture { int width(const string&in name); }
-namespace Texture { int height(const string&in name); }
-namespace Texture { ImageData@ data(const string&in name); }
-namespace Texture { ImageData@ dataFromSprite(CSprite@ s); }
-namespace Texture { ImageData@ dataFromSpriteLayer(CSpriteLayer@ s); }
-namespace Texture { bool update(const string&in name, const ImageData&in data); }
-namespace Render { void Triangles(const string&in texture, float z, const Vec2f[]&in pos, const Vec2f[]&in uv); }
-namespace Render { void TrianglesIndexed(const string&in texture, float z, const Vec2f[]&in pos, const Vec2f[]&in uv, const uint16[]&in index); }
-namespace Render { void TrianglesColored(const string&in texture, float z, const Vec2f[]&in pos, const Vec2f[]&in uv, const SColor[]&in rgb); }
-namespace Render { void TrianglesColoredIndexed(const string&in texture, float z, const Vec2f[]&in pos, const Vec2f[]&in uv, const SColor[]&in rgb, const uint16[]&in index); }
-namespace Render { void Quads(const string&in texture, float z, const Vec2f[]&in pos, const Vec2f[]&in uv); }
-namespace Render { void QuadsColored(const string&in texture, float z, const Vec2f[]&in pos, const Vec2f[]&in uv, const SColor[]&in rgb); }
-namespace Render { void RawTriangles(const string&in texture, const Vertex[]&in verts); }
-namespace Render { void RawTrianglesIndexed(const string&in texture, const Vertex[]&in verts, const uint16[]&in index); }
-namespace Render { void RawQuads(const string&in texture, const Vertex[]&in verts); }
-namespace Render { void SetZBuffer(bool ZRead, bool ZWrite); }
-namespace Render { void SetAlphaBlend(bool blend_enabled); }
-namespace Render { void ClearZ(); }
-namespace Render { void SetTransform(const float[]&in model, const float[]&in view, const float[]&in projection); }
-namespace Render { void SetModelTransform(const float[]&in mat); }
-namespace Render { void SetViewTransform(const float[]&in mat); }
-namespace Render { void SetProjectionTransform(const float[]&in mat); }
-namespace Render { void SetTransformWorldspace(); }
-namespace Render { void SetTransformScreenspace(); }
-namespace Render { void SetBackfaceCull(bool cull); }
-namespace Render { int addScript(ScriptLayer layer, const string&in scriptname, const string&in scriptfunction, float z); }
-namespace Render { int addBlobScript(ScriptLayer layer, CBlob@ blob, const string&in scriptname, const string&in scriptfunction); }
-namespace Render { void RemoveScript(int script_callback_id); }
-namespace Render { void SetFog(SColor color, SMesh::FogType fogType, float start, float end, float density, bool pixelFog, bool rangeFog); }
-namespace Render { void SetAmbientLight(SColor color); }
-namespace Matrix { void Multiply(const float[]&in a, const float[]&in b, float[]&inout into); }
-namespace Matrix { void MultiplyImmediate(const float[]&inout a, const float[]&in b); }
-namespace Matrix { void SetScale(const float[]&inout a, float x, float y, float z); }
-namespace Matrix { void SetTranslation(const float[]&inout a, float x, float y, float z); }
-namespace Matrix { void SetRotationRadians(const float[]&inout a, float x, float y, float z); }
-namespace Matrix { void SetRotationDegrees(const float[]&inout a, float x, float y, float z); }
-namespace Matrix { void MakeIdentity(const float[]&inout a); }
-namespace Matrix { void MakeOrtho(const float[]&inout a, float w, float h, float d); }
-namespace Matrix { void MakePerspective(const float[]&inout a, float fov_rad, float aspect, float znear, float zfar); }
 HeadsPack@ getHeadsPackByIndex(int index);
 HeadsPack@ getHeadsPackByName(const string&in name);
 bool isHeadsPackAllowed(int index);
 int getHeadsPackCount();
-namespace ImGui { bool Begin(const string&in name, bool&out p_open, int flags = 0); }
-namespace ImGui { bool Begin(const string&in name, int flags = 0); }
-namespace ImGui { void End(); }
-namespace ImGui { bool BeginChild(const string&in str_id, const Vec2f&in size = Vec2f_zero, bool border = false, int flags = 0); }
-namespace ImGui { void EndChild(); }
-namespace ImGui { bool IsWindowAppearing(); }
-namespace ImGui { bool IsWindowCollapsed(); }
-namespace ImGui { bool IsWindowFocused(); }
-namespace ImGui { bool IsWindowHovered(); }
-namespace ImGui { Vec2f GetWindowPos(); }
-namespace ImGui { Vec2f GetWindowSize(); }
-namespace ImGui { float GetWindowWidth(); }
-namespace ImGui { float GetWindowHeight(); }
-namespace ImGui { void SetNextWindowPos(const Vec2f&in pos, int cond = 0, const Vec2f&in pivot = Vec2f_zero); }
-namespace ImGui { void SetNextWindowSize(const Vec2f&in pos, int cond = 0); }
-namespace ImGui { void SetNextWindowContentSize(const Vec2f&in size); }
-namespace ImGui { void SetNextWindowCollapsed(bool collapsed, int cond = 0); }
-namespace ImGui { void SetNextWindowFocus(); }
-namespace ImGui { void SetNextWindowBgAlpha(float alpha); }
-namespace ImGui { Vec2f GetContentRegionMax(); }
-namespace ImGui { Vec2f GetContentRegionAvail(); }
-namespace ImGui { Vec2f GetWindowContentRegionMin(); }
-namespace ImGui { Vec2f GetWindowContentRegionMax(); }
-namespace ImGui { float GetWindowContentRegionWidth(); }
-namespace ImGui { float GetScrollX(); }
-namespace ImGui { float GetScrollY(); }
-namespace ImGui { float GetScrollMaxX(); }
-namespace ImGui { float GetScrollMaxY(); }
-namespace ImGui { void SetScrollX(float scroll_x); }
-namespace ImGui { void SetScrollY(float scroll_y); }
-namespace ImGui { void SetScrollHereX(float center_x_ratio = 0.5); }
-namespace ImGui { void SetScrollHereY(float center_y_ratio = 0.5); }
-namespace ImGui { void SetScrollFromPosX(float local_x, float center_x_ratio = 0.5); }
-namespace ImGui { void SetScrollFromPosY(float local_y, float center_y_ratio = 0.5); }
-namespace ImGui { void PushStyleColor(int idx, const SColor&in color); }
-namespace ImGui { void PopStyleColor(int count = 1); }
-namespace ImGui { void PushStyleVar(int idx, float val); }
-namespace ImGui { void PushStyleVar(int idx, const Vec2f&in val); }
-namespace ImGui { void PopStyleVar(int count = 1); }
-namespace ImGui { SColor GetStyleColor(int idx); }
-namespace ImGui { float GetFontSize(); }
-namespace ImGui { Vec2f GetFontTexUvWhitePixel(); }
-namespace ImGui { void PushItemWidth(float item_width); }
-namespace ImGui { void PopItemWidth(); }
-namespace ImGui { void SetNextItemWidth(float item_width); }
-namespace ImGui { float CalcItemWidth(); }
-namespace ImGui { void PushTextWrapPos(float wrap_local_pos = 0.0); }
-namespace ImGui { void PopTextWrapPos(); }
-namespace ImGui { void PushAllowKeyboardFocus(bool allow_keyboard_focus); }
-namespace ImGui { void PopAllowKeyboardFocus(); }
-namespace ImGui { void PushButtonRepeat(bool repeat); }
-namespace ImGui { void PopButtonRepeat(); }
-namespace ImGui { void Separator(); }
-namespace ImGui { void SameLine(float offset_from_start_x = 0.0, float spacing = - 1.0); }
-namespace ImGui { void NewLine(); }
-namespace ImGui { void Spacing(); }
-namespace ImGui { void Dummy(const Vec2f&in size); }
-namespace ImGui { void Indent(float indent_w = 0.0); }
-namespace ImGui { void Unindent(float indent_w = 0.0); }
-namespace ImGui { void BeginGroup(); }
-namespace ImGui { void EndGroup(); }
-namespace ImGui { Vec2f GetCursorPos(); }
-namespace ImGui { Vec2f GetCursorPosX(); }
-namespace ImGui { Vec2f GetCursorPosY(); }
-namespace ImGui { void SetCursorPos(const Vec2f&in local_pos); }
-namespace ImGui { void SetCursorPosX(float local_x); }
-namespace ImGui { void SetCursorPosY(float local_y); }
-namespace ImGui { Vec2f GetCursorStartPos(); }
-namespace ImGui { Vec2f GetCursorScreenPos(); }
-namespace ImGui { void SetCursorScreenPos(const Vec2f&in pos); }
-namespace ImGui { void AlignTextToFramePadding(); }
-namespace ImGui { float GetTextLineHeight(); }
-namespace ImGui { float GetTextLineHeightWithSpacing(); }
-namespace ImGui { float GetFrameHeight(); }
-namespace ImGui { float GetFrameHeightWithSpacing(); }
-namespace ImGui { void PushID(const string&in str_id); }
-namespace ImGui { void PushID(int int_id); }
-namespace ImGui { void PopID(); }
-namespace ImGui { uint GetID(const string&in str_id); }
-namespace ImGui { void TextUnformatted(const string&in text); }
-namespace ImGui { void Text(const string&in text); }
-namespace ImGui { void TextColored(const SColor&in color, const string&in text); }
-namespace ImGui { void TextDisabled(const string&in text); }
-namespace ImGui { void LabelText(const string&in label, const string&in text); }
-namespace ImGui { void BulletText(const string&in text); }
-namespace ImGui { bool Button(const string&in text, const Vec2f&in size = Vec2f_zero); }
-namespace ImGui { bool SmallButton(const string&in text); }
-namespace ImGui { void InvisibleButton(const string&in str_id, const Vec2f&in size); }
-namespace ImGui { bool ArrowButton(const string&in text, int dir); }
-namespace ImGui { void Image(const string&in texture_name); }
-namespace ImGui { void Image(const string&in texture_name, const Vec2f&in size, const Vec2f&in uv0 = Vec2f ( 0 , 0 ), const Vec2f&in uv1 = Vec2f ( - 1 , - 1 ), const SColor&in tint_col = SColor ( 255 , 255 , 255 , 255 ), const SColor&in border_col = SColor ( 0 , 0 , 0 , 0 )); }
-namespace ImGui { bool ImageButton(const string&in texture_name, const Vec2f&in size, const Vec2f&in uv0 = Vec2f ( 0 , 0 ), const Vec2f&in uv1 = Vec2f ( 1 , 1 ), int frame_padding = - 1, const SColor&in bg_col = SColor ( 0 , 0 , 0 , 0 ), const SColor&in tint_col = SColor ( 255 , 255 , 255 , 255 )); }
-namespace ImGui { bool Checkbox(const string&in label, bool current_value); }
-namespace ImGui { void Bullet(); }
-namespace ImGui { float SliderFloat(const string&in str_id, float v, float min, float max, float power = 1.0f); }
-namespace ImGui { int SliderInt(const string&in str_id, int v, int min, int max); }
-namespace ImGui { float GetTreeNodeToLabelSpacing(); }
-namespace ImGui { void SetNextItemOpen(bool is_open, int cond = 0); }
-namespace ImGui { void PushClipRect(const Vec2f&in clip_rect_min, const Vec2f&in clip_rect_max, bool intersect_with_current_clip_rect); }
-namespace ImGui { void PopClipRect(); }
-namespace ImGui { void SetItemDefaultFocus(); }
-namespace ImGui { void SetKeyboardFocusHere(int offset = 0); }
-namespace ImGui { bool IsItemHovered(int flags = 0); }
-namespace ImGui { bool IsItemActive(); }
-namespace ImGui { bool IsItemFocused(int mouse_button = 0); }
-namespace ImGui { bool IsItemClicked(); }
-namespace ImGui { bool IsItemVisible(); }
-namespace ImGui { bool IsItemEdited(); }
-namespace ImGui { bool IsItemActivated(); }
-namespace ImGui { bool IsItemDeactivated(); }
-namespace ImGui { bool IsItemDeactivatedAfterEdit(); }
-namespace ImGui { bool IsItemToggledOpen(); }
-namespace ImGui { bool IsAnyItemHovered(); }
-namespace ImGui { bool IsAnyItemActive(); }
-namespace ImGui { bool IsAnyItemFocused(); }
-namespace ImGui { Vec2f GetItemRectMin(); }
-namespace ImGui { Vec2f GetItemRectMax(); }
-namespace ImGui { Vec2f GetItemRectSize(); }
-namespace ImGui { void SetItemAllowOverlap(); }
-namespace ImGui { bool IsRectVisible(const Vec2f&in size); }
-namespace ImGui { bool IsRectVisible(const Vec2f&in rect_min, const Vec2f&in rect_max); }
-namespace ImGui { double GetTime(); }
-namespace ImGui { int GetFrameCount(); }
-namespace Maths { float Pi; }
 Vec2f Vec2f_zero;
 SColor color_white;
 SColor color_black;
-namespace CFileImage { bool silent_errors; }
 int physics_pos_iters;
 int physics_vel_iters;
 Vec2f particles_gravity;
 int particles_material;
-namespace ConsoleColour { SColor ERROR; }
-namespace ConsoleColour { SColor WARNING; }
-namespace ConsoleColour { SColor GENERIC; }
-namespace ConsoleColour { SColor INFO; }
-namespace ConsoleColour { SColor CRAZY; }
-namespace ConsoleColour { SColor SCRIPT; }
-namespace ConsoleColour { SColor GAME; }
-namespace ConsoleColour { SColor CHATSPEC; }
-namespace ConsoleColour { SColor RCON; }
-namespace ConsoleColour { SColor PRIVCHAT; }
 float POSTPROCESS_AFTER_HUD;
 int g_debug;
 string g_locale;
@@ -3420,6 +3404,24 @@ int g_midiportin;
 bool g_particlegraph;
 int cfg_version;
 bool g_physicsgraph;
+namespace CFileImage {
+ 	bool silent_errors;
+}
+namespace Maths {
+ 	float Pi;
+}
+namespace ConsoleColour {
+ 	SColor ERROR;
+	SColor WARNING;
+	SColor GENERIC;
+	SColor INFO;
+	SColor CRAZY;
+	SColor SCRIPT;
+	SColor GAME;
+	SColor CHATSPEC;
+	SColor RCON;
+	SColor PRIVCHAT;
+}
 typedef int8 c8;
 typedef int8 s8;
 typedef float f32;
@@ -3434,5 +3436,8 @@ typedef uint16 u16;
 typedef uint8 u8;
 typedef uint16 TileType;
 namespace Sound {
-typedef double Time;
+	typedef double Time;
 }
+funcdef bool T[]::less(const T&in, const T&in);
+funcdef void CallbackButtonFunc(CBlob@, CBlob@);
+funcdef void CParticleDeathCallback(CParticle@);
