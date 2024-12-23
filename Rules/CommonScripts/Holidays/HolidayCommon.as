@@ -44,7 +44,7 @@ string getActiveHolidayName()
 	Holiday[] calendar = {
 		  Holiday(scriptlist[0], 116 + server_leap - 1, 3)
 		, Holiday(scriptlist[1], 301 + server_leap - 1, 8)
-		, Holiday(scriptlist[2], 357 + server_leap - 2, 31)
+		, Holiday(scriptlist[2], 352 + server_leap - 2, 36)
 	};
 
 	s16 holiday_start;
