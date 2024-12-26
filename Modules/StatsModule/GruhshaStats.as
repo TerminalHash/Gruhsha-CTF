@@ -15,7 +15,7 @@ bool onServerProcessChat( CRules@ this, const string& in text_in, string& out te
 	if (player is null)
 		return true;
 
-    if (text_in == "*offi" && (player.getUsername() == "TerminalHash" || player.getUsername() == "Pnext" || player.getUsername() == "egor0928931" || player.getUsername() == "kusaka79" || player.getUsername() == "H1996R"))
+    if (text_in == "*offi" && allowedToEnableOffi(player))
 	{
 		if(!this.hasTag("track_stats"))
 		{
@@ -226,6 +226,19 @@ void onStateChange( CRules@ this, const u8 oldState )
 		this.Untag("track_stats");
 		this.Sync("track_stats", true);
 	}
+}
+
+bool allowedToEnableOffi(CPlayer@ player) {
+	if (player.getUsername() == "TerminalHash"      ||
+		player.getUsername() == "Pnext"             ||
+		player.getUsername() == "egor0928931"       ||
+		player.getUsername() == "kusaka79"          ||
+		player.getUsername() == "H1996R") {
+			return true;
+	}
+
+	// by default, nobody allowed to use *offi
+	return false;
 }
 
 // Wrong limit message
