@@ -94,6 +94,8 @@ void onInit(CBlob@ this)
 
 	this.push("names to activate", "keg");
 	this.push("names to activate", "fumokeg");
+	this.push("names to activate", "hazelnut");
+	this.push("names to activate", "hazelnutshell");
 	this.push("names to activate", "satchel");
 
 	this.set_u8("bomb type", 255);

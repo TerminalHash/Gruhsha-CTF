@@ -130,6 +130,12 @@ void onInit(CBlob@ this)
 		AddRequirement(s.requirements, "blob", "mat_gold", "Gold", CTFCosts::fumokeg_gold);
 		AddRequirement(s.requirements, "no more", "fumokeg", "Fumo Keg", 1);
 	}
+	{
+		ShopItem@ s = addShopItem(this, /*Names::hazelnut*/ "Hazelnut", "$hazelnut$", "hazelnut", /*Descriptions::hazelnutdesc*/ "A genetically modified hazelnut that releases five explosive kernels when shattered.", true);
+		AddRequirement(s.requirements, "coin", "", "Coins", 200);
+		AddRequirement(s.requirements, "no more", "hazelnut", "Hazelnut", 2);
+		AddRequirement(s.requirements, "buy delay", "hazelnut", "Hazelnut");
+	}
 }
 
 void GetButtonsFor(CBlob@ this, CBlob@ caller)

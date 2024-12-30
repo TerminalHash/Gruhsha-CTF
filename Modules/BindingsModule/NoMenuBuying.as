@@ -122,6 +122,10 @@ void onTick(CBlob@ this)
 					wanna_buy = true;
 					item_id	= 11;
 				}
+				if (b_KeyJustPressed("k_hazelnut")) {
+					wanna_buy = true;
+					item_id	= 12;
+				}
 
 				if (wanna_buy) {
 					dont_show_emotes = true;
@@ -396,10 +400,8 @@ void onTick(CBlob@ this)
 		}
 	}
 
-	if (getRules().get_string("dse_while_using_nomenu_buying") == "yes") {
-		if (dont_show_emotes) {
-			this.set_u32("boughtitemx", getGameTime());
-		}
+	if (dont_show_emotes) {
+		this.set_u32("boughtitemx", getGameTime());
 	}
 }
 
@@ -476,7 +478,8 @@ void onRender(CSprite@ this)
 		"k_goldmine",
 		"k_slidemine",
 		"k_booster",
-		"k_fumokeg"
+		"k_fumokeg",
+		"k_hazelnut"
 		};
 
 		if (theknightshop.get("shop array", @shopitems)) {
