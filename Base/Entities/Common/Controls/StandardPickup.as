@@ -7,6 +7,7 @@
 #include "ActivationThrowCommon.as"
 #include "WheelMenuCommon.as"
 #include "KnockedCommon.as"
+//#include "BindingsCommon.as"
 
 u16[] pickup_netids;
 u16[] closest_netids;
@@ -95,41 +96,76 @@ void onTick(CBlob@ this)
 
 	CControls@ controls = getControls();
 
+	/*bool pickupwheelkey = (controls.ActionKeyPressed(AK_PICKUP_MODIFIER) && this.isKeyPressed(key_pickup));
+	bool pickupwheelkey2 = (this.isKeyJustReleased(key_pickup) || controls.isKeyJustReleased(controls.getActionKeyKey(AK_PICKUP_MODIFIER)));
+
+	if (getRules().get_s32("pickup_wheel_key$1") != -1) {
+		pickupwheelkey = b_KeyPressed("pickup_wheel_key");
+		pickupwheelkey2 = b_KeyJustReleased("pickup_wheel_key");
+	}*/
+
 	// drop / pickup / throw
-	if (controls.ActionKeyPressed(AK_PICKUP_MODIFIER))
+	if (controls.ActionKeyPressed(AK_PICKUP_MODIFIER) && this.isKeyPressed(key_pickup))
 	{
 		WheelMenu@ menu = get_wheel_menu("pickup");
-		if (this.isKeyPressed(key_pickup) && menu !is get_active_wheel_menu())
+		if (menu !is get_active_wheel_menu())
 		{
 			set_active_wheel_menu(@menu);
 		}
-		
+
 		GatherPickupBlobs(this);
 
 		CBlob@[] available;
 		FillAvailable(this, available);
 
-		for (uint i = 0; i < menu.entries.length; i++)
-		{
-			PickupWheelMenuEntry@ entry = cast<PickupWheelMenuEntry>(menu.entries[i]);
-			entry.disabled = true;
-
-			for (uint j = 0; j < available.length; j++)
+		if (getRules().get_string("pickup_wheel_type") == "old") {
+			for (uint i = 0; i < menu.entries.length; i++)
 			{
-				string bname = available[j].getName();
-				for (uint k = 0; k < entry.options.length; k++)
+				PickupWheelMenuEntry@ entry = cast<PickupWheelMenuEntry>(menu.entries[i]);
+				entry.disabled = true;
+
+				for (uint j = 0; j < available.length; j++)
 				{
-					if (entry.options[k].name == bname)
+					string bname = available[j].getName();
+					for (uint k = 0; k < entry.options.length; k++)
 					{
-						entry.disabled = false;
+						if (entry.options[k].name == bname)
+						{
+							entry.disabled = false;
+							break;
+						}
+					}
+
+					if (!entry.disabled)
+					{
 						break;
 					}
 				}
+			}
+		} else {
+			WheelMenuEntry@[] entries;
+			string[] names;
+			for (u16 i = 0; i < available.length; i++)
+			{
+				CBlob@ item = available[i];
+				Vec2f dim = item.inventoryFrameDimension;
+				const f32 offset_x = Maths::Clamp(16 - dim.x, -dim.x, dim.x);
+				const f32 offset_y = Maths::Clamp(16 - dim.y, -dim.y, dim.y);
 
-				if (!entry.disabled)
-				{
-					break;
-				}
+				const string name = item.getName();
+				if (names.find(name) != -1) continue;
+
+				const string inventory_name = item.getInventoryName();
+				const string icon = GUI::hasIconName("$"+inventory_name+"$") ? "$"+inventory_name+"$" : "$"+name+"$";
+				PickupWheelMenuEntry entry(inventory_name, icon, name, Vec2f(offset_x, offset_y));
+				entries.push_back(entry);
+				names.push_back(name);
+			}
+
+			if (haveEntriesChanged(entries, menu.entries))
+			{
+				menu.entries = entries;
+				menu.update();
 			}
 		}
 	}
@@ -170,8 +206,7 @@ void onTick(CBlob@ this)
 	else
 	{
 		WheelMenu@ menu = get_wheel_menu("pickup");
-		if ((this.isKeyJustReleased(key_pickup) || controls.isKeyJustReleased(controls.getActionKeyKey(AK_PICKUP_MODIFIER)))
-			&&  get_active_wheel_menu() is menu)
+		if ((this.isKeyJustReleased(key_pickup) || controls.isKeyJustReleased(controls.getActionKeyKey(AK_PICKUP_MODIFIER))) && get_active_wheel_menu() is menu)
 		{
 			PickupWheelMenuEntry@ selected = cast<PickupWheelMenuEntry>(menu.get_selected());
 			set_active_wheel_menu(null);
@@ -246,6 +281,18 @@ void onTick(CBlob@ this)
 			pickup_netids.clear();
 		}
 	}
+}
+
+bool haveEntriesChanged(WheelMenuEntry@[]@ a, WheelMenuEntry@[]@ b)
+{
+	if (a.length != b.length) return true;
+
+	for (uint i = 0; i < a.length; i++)
+	{
+		if (a[i].visible_name != b[i].visible_name) return true;
+	}
+
+	return false;
 }
 
 void GatherPickupBlobs(CBlob@ this)
@@ -367,7 +414,7 @@ f32 getPriorityPickupScale(CBlob@ this, CBlob@ b)
 
 		// Kegs, really matters when lit (exploding)
 		// But we still want a high priority so bombjumping with kegs is easier
-		if (name == "keg")
+		if (name == "keg" || name== "hazelnut")
 		{
 			return exploding ? factor_very_important : factor_military_important;
 		}

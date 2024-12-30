@@ -19,6 +19,8 @@ void onInit(CBlob@ this)
 
 	this.set_u16("_keg_carrier_id", 0xffff);
 
+	this.Tag("special");
+
 	this.set_f32("important-pickup", 30.0f);
 }
 
