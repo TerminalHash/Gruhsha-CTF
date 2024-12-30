@@ -69,6 +69,7 @@ string[][] button_texts =
 		Names::blockrotatecommand,
 		Names::activateorthrowbomb,
 		Names::showinvkey
+		//Names::pickupwheelkey
 	},
 	{
 		"Go away"								// TECHNICAL LINE DONT TOUCH PLEASE
@@ -88,7 +89,9 @@ string[][] button_texts =
 		Names::icebombnmb,
 		Names::slideminenmb,
 		Names::boosternmb,
-		Names::fumokegnmb
+		Names::fumokegnmb,
+		"Hazelnut"
+		//Names::hazelnutnmb
 	},
 	{							// ARCHER SHOP
 		Names::arrowsnmb,
@@ -191,6 +194,7 @@ string[][] button_file_names =
 		"blob_rotate",
 		"bomb_key",
 		"showinv"
+		//"pickup_wheel_key"
 	},
 	{
 		"go away"								// TECHNICAL LINE DONT TOUCH PLEASE
@@ -210,7 +214,8 @@ string[][] button_file_names =
 		"k_goldmine",
 		"k_slidemine",
 		"k_booster",
-		"k_fumokeg"
+		"k_fumokeg",
+		"k_hazelnut"
 	},
 	{
 		"a_arrows",
@@ -271,14 +276,15 @@ string[][] setting_texts =
 		Names::grapplewhilecharging,
 		Names::switchclasschanginginshop,
 		Names::cyclewithitem,
-		//Names::pickupsystem,
 		Names::drillknight,
 		Names::drillbuilder,
 		Names::drillarcher,
 		Names::bombbuilder,
 		Names::bombarcher,
 		Names::nomenubuyingset,
-		Names::nomenubuyingboldarset
+		Names::nomenubuyingboldarset,
+		"Pickup Wheel Type"
+		//Names::pickupwheeltype
 	}
 };
 
@@ -288,7 +294,6 @@ string[][] setting_file_names =
 		"grapple_with_charging",
 		"disable_class_change_in_shops",
 		"cycle_with_item",
-		//"item_pickup",
 		"pickdrill_knight",
 		"pickdrill_builder",
 		"pickdrill_archer",
@@ -296,6 +301,7 @@ string[][] setting_file_names =
 		"pickbomb_archer",
 		"nomenubuying",
 		"nomenubuying_b",
+		"pickup_wheel_type"
 	}
 };
 
@@ -314,10 +320,6 @@ string[][][] setting_options =
 			Descriptions::universalno, // 10	CYCLE WITH ITEM IN HAND
 			Descriptions::universalyes // 20
 		},
-		//{
-		//	Descriptions::universalold, // 10	ITEM PICKUP SYSTEM
-		//	Descriptions::universalnew // 20
-		//},
 		{
 			Descriptions::universalno, // 10	DRILL AUTOPICKUP FOR KNIGHT
 			Descriptions::universalyes // 20
@@ -345,6 +347,10 @@ string[][][] setting_options =
 		{
 			Descriptions::universalno, // 10	NO MENU BUYING (BOLDAR)
 			Descriptions::universalyes // 20
+		},
+		{
+			Descriptions::universalold, // 10	PICKUP WHEEL TYPE
+			Descriptions::universalnew  // 20
 		}
 	}
 };
@@ -364,10 +370,6 @@ string[][][] setting_option_names =
 			"no", // 10    CYCLE WITH ITEM IN HAND
 			"yes" // 20
 		},
-		//{
-		//	"legacy", // 10    ITEM PICKUP SYSTEM
-		//	"new" // 20
-		//},
 		{
 			"no", // 10    DRILL AUTOPICKUP FOR KNIGHT
 			"yes" // 20
@@ -395,6 +397,10 @@ string[][][] setting_option_names =
 		{
 			"no", // 10    NO MENU BUYING (BOLDAR)
 			"yes" // 20
+		},
+		{
+			"old", // 10   PICKUP WHEEL TYPE
+			"new"  // 20
 		}
 	}
 };
@@ -405,9 +411,7 @@ string[][] vsetting_texts =
 	{
 		Names::blockbar,
 		Names::shownomenubuyingpan,
-		Names::dsewnmb,
 		Names::camerasw,
-		//Names::visualitempick,
 		Names::bodytilt,
 		Names::headrotating,
 		Names::clusterfuck,
@@ -420,7 +424,9 @@ string[][] vsetting_texts =
 		Names::customdpsounds,
 		Names::classpanels,
 		Names::airdroppanel,
-		Names::customboomeffects
+		Names::customboomeffects,
+		"Snow Render Type"
+		//Names::snowrendertype
 	}
 };
 
@@ -429,9 +435,7 @@ string[][] vsetting_file_names =
 	{
 		"blockbar_hud",
 		"shownomenupanel",
-		"dse_while_using_nomenu_buying",
 		"camera_sway",
-		//"visual_item_pick",
 		"body_tilting",
 		"head_rotating",
 		"clusterfuck",
@@ -444,7 +448,8 @@ string[][] vsetting_file_names =
 		"custom_death_and_pain_sounds",
 		"class_panels",
 		"airdrop_panel",
-		"custom_boom_effects"
+		"custom_boom_effects",
+		"snow_type"
 	}
 };
 
@@ -460,20 +465,12 @@ string[][][] vsetting_options =
 			Descriptions::universalyes // 20
 		},
 		{
-			Descriptions::universalno, // 10	DONT SHOW EMOTES WHILE USING NOMENU BUYING
-			Descriptions::universalyes // 20
-		},
-		{
 			"1", // 1							CAMERA SWAY
 			"2", // 2
 			"3", // 3
 			"4", // 4
 			"5" // 5
 		},
-		//{
-		////	Descriptions::universaloff,       // VISUAL ITEM PICKING
-		//	Descriptions::universalon
-		//},
 		{
 			Descriptions::universaloff,       // BODY TILTING
 			Descriptions::universalon
@@ -525,6 +522,13 @@ string[][][] vsetting_options =
 		{
 			Descriptions::universaloff,       // CUSTOM BOOM EFFECTS
 			Descriptions::universalon
+		},
+		{
+			"Vanilla",
+			//Descriptions::universalvanilla,       // SNOW RENDERING TYPE
+			"Sparse",
+			//Descriptions::snowsparse,
+			Descriptions::universaloff
 		}
 	}
 };
@@ -541,20 +545,12 @@ string[][][] vsetting_option_names =
 			"yes" // 20
 		},
 		{
-			"no", // 10    DONT SHOW EMOTES WHILE USING NOMENU BUYING
-			"yes" // 20
-		},
-		{
 			"1", // 1	   CAMERA SWAY
 			"2", // 2
 			"3", // 3
 			"4", // 4
 			"5" // 5
 		},
-		//{
-		//	"off",       // VISUAL ITEM PICKING
-		//	"on"
-		//},
 		{
 			"off",       // BODY TILTING
 			"on"
@@ -606,6 +602,11 @@ string[][][] vsetting_option_names =
 		{
 			"off",       // CUSTOM BOOM EFFECTS
 			"on"
+		},
+		{
+			"vanilla",
+			"sparse",
+			"disabled"
 		}
 	}
 };

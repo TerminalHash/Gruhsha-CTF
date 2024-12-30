@@ -5,8 +5,6 @@
 #include "TreeCommon.as";
 #include "HolidayCommon.as";
 
-#include "TreeCommon.as";
-
 const int present_interval = getTicksASecond() * 60 * 10; // 10 minutes
 const int gifts_per_hoho = 3;
 
@@ -37,10 +35,6 @@ void onRestart(CRules@ this)
 	_snow_ready = false;
 	this.set_s32("present timer", present_interval);
 	frameTime = 0;
-
-#ifdef STAGING
-	getRules().daycycle_speed = 10;
-#endif
 }
 
 void onTick(CRules@ this)
@@ -59,7 +53,7 @@ void onTick(CRules@ this)
 			this.set_s16("snow_render_id", Render::addScript(Render::layer_background, "Christmas.as", "DrawSnow", 0));
 #endif
 		} 
-		else if (renderId != 0 && v_fastrender || getHoliday() != Holidays::Christmas) // Have we just enabled fast render OR is holiday over
+		else if (renderId != 0 && v_fastrender || this.get_string(holiday_prop) != "Christmas") // Have we just enabled fast render OR is holiday over
 		{
 			Render::RemoveScript(renderId);
 			this.set_s16("snow_render_id", 0);
@@ -211,6 +205,15 @@ void DrawSnow(int id)
 
 		Render::SetAlphaBlend(true);
 		Render::SetModelTransform(trnsfm);
-		Render::RawQuads("Snow.png", Verts);
+
+		if (getRules().get_string("snow_type") == "sparse") {
+			Render::RawQuads("Snow_Sparse.png", Verts);
+		}
+		else if (getRules().get_string("snow_type") == "disabled") {
+			//Render::RawQuads("Snow.png", Verts);
+			// dont do anything
+		} else {
+			Render::RawQuads("Snow.png", Verts);
+		}
 	}
 }

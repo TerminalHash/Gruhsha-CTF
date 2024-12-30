@@ -56,6 +56,8 @@ void onInit(CRules@ this)
 		if (!file.exists("k_booster$2")) file.add_s32("k_booster$2", -1);
 		if (!file.exists("k_fumokeg$1")) file.add_s32("k_fumokeg$1", 98);
 		if (!file.exists("k_fumokeg$2")) file.add_s32("k_fumokeg$2", -1);
+		if (!file.exists("k_hazelnut$1")) file.add_s32("k_hazelnut$1", 99);
+		if (!file.exists("k_hazelnut$2")) file.add_s32("k_hazelnut$2", -1);
 
 		// builder shop
 		if (!file.exists("b_drill$1")) file.add_s32("b_drill$1", 49);
@@ -172,11 +174,6 @@ void onInit(CRules@ this)
 				sfile.add_string("cycle_with_item", "no");
 			}
 
-			//if (!sfile.exists("item_pickup"))
-			//{
-			//	sfile.add_string("item_pickup", "legacy");
-			//}
-
 			if (!sfile.exists("pickdrill_knight"))
 			{
 				sfile.add_string("pickdrill_knight", "yes");
@@ -211,13 +208,17 @@ void onInit(CRules@ this)
 			{
 				sfile.add_string("nomenubuying_b", "no");
 			}
+
+			if (!sfile.exists("pickup_wheel_type"))
+			{
+				sfile.add_string("pickup_wheel_type", "old");
+			}
 		}
 		else // default settings
 		{
 			sfile.add_string("grapple_with_charging", "yes");
 			sfile.add_string("disable_class_change_in_shops", "no");
 			sfile.add_string("cycle_with_item", "no");
-			//sfile.add_string("item_pickup", "legacy");
 			sfile.add_string("pickdrill_knight", "yes");
 			sfile.add_string("pickdrill_builder", "yes");
 			sfile.add_string("pickdrill_archer", "yes");
@@ -225,6 +226,7 @@ void onInit(CRules@ this)
 			sfile.add_string("pickbomb_archer", "yes");
 			sfile.add_string("nomenubuying", "no");
 			sfile.add_string("nomenubuying_b", "no");
+			sfile.add_string("pickup_wheel_type", "old");
 
 			printf("Creating local settings file with default values for Gruhsha.");
 		}
@@ -257,16 +259,6 @@ void onInit(CRules@ this)
 			{
 				sfile2.add_string("shownomenupanel", "yes");
 			}
-
-			if (!sfile2.exists("dse_while_using_nomenu_buying"))
-			{
-				sfile2.add_string("dse_while_using_nomenu_buying", "yes");
-			}
-
-			//if (!sfile2.exists("visual_item_pick"))
-			//{
-			//	sfile2.add_string("visual_item_pick", "off");
-			//}
 
 			if (!sfile2.exists("body_tilting"))
 			{
@@ -332,14 +324,17 @@ void onInit(CRules@ this)
 			{
 				sfile2.add_string("custom_boom_effects", "on");
 			}
+
+			if (!sfile2.exists("snow_type"))
+			{
+				sfile2.add_string("snow_type", "sparse");
+			}
 		}
 		else // default settings
 		{
 			sfile2.add_string("blockbar_hud", "yes");
 			sfile2.add_string("shownomenupanel", "yes");
-			sfile2.add_string("dse_while_using_nomenu_buying", "yes");
 			sfile2.add_string("camera_sway", "5");
-			//sfile2.add_string("visual_item_pick", "off");
 			sfile2.add_string("body_tilting", "on");
 			sfile2.add_string("head_rotating", "on");
 			sfile2.add_string("clusterfuck", "on");
@@ -353,6 +348,7 @@ void onInit(CRules@ this)
 			sfile2.add_string("class_panels", "off");
 			sfile2.add_string("airdrop_panel", "on");
 			sfile2.add_string("custom_boom_effects", "on");
+			sfile2.add_string("snow_type", "sparse");
 
 			printf("Creating local visual and sound settings file with default values for Gruhsha.");
 		}
