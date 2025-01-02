@@ -229,4 +229,9 @@ void onSetPlayer(CBlob@ this, CPlayer@ player)
 		this.set_string("death_sound", "mm_clocktower_bell_boosted.ogg");
 		this.set_string("death_sound_short", "mm_clocktower_bell_boosted.ogg");
 	}
+	else if (player.getUsername() == "kusaka79")
+	{
+		this.set_string("death_sound", "v1_d_long.ogg");
+		this.set_string("death_sound_short", "v1_d_short.ogg");
+	}
 }
