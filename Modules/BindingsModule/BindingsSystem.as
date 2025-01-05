@@ -209,10 +209,10 @@ void onInit(CRules@ this)
 				sfile.add_string("nomenubuying_b", "no");
 			}
 
-			if (!sfile.exists("pickup_wheel_type"))
+			/*if (!sfile.exists("pickup_wheel_type"))
 			{
 				sfile.add_string("pickup_wheel_type", "old");
-			}
+			}*/
 		}
 		else // default settings
 		{
@@ -226,7 +226,7 @@ void onInit(CRules@ this)
 			sfile.add_string("pickbomb_archer", "yes");
 			sfile.add_string("nomenubuying", "no");
 			sfile.add_string("nomenubuying_b", "no");
-			sfile.add_string("pickup_wheel_type", "old");
+			//sfile.add_string("pickup_wheel_type", "old");
 
 			printf("Creating local settings file with default values for Gruhsha.");
 		}
