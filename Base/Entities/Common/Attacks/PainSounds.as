@@ -82,4 +82,9 @@ void onSetPlayer(CBlob@ this, CPlayer@ player)
 		this.set_string("pain_sound", "v1_p_long.ogg");
 		this.set_string("pain_sound_short", "v1_p_short.ogg");
 	}
+	else if (player.getUsername() == "arsenpip")
+	{
+		this.set_string("pain_sound", "aidic_pain_long.ogg");
+		this.set_string("pain_sound_short", "aidic_pain_short.ogg");
+	}
 }
