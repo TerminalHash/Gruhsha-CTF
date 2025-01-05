@@ -282,8 +282,8 @@ string[][] setting_texts =
 		Names::bombbuilder,
 		Names::bombarcher,
 		Names::nomenubuyingset,
-		Names::nomenubuyingboldarset,
-		"Pickup Wheel Type"
+		Names::nomenubuyingboldarset
+		//"Pickup Wheel Type"
 		//Names::pickupwheeltype
 	}
 };
@@ -300,8 +300,8 @@ string[][] setting_file_names =
 		"pickbomb_builder",
 		"pickbomb_archer",
 		"nomenubuying",
-		"nomenubuying_b",
-		"pickup_wheel_type"
+		"nomenubuying_b"
+		//"pickup_wheel_type"
 	}
 };
 
@@ -348,10 +348,10 @@ string[][][] setting_options =
 			Descriptions::universalno, // 10	NO MENU BUYING (BOLDAR)
 			Descriptions::universalyes // 20
 		},
-		{
+		/*{
 			Descriptions::universalold, // 10	PICKUP WHEEL TYPE
 			Descriptions::universalnew  // 20
-		}
+		}*/
 	}
 };
 
@@ -398,10 +398,10 @@ string[][][] setting_option_names =
 			"no", // 10    NO MENU BUYING (BOLDAR)
 			"yes" // 20
 		},
-		{
+		/*{
 			"old", // 10   PICKUP WHEEL TYPE
 			"new"  // 20
-		}
+		}*/
 	}
 };
 
