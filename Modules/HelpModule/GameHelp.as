@@ -10,7 +10,7 @@
 bool mousePress = false;
 u8 page = 0;
 
-const u8 pages = 8;
+const u8 pages = 9;
 
 void onInit(CRules@ this) {
 	this.set_bool("show_gamehelp", true);
@@ -81,7 +81,9 @@ void managePages(Vec2f&in imageSize, Vec2f&in center) {
 			break;
 		case 6: drawPage(imageSize, center, Descriptions::header7, Vec2f(center.x - imageSize.x + 80, center.y - imageSize.y/5));
 			break;
-		case 7: drawPage(imageSize, center, Descriptions::header8, Vec2f(center.x - imageSize.x + 150, center.y - imageSize.y/6));
+		case 7: drawPage(imageSize, center, "Tips: Pickup Wheel", Vec2f(center.x - imageSize.x + 180, center.y - imageSize.y/3));
+			break;
+		case 8: drawPage(imageSize, center, Descriptions::header8, Vec2f(center.x - imageSize.x + 150, center.y - imageSize.y/6));
 			break;
 	};
 }
@@ -100,6 +102,7 @@ const string[] page_tips = {
 	Descriptions::tiptext5,
 	Descriptions::tiptext6,
 	Descriptions::tiptext7,
+	"Pickup wheel is updated! Thanks to Gingerbread, it's completely dynamic and\nyou can thus pick up any blob that comes your way!\n\n(you can open pickup wheel with Shift + C comb)",
 	Descriptions::tiptext8
 };
 
