@@ -1,7 +1,7 @@
 void onInit(CBlob@ this)
 {
 	this.getShape().SetGravityScale(0);
-	this.server_SetTimeToDie(2);
+	this.server_SetTimeToDie(0.5);
 }
 
 void onTick(CBlob@ this)
