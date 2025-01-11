@@ -37,7 +37,7 @@ void onInit(CBlob@ this)
 	// Dynamic prices
 	u32 dynamic_bomb_cost = 25;
 	u32 dynamic_water_bomb_cost = 70;
-	u32 dynamic_keg_cost = 130;
+	u32 dynamic_keg_cost = 180;
 	u32 player_amount = getRules().get_s32("amount_in_team");
 
 	if (player_amount >= 12 && player_amount < 14)
@@ -67,7 +67,7 @@ void onInit(CBlob@ this)
 	}
 
 	if (getRules().hasTag("sudden death")) {
-		dynamic_keg_cost = 160;
+		dynamic_keg_cost = 220;
 	}
 
 	int team_num = this.getTeamNum();
