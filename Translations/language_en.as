@@ -89,7 +89,7 @@ namespace en
 	d_goldenminedesc						= "More durable version of mine, able to stick to surface.",
 	d_slideminedesc							= "A less durable version of the regular mine, can be primed while moving.",
 	d_icebombdesc							= "A snow globe with a mini-keg inside, capable of slowing down an opponent for a small amount of time.",
-	d_fumokegdesc							= "The last thing, you'll be able to see in your life.",
+	d_fumokegdesc							= "The last thing you'll be able to see in your life.",
 	d_boosterdesc							= "Bottle of compressed air that pushes objects and players in the opposite direction from you.",
 
 	// Satchel.as
