@@ -300,7 +300,7 @@ void SetupBuildDelay(CBlob@ this)
 {
 	this.set_u32("build time", getGameTime());
 	this.set_u32("build delay", 6);
-	this.set_u32("warmup build delay", 4);
+	this.set_u32("warmup build delay", 2);
 	this.set_u32("iced build delay", 10);
 }
 
