@@ -125,13 +125,13 @@ void onInit(CBlob@ this)
 		AddRequirement(s.requirements, "coin", "", "Coins", 30);
 	}
 	{
-		ShopItem@ s = addShopItem(this, Names::fumokegname, getTeamIcon("fumokeg", "FumoKegIcon.png", team_num, Vec2f(16, 16), 0), "fumokeg", Descriptions::fumokegdesc, true);
+		ShopItem@ s = addShopItem(this, Names::fumokegname, getTeamIcon("fumokeg", "FumoKegIcon.png", team_num, Vec2f(16, 16), 0), "fumokeg", Descriptions::fumokegdesc, false);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::fumokeg);
 		AddRequirement(s.requirements, "blob", "mat_gold", "Gold", CTFCosts::fumokeg_gold);
 		AddRequirement(s.requirements, "no more", "fumokeg", "Fumo Keg", 1);
 	}
 	{
-		ShopItem@ s = addShopItem(this, /*Names::hazelnut*/ "Hazelnut", "$hazelnut$", "hazelnut", /*Descriptions::hazelnutdesc*/ "A genetically modified hazelnut that releases five explosive kernels when shattered.", true);
+		ShopItem@ s = addShopItem(this, /*Names::hazelnut*/ "Hazelnut", "$hazelnut$", "hazelnut", /*Descriptions::hazelnutdesc*/ "A genetically modified hazelnut that releases five explosive kernels when shattered.", false);
 		AddRequirement(s.requirements, "coin", "", "Coins", 200);
 		AddRequirement(s.requirements, "no more", "hazelnut", "Hazelnut", 2);
 		AddRequirement(s.requirements, "buy delay", "hazelnut", "Hazelnut");
