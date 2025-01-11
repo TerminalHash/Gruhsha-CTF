@@ -547,6 +547,47 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 
 					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 					this.set_u32(player.getUsername() + "soundcooldown", 60);
+			} else if (textIn == "сосал" || textIn == "Сосал" || textIn.toUpper() == "SOSAL" || textIn.toUpper() == "SUCKED") {
+					if (annoying_voicelines_sounds == "on")
+					{
+						int random = XORRandom(2) + 1;
+						Sound::Play(soundrandom + "sosal" + random + ".ogg", pos, 1.0f);
+					}
+
+					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+					this.set_u32(player.getUsername() + "soundcooldown", 60);
+			} else if (textIn == "мегасосал" || textIn == "Мегасосал" || textIn.toUpper() == "MEGASOSAL") {
+					if (annoying_voicelines_sounds == "on")
+					{
+						Sound::Play(soundrandom + "sosal1.ogg", pos, 2.0f);
+					}
+
+					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+					this.set_u32(player.getUsername() + "soundcooldown", 60);
+			} else if (textIn == "похуй гойда" || textIn == "похер гойда" || textIn == "Похуй гойда" || textIn == "Похер гойда" || textIn.toUpper() == "POHUI GOIDA" || textIn.toUpper() == "POHER GOIDA") {
+					if (annoying_voicelines_sounds == "on")
+					{
+						Sound::Play(soundrandom + "pohuigoida.ogg", pos, 2.0f);
+					}
+
+					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+					this.set_u32(player.getUsername() + "soundcooldown", 60);
+			} else if (textIn == "сердце" || textIn == "Сердце" || textIn.toUpper() == "HEART") {
+					if (annoying_voicelines_sounds == "on")
+					{
+						Sound::Play(soundrandom + "heart.ogg", pos, 2.0f);
+					}
+
+					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+					this.set_u32(player.getUsername() + "soundcooldown", 60);
+			} else if (textIn == "иди нахуй" || textIn == "Иди нахуй" || textIn.toUpper() == "IDI NAHUI" || textIn.toUpper() == "FUCK OFF") {
+					if (annoying_voicelines_sounds == "on")
+					{
+						Sound::Play(soundrandom + "idinahui.ogg", pos, 2.0f);
+					}
+
+					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+					this.set_u32(player.getUsername() + "soundcooldown", 60);
 			}
 		}
 
