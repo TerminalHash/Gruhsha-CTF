@@ -242,6 +242,8 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
         m_pos.y = Maths::Floor(m_pos.y);
         m_pos = (m_pos * map.tilesize) + Vec2f(map.tilesize / 2, map.tilesize / 2);
 
+		Vec2f[] already_hit_offsets;
+
 		//hit map if we're meant to
 		if (map_damage_radius > 0.1f)
 		{
@@ -281,6 +283,11 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 						}
 
 						f32 dist = offset.Length();
+
+						//had to do this hack, because vanilla algorythm hits certain tiles twice (kag god)
+						if (already_hit_offsets.find(offset) < 0)
+							already_hit_offsets.push_back(offset);
+						else continue;
 
 						if (dist < map_damage_radius)
 						{
@@ -355,7 +362,7 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 										if (!map.isTileSolid(tpos))
 										{
 											//times we hit a backtile
-											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/7));
+											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8));
 
 											for (int idx = 0; idx < max_hits; ++idx)
 											{
@@ -365,10 +372,10 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 										}
 										else
 										{
-											int castle_account = (map.isTileCastle(tile)?-2:0);
+											int castle_account = (map.isTileCastle(tile)?-1:0);
 
 											int	tile_type_account = castle_account;
-											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/8)+2+tile_type_account);
+											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8+tile_type_account));
 
 											u16 type_to_spawn = tile;
 											CPlayer@ killer = this.getDamageOwnerPlayer();
@@ -416,8 +423,13 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 														f32 exp_dot = explosion_dir.x*ds_dir.x + explosion_dir.y*ds_dir.y;
 
 														f32 angle_factor_account = exp_dot >= 0.87 ? 180 : 0;
+
+														Vec2f tile_vel = Vec2f(-(this.get_f32("map_damage_radius"))/3.5, 0).RotateBy(-(pos-tpos).getAngle()+angle_factor_account);
+														f32 tile_vellen = tile_vel.Length();
+														tile_vel.Normalize();
+														tile_vel *= Maths::Min(tile_vellen, 14);
 														
-														tileblob.setVelocity(Vec2f(-(this.get_f32("map_damage_radius"))/3.5, 0).RotateBy(-(pos-tpos).getAngle()+angle_factor_account));
+														tileblob.setVelocity(tile_vel);
 														tileblob.set_s32("tile_frame", type_to_spawn);
 													}
 													

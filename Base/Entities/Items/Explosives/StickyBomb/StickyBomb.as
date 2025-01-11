@@ -115,6 +115,10 @@ void onTick(CBlob@ this)
 		{
 			this.getShape().SetStatic(false);
 		}
+
+		int new_z = this.isInWater()?100:300;
+		
+		this.getSprite().SetZ(new_z);
 	}
 }
 
@@ -143,11 +147,6 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 		this.setAngleDegrees(velang+90);
 		this.setPosition(Vec2f(Maths::Round(point2.x/8)*8, Maths::Round(point2.y/8)*8));
 		this.getShape().SetStatic(true);
-		//this.getShape().getConsts().collidable = false;
-		
-		int new_z = this.isInWater()?100:300;
-		
-		this.getSprite().SetZ(new_z);
 	}
 
 	if (!solid)
