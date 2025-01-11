@@ -193,6 +193,7 @@ class KillFeed
 
 				// Custom hitters
 				case GruhshaHitters::tile_entity:		hitterIcon = "$killfeed_tile_entity$"; break;
+				case GruhshaHitters::slide_mine:		hitterIcon = "$killfeed_slide_mine$"; break;
 
 				default: 						hitterIcon = "$killfeed_fall$";
 			}
@@ -284,6 +285,7 @@ void onInit(CRules@ this)
 
 	// Custom hitters
 	AddIconToken("$killfeed_tile_entity$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 24);
+	AddIconToken("$killfeed_slide_mine$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 25);
 }
 
 void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customdata)

@@ -4,6 +4,7 @@
 #include "KnockedCommon.as";
 #include "KnightCommon.as";
 #include "Hitters.as";
+#include "GruhshaHitters.as";
 
 bool canBlockThisType(u8 type) // this function needs to use a tag on the hitterBlob, like ("bypass shield")
 {
@@ -15,6 +16,7 @@ bool canBlockThisType(u8 type) // this function needs to use a tag on the hitter
 	       type == Hitters::bite ||
 	       type == Hitters::stab ||
 	       type == Hitters::cata_stones ||
+	       type == GruhshaHitters::slide_mine ||
 	       isExplosionHitter(type);
 }
 
