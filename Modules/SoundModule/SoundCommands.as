@@ -482,7 +482,7 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 					this.set_u32(player.getUsername() + "soundcooldown", 60);
 
-			// MineCult sounds (he-he)
+			// MineCult/Gruhsha sounds (he-he)
 			} else if (textIn.toUpper() == "SKILL ISSUE" || textIn == "скилл ишью") {
 					if (annoying_voicelines_sounds == "on")
 					{
@@ -535,6 +535,14 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 					if (annoying_voicelines_sounds == "on")
 					{
 						Sound::Play(soundrandom + "grushi.ogg", pos, 2.0f);
+					}
+
+					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+					this.set_u32(player.getUsername() + "soundcooldown", 60);
+			} else if (textIn == "чего втыкаешь" || textIn == "чего не пушишь" || textIn == "почему не пушишь" || textIn == "Чего втыкаешь" || textIn == "Чего не пушишь" || textIn == "Почему не пушишь" || textIn.toUpper() == "WHY YOU STAYING" || textIn.toUpper() == "WHY YOU DONT PUSHING") {
+					if (annoying_voicelines_sounds == "on")
+					{
+						Sound::Play(soundrandom + "vtykaesh.ogg", pos, 2.0f);
 					}
 
 					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
