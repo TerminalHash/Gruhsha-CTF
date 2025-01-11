@@ -1,6 +1,6 @@
 // Mine.as
 
-#include "Hitters.as";
+#include "GruhshaHitters.as";
 #include "Explosion.as";
 
 const string MINE_STATE = "mine_state";
@@ -18,12 +18,12 @@ void onInit(CBlob@ this)
 	this.getShape().getVars().waterDragScale = 16.0f;
 
 	this.set_f32("explosive_radius", 32.0f);
-	this.set_f32("explosive_damage", 3.0f);
+	this.set_f32("explosive_damage", 4.0f);
 	this.set_f32("map_damage_radius", 32.0f);
 	this.set_f32("map_damage_ratio", 0.6f);
 	this.set_bool("map_damage_raycast", true);
 	this.set_string("custom_explosion_sound", "KegExplosion.ogg");
-	this.set_u8("custom_hitter", Hitters::mine);
+	this.set_u8("custom_hitter", GruhshaHitters::slide_mine);
 
 	this.Tag("ignore fall");
 
@@ -204,7 +204,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 	}
 }
 
-void onDie(CBlob@ this)
+/*void onDie(CBlob@ this)
 {
 	if (getNet().isServer() && this.hasTag("exploding"))
 	{
@@ -218,11 +218,11 @@ void onDie(CBlob@ this)
 			if (target.hasTag("flesh") &&
 			(target.getTeamNum() != this.getTeamNum() || target.getPlayer() is this.getDamageOwnerPlayer()))
 			{
-				this.server_Hit(target, POSITION, Vec2f_zero, 4.0f, Hitters::mine_special, true);
+				this.server_Hit(target, POSITION, Vec2f_zero, 4.0f, GruhshaHitters::slide_mine, true);
 			}
 		}
 	}
-}
+}*/
 
 bool canBePickedUp(CBlob@ this, CBlob@ blob)
 {
