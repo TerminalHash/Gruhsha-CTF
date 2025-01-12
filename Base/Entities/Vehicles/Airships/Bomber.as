@@ -1,5 +1,6 @@
 #include "VehicleCommon.as"
 #include "Hitters.as"
+#include "ActivationThrowCommon.as"
 
 // Boat logic
 
@@ -153,6 +154,10 @@ void onTick(CBlob@ this)
 							item.server_Die();
 						}
 					} else {
+						// activate items, if we can
+						if (isCanBeActivated(item))
+							server_Activate(item);
+
 						this.server_PutOutInventory(item);
 						item.setPosition(this.getPosition());
 					}
@@ -163,6 +168,16 @@ void onTick(CBlob@ this)
 	}
 	///////////////////////////////////////////////
 	///////////////////////////////////////////////
+}
+
+bool isCanBeActivated(CBlob@ item) {
+	if (item.getConfig() == "keg" ||
+		item.getConfig() == "satchel"
+	) {
+		return true;
+	}
+
+	return false;
 }
 
 bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
