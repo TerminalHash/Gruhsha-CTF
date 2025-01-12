@@ -978,6 +978,18 @@ bool checkGrappleStep(CBlob@ this, ArcherInfo@ archer, CMap@ map, const f32 dist
 
 				return true;
 			}
+			else if (b.getConfig() == "bomber") 
+			{
+				archer.grapple_ratio = Maths::Max(0.2, Maths::Min(archer.grapple_ratio, b.getDistanceTo(this) / archer_grapple_length));
+
+				archer.grapple_id = b.getNetworkID();
+				if (canSend(this))
+				{
+					SyncGrapple(this);
+				}
+
+				return true;
+			}
 		}
 	}
 
