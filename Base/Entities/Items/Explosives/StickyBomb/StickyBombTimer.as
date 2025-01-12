@@ -123,23 +123,29 @@ void MetroBoominMakeItBoom(CBlob@ this)
 				//we only need to hit tiles
 				if (c_blob !is null)
 				{
-					if (c_blob.getShape().isStatic() && c_blob.getShape().getConsts().collidable && c_blob.getConfig() != this.getConfig())
+					if (c_blob.getShape().isStatic())
 					{
-						//because kag is fucking shit when you kill a blob it still gets hit by getHitInfosFromRay func if run in the same tick...
-						//so we track how many blobs we hit so we can skip those later..
-						if (jdx < blobs_hit/2) continue;
-						if (!c_blob.hasTag("stone")) raycast_increment = 1;
-						raycast_increment *= 1.5f;
-						c_blob.getSprite().Gib();
-						c_blob.server_Die();
-						//raycast cycle incrementation here
-						idx += raycast_increment;
-						hits_made += 1;
-						blobs_hit += 1;
-						
-						//print("blob, made it here, idx = " + idx);
-						break;
-					}
+						if (c_blob.getShape().getConsts().collidable)
+						{
+							if (c_blob.getConfig() != this.getConfig())
+							{
+								//because kag is fucking shit when you kill a blob it still gets hit by getHitInfosFromRay func if run in the same tick...
+								//so we track how many blobs we hit so we can skip those later..
+								if (jdx < blobs_hit/2) continue;
+								if (!c_blob.hasTag("stone")) raycast_increment = 1;
+								raycast_increment *= 1.5f;
+								c_blob.getSprite().Gib();
+								c_blob.server_Die();
+								//raycast cycle incrementation here
+								idx += raycast_increment;
+								hits_made += 1;
+								blobs_hit += 1;
+								
+								//print("blob, made it here, idx = " + idx);
+								break;
+							}
+						} else continue;
+					} else continue;
 				}
 
 				Vec2f tile_pos = getMap().getAlignedWorldPos(c_info.hitpos)+Vec2f(1, 1)*4;
