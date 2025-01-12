@@ -85,37 +85,61 @@ void MetroBoominMakeItBoom(CBlob@ this)
 {
 	f32 velang = this.get_f32("velang");
 	f32 max_hits = 8;
+	int hits_made = 0;
+	int blobs_hit = 0;
 
 	bool has_destroyed_tile = false;
 
 	//cycle for raycasts
-	for (int idx = 0; idx < max_hits; /* we don't increment here because it's handled manually */)
+	for (f32 idx = 0; idx < max_hits; /* we don't increment here because it's handled manually */)
 	{
 		//by default we do increment by 2, so the dynamite destroys 2x2 area of castle tiles
 		//if it's a wooden tile which was destroyed, we increment only by 1 because wood is much less durable than stone
 		//in case we hit a full wood wall it's 4x2 area that will be destroyed
-		int raycast_increment = 2;
+		f32 raycast_increment = 2;
 
 		has_destroyed_tile = false;
 		HitInfo@[] infos;
 		//sqrt of 128 is 11.31371 (diagonal of a tile in case tilesize is 8), so we need less than half of that for case when the dynamite is angled by 45 degrees
 		//because two raycasts should be able to pierce through a tile
+		
+		//print("general, made it here, idx = " + idx + ", hits made: " + hits_made);
+		
 		f32 less_than_a_tile_diagonal = 3;
-		Vec2f cool_offset = Vec2f(less_than_a_tile_diagonal, 0).RotateBy(velang+(idx<(max_hits/2)?-1:1)*90);
+		Vec2f cool_offset = Vec2f(less_than_a_tile_diagonal, 0).RotateBy(velang+((hits_made%2==0)?-1:1)*90);
 		Vec2f not_cool_offset = Vec2f(0, -0.5);
+		
+		f32 prev_idx = idx;
 
 		if (getMap().getHitInfosFromRay(this.getPosition()+cool_offset+not_cool_offset, velang, getMap().tilesize*8, this, @infos))
 		{
 			//cycle for all the hits from hitinfos
 			for (int jdx = 0; jdx < infos.size(); ++jdx)
 			{
+				if (idx >= max_hits) break;
 				HitInfo@ c_info = infos[jdx];
+				CBlob@ c_blob = c_info.blob;
 
 				//we only need to hit tiles
-				if (c_info.blob !is null)
+				if (c_blob !is null)
 				{
-					if (c_info.blob.getShape().isStatic() && c_info.blob.getShape().getConsts().collidable && c_info.blob.getConfig() != this.getConfig())
+					if (c_blob.getShape().isStatic() && c_blob.getShape().getConsts().collidable && c_blob.getConfig() != this.getConfig())
+					{
+						//because kag is fucking shit when you kill a blob it still gets hit by getHitInfosFromRay func if run in the same tick...
+						//so we track how many blobs we hit so we can skip those later..
+						if (jdx < blobs_hit/2) continue;
+						if (!c_blob.hasTag("stone")) raycast_increment = 1;
+						raycast_increment *= 1.5f;
+						c_blob.getSprite().Gib();
+						c_blob.server_Die();
+						//raycast cycle incrementation here
+						idx += raycast_increment;
+						hits_made += 1;
+						blobs_hit += 1;
+						
+						//print("blob, made it here, idx = " + idx);
 						break;
+					}
 				}
 
 				Vec2f tile_pos = getMap().getAlignedWorldPos(c_info.hitpos)+Vec2f(1, 1)*4;
@@ -164,11 +188,18 @@ void MetroBoominMakeItBoom(CBlob@ this)
 						break;
 					}
 				}
+				//raycast cycle incrementation here
+				idx += raycast_increment;
+				hits_made += 1;
 			}
 		}
 
-		//raycast cycle incrementation here
-		idx += raycast_increment;
+		//in case we hit nothing we still take the price as if we just hit wood
+		if (idx == prev_idx) {
+			idx += 1;
+			//adding one to total hits so it changes hitpos
+			hits_made += 1;
+		}
 	}
 }
 
