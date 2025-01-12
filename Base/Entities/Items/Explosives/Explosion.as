@@ -362,7 +362,7 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 										if (!map.isTileSolid(tpos))
 										{
 											//times we hit a backtile
-											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8));
+											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/7));
 
 											for (int idx = 0; idx < max_hits; ++idx)
 											{
@@ -372,10 +372,10 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 										}
 										else
 										{
-											int castle_account = (map.isTileCastle(tile)?-1:0);
+											int castle_account = (map.isTileCastle(tile)?-2:0);
 
 											int	tile_type_account = castle_account;
-											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8+tile_type_account));
+											f32 max_hits = Maths::Max(0, (this.get_f32("map_damage_radius")/8-(tpos-pos).Length()/8)+2+tile_type_account);
 
 											u16 type_to_spawn = tile;
 											CPlayer@ killer = this.getDamageOwnerPlayer();
