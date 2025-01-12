@@ -74,7 +74,12 @@ void onInit(CBlob@ this)
 	states.push_back(ResheathState(KnightStates::resheathing_slash, KnightVars::resheath_slash_time));
 
 	this.set("knightStates", @states);
-	this.set_s32("currentKnightState", 0);
+	
+	if (this.exists("currentKnightState"))
+		knight.state = this.get_s32("currentKnightState");
+	else 
+		this.set_s32("currentKnightState", 0);
+	
 
 	this.set_f32("gib health", -1.5f);
 	addShieldVars(this, SHIELD_BLOCK_ANGLE, 2.0f, 5.0f);
@@ -132,23 +137,23 @@ void onSetPlayer(CBlob@ this, CPlayer@ player)
 	}
 }
 
-
-void RunStateMachine(CBlob@ this, KnightInfo@ knight, RunnerMoveVars@ moveVars)
-{
+void HandleSyncedState(CBlob@ this, KnightInfo@ knight, RunnerMoveVars@ moveVars)
+{	
 	KnightState@[]@ states;
 	if (!this.get("knightStates", @states))
 	{
 		return;
 	}
 
-	s32 currentStateIndex = this.get_s32("currentKnightState");
-
-	if (getNet().isClient())
+	if (isClient())
 	{
 		if (this.exists("serverKnightState"))
 		{
+			s32 currentStateIndex = this.get_s32("currentKnightState");
 			s32 serverStateIndex = this.get_s32("serverKnightState");
+
 			this.set_s32("serverKnightState", -1);
+			
 			if (serverStateIndex != -1 && serverStateIndex != currentStateIndex)
 			{
 				KnightState@ serverState = states[serverStateIndex];
@@ -165,7 +170,6 @@ void RunStateMachine(CBlob@ this, KnightInfo@ knight, RunnerMoveVars@ moveVars)
 								serverState.stateEnteredTime = getGameTime();
 								serverState.StateEntered(this, knight, serverState.getStateValue());
 								this.set_s32("currentKnightState", serverStateIndex);
-								currentStateIndex = serverStateIndex;
 							}
 
 						}
@@ -178,14 +182,24 @@ void RunStateMachine(CBlob@ this, KnightInfo@ knight, RunnerMoveVars@ moveVars)
 					serverState.stateEnteredTime = getGameTime();
 					serverState.StateEntered(this, knight, serverState.getStateValue());
 					this.set_s32("currentKnightState", serverStateIndex);
-					currentStateIndex = serverStateIndex;
 				}
 
 			}
+
 		}
 	}
+}
 
 
+void RunStateMachine(CBlob@ this, KnightInfo@ knight, RunnerMoveVars@ moveVars)
+{
+	KnightState@[]@ states;
+	if (!this.get("knightStates", @states))
+	{
+		return;
+	}
+
+	s32 currentStateIndex = this.get_s32("currentKnightState");
 
 	u8 state = knight.state;
 	KnightState@ currentState = states[currentStateIndex];
@@ -206,7 +220,7 @@ void RunStateMachine(CBlob@ this, KnightInfo@ knight, RunnerMoveVars@ moveVars)
 				nextState.stateEnteredTime = getGameTime();
 				nextState.StateEntered(this, knight, currentState.getStateValue());
 				this.set_s32("currentKnightState", nextStateIndex);
-				if (getNet().isServer() && knight.state >= KnightStates::sword_drawn && knight.state <= KnightStates::sword_power_super)
+				if (isServer() && knight.state >= KnightStates::shielding && knight.state <= KnightStates::sword_power_super)
 				{
 					this.set_s32("serverKnightState", nextStateIndex);
 					this.Sync("serverKnightState", true);
@@ -215,7 +229,6 @@ void RunStateMachine(CBlob@ this, KnightInfo@ knight, RunnerMoveVars@ moveVars)
 				if (tickNext)
 				{
 					RunStateMachine(this, knight, moveVars);
-
 				}
 				break;
 			}
@@ -251,8 +264,13 @@ void onTick(CBlob@ this)
 		knight.doubleslash = false;
 		hud.SetCursorFrame(0);
 		this.set_s32("currentKnightState", 0);
-		this.set_s32("serverKnightState", -1);
 		return;
+	}
+
+	if (!knocked)
+	{
+		HandleSyncedState(this, knight, moveVars);
+		RunStateMachine(this, knight, moveVars);
 	}
 
 	Vec2f pos = this.getPosition();
@@ -313,17 +331,10 @@ void onTick(CBlob@ this)
 		knight.slideTime = 0;
 		knight.doubleslash = false;
 		this.set_s32("currentKnightState", 0);
-		this.set_s32("serverKnightState", -1);
 
 		pressed_a1 = false;
 		pressed_a2 = false;
 		walking = false;
-
-	}
-	else
-	{
-		RunStateMachine(this, knight, moveVars);
-
 	}
 
 	//throwing bombs
@@ -1526,9 +1537,12 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 
 			if (b !is null)
 			{
-				if (b.hasTag("ignore sword")) continue;
-				if (!canHit(this, b)) continue;
-				if (knight_has_hit_actor(this, b)) continue;
+				if (b.hasTag("ignore sword") 
+				    || !canHit(this, b)
+				    || knight_has_hit_actor(this, b)) 
+				{
+					continue;
+				}
 
 				Vec2f hitvec = hi.hitpos - pos;
 
