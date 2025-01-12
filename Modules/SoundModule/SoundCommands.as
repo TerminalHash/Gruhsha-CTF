@@ -575,7 +575,7 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 			} else if (textIn == "сердце" || textIn == "Сердце" || textIn.toUpper() == "HEART") {
 					if (annoying_voicelines_sounds == "on")
 					{
-						Sound::Play(soundrandom + "heart.ogg", pos, 2.0f);
+						Sound::Play(soundrandom + "heartvoice.ogg", pos, 2.0f);
 					}
 
 					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
