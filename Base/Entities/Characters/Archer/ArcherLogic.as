@@ -353,7 +353,8 @@ void ManageGrapple(CBlob@ this, ArcherInfo@ archer)
 				}
 
 				if (b !is null)
-					b.AddForce(-force * (b.getMass() / this.getMass()));
+					if (b.getConfig() != "bomber")
+						b.AddForce(-force * (b.getMass() / this.getMass()));
 
 			}
 		}
