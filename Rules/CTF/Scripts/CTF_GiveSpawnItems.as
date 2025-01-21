@@ -84,6 +84,8 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 			int wood_amount = matchtime_wood_amount;
 			int stone_amount = matchtime_stone_amount;
 
+			u32 mat_delay = materials_wait;
+
 			if (getGameTime() > lower_mats_timer * getTicksASecond()) {
 				wood_amount = lower_wood;
 				stone_amount = lower_stone;
@@ -95,11 +97,15 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 				if (builders_limit > 1) {
 					wood_amount = matchtime_wood_amount * builders_limit;
 					stone_amount = matchtime_stone_amount * builders_limit;
+
+					mat_delay = materials_wait_longer;
 				}
 
 				if (builders_limit > 1 && getGameTime() > lower_mats_timer * getTicksASecond()) {
 					wood_amount = lower_wood * builders_limit;
 					stone_amount = lower_stone * builders_limit;
+
+					mat_delay = materials_wait_longer;
 				}
 			}
 
@@ -109,7 +115,7 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 			this.add_s32("teamstone" + team, stone_amount);
 			this.Sync("teamstone" + team, true);
 
-			SetCTFTimer(this, p, gametime + (this.isWarmup() ? materials_wait_warmup : materials_wait)*getTicksASecond(), "builder");
+			SetCTFTimer(this, p, gametime + (this.isWarmup() ? materials_wait_warmup : mat_delay)*getTicksASecond(), "builder");
 		}
 	}
 }
