@@ -41,11 +41,36 @@ void onTick(CRules@ this) {
 void onRestart(CRules@ this) {
 	if (isServer()) {
 		for (int i=0; i<players_list.length; ++i) {
+			CPlayer@ cp = getPlayer(i);
+			if (cp is null) continue;
+
 			this.set_s32("play_time" + players_list[i], 0);
 			this.Sync("play_time" + players_list[i], true);
 
 			this.set_f32("damage_impact_" + players_list[i], 0);
 			this.Sync("damage_impact_" + players_list[i], true);
+
+			// reset buy delay, we dont need this in new round
+			// FIXME: it's hardcoded because we cant receive properly blob name
+			if (this.exists(cp.getUsername() + "_bought_item_" + "keg")) {
+				this.set_s32(cp.getUsername() + "_bought_item_" + "keg", 0);
+				this.Sync(cp.getUsername() + "_bought_item_" + "keg", true);
+			}
+
+			if (this.exists(cp.getUsername() + "_bought_item_" + "hazelnut")) {
+				this.set_s32(cp.getUsername() + "_bought_item_" + "hazelnut", 0);
+				this.Sync(cp.getUsername() + "_bought_item_" + "hazelnut", true);
+			}
+
+			if (this.exists(cp.getUsername() + "_bought_item_" + "slidemine")) {
+				this.set_s32(cp.getUsername() + "_bought_item_" + "slidemine", 0);
+				this.Sync(cp.getUsername() + "_bought_item_" + "slideminet", true);
+			}
+
+			if (this.exists(cp.getUsername() + "_bought_item_" + "fumokeg")) {
+				this.set_s32(cp.getUsername() + "_bought_item_" + "fumokeg", 0);
+				this.Sync(cp.getUsername() + "_bought_item_" + "fumokeg", true);
+			}
 		}
 	}
 }
