@@ -11,7 +11,7 @@ void onInit(CBlob@ this)
 	this.SetLightColor(SColor(255, 255, 240, 171));
 
 	this.Tag("activatable");
-
+	this.Tag("place norotate");  //dont rotate when we press spacebar
 	this.Tag("dont deactivate");
 	this.Tag("fire source");
 	this.Tag("ignore_arrow");
