@@ -9,6 +9,7 @@ void onInit(CSprite@ this)
 
 	this.SetEmitSound("/shikanoko.ogg");
 	this.SetEmitSoundSpeed(1.0f);
+	this.SetEmitSoundVolume(1.0f);
 	this.SetEmitSoundPaused(false);
 }
 
