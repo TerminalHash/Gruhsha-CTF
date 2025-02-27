@@ -5,8 +5,12 @@
 #include "CTF_Common.as"; // resupply stuff
 
 // Limit stuff
+	// class
 int builders_limit;
-//u32 mat_delay;
+	// materials
+u32 mat_delay;
+int wood_limit;
+int stone_limit;
 
 bool SetMaterials(CBlob@ blob,  const string &in name, const int quantity, bool drop = false)
 {
@@ -64,7 +68,7 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 	s32 gametime = getGameTime();
 	string name = b.getName();
 
-	//mat_delay = materials_wait;
+	mat_delay = materials_wait;
 	builders_limit = this.get_u8("builders_limit");
 
 	/*if (name == "archer")  {
@@ -95,28 +99,39 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 			// check amount of builders and give mats depending on the number of builders
 			// ONLY FOR OFFI MATCHES
 			if (this.hasTag("offi match")) {
+				wood_limit = 2000;
+				stone_limit = 1000;
+
 				if (builders_limit > 1) {
 					wood_amount = matchtime_wood_amount * builders_limit;
 					stone_amount = matchtime_stone_amount * builders_limit;
 
-					//mat_delay = materials_wait_longer;
+					mat_delay = materials_wait_longer;
+
+					wood_limit = 4000;
+					stone_limit = 2000;
 				}
 
 				if (builders_limit > 1 && getGameTime() > lower_mats_timer * getTicksASecond()) {
 					wood_amount = lower_wood * builders_limit;
 					stone_amount = lower_stone * builders_limit;
 
-					//mat_delay = materials_wait_longer;
+					mat_delay = materials_wait_longer;
+
+					wood_limit = 4000;
+					stone_limit = 2000;
 				}
 			}
 
-			this.add_s32("teamwood" + team, wood_amount);
-			this.Sync("teamwood" + team, true);
+			if (this.get_s32("teamwood" + team) < wood_limit && this.get_s32("teamstone" + team) < stone_limit) {
+				this.add_s32("teamwood" + team, wood_amount);
+				this.Sync("teamwood" + team, true);
 
-			this.add_s32("teamstone" + team, stone_amount);
-			this.Sync("teamstone" + team, true);
+				this.add_s32("teamstone" + team, stone_amount);
+				this.Sync("teamstone" + team, true);
 
-			SetCTFTimer(this, p, gametime + (this.isWarmup() ? materials_wait_warmup : materials_wait)*getTicksASecond(), "builder");
+				SetCTFTimer(this, p, gametime + (this.isWarmup() ? materials_wait_warmup : mat_delay)*getTicksASecond(), "builder");
+			}
 		}
 	}
 }
