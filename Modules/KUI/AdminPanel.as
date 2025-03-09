@@ -52,12 +52,15 @@ void onRender(CRules@ this) {
     int builder_range = this.get_u8("builders_limit");
     int archer_range = this.get_u8("archers_limit");
 
-    KUI::BeginConfig config1();
+    KUI::Begin();
+
+    KUI::WindowConfig config1();
+    //config1.pos = Vec2f(900, 600);
     config1.alignment = KUI::Alignment::CC;
     //config1.closable = true;
 
-    KUI::Begin("Admin Menu", Vec2f(300, 535), config1);
-    tab = KUI::Tabs(tab, {"Main", "Debug"});
+    KUI::Window("Admin Menu", Vec2f(500, 500), config1);
+    tab = KUI::TabBar(tab, {"Main", "Debug"});
     switch (tab) {
     case 0:
     /////////////////////////////////////////////////
@@ -94,7 +97,7 @@ void onRender(CRules@ this) {
 		    }
         }
 
-        KUI::Separator();
+        KUI::Spacing(1);
 	    if (!this.hasTag("sudden death")) {
             KUI::Text("Sudden Death is off.");
 	    } else {
@@ -111,7 +114,7 @@ void onRender(CRules@ this) {
 		    }
         }
 
-        KUI::Separator();
+        KUI::Spacing(1);
     /////////////////////////////////////////////////
 
     /////////////////////////////////////////////////
@@ -128,7 +131,7 @@ void onRender(CRules@ this) {
             //getRules().set_bool("map_list_menu", true);
         }
 
-        KUI::Separator();
+        KUI::Spacing(1);
     /////////////////////////////////////////////////
 
     /////////////////////////////////////////////////
@@ -136,12 +139,12 @@ void onRender(CRules@ this) {
     /////////////////////////////////////////////////
         KUI::Text("Team Management");
 
-        builder_range = KUI::Tuner("Builder Limit", builder_range, 0, 99);
+        builder_range = KUI::Stepper(builder_range, "Builder Limit", 0, 99);
         if (builder_range >= 0) {
             this.set_u8("builders_limit", builder_range);
         }
 
-        archer_range = KUI::Tuner("Archer Limit", archer_range, 0, 99);
+        archer_range = KUI::Stepper(archer_range, "Archer Limit", 0, 99);
         if (archer_range >= 0) {
             this.set_u8("archers_limit", archer_range);
         }
@@ -174,7 +177,7 @@ void onRender(CRules@ this) {
 		    rules.set("approved_teams", @approved_teams);
         }
 
-        KUI::Separator();
+        KUI::Spacing(1);
     /////////////////////////////////////////////////
 
         if (KUI::Button("Close menu")) {
@@ -201,7 +204,7 @@ void onRender(CRules@ this) {
             LoadMap("VerySmallPlain_Debug");
         }
 
-        KUI::Separator();   
+        KUI::Spacing(1);   
 
         if (KUI::Button("Close menu")) {
             this.set_bool("prototype_menu_open", false);
