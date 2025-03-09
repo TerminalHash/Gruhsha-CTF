@@ -10,8 +10,8 @@ const int       tab_h = 24;
 const int       text_h = 16;
 const int       button_h = 24;
 const int       toggle_h = 16;
-const int       toggle_icon_f = 0;
-const int       toggle_icon_t = 4;
+const int       toggle_icon_t = 0;
+const int       toggle_icon_f = 4;
 const Vec2f     toggle_icon_sz = Vec2f(8,8);
 const int       stepper_h = 16;
 const int       stepper_icon_l = 8;
@@ -112,7 +112,7 @@ class Rectangle() {
 
 class WindowConfig {
     Alignment alignment = CC;
-    Vec2f pos = Vec2f_zero;
+    Vec2f pos;
     bool closable = false;
 }
 
@@ -120,7 +120,7 @@ class WindowConfig {
 
 void Begin(Vec2f tl = Vec2f_zero, Vec2f br = Vec2f(getScreenWidth(), getScreenHeight())) {
     GUI::SetFont("KUI");
-    Input::Update();
+    KUI::Input::Update();
 
     button_current  = 0;
     slider_current  = 0;
@@ -151,7 +151,7 @@ void End() {
     canvas_br = Vec2f_zero;
 }
 
-bool Window(string title, Vec2f size, const WindowConfig config = WindowConfig()) {
+bool Window(string title, Vec2f size, const WindowConfig config = KUI::WindowConfig()) {
     // WINDOW ALIGNMENT
 
     Vec2f screen_sz = screen_br - screen_tl;
@@ -197,17 +197,17 @@ bool Window(string title, Vec2f size, const WindowConfig config = WindowConfig()
     window_tl += config.pos;
     window_br += config.pos;
 
-    Vec2f cpos = Input::GetCursorPos();
+    Vec2f cpos = KUI::Input::GetCursorPos();
     bool hover = cpos.x > window_tl.x && cpos.x < window_br.x && cpos.y > window_tl.y && cpos.y < window_br.y;
 
-    Input::controls.setButtonsLock(hover ? true : false);
+    KUI::Input::controls.setButtonsLock(hover ? true : false);
 
     // WINDOW TITLE AND PANEL
     GUI::DrawFramedPane(window_tl, window_br);
     GUI::DrawPane(window_tl, Vec2f(window_br.x, window_tl.y + window_title_h));
     GUI::DrawText(title,
                   Vec2f(window_tl.x + window_inner_margin.x, window_tl.y + window_title_h / 2 - text_h / 2 - 1),
-                  Colors::FG);
+                  KUI::Colors::FG);
 
     // WINDOW CLOSE BUTTON
     if (config.closable) {
@@ -217,7 +217,7 @@ bool Window(string title, Vec2f size, const WindowConfig config = WindowConfig()
                          window_tl.y + window_title_h);
 
         if(ButtonIconGeneral(tl, br, icons, window_close_icon, window_close_icon_size)) {
-            Input::controls.setButtonsLock(false);
+          KUI::Input::controls.setButtonsLock(false);
             return false;
         }
     }
@@ -258,7 +258,7 @@ void Spacing(int spacing) {
 }
 
 void Text(string text) {
-    GUI::DrawText(text, canvas_tl, Colors::FG);
+    GUI::DrawText(text, canvas_tl, KUI::Colors::FG);
     canvas_tl.y += text_h + spacing;
 }
 
@@ -286,16 +286,16 @@ bool Button(string title = "") {
 bool ButtonGeneral(Vec2f tl, Vec2f br, string title = "") {
     button_current += 1;
 
-    Vec2f cpos = Input::GetCursorPos();
+    Vec2f cpos = KUI::Input::GetCursorPos();
     if (cpos.x > tl.x && cpos.x < br.x && cpos.y > tl.y && cpos.y < br.y) {
         if (button_hovered != button_current) {
             button_hovered = button_current;
             Sound::Play("KUI_Hovered");
         }
 
-        if (Input::IsPress()) {
+        if (KUI::Input::IsPress()) {
             DrawButtonPressed(tl, br, title);
-            if (Input::IsJustPressed()) {
+            if (KUI::Input::IsJustPressed()) {
                 Sound::Play("KUI_Pressed");
                 return true;
             }
@@ -311,37 +311,37 @@ bool ButtonGeneral(Vec2f tl, Vec2f br, string title = "") {
 
 void DrawButtonDefault(Vec2f tl, Vec2f br, string title = "") {
     GUI::DrawButton(tl, br);
-    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), KUI::Colors::FG);
 }
 
 void DrawButtonHovered(Vec2f tl, Vec2f br, string title = "") {
     GUI::DrawButtonHover(tl, br);
-    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), KUI::Colors::FG);
 }
 
 void DrawButtonPressed(Vec2f tl, Vec2f br, string title = "") {
     GUI::DrawButtonPressed(tl, br);
-    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), KUI::Colors::FG);
 }
 
 void DrawButtonSelected(Vec2f tl, Vec2f br, string title = "") {
     GUI::DrawSunkenPane(tl, br);
-    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), Colors::FG);
+    GUI::DrawTextCentered(title, Vec2f(tl.x + (br.x - tl.x) / 2 - 2, tl.y + (br.y - tl.y) / 2 - 2), KUI::Colors::FG);
 }
 
 bool ButtonIconGeneral(Vec2f tl, Vec2f br, string icon_name, int icon_index, Vec2f icon_size = Vec2f(8,8)) {
     button_current += 1;
 
-    Vec2f cpos = Input::GetCursorPos();
+    Vec2f cpos = KUI::Input::GetCursorPos();
     if (cpos.x > tl.x && cpos.x < br.x && cpos.y > tl.y && cpos.y < br.y) {
         if (button_hovered != button_current) {
             button_hovered = button_current;
             Sound::Play("KUI_Hovered");
         }
 
-        if (Input::IsPress()) {
+        if (KUI::Input::IsPress()) {
             DrawButtonIconPressed(tl, br, icon_name, icon_size, icon_index);
-            if (Input::IsJustPressed()) {
+            if (KUI::Input::IsJustPressed()) {
                 Sound::Play("KUI_Pressed");
                 return true;
             }
@@ -377,7 +377,7 @@ bool Toggle(bool value, string title = "") {
         if(ButtonIconGeneral(tl, br, icons, toggle_icon_f, toggle_icon_sz)) value = !value;
     }
 
-    GUI::DrawText(title, Vec2f(br.x + 4, tl.y), Colors::FG);
+    GUI::DrawText(title, Vec2f(br.x + 4, tl.y), KUI::Colors::FG);
 
     canvas_tl.y += toggle_h + spacing;
     return value;
@@ -396,8 +396,8 @@ int Stepper(int value, string title = "", int min = 0, int max = 5, int step = 1
     if (ButtonIconGeneral(l_tl, l_br, icons, stepper_icon_l, stepper_icon_sz)) value = Maths::Max(value - step, min);
     if (ButtonIconGeneral(r_tl, r_br, icons, stepper_icon_r, stepper_icon_sz)) value = Maths::Min(value + step, max);
 
-    GUI::DrawTextCentered(""+value, Vec2f(l_br.x + (r_tl.x - l_br.x) / 2 - 2, l_tl.y + (r_br.y - l_tl.y) / 2 - 1), Colors::FG);
-    GUI::DrawText(title, Vec2f(r_br.x + 4, canvas_tl.y), Colors::FG);
+    GUI::DrawTextCentered(""+value, Vec2f(l_br.x + (r_tl.x - l_br.x) / 2 - 2, l_tl.y + (r_br.y - l_tl.y) / 2 - 1), KUI::Colors::FG);
+    GUI::DrawText(title, Vec2f(r_br.x + 4, canvas_tl.y), KUI::Colors::FG);
     canvas_tl.y += stepper_h + spacing;
     return value;
 }
@@ -405,25 +405,21 @@ int Stepper(int value, string title = "", int min = 0, int max = 5, int step = 1
 int Switcher(int index, array<string> titles) {
     Vec2f l_tl = canvas_tl;
     Vec2f l_br = canvas_tl + Vec2f(16, stepper_h);
-
     Vec2f r_tl = Vec2f(canvas_br.x - 16, canvas_tl.y);
     Vec2f r_br = Vec2f(canvas_br.x, canvas_tl.y + stepper_h);
-
-    if (ButtonIconGeneral(l_tl, l_br, icons, stepper_icon_l, stepper_icon_sz)) index = Maths::Max(index - 1, 0);
-    if (ButtonIconGeneral(r_tl, r_br, icons, stepper_icon_r, stepper_icon_sz)) index = Maths::Min(index + 1, titles.length() - 1);
-
-    GUI::DrawTextCentered(""+titles[index], Vec2f(l_tl + (r_br - l_tl) / 2), Colors::FG);
-
+    if (ButtonIconGeneral(l_tl, l_br, icons, stepper_icon_l, stepper_icon_sz)) index -= 1;
+    if (ButtonIconGeneral(r_tl, r_br, icons, stepper_icon_r, stepper_icon_sz)) index += 1;
+    if (index < 0) index = titles.length - 1;
+    index %= titles.length;
+    GUI::DrawTextCentered(""+titles[index], Vec2f(l_tl + (r_br - l_tl) / 2), KUI::Colors::FG);
     canvas_tl.y += stepper_h + spacing;
     return index;
 }
 
 int SliderInt(int value, string title, int min, int max) {
     slider_current += 1;
-
     Vec2f tl = canvas_tl;
     Vec2f br = Vec2f(canvas_br.x - (canvas_br.x - canvas_tl.x) / 2, canvas_tl.y + slider_h);
-
     Vec2f value_dim;
     GUI::GetTextDimensions(""+max, value_dim);
     int value_w = value_dim.x + 16;
@@ -431,9 +427,9 @@ int SliderInt(int value, string title, int min, int max) {
     if (slider_selected == slider_current) {
         DrawButtonSelected(tl, br);
 
-        value = (Maths::Clamp(Input::GetCursorPos().x, tl.x + value_w / 2, br.x - value_w / 2) - tl.x - value_w / 2) / (br.x - tl.x - value_w) * (max - min) + min;
+        value = (Maths::Clamp(KUI::Input::GetCursorPos().x, tl.x + value_w / 2, br.x - value_w / 2) - tl.x - value_w / 2) / (br.x - tl.x - value_w) * (max - min) + min;
 
-        if (Input::IsJustReleased()) {
+        if (KUI::Input::IsJustReleased()) {
             slider_selected = 0;
         }
     } else if (ButtonGeneral(tl, br)) {
@@ -442,20 +438,16 @@ int SliderInt(int value, string title, int min, int max) {
 
     Vec2f value_tl = Vec2f(tl.x + (br.x - tl.x - value_w) * (0.0 + value - min) / (max - min), tl.y);
     Vec2f value_br = Vec2f(tl.x + (br.x - tl.x - value_w) * (0.0 + value - min) / (max - min) + value_w, br.y);
-
     DrawButtonDefault(value_tl, value_br, ""+value);
-    GUI::DrawText(title, Vec2f(br.x + 4, canvas_tl.y + dragger_h / 2 - text_h / 2 - 1), Colors::FG);
-
+    GUI::DrawText(title, Vec2f(br.x + 4, canvas_tl.y + dragger_h / 2 - text_h / 2 - 1), KUI::Colors::FG);
     canvas_tl.y += slider_h + spacing;
     return value;
 }
 
 float SliderFloat(float value, string title, float min, float max) {
     slider_current += 1;
-
     Vec2f tl = canvas_tl;
     Vec2f br = Vec2f(canvas_br.x - (canvas_br.x - canvas_tl.x) / 2, canvas_tl.y + slider_h);
-
     Vec2f value_dim;
     GUI::GetTextDimensions(formatFloat(max, "", 0, 2), value_dim);
     int value_w = value_dim.x + 16;
@@ -463,9 +455,9 @@ float SliderFloat(float value, string title, float min, float max) {
     if (slider_selected == slider_current) {
         DrawButtonSelected(tl, br);
 
-        value = (Maths::Clamp(Input::GetCursorPos().x, tl.x + value_w / 2, br.x - value_w / 2) - tl.x - value_w / 2) / (br.x - tl.x - value_w) * (max - min) + min;
+        value = (Maths::Clamp(KUI::Input::GetCursorPos().x, tl.x + value_w / 2, br.x - value_w / 2) - tl.x - value_w / 2) / (br.x - tl.x - value_w) * (max - min) + min;
 
-        if (Input::IsJustReleased()) {
+        if (KUI::Input::IsJustReleased()) {
             slider_selected = 0;
         }
     } else if (ButtonGeneral(tl, br)) {
@@ -474,64 +466,55 @@ float SliderFloat(float value, string title, float min, float max) {
 
     Vec2f value_tl = Vec2f(tl.x + (br.x - tl.x - value_w) * (value - min) / (max - min), tl.y);
     Vec2f value_br = Vec2f(tl.x + (br.x - tl.x - value_w) * (value - min) / (max - min) + value_w, br.y);
-
     DrawButtonDefault(value_tl, value_br, formatFloat(value, "", 0, 2));
-    GUI::DrawText(title, Vec2f(br.x + 4, canvas_tl.y + dragger_h / 2 - text_h / 2 - 1), Colors::FG);
-
+    GUI::DrawText(title, Vec2f(br.x + 4, canvas_tl.y + dragger_h / 2 - text_h / 2 - 1), KUI::Colors::FG);
     canvas_tl.y += slider_h + spacing;
     return value;
 }
 
 int DraggerInt(int value, string title, int step = 1) {
     dragger_current += 1;
-
     Vec2f tl = canvas_tl;
     Vec2f br = Vec2f(canvas_br.x - (canvas_br.x - canvas_tl.x) / 2, canvas_tl.y + dragger_h);
     Vec2f center = tl + (br - tl) / 2;
-
     if(dragger_selected == dragger_current) {
         DrawButtonSelected(tl, br, ""+value);
-        value -= (center.x - Input::GetCursorPos().x) * step;
-        Input::SetCursorPos(center);
-        if (Input::IsJustReleased()) {
+        value -= (center.x - KUI::Input::GetCursorPos().x) * step;
+        KUI::Input::SetCursorPos(center);
+        if (KUI::Input::IsJustReleased()) {
             getHUD().ShowCursor();
             dragger_selected = 0;
         }
     } else if(ButtonGeneral(tl, br, ""+value)) {
         getHUD().HideCursor();
         dragger_selected = dragger_current;
-        Input::SetCursorPos(center);
+        KUI::Input::SetCursorPos(center);
     }
 
-    GUI::DrawText(title, Vec2f(br.x + 4, canvas_tl.y + dragger_h / 2 - text_h / 2 - 1), Colors::FG);
-
+    GUI::DrawText(title, Vec2f(br.x + 4, canvas_tl.y + dragger_h / 2 - text_h / 2 - 1), KUI::Colors::FG);
     canvas_tl.y += dragger_h + spacing;
     return value;
 }
 
 float DraggerFloat(float value, string title, float step = 0.01) {
     dragger_current += 1;
-
     Vec2f tl = canvas_tl;
     Vec2f br = Vec2f(canvas_br.x - (canvas_br.x - canvas_tl.x) / 2, canvas_tl.y + dragger_h);
     Vec2f center = tl + (br - tl) / 2;
-
     if(dragger_selected == dragger_current) {
         DrawButtonSelected(tl, br, formatFloat(value, "", 0, 2));
-        value -= (center.x - Input::GetCursorPos().x) * step;
-        Input::SetCursorPos(center);
-        if (Input::IsJustReleased()) {
+        value -= (center.x - KUI::Input::GetCursorPos().x) * step;
+        KUI::Input::SetCursorPos(center);
+        if (KUI::Input::IsJustReleased()) {
             getHUD().ShowCursor();
             dragger_selected = 0;
         }
     } else if(ButtonGeneral(tl, br, formatFloat(value, "", 0, 2))) {
         getHUD().HideCursor();
         dragger_selected = dragger_current;
-        Input::SetCursorPos(center);
+        KUI::Input::SetCursorPos(center);
     }
-
-    GUI::DrawText(title, Vec2f(br.x + 4, canvas_tl.y + dragger_h / 2 - text_h / 2 - 1), Colors::FG);
-
+    GUI::DrawText(title, Vec2f(br.x + 4, canvas_tl.y + dragger_h / 2 - text_h / 2 - 1), KUI::Colors::FG);
     canvas_tl.y += dragger_h + spacing;
     return value;
 }
@@ -570,13 +553,16 @@ int Keybind(int key, string title) {
 
     Vec2f tl = canvas_tl;
     Vec2f br = canvas_tl + Vec2f(keybind_w, keybind_h);
-    string key_title = Input::controls.getKeyName(key);
+    string key_title = getKeyName(key);
 
     if (keybind_selected == keybind_current) {
         DrawButtonSelected(tl, br, key_title);
-        int last_key = Input::controls.lastKeyPressed;
+        int last_key = KUI::Input::controls.lastKeyPressed;
 
-        if (last_key != 0 and !Input::IsPress()) {
+        if (last_key == EKEY_CODE::KEY_DELETE) {
+            key = 0;
+            keybind_selected = 0;
+        } else if (last_key != 0 and !KUI::Input::IsPress()) {
             key = last_key;
             keybind_selected = 0;
         }
@@ -584,9 +570,132 @@ int Keybind(int key, string title) {
         keybind_selected = keybind_current;
     }
 
-    GUI::DrawText(title, Vec2f(br.x + 4, tl.y + keybind_h / 2 - text_h / 2 - 1), Colors::FG);
+    GUI::DrawText(title, Vec2f(br.x + 4, tl.y + keybind_h / 2 - text_h / 2 - 1), KUI::Colors::FG);
     canvas_tl.y += keybind_h + spacing;
     return key;
+}
+
+string getKeyName(int i, bool short=false)
+{
+    switch (i) {
+        case 0: return "EMPTY";
+        case EKEY_CODE::KEY_LBUTTON: return "LEFT BUTTON";
+        case EKEY_CODE::KEY_RBUTTON: return "RIGHT BUTTON";
+        case EKEY_CODE::KEY_MBUTTON: return "MIDDLE BUTTON";
+        case EKEY_CODE::KEY_CANCEL: return "CANCEL";
+        case EKEY_CODE::KEY_XBUTTON1: return "XBUTTON 1";
+        case EKEY_CODE::KEY_XBUTTON2: return "XBUTTON 2";
+        case EKEY_CODE::KEY_BACK: return "BACK";
+        case EKEY_CODE::KEY_TAB: return "TAB";
+        case EKEY_CODE::KEY_CLEAR: return "CLEAR";
+        case EKEY_CODE::KEY_RETURN: return "RETURN";
+        case EKEY_CODE::KEY_SHIFT: return "SHIFT";
+        case EKEY_CODE::KEY_CONTROL: return "CTRL";
+        case EKEY_CODE::KEY_MENU: return "MENU";
+        case EKEY_CODE::KEY_PAUSE: return "PAUSE";
+        case EKEY_CODE::KEY_CAPITAL: return "CAPS";
+        case EKEY_CODE::KEY_ESCAPE: return "ESC";
+        case EKEY_CODE::KEY_SPACE: return "SPACE";
+        case EKEY_CODE::KEY_PRIOR: return "PRIOR";
+        case EKEY_CODE::KEY_NEXT: return "NEXT";
+        case EKEY_CODE::KEY_END: return "END";
+        case EKEY_CODE::KEY_HOME: return "HOME";
+        case EKEY_CODE::KEY_LEFT: return "LEFT";
+        case EKEY_CODE::KEY_UP: return "UP";
+        case EKEY_CODE::KEY_RIGHT: return "RIGHT";
+        case EKEY_CODE::KEY_DOWN: return "DOWN";
+        case EKEY_CODE::KEY_SELECT: return "SELECT";
+        case EKEY_CODE::KEY_PRINT: return "PRNTSCR";
+        case EKEY_CODE::KEY_EXECUT: return "EXECUTE";
+        case EKEY_CODE::KEY_INSERT: return "INSERT";
+        case EKEY_CODE::KEY_DELETE: return "DEL";
+        case EKEY_CODE::KEY_HELP: return "HELP";
+        case EKEY_CODE::KEY_KEY_0: return "0";
+        case EKEY_CODE::KEY_KEY_1: return "1";
+        case EKEY_CODE::KEY_KEY_2: return "2";
+        case EKEY_CODE::KEY_KEY_3: return "3";
+        case EKEY_CODE::KEY_KEY_4: return "4";
+        case EKEY_CODE::KEY_KEY_5: return "5";
+        case EKEY_CODE::KEY_KEY_6: return "6";
+        case EKEY_CODE::KEY_KEY_7: return "7";
+        case EKEY_CODE::KEY_KEY_8: return "8";
+        case EKEY_CODE::KEY_KEY_9: return "9";
+        case EKEY_CODE::KEY_KEY_A: return "A";
+        case EKEY_CODE::KEY_KEY_B: return "B";
+        case EKEY_CODE::KEY_KEY_C: return "C";
+        case EKEY_CODE::KEY_KEY_D: return "D";
+        case EKEY_CODE::KEY_KEY_E: return "E";
+        case EKEY_CODE::KEY_KEY_F: return "F";
+        case EKEY_CODE::KEY_KEY_G: return "G";
+        case EKEY_CODE::KEY_KEY_H: return "H";
+        case EKEY_CODE::KEY_KEY_I: return "I";
+        case EKEY_CODE::KEY_KEY_J: return "J";
+        case EKEY_CODE::KEY_KEY_K: return "K";
+        case EKEY_CODE::KEY_KEY_L: return "L";
+        case EKEY_CODE::KEY_KEY_M: return "M";
+        case EKEY_CODE::KEY_KEY_N: return "N";
+        case EKEY_CODE::KEY_KEY_O: return "O";
+        case EKEY_CODE::KEY_KEY_P: return "P";
+        case EKEY_CODE::KEY_KEY_Q: return "Q";
+        case EKEY_CODE::KEY_KEY_R: return "R";
+        case EKEY_CODE::KEY_KEY_S: return "S";
+        case EKEY_CODE::KEY_KEY_T: return "T";
+        case EKEY_CODE::KEY_KEY_U: return "U";
+        case EKEY_CODE::KEY_KEY_V: return "V";
+        case EKEY_CODE::KEY_KEY_W: return "W";
+        case EKEY_CODE::KEY_KEY_X: return "X";
+        case EKEY_CODE::KEY_KEY_Y: return "Y";
+        case EKEY_CODE::KEY_KEY_Z: return "Z";
+        case EKEY_CODE::KEY_LWIN: return "LWIN";
+        case EKEY_CODE::KEY_RWIN: return "RWIN";
+        case EKEY_CODE::KEY_APPS: return "APPS";
+        case EKEY_CODE::KEY_SLEEP: return "SLEEP";
+        case EKEY_CODE::KEY_NUMPAD0: return "NP0";
+        case EKEY_CODE::KEY_NUMPAD1: return "NP1";
+        case EKEY_CODE::KEY_NUMPAD2: return "NP2";
+        case EKEY_CODE::KEY_NUMPAD3: return "NP3";
+        case EKEY_CODE::KEY_NUMPAD4: return "NP4";
+        case EKEY_CODE::KEY_NUMPAD5: return "NP5";
+        case EKEY_CODE::KEY_NUMPAD6: return "NP6";
+        case EKEY_CODE::KEY_NUMPAD7: return "NP7";
+        case EKEY_CODE::KEY_NUMPAD8: return "NP8";
+        case EKEY_CODE::KEY_NUMPAD9: return "NP9";
+        case EKEY_CODE::KEY_MULTIPLY: return "MULTIPLY";
+        case EKEY_CODE::KEY_ADD: return "ADD";
+        case EKEY_CODE::KEY_SEPARATOR: return "SEPARATOR";
+        case EKEY_CODE::KEY_SUBTRACT: return "SUBTRACT";
+        case EKEY_CODE::KEY_DECIMAL: return "DECIMAL";
+        case EKEY_CODE::KEY_DIVIDE: return "DIVIDE";
+        case EKEY_CODE::KEY_F1: return "F1";
+        case EKEY_CODE::KEY_F2: return "F2";
+        case EKEY_CODE::KEY_F3: return "F3";
+        case EKEY_CODE::KEY_F4: return "F4";
+        case EKEY_CODE::KEY_F5: return "F5";
+        case EKEY_CODE::KEY_F6: return "F6";
+        case EKEY_CODE::KEY_F7: return "F7";
+        case EKEY_CODE::KEY_F8: return "F8";
+        case EKEY_CODE::KEY_F9: return "F9";
+        case EKEY_CODE::KEY_F10: return "F10";
+        case EKEY_CODE::KEY_F11: return "F11";
+        case EKEY_CODE::KEY_F12: return "F12";
+        case EKEY_CODE::KEY_NUMLOCK: return "NUMLOCK";
+        case EKEY_CODE::KEY_SCROLL: return "SCROLL";
+        case EKEY_CODE::KEY_LSHIFT: return "LSHIFT";
+        case EKEY_CODE::KEY_RSHIFT: return "RSHIFT";
+        case EKEY_CODE::KEY_LCONTROL: return "LCTRL";
+        case EKEY_CODE::KEY_RCONTROL: return "RCTRL";
+        case EKEY_CODE::KEY_LMENU: return "LALT";
+        case EKEY_CODE::KEY_RMENU: return "RALT";
+        case EKEY_CODE::KEY_PLUS: return "+";
+        case EKEY_CODE::KEY_COMMA: return ",";
+        case EKEY_CODE::KEY_MINUS: return "-";
+        case EKEY_CODE::KEY_PERIOD: return ".";
+        case EKEY_CODE::KEY_PLAY: return "PLAY";
+        case EKEY_CODE::MOUSE_SCROLL_UP: return "SCROLL DOWN";
+        case EKEY_CODE::MOUSE_SCROLL_DOWN: return "SCROLL UP";
+    }
+
+    return "UNKNOWN";
 }
 
 }
