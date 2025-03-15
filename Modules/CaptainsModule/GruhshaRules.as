@@ -33,8 +33,11 @@ void onInit(CRules@ this)
 
 void onCommand( CRules@ this, u8 cmd, CBitStream @params )
 {
-	if(cmd == this.getCommandID("put to spec"))
+	if (cmd == this.getCommandID("put to spec") && isServer())
 	{
+		CPlayer@ caller = getNet().getActiveCommandPlayer();
+		if (caller is null) return;
+
 		string username; if (!params.saferead_string(username)) return;
 		CPlayer@ doomed = getPlayerByUsername(username);
 		if (doomed is null) return;
@@ -45,9 +48,13 @@ void onCommand( CRules@ this, u8 cmd, CBitStream @params )
 		if (core is null) return;
 
 		core.ChangePlayerTeam(doomed, this.getSpectatorTeamNum());
+		printf("[CAPTAINS SYSTEM] " + caller.getUsername() + " placed a player " + doomed.getUsername() + " to spectators via pick menu");
 		//KickPlayer(doomed);
-	} else if(cmd == this.getCommandID("put to blue"))
+	} else if(cmd == this.getCommandID("put to blue") && isServer())
 	{
+		CPlayer@ caller = getNet().getActiveCommandPlayer();
+		if (caller is null) return;
+
 		string username; if (!params.saferead_string(username)) return;
 		CPlayer@ doomed = getPlayerByUsername(username);
 		if (doomed is null) return;
@@ -58,9 +65,13 @@ void onCommand( CRules@ this, u8 cmd, CBitStream @params )
 		if (core is null) return;
 
 		core.ChangePlayerTeam(doomed, 0);
+		printf("[CAPTAINS SYSTEM] " + caller.getUsername() + " placed a player " + doomed.getUsername() + " to blue team via pick menu");
 		//KickPlayer(doomed);
-	} else if(cmd == this.getCommandID("put to red"))
+	} else if(cmd == this.getCommandID("put to red") && isServer())
 	{
+		CPlayer@ caller = getNet().getActiveCommandPlayer();
+		if (caller is null) return;
+
 		string username; if (!params.saferead_string(username)) return;
 		CPlayer@ doomed = getPlayerByUsername(username);
 		if (doomed is null) return;
@@ -71,6 +82,7 @@ void onCommand( CRules@ this, u8 cmd, CBitStream @params )
 		if (core is null) return;
 
 		core.ChangePlayerTeam(doomed, 1);
+		printf("[CAPTAINS SYSTEM] " + caller.getUsername() + " placed a player " + doomed.getUsername() + " to red team via pick menu");
 		//KickPlayer(doomed);
 	}
 }
