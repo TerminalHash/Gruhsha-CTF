@@ -79,6 +79,8 @@ class AppointCommand : ChatCommand
 			rules.set_string("team_0_leader", blue_leader.getUsername());
 			rules.set_string("team_1_leader", red_leader.getUsername());
 
+			printf("[CAPTAINS SYSTEM] Picked two captains, blue captain is " + rules.get_string("team_0_leader") + " red captain is " + rules.get_string("team_1_leader"));
+
 			PutEveryoneInSpec();
 
 			RulesCore@ core;
@@ -117,6 +119,8 @@ class DemoteCommand : ChatCommand
 	void Execute(string[] args, CPlayer@ player)
 	{
 		DemoteLeaders();
+
+		if (isServer()) server_AddToChat("Teams unlocked and captains demoted!", SColor(0xff474ac6));
 	}
 }
 
@@ -166,6 +170,8 @@ class PickPlayerCommand : ChatCommand
 		if (core is null) return;
 
 		core.ChangePlayerTeam(picked_player, player.getTeamNum());
+
+		printf("[CAPTAINS SYSTEM] Captain " + player.getUsername() + "is picked player " + picked_player.getUsername() + "to his team via /pick");
 	}
 }
 
