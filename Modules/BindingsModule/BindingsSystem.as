@@ -315,11 +315,6 @@ void onInit(CRules@ this)
 				sfile2.add_string("class_panels", "off");
 			}
 
-			if (!sfile2.exists("airdrop_panel"))
-			{
-				sfile2.add_string("airdrop_panel", "on");
-			}
-
 			if (!sfile2.exists("custom_boom_effects"))
 			{
 				sfile2.add_string("custom_boom_effects", "on");
@@ -346,7 +341,6 @@ void onInit(CRules@ this)
 			sfile2.add_string("annoying_tags", "on");
 			sfile2.add_string("custom_death_and_pain_sounds", "on");
 			sfile2.add_string("class_panels", "off");
-			sfile2.add_string("airdrop_panel", "on");
 			sfile2.add_string("custom_boom_effects", "on");
 			sfile2.add_string("snow_type", "sparse");
 

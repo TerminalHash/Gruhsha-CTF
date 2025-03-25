@@ -131,9 +131,7 @@ void onRender(CRules@ this)
 
 	s32 end_in = this.get_s32("end_in");
 
-	if (end_in > 0)
-	{
-		GUI::DrawIcon("timer_panel.png", Vec2f(12, 140));
+	if (end_in > 0) {
 		s32 timeToEnd = end_in;
 
 		s32 secondsToEnd = timeToEnd % 60;
@@ -141,7 +139,7 @@ void onRender(CRules@ this)
 		drawRulesFont(getTranslatedString("{MIN}:{SEC}")
 						.replace("{MIN}", "" + ((MinutesToEnd < 10) ? "0" + MinutesToEnd : "" + MinutesToEnd))
 						.replace("{SEC}", "" + ((secondsToEnd < 10) ? "0" + secondsToEnd : "" + secondsToEnd)),
-		              SColor(255, 255, 255, 255), Vec2f(10, 157), Vec2f(150, 180), true, false);
+		              SColor(255, 255, 255, 255), Vec2f(10, 178), Vec2f(170, 180), true, false);
 	}
 
 	// Notification
@@ -159,18 +157,14 @@ void onRender(CRules@ this)
 		GUI::DrawText(Descriptions::thirtyminutesleft, Vec2f(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 7), color_white);
 	}
 
-	Vec2f skull = Vec2f(12, 230);
+	Vec2f skull = Vec2f(12, 250);
 
-	if (getRules().get_string("airdrop_panel") == "off" && getRules().get_string("class_panels") == "off") {
-		skull = Vec2f(12, 180);
+	if (getRules().get_string("class_panels") == "off") {
+		skull = Vec2f(12, 250);
 	}
 
-	if (getRules().get_string("airdrop_panel") == "on" && getRules().get_string("class_panels") == "on") {
-		skull = Vec2f(12, 380);
-	}
-
-	if (getRules().get_string("airdrop_panel") == "off" && getRules().get_string("class_panels") == "on") {
-		skull = Vec2f(12, 330);
+	if (getRules().get_string("class_panels") == "on") {
+		skull = Vec2f(12, 410);
 	}
 
 	float x = skull.x + 8;

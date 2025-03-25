@@ -187,6 +187,9 @@ void onRender(CRules@ this)
 			GUI::DrawText(spawn_message , Vec2f(getScreenWidth() / 2 - 70, getScreenHeight() / 3 + Maths::Sin(getGameTime() / 3.0f) * 5.0f), SColor(255, 255, 255, 55));
 		}
 	}
+
+	// main panel
+	GUI::DrawIcon("CTF_Panel.png", 0, Vec2f(73,61), Vec2f(0, 140));
 }
 
 void onNewPlayerJoin( CRules@ this, CPlayer@ player )
