@@ -423,7 +423,6 @@ string[][] vsetting_texts =
 		Names::annoyingtags,
 		Names::customdpsounds,
 		Names::classpanels,
-		Names::airdroppanel,
 		Names::customboomeffects,
 		"Snow Render Type"
 		//Names::snowrendertype
@@ -447,7 +446,6 @@ string[][] vsetting_file_names =
 		"annoying_tags",
 		"custom_death_and_pain_sounds",
 		"class_panels",
-		"airdrop_panel",
 		"custom_boom_effects",
 		"snow_type"
 	}
@@ -513,10 +511,6 @@ string[][][] vsetting_options =
 		},
 		{
 			Descriptions::universaloff,       // CLASS PANELS
-			Descriptions::universalon
-		},
-		{
-			Descriptions::universaloff,       // AIRDROP PANEL
 			Descriptions::universalon
 		},
 		{
@@ -593,10 +587,6 @@ string[][][] vsetting_option_names =
 		},
 		{
 			"off",       // CLASS PANELS
-			"on"
-		},
-		{
-			"off",       // AIRDROP PANEL
 			"on"
 		},
 		{

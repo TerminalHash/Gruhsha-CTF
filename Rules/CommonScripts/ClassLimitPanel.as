@@ -32,21 +32,12 @@ void onRender(CRules@ this)
 	archers_limit = this.get_u8("archers_limit");
 	builders_limit = this.get_u8("builders_limit");
 
-    Vec2f archer_pan = Vec2f(12, 240);
-    Vec2f archer_pan_text = Vec2f(46, 254);
-    Vec2f knight_pan = Vec2f(12, 290);
-    Vec2f knight_pan_text = Vec2f(46, 304);
-    Vec2f builder_pan = Vec2f(12, 340);
-    Vec2f builder_pan_text = Vec2f(46, 354);
-
-    if (getRules().get_string("airdrop_panel") == "off") {
-        archer_pan = Vec2f(12, 190);
-        archer_pan_text = Vec2f(46, 204);
-        knight_pan = Vec2f(12, 240);
-        knight_pan_text = Vec2f(46, 254);
-        builder_pan = Vec2f(12, 290);
-        builder_pan_text = Vec2f(46, 304);
-    }
+    Vec2f archer_pan = Vec2f(12, 270);
+    Vec2f archer_pan_text = Vec2f(46, 284);
+    Vec2f knight_pan = Vec2f(12, 320);
+    Vec2f knight_pan_text = Vec2f(46, 334);
+    Vec2f builder_pan = Vec2f(12, 370);
+    Vec2f builder_pan_text = Vec2f(46, 384);
 
 	//GUI::DrawIcon("class_panel.png", Vec2f(12, 190));
     // ARCHERS
