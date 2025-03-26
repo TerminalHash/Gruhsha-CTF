@@ -18,7 +18,9 @@ void onInit(CRules@ this)
 	Reset(this);
 	this.addCommandID("put to spec");
 	this.addCommandID("put to blue");
-	this.addCommandID("put to red");	
+	this.addCommandID("put to red");
+
+	this.addCommandID("create wood gibs");
 	DemoteLeaders();
 	SyncLeaders();
 
@@ -84,6 +86,15 @@ void onCommand( CRules@ this, u8 cmd, CBitStream @params )
 		core.ChangePlayerTeam(doomed, 1);
 		printf("[CAPTAINS SYSTEM] " + caller.getUsername() + " placed a player " + doomed.getUsername() + " to red team via pick menu");
 		//KickPlayer(doomed);
+	} else if(cmd == this.getCommandID("create wood gibs") && isClient())
+	{
+		Vec2f spawn_pos; if (!params.saferead_Vec2f(spawn_pos)) return;
+		f32 clamped_damage = 5;
+		f32 dmg_mod = 9;
+
+		for (int idx = 0; idx < 3; ++idx)
+		makeGibParticle("GenericGibs", spawn_pos, Vec2f(-2+XORRandom(4), 0),
+		                1, 7-dmg_mod+XORRandom(dmg_mod), Vec2f(8, 8), 2.0f, 0, "", 0);
 	}
 }
 

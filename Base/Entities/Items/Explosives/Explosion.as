@@ -407,7 +407,7 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 												if (has_destroyed_solid_tile)
 												{
 													//creation of a tile entity
-													if (was_solid && damaged_enough && canExplosionCreateRubble(type_to_spawn))
+													if (was_solid && damaged_enough && canExplosionCreateRubble(type_to_spawn, tpos))
 													{
 														CBlob@ tileblob = server_CreateBlob("tileentity", -3, tpos);
 														if (tileblob is null) break;
@@ -746,9 +746,16 @@ void DirectionalExplosion(CBlob@ this, f32 radius, f32 damage, f32 map_damage_ra
 		LinearExplosion(this, Vec2f(1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
 }
 
-bool canExplosionCreateRubble(TileType t)
+bool canExplosionCreateRubble(TileType t, Vec2f pos = Vec2f())
 {
-	return !getMap().isTileGold(t);
+	if (isServer() && getMap().isTileWood(t))
+	{
+		CBitStream params;
+		params.write_Vec2f(pos);
+		getRules().SendCommand(getRules().getCommandID("create wood gibs"), params);
+	}
+
+	return !(getMap().isTileWood(t) || getMap().isTileGroundStuff(t) || getMap().isTileGold(t));
 }
 
 bool canExplosionDamage(CMap@ map, Vec2f tpos, TileType t)
