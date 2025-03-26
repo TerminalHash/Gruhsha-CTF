@@ -28,7 +28,11 @@ void onTick(CRules@ this) {
 
 void onMainMenuCreated(CRules@ this, CContextMenu@ menu)
 {
-    Menu::addContextItem(menu, "Admin Panel", getCurrentScriptName(), "void ShowPrototypeMenu()");
+    #ifdef STAGING
+    // show button only for superadmins
+    if (getLocalPlayer().isRCON())
+        Menu::addContextItem(menu, "Admin Panel", getCurrentScriptName(), "void ShowPrototypeMenu()");
+    #endif
 }
 
 void ShowPrototypeMenu()
@@ -38,6 +42,10 @@ void ShowPrototypeMenu()
 }
 
 void onRender(CRules@ this) {
+    // dont allow code to be executed on vanilla,
+    // it's extremely broken on vanilla client
+    #ifdef STAGING
+
 	CPlayer@ player = getLocalPlayer();
 	if (player is null || !player.isMyPlayer()) return;
 
@@ -214,4 +222,5 @@ void onRender(CRules@ this) {
     }
 
     KUI::End();
+    #endif
 }
