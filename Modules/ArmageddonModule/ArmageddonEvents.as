@@ -65,6 +65,7 @@ void PraiseTheFumo() { // fumokeg rain
 		CBlob@ fumokeg = server_CreateBlob("fumokeg", 34, pos);
 
 		if (fumokeg !is null) {
+			fumokeg.set_f32("keg_time", 90.0f);
 			server_Activate(fumokeg);
 			s8 spread = XORRandom(getRules().get_u8("armageddon spread")) - getRules().get_u8("armageddon spread")/2 - 1;
 			fumokeg.setVelocity(Vec2f(spread,0)); // Give it random horizontal momentum
@@ -126,14 +127,27 @@ void NiktoEtogoNeProsil() { // ice bomb rain
 }
 
 void FuckingBlocks() { // bedrock rain
+
+	u16[] all_the_kag_tiles = {
+		16,
+		48,
+		80,
+		96,
+		106,
+		196,
+		208,
+		224
+	};
+
+	for (int idx = 0; idx < 4; ++idx)
 	if (getGameTime() % 1 == 0) {
-		Vec2f pos = Vec2f(get_random_x(), 0);
+		Vec2f pos = Vec2f(get_random_x(), XORRandom(64)-32);
 		CBlob@ block = server_CreateBlob("tileentity", 34, pos);
 
 		if (block !is null) {
 			s8 spread = XORRandom(getRules().get_u8("armageddon spread")) - getRules().get_u8("armageddon spread")/2 - 1;
-			block.setVelocity(Vec2f(spread,0)); // Give it random horizontal momentum
-			block.set_s32("tile_frame", 106);
+			block.setVelocity(Vec2f(spread,10)); // Give it random horizontal momentum
+			block.set_s32("tile_frame", all_the_kag_tiles[XORRandom(all_the_kag_tiles.size())]);
 		}
 	}
 }
