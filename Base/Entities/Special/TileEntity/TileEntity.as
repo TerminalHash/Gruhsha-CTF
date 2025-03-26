@@ -118,10 +118,13 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 		bool wooden = getMap().isTileWood(this.get_s32("tile_frame"));
 		if (wooden) max_hits /= 2;
 
+		//when a match is over tile entities are very DANGEROUS
+		f32 raycast_dist = getRules().getCurrentState() == GAME_OVER ? 40 : 12;
+
 		//
 		{
 			HitInfo@[] hitInfos;
-			if(getMap().getHitInfosFromRay(this.getPosition(), (point2-this.getPosition()).AngleDegrees(), 12, this, hitInfos))
+			if(getMap().getHitInfosFromRay(this.getPosition(), (point2-this.getPosition()).AngleDegrees(), raycast_dist, this, hitInfos))
 			{
 				for (int idx = 0; idx < hitInfos.size(); ++idx)
 				{
@@ -133,7 +136,12 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 						if (canExplosionDestroy(getMap().getTile(hi.hitpos).type))
 							getMap().server_DestroyTile(hi.hitpos, 1.0f, this);
 					}
-					break;
+					if (getRules().getCurrentState() != GAME_OVER)
+						break;
+					else
+					{
+						getMap().server_SetTile(hi.hitpos, CMap::tile_empty);
+					}
 				}
 			}
 		}
