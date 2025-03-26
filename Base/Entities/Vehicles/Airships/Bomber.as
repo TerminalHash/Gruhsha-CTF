@@ -159,6 +159,12 @@ void onTick(CBlob@ this)
 							server_Activate(item);
 
 						this.server_PutOutInventory(item);
+
+						// HACK: "activate" bomb
+						if (item !is null && isItemBomb(item)) {
+							BombActivate(this, item);
+						}
+
 						item.setPosition(this.getPosition());
 					}
 				}
@@ -171,13 +177,104 @@ void onTick(CBlob@ this)
 }
 
 bool isCanBeActivated(CBlob@ item) {
-	if (item.getConfig() == "keg" ||
-		item.getConfig() == "satchel"
+	if (item.getConfig() == "keg"             ||
+		item.getConfig() == "satchel"         ||
+		item.getConfig() == "hazelnut"        ||
+		item.getConfig() == "hazelnutshell"
 	) {
 		return true;
 	}
 
 	return false;
+}
+
+bool isItemBomb(CBlob@ item) {
+	if (item.getConfig() == "mat_bombs"         ||
+		item.getConfig() == "mat_waterbombs"    ||
+		item.getConfig() == "mat_icebombs"      ||
+		item.getConfig() == "mat_stickybombs"   ||
+		item.getConfig() == "mat_boosters"
+	) {
+		return true;
+	}
+
+	return false;
+}
+
+// ugly bomb activation logic
+void BombActivate(CBlob@ this, CBlob@ bomb) {
+	AttachmentPoint@ flyer = this.getAttachments().getAttachmentPointByName("FLYER");
+	if (flyer is null) return;
+
+	CBlob@ blob = flyer.getOccupied();
+
+	if (bomb is null) return;
+
+	if(isServer()) {
+		if (bomb !is null) {
+			if (bomb.getConfig() == "mat_bombs") {
+				bomb.server_Die();
+
+				CBlob@ bomba = server_CreateBlob("bomb", this.getTeamNum(), this.getPosition());
+
+				if (bomba !is null) {
+					bomba.SetDamageOwnerPlayer(blob.getPlayer());
+				}
+			} else if (bomb.getConfig() == "mat_waterbombs") {
+				bomb.server_Die();
+
+				CBlob@ bomba = server_CreateBlob("waterbomb", this.getTeamNum(), this.getPosition());
+
+				if (bomba !is null) {
+					bomba.SetDamageOwnerPlayer(blob.getPlayer());
+					bomba.set_f32("map_damage_ratio", 0.0f);
+					bomba.set_f32("explosive_damage", 0.0f);
+					bomba.set_f32("explosive_radius", 92.0f);
+					bomba.set_bool("map_damage_raycast", false);
+					bomba.set_string("custom_explosion_sound", "/GlassBreak");
+					bomba.set_u8("custom_hitter", Hitters::water);
+					bomba.Tag("splash ray cast");
+				}
+			} else if (bomb.getConfig() == "mat_icebombs") {
+				bomb.server_Die();
+
+				CBlob@ bomba = server_CreateBlob("icebomb", this.getTeamNum(), this.getPosition());
+
+				if (bomba !is null) {
+					bomba.SetDamageOwnerPlayer(blob.getPlayer());
+					bomba.set_f32("map_damage_ratio", 0.0f);
+					bomba.set_f32("explosive_damage", 0.0f);
+					bomba.set_f32("explosive_radius", 128.0f);
+					bomba.set_bool("map_damage_raycast", false);
+					bomba.set_string("custom_explosion_sound", "/GlassBreak");
+					bomba.set_u8("custom_hitter", Hitters::water);
+					bomba.Tag("splash ray cast");
+				}
+			} else if (bomb.getConfig() == "mat_stickybombs") {
+				bomb.server_Die();
+
+				CBlob@ bomba = server_CreateBlob("stickybomb", this.getTeamNum(), this.getPosition());
+
+				if (bomba !is null) {
+					bomba.SetDamageOwnerPlayer(blob.getPlayer());
+				}
+			} else if (bomb.getConfig() == "mat_boosters") {
+				bomb.server_Die();
+
+				CBlob@ bomba = server_CreateBlob("booster", this.getTeamNum(), this.getPosition());
+
+				if (bomba !is null) {
+					bomba.SetDamageOwnerPlayer(blob.getPlayer());
+					bomba.set_f32("map_damage_ratio", 0.0f);
+					bomba.set_f32("explosive_damage", 0.0f);
+					bomba.set_f32("explosive_radius", 92.0f);
+					bomba.set_bool("map_damage_raycast", false);
+					bomba.set_string("custom_explosion_sound", "/GlassBreak2");
+					bomba.set_u8("custom_hitter", Hitters::water);
+				}
+			}
+		}
+	}
 }
 
 bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
