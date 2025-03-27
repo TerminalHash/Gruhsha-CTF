@@ -45,23 +45,27 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 	string[]@ tokens = textIn.split(" ");
 	u8 tlen = tokens.length;
 
-	if (textIn.find("!") == 0 && player.getTeamNum() == getLocalPlayer().getTeamNum() && player.isMod() || textIn.find("!") == 0 && player.getTeamNum() == getLocalPlayer().getTeamNum() && (getRules().get_string("team_" + teamNum + "_leader") == player.getUsername()))
+	// team announce, allowed to moderators, admins, superadmins and captains
+	if (textIn.find("!") == 0 && player.getTeamNum() == getLocalPlayer().getTeamNum() && player.isMod() ||
+		textIn.find("!") == 0 && player.getTeamNum() == getLocalPlayer().getTeamNum() && (getRules().get_string("team_" + teamNum + "_leader") == player.getUsername()))
 	{
-		Sound::Play(sound + "AnnounceSound.ogg");					// TEAM ONLY ANNOUNCE
+		Sound::Play(sound + "AnnounceSound.ogg");
 		string alert = textIn;
 		alert = alert.substr(1);
 		this.set_string("announce text", alert);
 		this.set_u32("announce time", getGameTime());
 	}
-	else if (textIn == ("*offi") && player.isMod())
+	// crutch for offi, allowed for superadmins only
+	else if (textIn == ("*offi") && player.isRCON())
 	{
-		Sound::Play(sound + "offi.ogg");							// OFFI ANNOUNCE
+		Sound::Play(sound + "offi.ogg");
 		this.set_string("announce text", "OFFI");
 		this.set_u32("announce time", getGameTime());
 	}
+	// global announce, allowed for moderators, admins and superadmins
 	else if (textIn.find("*") == 0 && player.isMod())
 	{
-		Sound::Play(sound + "AnnounceSound.ogg");					// GLOBAL ANNOUNCE
+		Sound::Play(sound + "AnnounceSound.ogg");
 		string alert = textIn;
 		alert = alert.substr(1);
 		this.set_string("announce text", alert);
