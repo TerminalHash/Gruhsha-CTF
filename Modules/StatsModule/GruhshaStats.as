@@ -15,10 +15,10 @@ bool onServerProcessChat( CRules@ this, const string& in text_in, string& out te
 	if (player is null)
 		return true;
 
-    if (text_in == "*offi" && allowedToEnableOffi(player))
-	{
-		if(!this.hasTag("track_stats"))
-		{
+	// only few peoples allowed to use offi + additional check, is superadmin or not
+	// list of them you can check below
+    if (text_in == "*offi" && allowedToEnableOffi(player) && player.isRCON()) {
+		if(!this.hasTag("track_stats")) {
 			this.Tag("track_stats");
 			this.Sync("track_stats", true);
 			printf("[INFO] Statistic tracking enabled on this match!");
@@ -37,8 +37,7 @@ bool onServerProcessChat( CRules@ this, const string& in text_in, string& out te
 
 			tcpr("MatchBegin" + " " + getGameTime());
 
-			for (int i=0; i < getPlayerCount(); i++) 
-			{
+			for (int i=0; i < getPlayerCount(); i++) {
 				CPlayer@ p = getPlayer(i);
 				if (p is null) continue;
 
@@ -48,21 +47,18 @@ bool onServerProcessChat( CRules@ this, const string& in text_in, string& out te
 
 				tcpr("PlayerJoin " + player_name + " " + p.getTeamNum() + " " + getGameTime());
 
-				if (p.getBlob() !is null)
-				{
+				if (p.getBlob() !is null) {
 					tcpr("SwitchClass " + player_name + " " + p.getBlob().getName() + " " + getGameTime());
 				}
 			}
 		}
 	}
 
-	if (text_in == "*tcprtest" && player.getUsername() == "TerminalHash")
-	{
+	if (text_in == "*tcprtest" && player.getUsername() == "TerminalHash") {
 		tcpr("TCPRTEST LOSHADINUI HUI JARA IUL");
 	}
 
-	if (text_in == "*close" && player.getUsername() == "TerminalHash")
-	{
+	if (text_in == "*close" && player.getUsername() == "TerminalHash") {
 		tcpr("CLOSE");
 	}
 
@@ -71,8 +67,7 @@ bool onServerProcessChat( CRules@ this, const string& in text_in, string& out te
 
 void onRestart(CRules@ this)
 {
-	if (this.hasTag("track_stats"))
-	{
+	if (this.hasTag("track_stats")) {
 		tcpr("EMERGENCYCLEAN");
 	}
 
@@ -189,7 +184,6 @@ void onPlayerChangedTeam( CRules@ this, CPlayer@ player, u8 old_team, u8 newteam
 void onPlayerLeave( CRules@ this, CPlayer@ player )
 {
 	if (!this.hasTag("track_stats") || player is null) return;
-
 	if (player.getTeamNum() != 0 && player.getTeamNum() != 1) return;
 
 	string player_name = player.getUsername();
@@ -211,7 +205,6 @@ void onStateChange( CRules@ this, const u8 oldState )
 			if (p.getTeamNum() != 0 && p.getTeamNum() != 1) continue;
 
 			string player_damage = getRules().get_f32("damage_impact_" + p.getUsername());
-			
 			string player_name = p.getUsername();
 
 			tcpr("PlayerDamage " + player_name + " " +  player_damage);
@@ -233,7 +226,6 @@ bool allowedToEnableOffi(CPlayer@ player) {
 	if (player.getUsername() == "TerminalHash"      ||
 		player.getUsername() == "Pnext"             ||
 		player.getUsername() == "egor0928931"       ||
-		player.getUsername() == "kusaka79"          ||
 		player.getUsername() == "H1996R") {
 			return true;
 	}
