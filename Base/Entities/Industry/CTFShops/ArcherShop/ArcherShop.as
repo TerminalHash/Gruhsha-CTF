@@ -40,13 +40,13 @@ void onInit(CBlob@ this)
 
 	// Dynamic prices
 	u32 dynamic_fire_arrow_cost = 30;
-	u32 dynamic_bomb_arrow_cost = 80;
+	u32 dynamic_bomb_arrow_cost = 75;
 	u32 player_amount = getRules().get_s32("amount_in_team");
 
 	if (player_amount >= 12 && player_amount < 14)
 	{
 		dynamic_fire_arrow_cost = 35;
-		dynamic_bomb_arrow_cost = 85;
+		dynamic_bomb_arrow_cost = 80;
 	}
 	else if (player_amount >= 14 && player_amount < 16)
 	{

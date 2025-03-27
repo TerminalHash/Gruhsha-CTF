@@ -6,7 +6,7 @@
 #include "GruhshaHitters.as"
 
 const int coinsOnDamageAdd = 6;
-const int coinsOnAssistAdd = 8;
+const int coinsOnAssistAdd = 9;
 const int coinsOnKillAdd = 12;
 
 // bonus for being an offensive builder
@@ -14,7 +14,7 @@ const int coinsOnDamageAddBuilder = 8;
 const int coinsOnAssistAddBuilder = 10;
 const int coinsOnKillAddBuilder = 15;
 
-const int coinsOnDeathLosePercent = 15;
+const int coinsOnDeathLosePercent = 20;
 
 const int coinsOnRestartAdd = 0;
 const bool keepCoinsOnRestart = false;
@@ -22,7 +22,7 @@ const bool keepCoinsOnRestart = false;
 const int coinsOnHitSiege = 2; //per heart of damage
 const int coinsOnKillSiege = 20;
 
-const int coinsOnCapFlag = 100;
+const int coinsOnCapFlag = 150;
 
 const int coinsOnBuildStoneBlock = 3;
 const int coinsOnBuildStoneDoor = 5;
