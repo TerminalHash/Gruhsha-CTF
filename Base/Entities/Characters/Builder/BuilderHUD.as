@@ -48,8 +48,7 @@ void ManageCursors(CBlob@ this)
 	}
 }
 
-Vec2f[] icon_offsets =
-{
+Vec2f[] icon_offsets = {
 	Vec2f(8, 8),
 	Vec2f(8, 8),
 	Vec2f(-4, 8),
@@ -62,6 +61,20 @@ Vec2f[] icon_offsets =
 	Vec2f(4, 4),
 	Vec2f(8, 8), // 10
 	Vec2f(0, 0)
+};
+
+int[] build_prices = {
+	10,			// stone_block
+	2,			// back_stone_block
+	50,			// stone_door
+	10,			// wood_block
+	2,			// back_wood_block
+	30,			// wooden_door
+	30,			// bridge
+	10,			// ladder
+	15,			// wooden_platform
+	150,		// building
+	30			// spikes
 };
 
 void onRender(CSprite@ this)
@@ -104,9 +117,14 @@ void onRender(CSprite@ this)
     if (blocks is null) return;
     //CGridButton@ button = menu.AddButton(b.icon, "\n" + block_desc, Builder::make_block + i);
 
+	f32 left = getRules().get_u16("barrier_x1");
+	f32 right = getRules().get_u16("barrier_x2");
+
+	f32 player_position_x = this.getBlob().getPosition().x;
+
     Vec2f offset = Vec2f(0, 0);
 
-	Vec2f dim = Vec2f(375, 96);
+	Vec2f dim = Vec2f(375, 126);
 
 	if (carried !is null && carried.getName() == "drill")
 	{
@@ -145,6 +163,23 @@ void onRender(CSprite@ this)
 		GUI::DrawPane(tl, tl+Vec2f(40, 40), color);
 
    		GUI::DrawIconByName(b.icon, tl + icon_offsets[i], scale, scale, 0, block_color);
+
+		// requirements stuff
+		GUI::DrawFramedPane(tl + Vec2f(0,42), tl+Vec2f(40, 70));
+
+		if (!getRules().hasTag("sudden death")) {
+			if (player_position_x <= left || player_position_x >= right)
+				GUI::DrawText(" " + build_prices[i], tl + Vec2f(2, 47), color_white);
+
+			else if (player_position_x >= left || player_position_x <= right)
+				GUI::DrawText(" " + build_prices[i] * 1.2, tl + Vec2f(2, 47), color_white);
+		} else if (getRules().hasTag("sudden death")) {
+			if (player_position_x <= left || player_position_x >= right)
+				GUI::DrawText(" " + build_prices[i], tl + Vec2f(2, 47), color_white);
+
+			else if (player_position_x >= left || player_position_x <= right)
+				GUI::DrawText(" " + build_prices[i] * 1.4, tl + Vec2f(2, 47), color_white);
+		}
 
    		GUI::SetFont("hud");
    		if (getRules().get_s32(button_file_names[1][i] + "$2") != -1 )
