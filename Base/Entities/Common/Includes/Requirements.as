@@ -188,7 +188,7 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 					if (player1.getBlob().getPosition().x >= left && player1.getBlob().getPosition().x <= right)
 					{
 						if (getRules().hasTag("sudden death")) {
-							if (getRules().get_s32(needed + team) < quantity * 1.35) {
+							if (getRules().get_s32(needed + team) < quantity * 1.4) {
 								AddRequirement(missingBs, req, blobName, friendlyName, quantity);
 								has = false;
 							}
