@@ -123,15 +123,17 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 				}
 			}
 
-			if (this.get_s32("teamwood" + team) < wood_limit && this.get_s32("teamstone" + team) < stone_limit) {
+			if (this.get_s32("teamwood" + team) < wood_limit) {
 				this.add_s32("teamwood" + team, wood_amount);
 				this.Sync("teamwood" + team, true);
+			}
 
+			if (this.get_s32("teamstone" + team) < stone_limit) {
 				this.add_s32("teamstone" + team, stone_amount);
 				this.Sync("teamstone" + team, true);
-
-				SetCTFTimer(this, p, gametime + (this.isWarmup() ? materials_wait_warmup : mat_delay)*getTicksASecond(), "builder");
 			}
+
+			SetCTFTimer(this, p, gametime + (this.isWarmup() ? materials_wait_warmup : mat_delay) * getTicksASecond(), "builder");
 		}
 	}
 }
