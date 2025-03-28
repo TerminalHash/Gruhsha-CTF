@@ -15,9 +15,9 @@ bool onServerProcessChat( CRules@ this, const string& in text_in, string& out te
 	if (player is null)
 		return true;
 
-	// only few peoples allowed to use offi + additional check, is superadmin or not
+	// only few peoples allowed to use offi
 	// list of them you can check below
-    if (text_in == "*offi" && allowedToEnableOffi(player) && player.isRCON()) {
+    if (text_in == "*offi" && allowedToEnableOffi(player) && player.isMod()) {
 		if(!this.hasTag("track_stats")) {
 			this.Tag("track_stats");
 			this.Sync("track_stats", true);

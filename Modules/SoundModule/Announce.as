@@ -56,7 +56,7 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 		this.set_u32("announce time", getGameTime());
 	}
 	// crutch for offi, allowed for superadmins only
-	else if (textIn == ("*offi") && player.isRCON())
+	else if (textIn == ("*offi") && player.isMod())
 	{
 		Sound::Play(sound + "offi.ogg");
 		this.set_string("announce text", "OFFI");
