@@ -111,7 +111,9 @@ void onRender(CSprite@ this)
 	}
 
 	// draw class icon
+	GUI::DrawIcon(iconsFilename, 3, Vec2f(16, 32), tl + Vec2f(8 + (slotsSize - 1) * 48, -13), 1.0f);
 
+	// blockbar
 	BuildBlock[][]@ blocks;
     blob.get(blocks_property, @blocks);
     if (blocks is null) return;
@@ -124,11 +126,11 @@ void onRender(CSprite@ this)
 
     Vec2f offset = Vec2f(0, 0);
 
-	Vec2f dim = Vec2f(375, 126);
+	Vec2f dim = Vec2f(375, 128);
 
 	if (carried !is null && carried.getName() == "drill")
 	{
-		dim = Vec2f(375, 119);
+		dim = Vec2f(375, 149);
 	}
 
 	if (getRules().get_string("blockbar_hud") == "no") return;
@@ -193,6 +195,4 @@ void onRender(CSprite@ this)
 
 		tl += Vec2f(40, 0);
 	}
-
-	//GUI::DrawIcon(iconsFilename, 3, Vec2f(16, 32), tl + Vec2f(8 + (slotsSize - 1) * 40, -13), 1.0f);
 }
