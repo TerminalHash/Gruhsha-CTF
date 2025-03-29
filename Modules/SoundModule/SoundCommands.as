@@ -588,6 +588,14 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 
 					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 					this.set_u32(player.getUsername() + "soundcooldown", 60);
+			} else if (textIn == "пизда роялю" || textIn == "Пизда роялю" || textIn.toUpper() == "PIZDA ROYALU") {
+					if (annoying_voicelines_sounds == "on")
+					{
+						Sound::Play(soundrandom + "royal.ogg", pos, 4.0f);
+					}
+
+					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+					this.set_u32(player.getUsername() + "soundcooldown", 60);
 			}
 		}
 
