@@ -731,7 +731,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 						"SPEC", "spec", username
 					);
 				}
-			} else if (localIsCaptain && playerIsOur && playerIsNotLocal) {
+			} else if (localIsCaptain && playerIsOur && playerIsNotLocal && !isPickingEnded()) {
 				if (teamIndex == teamIndexSpectators) {
 					if (localTeamNum == teamIndexBlue) {
 						DrawPickButton(
