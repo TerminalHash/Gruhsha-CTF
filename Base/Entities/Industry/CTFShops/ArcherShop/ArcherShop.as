@@ -76,6 +76,7 @@ void onInit(CBlob@ this)
 	{
 		ShopItem@ s = addShopItem(this, "Water Arrows", "$mat_waterarrows$", "mat_waterarrows", Descriptions::waterarrows, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::waterarrows);
+		AddRequirement(s.requirements, "no more", "mat_waterarrows", "Water Arrows", 2); // half of inventory
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Fire Arrows", "$mat_firearrows$", "mat_firearrows", Descriptions::firearrows, true);
