@@ -18,16 +18,22 @@ void onRender(CRules@ this)
 
     GUI::SetFont("menu");
 
-	P_Archers = 0;
-	P_Builders = 0;
-	P_Knights = 0;
-
-	// calculating amount of players in classes
-	for (u32 i = 0; i < getPlayersCount(); i++) {
-		if (getPlayer(i).getScoreboardFrame() == 2 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Archers++;}
-		if (getPlayer(i).getScoreboardFrame() == 1 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
-		if (getPlayer(i).getScoreboardFrame() == 3 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Knights++;}
-	}
+	//P_Archers = 0;
+	//P_Builders = 0;
+	//P_Knights = 0;
+    //
+	//// calculating amount of players in classes
+	//for (u32 i = 0; i < getPlayersCount(); i++) {
+	//	if (getPlayer(i).getScoreboardFrame() == 2 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Archers++;}
+	//	if (getPlayer(i).getScoreboardFrame() == 1 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
+	//	if (getPlayer(i).getScoreboardFrame() == 3 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Knights++;}
+	//}
+    
+    if(getLocalPlayer() !is null) {
+        P_Archers = this.get_s32("archer" + getLocalPlayer().getTeamNum() + "Count");
+        P_Builders = this.get_s32("builder" + getLocalPlayer().getTeamNum() + "Count");
+        P_Knights = this.get_s32("knight" + getLocalPlayer().getTeamNum() + "Count");  
+    }
 
 	archers_limit = this.get_u8("archers_limit");
 	builders_limit = this.get_u8("builders_limit");
