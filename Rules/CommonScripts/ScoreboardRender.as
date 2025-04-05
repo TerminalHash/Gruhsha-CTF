@@ -732,8 +732,8 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 					);
 				}
 			} else if (localIsCaptain && playerIsOur && playerIsNotLocal) {
-				// restrict access to buttons while teams is locked or it's not allowed
-				if (!isPickingEnded() || isAllowedByAdmins) {
+				// restrict access to buttons while teams is locked
+				if (!isPickingEnded()) {
 					if (teamIndex == teamIndexSpectators) {
 						if (localTeamNum == teamIndexBlue) {
 							DrawPickButton(

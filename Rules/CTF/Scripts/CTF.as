@@ -828,11 +828,9 @@ void Reset(CRules@ this)
 	// Reset builders in team, captains should set them by hands
 	this.set_string("team_" + "0" + "_builder", "");
 	this.set_string("team_" + "1" + "_builder", "");
-	this.set_bool("pick unlocked", true);
 
 	this.Sync("team_" + "0" + "_builder", true);
 	this.Sync("team_" + "1" + "_builder", true);
-	this.Sync("pick unlocked", true);
 }
 
 void onRestart(CRules@ this)
