@@ -176,6 +176,14 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 
 				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 				this.set_u32(player.getUsername() + "soundcooldown", 60);
+			} else if (textIn.toUpper() == "AH SHIT HERE WE GO AGAIN" || textIn.toUpper() == "AH SHIT, HERE WE GO AGAIN" || textIn.toUpper() == "HERE WE GO AGAIN") {
+				if (annoying_voicelines_sounds == "on")
+				{
+					Sound::Play(soundrandom + "cj.ogg", pos, 7.0f);
+				}
+
+				this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+				this.set_u32(player.getUsername() + "soundcooldown", 60);
 
 			// anime sounds
 			} else if (textIn.toUpper() == "TUTURU" || textIn.toUpper() == "TUTURU!"  || textIn.toUpper() == "TU TU RU" || textIn.toUpper() == "TUTTURU") {
