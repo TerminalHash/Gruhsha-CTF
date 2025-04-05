@@ -686,7 +686,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 		bool localIsCaptain = localPlayer !is null && localPlayer.getUsername() == rules.get_string("team_"+localTeamNum+"_leader");
 		bool playerIsOur = localPlayer !is null && teamIndex == localTeamNum || localPlayer !is null && teamIndex == teamIndexSpectators;
 		bool playerIsNotLocal = localPlayer !is null && p !is localPlayer;
-
+		bool isAllowedByAdmins = rules.get_bool("pick unlocked");
 
 		// picking buttons for captains/admins
 		if (controls.isKeyPressed(KEY_LSHIFT) && controls.isKeyPressed(KEY_LCONTROL)) {
@@ -731,27 +731,30 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 						"SPEC", "spec", username
 					);
 				}
-			} else if (localIsCaptain && playerIsOur && playerIsNotLocal && !isPickingEnded()) {
-				if (teamIndex == teamIndexSpectators) {
-					if (localTeamNum == teamIndexBlue) {
+			} else if (localIsCaptain && playerIsOur && playerIsNotLocal) {
+				// restrict access to buttons while teams is locked or it's not allowed
+				if (!isPickingEnded() || isAllowedByAdmins) {
+					if (teamIndex == teamIndexSpectators) {
+						if (localTeamNum == teamIndexBlue) {
+							DrawPickButton(
+								Vec2f(tl.x + 400, br.y - 24),
+								Vec2f(tl.x + 450, br.y),
+								"PICK", "blue", username
+							);
+						} else if(localTeamNum == teamIndexRed) {
+							DrawPickButton(
+								Vec2f(tl.x + 400, br.y - 24),
+								Vec2f(tl.x + 450, br.y),
+								"PICK", "red", username
+							);
+						}
+					} else if (teamIndex != teamIndexSpectators) {
 						DrawPickButton(
 							Vec2f(tl.x + 400, br.y - 24),
 							Vec2f(tl.x + 450, br.y),
-							"PICK", "blue", username
-						);
-					} else if(localTeamNum == teamIndexRed) {
-						DrawPickButton(
-							Vec2f(tl.x + 400, br.y - 24),
-							Vec2f(tl.x + 450, br.y),
-							"PICK", "red", username
+							"SPEC", "spec", username
 						);
 					}
-				} else if (teamIndex != teamIndexSpectators) {
-					DrawPickButton(
-						Vec2f(tl.x + 400, br.y - 24),
-						Vec2f(tl.x + 450, br.y),
-						"SPEC", "spec", username
-					);
 				}
 			}
 		} else if ((localIsCaptain || isAdmin(localPlayer)) && (p is localPlayer)) {

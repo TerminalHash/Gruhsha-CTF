@@ -512,3 +512,44 @@ class UpdateMats : ChatCommand
 		}
 	}
 }
+
+class AllowPickButtons : ChatCommand
+{
+	AllowPickButtons()
+	{
+		super("apick", "Toggle visibility of pick buttons for captains");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		// if teams not locked, dont allow to execute
+		if (!isPickingEnded()) {
+			error("[INFO] No-no-no, Mr. Fish! Lock teams first.");
+			return;
+		}
+
+		if (!rules.get_bool("pick unlocked")) {
+			rules.set_bool("pick unlocked", true);
+			rules.Sync("pick unlocked", true);
+		} else {
+			rules.set_bool("pick unlocked", false);
+			rules.Sync("pick unlocked", true);
+		}
+
+		if (rules.get_bool("pick unlocked") == true) {
+			printf("[INFO] Spec/Pick buttons are unlocked for captains.");
+		} else {
+			printf("[INFO] Spec/Pick buttons are locked for captains.");
+		}
+	}
+}
