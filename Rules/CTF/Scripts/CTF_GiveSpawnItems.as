@@ -53,11 +53,12 @@ void onSetPlayer(CRules@ this, CBlob@ blob, CPlayer@ player)
 
 //when player dies, unset archer flag so he can get arrows if he really sucks :)
 //give a guy a break :)
-void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ attacker, u8 customData)
-{
-	if (victim !is null)
-	{
+void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ attacker, u8 customData) {
+	if (victim !is null) {
 		SetCTFTimer(this, victim, 0, "archer");
+
+		// possible fix issue with broken timer for builder
+		SetCTFTimer(this, victim, 0, "builder");
 	}
 }
 
