@@ -733,7 +733,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 				}
 			} else if (localIsCaptain && playerIsOur && playerIsNotLocal) {
 				// restrict access to buttons while teams is locked
-				if (!isPickingEnded()) {
+				//if (!isPickingEnded()) {
 					if (teamIndex == teamIndexSpectators) {
 						if (localTeamNum == teamIndexBlue) {
 							DrawPickButton(
@@ -755,7 +755,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 							"SPEC", "spec", username
 						);
 					}
-				}
+				//}
 			}
 		} else if ((localIsCaptain || isAdmin(localPlayer)) && (p is localPlayer)) {
 			GUI::DrawPane(
