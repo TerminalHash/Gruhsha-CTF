@@ -270,8 +270,11 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 			teamIndex = b.getTeamNum();
 			
 			if (b.hasTag("dead") || b.hasTag("halfdead"))
-				head_col = 0x00000000;
-		} else {			
+				head_col = 0xFF808080;
+		} else {
+			if (teamIndex!=getRules().getSpectatorTeamNum())
+				head_col = 0xFF808080;
+
 			//there's no need to call all the calculations when we can just ask player blob what their head is
 			headIndex = getHeadSpecs(p, headTexture);
 		}
