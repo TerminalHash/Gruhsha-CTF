@@ -125,7 +125,6 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 	}
 
 	const bool bomberman = this.hasTag("bomberman_style");
-	const bool directional = this.hasTag("directional_style");
 
 	bool should_teamkill = this.exists("explosive_teamkill") && this.get_bool("explosive_teamkill");
 
@@ -156,14 +155,6 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 
 		return; //------------------------------------------------------ END WHEN BOMBERMAN
 	}
-
-	if (directional) {
-		DirectionalExplosion(this, radius, damage, map_damage_radius, map_damage_ratio, map_damage_raycast, hitter, should_teamkill);
-
-		return; //------------------------------------------------------ END WHEN BOMBERMAN
-	}
-
-
 
 	if (this.getName() != "keg")
 	{
