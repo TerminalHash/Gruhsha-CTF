@@ -30,17 +30,11 @@ void onInit(CBlob@ this)
 void GetButtonsFor(CBlob@ this, CBlob@ caller)
 {
 	CRules@ rules = getRules();
-	P_Archers = 0;
-	P_Builders = 0;
-	P_Knights = 0;
+	if (rules is null) return;
 
-	// calculating amount of players in classes
-	for (u32 i = 0; i < getPlayersCount(); i++)
-	{
-		if (getPlayer(i).getScoreboardFrame() == 2 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Archers++;}
-		if (getPlayer(i).getScoreboardFrame() == 1 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
-		if (getPlayer(i).getScoreboardFrame() == 3 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Knights++;}
-	}
+	int P_Archers = rules.get_s32("archer" + getLocalPlayer().getTeamNum() + "Count");
+	int P_Builders = rules.get_s32("builder" + getLocalPlayer().getTeamNum() + "Count");
+	int P_Knights = rules.get_s32("knight" + getLocalPlayer().getTeamNum() + "Count");
 
 	bool disallow_class_change_on_shops = rules.get_bool("no_class_change_on_shop");
 

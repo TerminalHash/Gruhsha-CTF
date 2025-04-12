@@ -29,10 +29,10 @@ void onRender(CRules@ this)
 	//	if (getPlayer(i).getScoreboardFrame() == 3 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Knights++;}
 	//}
     
-    if(getLocalPlayer() !is null) {
+    if (getLocalPlayer() !is null) {
         P_Archers = this.get_s32("archer" + getLocalPlayer().getTeamNum() + "Count");
         P_Builders = this.get_s32("builder" + getLocalPlayer().getTeamNum() + "Count");
-        P_Knights = this.get_s32("knight" + getLocalPlayer().getTeamNum() + "Count");  
+        P_Knights = this.get_s32("knight" + getLocalPlayer().getTeamNum() + "Count");
     }
 
 	archers_limit = this.get_u8("archers_limit");
