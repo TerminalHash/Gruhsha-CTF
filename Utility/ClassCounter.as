@@ -5,7 +5,7 @@ void onSetPlayer(CRules@ this, CBlob@ blob, CPlayer@ player)
 	if (player is null) return;
 	
     string NewPlayerClassTeam = blob.getConfig() + player.getTeamNum();
-    string oldPlayerClassTeam = player.get_string("class+team");
+    string oldPlayerClassTeam = this.get_string(player.getUsername() + "class+team");
 
     if(oldPlayerClassTeam != NewPlayerClassTeam) {
 
@@ -16,8 +16,8 @@ void onSetPlayer(CRules@ this, CBlob@ blob, CPlayer@ player)
         this.add_s32(NewPlayerClassTeam + "Count", 1);
         this.Sync(NewPlayerClassTeam + "Count", true);
 
-        player.set_string("class+team", NewPlayerClassTeam);
-	    player.Sync("class+team", true);
+        this.set_string(player.getUsername() + "class+team", NewPlayerClassTeam);
+	    this.Sync(player.getUsername() + "class+team", true);
     }
 }
 
@@ -54,7 +54,7 @@ void onRestart(CRules@ this)
 
 void onPlayerLeave(CRules@ this, CPlayer@ player) {
     if (!isServer()) return;
-    string PlayerClassTeam = player.get_string("class+team");
+    string PlayerClassTeam = this.get_string(player.getUsername() + "class+team");
     if(PlayerClassTeam != "") {
         this.add_s32(PlayerClassTeam + "Count", -1);
         this.Sync(PlayerClassTeam + "Count", true);
@@ -63,11 +63,11 @@ void onPlayerLeave(CRules@ this, CPlayer@ player) {
 
 void onPlayerChangedTeam(CRules@ this, CPlayer@ player, u8 oldteam, u8 newteam) {
     if (!isServer() || newteam != this.getSpectatorTeamNum()) return;
-    string PlayerClassTeam = player.get_string("class+team");
+    string PlayerClassTeam = this.get_string(player.getUsername() + "class+team");
     if(PlayerClassTeam != "") {
         this.add_s32(PlayerClassTeam + "Count", -1);
         this.Sync(PlayerClassTeam + "Count", true);
     }
-    player.set_string("class+team", "spectator");
-    player.Sync("class+team", true);
+    this.set_string(player.getUsername() + "class+team", "spectator");
+    this.Sync(player.getUsername() + "class+team", true);
 }
