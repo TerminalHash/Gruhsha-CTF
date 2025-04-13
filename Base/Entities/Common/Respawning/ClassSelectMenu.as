@@ -46,24 +46,17 @@ void addPlayerClass(CBlob@ this, string name, string iconName, string configFile
 
 void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 {
-	P_Archers = 0;
-	P_Builders = 0;
-	P_Knights = 0;
-
-	// calculating amount of players in classes
-	for (u32 i = 0; i < getPlayersCount(); i++)
-	{
-		if (getPlayer(i).getScoreboardFrame() == 2 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Archers++;}
-		if (getPlayer(i).getScoreboardFrame() == 1 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
-		if (getPlayer(i).getScoreboardFrame() == 3 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Knights++;}
-	}
+	CRules@ rules = getRules();
+	if (rules is null) return;
 
 	PlayerClass[]@ classes;
 
-	if (this.get("playerclasses", @classes))
-	{
-		for (uint i = 0 ; i < classes.length; i++)
-		{
+	if (this.get("playerclasses", @classes)) {
+		P_Archers = rules.get_s32("archer" + getLocalPlayer().getTeamNum() + "Count");
+		P_Builders = rules.get_s32("builder" + getLocalPlayer().getTeamNum() + "Count");
+		P_Knights = rules.get_s32("knight" + getLocalPlayer().getTeamNum() + "Count");
+
+		for (uint i = 0 ; i < classes.length; i++) {
 			CRules@ rules = getRules();
 			PlayerClass @pclass = classes[i];
 
@@ -78,27 +71,18 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 
 			CGridButton@ button = menu.AddButton(pclass.iconName, getTranslatedString(pclass.name), this.getCommandID("change class"), Vec2f(CLASS_BUTTON_SIZE, CLASS_BUTTON_SIZE), params);
 	
-			if(pclass.configFilename == "archer")
-			{
-				if (P_Archers < archers_limit)
-				{
+			if (pclass.configFilename == "archer") {
+				if (P_Archers < archers_limit) {
 					button.SetHoverText( "    " + P_Archers + " / " + archers_limit + "\n");
-				}
-				else if (P_Archers >= archers_limit)
-				{
+				} else if (P_Archers >= archers_limit) {
 					button.SetHoverText( "    " + Descriptions::totaltext + P_Archers + " / " + archers_limit + "\n");
 
 					button.SetEnabled(false);
 				}
-			}
-			else if (pclass.configFilename == "builder")
-			{
-				if (P_Builders < builders_limit && !is_warmup)
-				{
+			} else if (pclass.configFilename == "builder") {
+				if (P_Builders < builders_limit && !is_warmup) {
 					button.SetHoverText( "    " + P_Builders + " / " + builders_limit + "\n");
-				}
-				else if (P_Builders >= builders_limit && !is_warmup)
-				{
+				} else if (P_Builders >= builders_limit && !is_warmup) {
 					button.SetHoverText( "    " + Descriptions::totaltext + P_Builders + " / " + builders_limit + "\n");
 
 					button.SetEnabled(false);

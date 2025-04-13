@@ -125,7 +125,6 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 	}
 
 	const bool bomberman = this.hasTag("bomberman_style");
-	const bool directional = this.hasTag("directional_style");
 
 	bool should_teamkill = this.exists("explosive_teamkill") && this.get_bool("explosive_teamkill");
 
@@ -156,14 +155,6 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 
 		return; //------------------------------------------------------ END WHEN BOMBERMAN
 	}
-
-	if (directional) {
-		DirectionalExplosion(this, radius, damage, map_damage_radius, map_damage_ratio, map_damage_raycast, hitter, should_teamkill);
-
-		return; //------------------------------------------------------ END WHEN BOMBERMAN
-	}
-
-
 
 	if (this.getName() != "keg")
 	{
@@ -682,68 +673,6 @@ void BombermanExplosion(CBlob@ this, f32 radius, f32 damage, f32 map_damage_radi
 	//left and right
 	LinearExplosion(this, Vec2f(-1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
 	LinearExplosion(this, Vec2f(1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-}
-
-void DirectionalExplosion(CBlob@ this, f32 radius, f32 damage, f32 map_damage_radius,
-                        f32 map_damage_ratio, bool map_damage_raycast, const u8 hitter,
-                        const bool should_teamkill = false)
-{
-	Vec2f pos = this.getPosition();
-	CMap@ map = this.getMap();
-	const f32 interval = map.tilesize;
-
-	const int steps = 4; //HACK - todo property
-
-	f32 ray_width = 16.0f;
-	if (this.exists("map_bomberman_width"))
-	{
-		ray_width = this.get_f32("map_bomberman_width");
-	}
-
-	//get blobs
-	CBlob@[] blobs;
-	map.getBlobsInRadius(pos, radius, @blobs);
-
-	// up
-	if (this.getAngleDegrees() == -90)
-		LinearExplosion(this, Vec2f(0, -1), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-	// up and left
-	else if (this.getAngleDegrees() >= -90 && this.getAngleDegrees() < 0) {
-		LinearExplosion(this, Vec2f(0, -1), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-		LinearExplosion(this, Vec2f(-1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-	}
-	// up and right
-	else if (this.getAngleDegrees() >= -180 && this.getAngleDegrees() < -90) {
-		LinearExplosion(this, Vec2f(0, -1), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-		LinearExplosion(this, Vec2f(1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-	}
-	// left and right
-	else if (this.getAngleDegrees() >= -360 && this.getAngleDegrees() < -180) {
-		LinearExplosion(this, Vec2f(-1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-		LinearExplosion(this, Vec2f(1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-	} else if (this.getAngleDegrees() > 180 && this.getAngleDegrees() < 360) {
-		LinearExplosion(this, Vec2f(-1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-		LinearExplosion(this, Vec2f(1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-	}
-	// down
-	else if (this.getAngleDegrees() == 90)
-		LinearExplosion(this, Vec2f(0, 1), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-	// down and left
-	else if (this.getAngleDegrees() < 90 && this.getAngleDegrees() > 0) {
-		LinearExplosion(this, Vec2f(0, 1), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-		LinearExplosion(this, Vec2f(-1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-	}
-	// down and right
-	else if (this.getAngleDegrees() > 90 && this.getAngleDegrees() < 180) {
-		LinearExplosion(this, Vec2f(0, 1), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-		LinearExplosion(this, Vec2f(1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-	}
-	// left
-	else if (this.getAngleDegrees() == 180)
-		LinearExplosion(this, Vec2f(-1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
-	// right
-	else if (this.getAngleDegrees() == 0 || this.getAngleDegrees() == 360)
-		LinearExplosion(this, Vec2f(1, 0), radius, ray_width, steps, damage, hitter, blobs, should_teamkill);
 }
 
 bool canExplosionCreateRubble(TileType t, Vec2f pos = Vec2f())
