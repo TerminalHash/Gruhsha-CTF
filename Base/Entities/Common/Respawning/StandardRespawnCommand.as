@@ -62,49 +62,7 @@ void buildSpawnMenu(CBlob@ this, CBlob@ caller)
 
 void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
-	if (cmd == this.getCommandID("change class") && isServer())
-	{
-		////////////////////////////////////////////////
-		// CLASS LIMIT CODE BLOCK
-		CRules@ rules = getRules();
-		CPlayer@ player = null;
-
-		string[] P_Archers_b;
-		string[] P_Archers_r;
-		string[] P_Builders_b;
-		string[] P_Builders_r;
-		string[] P_Knights_b;
-		string[] P_Knights_r;
-
-		archers_limit = rules.get_u8("archers_limit");
-		builders_limit = rules.get_u8("builders_limit");
-
-		// calculating amount of players in classes
-		for (u32 i = 0; i < getPlayersCount(); i++)
-		{
-			if (getPlayer(i).getBlob() is null) continue;
-
-			if (getPlayer(i).getBlob().getName() == "archer")
-			{
-				if (getPlayer(i).getTeamNum() == 0) P_Archers_b.push_back(getPlayer(i).getUsername());
-				else if (getPlayer(i).getTeamNum() == 1) P_Archers_r.push_back(getPlayer(i).getUsername());
-			}
-			if (getPlayer(i).getBlob().getName() == "builder")
-			{
-				if (getPlayer(i).getTeamNum() == 0) P_Builders_b.push_back(getPlayer(i).getUsername());
-				else if (getPlayer(i).getTeamNum() == 1) P_Builders_r.push_back(getPlayer(i).getUsername());
-			}
-			if (getPlayer(i).getBlob().getName() == "knight")
-			{
-				if (getPlayer(i).getTeamNum() == 0) P_Knights_b.push_back(getPlayer(i).getUsername());
-				else if (getPlayer(i).getTeamNum() == 1) P_Knights_r.push_back(getPlayer(i).getUsername());
-			}
-
-			//printf("We have: " + P_Archers_r.length + " Archers, " + P_Builders_r.length + " Builders, " + P_Knights_r.length + " Knights in red team");
-			//printf("We have: " + P_Archers_b.length + " Archers, " + P_Builders_b.length + " Builders, " + P_Knights_b.length + " Knights in blue team");
-		}
-		////////////////////////////////////////////////
-
+	if (cmd == this.getCommandID("change class") && isServer()) {
 		CPlayer@ callerp = getNet().getActiveCommandPlayer();
 		if (callerp is null) return;
 
@@ -115,6 +73,21 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 
 		u8 id;
 		if (!params.saferead_u8(id)) return;
+
+		////////////////////////////////////////////////
+		// CLASS LIMIT CODE BLOCK
+		CRules@ rules = getRules();
+		if (rules is null) return;
+
+		CPlayer@ player = null;
+
+		P_Archers = rules.get_s32("archer" + callerp.getTeamNum() + "Count");
+		P_Builders = rules.get_s32("builder" + callerp.getTeamNum() + "Count");
+		P_Knights = rules.get_s32("knight" + callerp.getTeamNum() + "Count");
+
+		archers_limit = rules.get_u8("archers_limit");
+		builders_limit = rules.get_u8("builders_limit");
+		////////////////////////////////////////////////
 
 		string classconfig = "knight";
 
@@ -153,28 +126,14 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		// CLASS LIMIT CODE BLOCK
 
 		// Limit classes, if game started
-		if (classconfig == "archer")
-		{
-			if (caller.getTeamNum() == 0 && P_Archers_b.length >= archers_limit)
-			{
-				return;
-			}
-
-			if (caller.getTeamNum() == 1 && P_Archers_r.length >= archers_limit)
-			{
+		if (classconfig == "archer") {
+			if (P_Archers >= archers_limit) {
 				return;
 			}
 		}
 
-		if (classconfig == "builder" && !rules.isWarmup())
-		{
-			if (caller.getTeamNum() == 0 && P_Builders_b.length >= builders_limit)
-			{
-				return;
-			}
-
-			if (caller.getTeamNum() == 1 && P_Builders_r.length >= builders_limit)
-			{
+		if (classconfig == "builder" && !rules.isWarmup()) {
+			if (P_Builders >= builders_limit) {
 				return;
 			}
 		}
