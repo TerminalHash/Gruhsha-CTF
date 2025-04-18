@@ -16,6 +16,21 @@ void onInit(CBlob@ this)
 	this.set_u16("_keg_carrier_id", 0xffff);
 
 	this.set_f32("important-pickup", 30.0f);
+
+	if (this.getAttachments().getAttachmentPointByName("HITBOX") !is null) {
+		string addon_name = "kernelhitbox";
+			
+		if (!addon_name.empty())
+		{
+			CBlob@ blob = server_CreateBlobNoInit(addon_name);
+			if (blob !is null)
+			{
+				blob.server_setTeamNum(-1);
+				blob.Init();
+				this.server_AttachTo(blob, "HITBOX");
+			}
+		}
+	}
 }
 
 //sprite update
@@ -76,7 +91,7 @@ void onAttach(CBlob@ this, CBlob@ attached, AttachmentPoint @attachedPoint)
 
 bool doesCollideWithBlob( CBlob@ this, CBlob@ blob )
 {
-	return this.getConfig()!=blob.getConfig();
+	return false;
 }
 
 void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point1, Vec2f point2 )
