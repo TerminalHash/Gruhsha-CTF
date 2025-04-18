@@ -43,17 +43,19 @@ void onTick(CBlob@ this)
 	// TODO: need to watch the power for a few rounds.
 	if (this.hasTag("exploding")) {
 		if (!isSuddenDeath) {
-			if (this.getTickSinceCreated() > 15 && this.get_f32("map_damage_radius") < 36.0f)
-				if (getGameTime() % 4 == 0)
+			if (this.getTickSinceCreated() > 15 && this.get_f32("map_damage_radius") < 36.0f) {
+				if (getGameTime() % 5 == 0)
 					this.add_f32("map_damage_radius", 2.0f);
 
 				//printf("My map damage is " + this.get_f32("map_damage_radius"));
+			}
 		} else if (isSuddenDeath) {
-			if (this.getTickSinceCreated() > 15 && this.get_f32("map_damage_radius") < 72.0f)
+			if (this.getTickSinceCreated() > 15 && this.get_f32("map_damage_radius") < 72.0f) {
 				if (getGameTime() % 2 == 0)
 					this.add_f32("map_damage_radius", 2.0f);
 
 				//printf("My map damage is " + this.get_f32("map_damage_radius"));
+			}
 		}
 	}
 }
