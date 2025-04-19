@@ -264,16 +264,25 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 		Vec2f headOffset = Vec2f(22, -12);
 		float headScale = 1.0f;
 
+		SColor dead_col(0xff4f3030);
+		bool player_dead = false;
+
 		if (b !is null) {
 			headIndex = b.get_s32("head index");
 			headTexture = b.get_string("head texture");
 			teamIndex = b.getTeamNum();
 			
 			if (b.hasTag("dead") || b.hasTag("halfdead"))
-				head_col = 0xFF808080;
+			{
+				head_col = dead_col;
+				player_dead = true;
+			}
 		} else {
 			if (teamIndex!=getRules().getSpectatorTeamNum())
-				head_col = 0xFF808080;
+			{
+				head_col = dead_col;
+				player_dead = true;
+			}
 
 			//there's no need to call all the calculations when we can just ask player blob what their head is
 			headIndex = getHeadSpecs(p, headTexture);
@@ -282,7 +291,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 		//head_col = SColor(0xffaa0000);
 
 		if (headTexture != "") {
-			GUI::DrawIcon(headTexture, headIndex, Vec2f(16, 16), tl + headOffset, headScale, headScale, teamIndex, head_col);
+			GUI::DrawIcon(headTexture, headIndex + (player_dead?2:0), Vec2f(16, 16), tl + headOffset, headScale, headScale, teamIndex, head_col);
 		}
 
 		// Mark captain in scoreboard

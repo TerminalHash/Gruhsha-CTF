@@ -32,6 +32,9 @@ f32 onHit( CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hit
 	//archer cannot parry bombs
 	if (blob_to_parry.getConfig()=="bomb" && customData==Hitters::arrow) return 0;
 
+	//knights cannot parry bombs of its own team
+	if (blob_to_parry.getTeamNum()==hitterBlob.getTeamNum() && hitterBlob.getDamageOwnerPlayer() !is blob_to_parry.getDamageOwnerPlayer()) return 0;
+
 	f32 vellen = blob_to_parry.getVelocity().Length();
 
 	Vec2f dir = blob_to_parry.getVelocity()/vellen;
