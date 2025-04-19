@@ -91,6 +91,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 {
 	if (getNet().isServer() &&
 	        !isExplosionHitter(customData) &&
+			!isCustomExplosionHitter(customData) &&
 	        (hitterBlob is null || hitterBlob.getTeamNum() != this.getTeamNum()))
 	{
 		u16 id = this.get_u16("_keg_carrier_id");
