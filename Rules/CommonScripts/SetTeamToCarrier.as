@@ -4,6 +4,8 @@
 
 void onAttach(CBlob@ this, CBlob@ attached, AttachmentPoint@ attachedPoint)
 {
+	if (attachedPoint.name!="PICKUP") return;
+	
 	this.server_setTeamNum(attached.getTeamNum());
 }
 
