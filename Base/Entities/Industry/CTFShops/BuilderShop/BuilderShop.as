@@ -95,12 +95,7 @@ void onInit(CBlob@ this)
 
 void GetButtonsFor(CBlob@ this, CBlob@ caller)
 {
-	int P_Builders = 0;
-
-	for (u32 i = 0; i < getPlayersCount(); i++)
-	{
-		if (getPlayer(i).getScoreboardFrame() == 1 && getLocalPlayer().getTeamNum() == getPlayer(i).getTeamNum()) {P_Builders++;}
-	}
+	int P_Builders = getRules().get_s32("builder" + getLocalPlayer().getTeamNum() + "Count");;
 
 	CRules@ rules = getRules();
 	bool disallow_class_change_on_shops = rules.get_bool("no_class_change_on_shop");
