@@ -81,12 +81,6 @@ bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
 	//special logic colliding with players
 	if (blob.hasTag("player"))
 	{
-		const u8 hitter = this.get_u8("custom_hitter");
-
-		//all water bombs collide with enemies
-		if (hitter == Hitters::water)
-			return blob.getTeamNum() != this.getTeamNum();
-
 		//collide with shielded enemies
 		return blob.getTeamNum() != this.getTeamNum() && blob.hasTag("shielded") && blockAttack(blob, blob.getPosition() - this.getPosition(), 0.0f);
 	}
