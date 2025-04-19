@@ -33,6 +33,7 @@ f32 onHit( CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hit
 	Vec2f dir = blob_to_parry.getVelocity()/vellen;
 
 	blob_to_parry.setVelocity((velocity/(velocity.Length()))*(vellen+2));
+	//blob_to_parry.AddForce(Vec2f(Maths::Min(100, (vellen+2)*30), 0).RotateBy(-(velocity/(velocity.Length())).getAngleDegrees()));
 
 	ChangeOwner(this, hitterBlob);
 
@@ -53,7 +54,9 @@ void ChangeOwner(CBlob@ this, CBlob@ hitterBlob)
 	if (owner is null) return;
 
 	blob_to_parry.SetDamageOwnerPlayer(owner);
-	blob_to_parry.server_setTeamNum(-1);
+
+	if (blob_to_parry.getTeamNum()!=hitterBlob.getTeamNum())
+		blob_to_parry.server_setTeamNum(-1);
 }
 
 bool doesCollideWithBlob( CBlob@ this, CBlob@ blob )
