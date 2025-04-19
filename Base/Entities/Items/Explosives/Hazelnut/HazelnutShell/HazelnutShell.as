@@ -1,12 +1,13 @@
 // Keg logic
 #include "Hitters.as";
+#include "GruhshaHitters.as";
 #include "ActivationThrowCommon.as"
 
 void onInit(CBlob@ this)
 {
 	this.set_f32("explosive_radius", 32.0f);
 	this.set_f32("explosive_damage", 10.0f);
-	this.set_u8("custom_hitter", Hitters::keg);
+	this.set_u8("custom_hitter", GruhshaHitters::hazelnut_shell);
 	this.set_string("custom_explosion_sound", "Entities/Items/Explosives/KegExplosion.ogg");
 	this.set_f32("map_damage_radius", 16.0f); // default radius
 	this.set_f32("map_damage_ratio", 0.8f);
