@@ -1,6 +1,7 @@
 // Bomb logic
 
 #include "Hitters.as"
+#include "GruhshaHitters.as";
 
 void SetupBomb(CBlob@ this, const int fuseTicks, const f32 explRadius, const f32 explosive_damage, const f32 map_damage_radius, const f32 map_damage_ratio, const bool map_damage_raycast)
 {
@@ -8,7 +9,7 @@ void SetupBomb(CBlob@ this, const int fuseTicks, const f32 explRadius, const f32
 	this.set_f32("explosive_radius", explRadius);
 	this.set_f32("explosive_damage", explosive_damage);
 	//use the bomb hitter
-	this.set_u8("custom_hitter", Hitters::bomb);
+	this.set_u8("custom_hitter", GruhshaHitters::sticky_bomb);
 	this.set_f32("map_damage_radius", map_damage_radius);
 	this.set_f32("map_damage_ratio", map_damage_ratio);
 	this.set_bool("map_damage_raycast", map_damage_raycast);
@@ -34,20 +35,9 @@ bool UpdateBomb(CBlob@ this)
 	else
 	{
 		SColor lightColor;
-		const u8 hitter = this.get_u8("custom_hitter");
 
-		if (hitter == Hitters::water)
-		{
-			this.getSprite().SetEmitSound("WaterSparkle.ogg");
-			this.getSprite().SetEmitSoundPaused(false);
-			lightColor = SColor(255, 44, 175, 222);
-			this.SetLight(false);
-		}
-		else
-		{
-			lightColor = SColor(255, 255, Maths::Min(255, 2 * timer), 0);
-			this.SetLightColor(lightColor);
-		}
+		lightColor = SColor(255, 255, Maths::Min(255, 2 * timer), 0);
+		this.SetLightColor(lightColor);
 
 		if (XORRandom(2) == 0)
 		{

@@ -1,6 +1,7 @@
 // Mine.as
 
 #include "Hitters.as";
+#include "GruhshaHitters.as";
 #include "Explosion.as";
 
 const u8 MINE_PRIMING_TIME = 45;
@@ -25,7 +26,7 @@ void onInit(CBlob@ this)
 	this.set_f32("map_damage_ratio", 0.5f);
 	this.set_bool("map_damage_raycast", true);
 	this.set_string("custom_explosion_sound", "KegExplosion.ogg");
-	this.set_u8("custom_hitter", Hitters::mine);
+	this.set_u8("custom_hitter", GruhshaHitters::golden_mine);
 
 	this.Tag("ignore fall");
 	this.Tag("ignore_saw");
@@ -235,7 +236,7 @@ void onDie(CBlob@ this)
 			if (target.hasTag("flesh") &&
 			(target.getTeamNum() != this.getTeamNum() || target.getPlayer() is this.getDamageOwnerPlayer()))
 			{
-				this.server_Hit(target, POSITION, Vec2f_zero, 8.0f, Hitters::mine_special, true);
+				this.server_Hit(target, POSITION, Vec2f_zero, 8.0f, GruhshaHitters::golden_mine, true);
 			}
 		}
 	}

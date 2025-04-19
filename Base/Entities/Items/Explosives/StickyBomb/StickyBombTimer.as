@@ -1,5 +1,6 @@
 #include "StickyBombCommon.as";
 #include "Hitters.as";
+#include "GruhshaHitters.as";
 #include "Explosion.as";
 
 void onInit(CBlob@ this)
@@ -23,7 +24,7 @@ void onInit(CBlob@ this)
 	//use the bomb hitter
 	if (!this.exists("custom_hitter"))
 	{
-		this.set_u8("custom_hitter", Hitters::bomb);
+		this.set_u8("custom_hitter", GruhshaHitters::sticky_bomb);
 	}
 	if (!this.exists("map_damage_radius"))
 	{

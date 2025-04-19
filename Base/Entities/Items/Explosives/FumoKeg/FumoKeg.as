@@ -1,5 +1,6 @@
 // Keg logic
 #include "Hitters.as";
+#include "GruhshaHitters.as";
 #include "ActivationThrowCommon.as"
 
 void onInit(CBlob@ this)
@@ -8,7 +9,7 @@ void onInit(CBlob@ this)
 	//this.set_f32("map_bomberman_width", 24.0f);
 	this.set_f32("explosive_radius", 256.0f);
 	this.set_f32("explosive_damage", 20.0f);
-	this.set_u8("custom_hitter", Hitters::keg);
+	this.set_u8("custom_hitter", GruhshaHitters::fumo_keg);
 	this.set_string("custom_explosion_sound", "Entities/Items/Explosives/KegExplosion.ogg");
 	this.set_f32("map_damage_radius", 256.0f);
 	this.set_f32("map_damage_ratio", 2.0f);
