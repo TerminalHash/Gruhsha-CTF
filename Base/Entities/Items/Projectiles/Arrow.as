@@ -453,8 +453,11 @@ bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
 bool specialArrowHit(CBlob@ blob)
 {
 	string bname = blob.getName();
+
+	bool parry_hit = blob.get_string("blob_to_hit")!="bomb" && bname == "parryhitbox";
+
 	return (bname == "fishy" && blob.hasTag("dead") || bname == "food"
-		|| bname == "steak" || bname == "grain"/* || bname == "heart"*/); //no egg because logic
+		|| bname == "steak" || bname == "grain" || parry_hit /* || bname == "heart"*/); //no egg because logic
 }
 
 void Pierce(CBlob @this, CBlob@ blob = null)

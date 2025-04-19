@@ -4,8 +4,8 @@
 void onInit(CBlob@ this)
 {
 	this.Tag("slash_while_in_hand");
-	//this.Tag("builder always hit");
-	this.Tag("flesh");
+	this.Tag("ignore_arrow");
+	
 	this.getShape().SetGravityScale(0);
 }
 
@@ -26,13 +26,17 @@ f32 onHit( CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hit
 	CBlob@ blob_to_parry = hitbox_point.getOccupied();
 	if (blob_to_parry is null) return damage;
 
+	//parry hitbox doesn't work when blob to parry is attached
 	if (blob_to_parry.isAttached()) return 0;
+
+	//archer cannot parry bombs
+	if (blob_to_parry.getConfig()=="bomb" && customData==Hitters::arrow) return 0;
 
 	f32 vellen = blob_to_parry.getVelocity().Length();
 
 	Vec2f dir = blob_to_parry.getVelocity()/vellen;
 
-	blob_to_parry.setVelocity((velocity/(velocity.Length()))*(vellen+2));
+	blob_to_parry.setVelocity((velocity/(velocity.Length()))*Maths::Min(12, vellen+hitterBlob.getVelocity().Length()+2));
 	//blob_to_parry.AddForce(Vec2f(Maths::Min(100, (vellen+2)*30), 0).RotateBy(-(velocity/(velocity.Length())).getAngleDegrees()));
 
 	ChangeOwner(this, hitterBlob);
@@ -61,5 +65,5 @@ void ChangeOwner(CBlob@ this, CBlob@ hitterBlob)
 
 bool doesCollideWithBlob( CBlob@ this, CBlob@ blob )
 {
-	return blob.hasTag("projectile");
+	return blob.getConfig()=="arrow";
 }

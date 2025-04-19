@@ -23,6 +23,8 @@ void onTick(CBlob@ this)
 			blob.Init();
 			this.server_AttachTo(blob, "PARRY_HITBOX");
 			this.set_u16("parry_hitbox", blob.getNetworkID());
+			blob.getShape().getConsts().collideWhenAttached = true;
+			blob.set_string("blob_to_hit", this.getConfig());
 		}
 		this.Untag("parry hitbox to be added");
 	}
