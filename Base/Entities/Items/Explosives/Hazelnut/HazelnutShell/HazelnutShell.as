@@ -19,6 +19,20 @@ void onInit(CBlob@ this)
 	this.set_f32("important-pickup", 30.0f);
 }
 
+void onDie( CBlob@ this )
+{
+	CPlayer@ owner = this.getDamageOwnerPlayer();
+	if (owner is null) 
+	{
+		if (g_debug == 1) printf("kernel has no owner set");
+		return;
+	}
+	else
+	{
+		if (g_debug == 1) printf("kernel owner username: "+owner.getUsername());
+	}
+}
+
 //sprite update
 
 void onTick(CSprite@ this)
@@ -63,6 +77,8 @@ void onTick(CBlob@ this)
 
 void onAttach(CBlob@ this, CBlob@ attached, AttachmentPoint @attachedPoint)
 {
+	if (!attached.hasTag("player")) return;
+
 	s32 timer = this.get_s32("explosion_timer") - getGameTime();
 	if (timer > 60 || timer < 0 || this.getDamageOwnerPlayer() is null) // don't change keg ownership for final 2 seconds of fuse
 	{

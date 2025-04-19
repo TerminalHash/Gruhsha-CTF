@@ -137,7 +137,19 @@ void SpawnShells(CBlob@ this)
 		
 		server_Activate(hazelnutshell);
 		hazelnutshell.setVelocity(Vec2f((10 + 2 * idx) * flip_factor, -10 + 2 * idx + XORRandom(3)));
-		hazelnutshell.SetDamageOwnerPlayer(this.getDamageOwnerPlayer());
+
+		CPlayer@ owner = this.getDamageOwnerPlayer();
+		if (owner is null) 
+		{
+			if (g_debug == 1) printf("hazlenut has no owner set");
+			return;
+		}
+		else
+		{
+			if (g_debug == 1) printf("hazlenut owner username: "+owner.getUsername());
+		}
+	
+		hazelnutshell.SetDamageOwnerPlayer(owner);
 	}
 }
 
