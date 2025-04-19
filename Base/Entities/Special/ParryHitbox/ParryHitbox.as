@@ -1,4 +1,5 @@
 #include "Hitters.as";
+#include "GruhshaHitters.as";
 
 void onInit(CBlob@ this)
 {
@@ -11,7 +12,10 @@ void onInit(CBlob@ this)
 f32 onHit( CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData )
 {
 	//no explosives can deflect blobs
-	if (customData==Hitters::keg || customData==Hitters::bomb) return 0;
+	if (customData==Hitters::keg  ||
+		customData==Hitters::bomb ||
+		customData==GruhshaHitters::hazelnut_shell || 
+		customData==GruhshaHitters::sticky_bomb) return 0;
 
 	//only slashes from knight can deflect blobs
 	if (customData==Hitters::sword && damage < 2) return 0;
