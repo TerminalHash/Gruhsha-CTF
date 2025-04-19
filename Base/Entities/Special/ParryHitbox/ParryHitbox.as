@@ -34,6 +34,8 @@ f32 onHit( CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hit
 
 	blob_to_parry.setVelocity((velocity/(velocity.Length()))*(vellen+2));
 
+	ChangeOwner(this, hitterBlob);
+
 	blob_to_parry.getSprite().PlaySound("parry_ultrakill.ogg");
 
 	return 0;
