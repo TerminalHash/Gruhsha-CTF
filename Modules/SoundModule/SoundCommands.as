@@ -604,6 +604,54 @@ bool onClientProcessChat(CRules@ this, const string& in textIn, string& out text
 
 					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
 					this.set_u32(player.getUsername() + "soundcooldown", 60);
+			} else if (textIn == "ГОЙДА" || textIn == "Гойда" || textIn == "гойда" || textIn.toUpper() == "GOIDA") {
+					if (annoying_voicelines_sounds == "on")
+					{
+						Sound::Play(soundrandom + "hallios_goida.ogg", pos, 4.0f);
+					}
+
+					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+					this.set_u32(player.getUsername() + "soundcooldown", 60);
+			} else if (textIn == "Перекати гойда" || textIn == "перекати гойда" || textIn == "ПЕРЕКАТИ ГОЙДА" || textIn == "перекати ГОЙДА" || textIn == "Перекати ГОЙДА" || textIn.toUpper() == "PEREKATI GOIDA") {
+					if (annoying_voicelines_sounds == "on")
+					{
+						Sound::Play(soundrandom + "perekatigoida.ogg", pos, 4.0f);
+					}
+
+					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+					this.set_u32(player.getUsername() + "soundcooldown", 60);
+			} else if (textIn == "Фиксируй флик" || textIn == "фиксируй флик" || textIn.toUpper() == "FIXIRYI FLIK") {
+					if (annoying_voicelines_sounds == "on")
+					{
+						Sound::Play(soundrandom + "flik.ogg", pos, 4.0f);
+					}
+
+					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+					this.set_u32(player.getUsername() + "soundcooldown", 60);
+			} else if (textIn == "чучело" || textIn == "Чучело" || textIn == "ЧУЧЕЛО" || textIn == "Чучело ебаное" || textIn == "чучело ебаное" || textIn.toUpper() == "CHUCHELO") {
+					if (annoying_voicelines_sounds == "on")
+					{
+						Sound::Play(soundrandom + "chuchelo.ogg", pos, 4.0f);
+					}
+
+					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+					this.set_u32(player.getUsername() + "soundcooldown", 60);
+			} else if (textIn == "гол" || textIn == "Гол" || textIn == "ГОOOOЛ" || textIn.toUpper() == "GOL" || textIn.toUpper() == "GOOOOL") {
+					if (annoying_voicelines_sounds == "on")
+					{
+						Sound::Play(soundrandom + "nebula_gool.ogg", pos, 4.0f);
+					}
+
+					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+					this.set_u32(player.getUsername() + "soundcooldown", 60);
+			} else if (textIn == "Бля" || textIn == "бля" || textIn == "БЛЯ" || textIn.toUpper() == "BLYA") {
+					if (annoying_voicelines_sounds == "on")
+					{
+						Sound::Play(soundrandom + "nebula_blyat.ogg", pos, 4.0f);
+					}
+
+					this.set_u32(player.getUsername() + "lastsoundplayedtime", getGameTime());
+					this.set_u32(player.getUsername() + "soundcooldown", 60);
 			}
 		}
 
