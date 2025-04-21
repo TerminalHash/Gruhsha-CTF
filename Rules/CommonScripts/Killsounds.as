@@ -15,12 +15,14 @@ void onBlobDie(CRules@ this, CBlob@ blob) {
         CPlayer@ killer = blob.getPlayerOfRecentDamage();
         CPlayer@ victim = blob.getPlayer();
 
-        if (victim is null || killer is null) return;
-
         if (victim !is null) {
-            if (killer !is null) { //requires victim so that killing trees matters
+            // requires victim so that killing trees matters
+            // also it shouldnt be played, when killer commits suicide
+            if (killer !is null && victim.getUsername() != killer.getUsername()) {
                 if (killer.getUsername() == "H1996R") {
                    killer.getBlob().getSprite().PlaySound(kill_sound + "hahalios_kill_sound" + ".ogg", 1.0f);
+                } else if (killer.getUsername() == "TerminalHash") {
+                   killer.getBlob().getSprite().PlaySound(kill_sound + "th_kill_sound" + ".ogg", 1.0f);
                 }
             }
         }
