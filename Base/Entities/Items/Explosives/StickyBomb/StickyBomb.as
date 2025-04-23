@@ -1,6 +1,7 @@
 // Bomb logic
 
 #include "Hitters.as";
+#include "GruhshaHitters.as";
 #include "StickyBombCommon.as";
 #include "ShieldCommon.as";
 
@@ -63,7 +64,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 		this.set_s32("bomb_timer", 0);
 	}
 
-	if (isExplosionHitter(customData))
+	if (isCustomExplosionHitter(customData))
 	{
 		return damage; //chain explosion
 	}
@@ -156,7 +157,7 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 		            "/BombBounce.ogg", this.getPosition(), Maths::Min(vellen / 8.0f, 1.1f));
 	}
 
-	if (!isExplosionHitter(hitter) && !this.isAttached())
+	if (!isCustomExplosionHitter(hitter) && !this.isAttached())
 	{
 		Boom(this);
 		if (!this.hasTag("_hit_water") && blob !is null) //smack that mofo
