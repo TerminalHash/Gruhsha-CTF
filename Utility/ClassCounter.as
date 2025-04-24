@@ -1,4 +1,4 @@
-#define DEBUG_CLASSCOUNTER
+//#define DEBUG_CLASSCOUNTER
 
 u8[][] numberPlayersInClassTeam(2,6);
 // 0 - knight blue
