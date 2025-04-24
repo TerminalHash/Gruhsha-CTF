@@ -1,157 +1,80 @@
-void onSetPlayer(CRules@ this, CBlob@ blob, CPlayer@ player)
-{
-	if (!isServer()) return;
-	if (blob is null) return;
-	if (player is null) return;
-	
-    string NewPlayerClassTeam = blob.getConfig() + player.getTeamNum();
-    string oldPlayerClassTeam = this.get_string(player.getUsername() + "class+team");
+#define DEBUG_CLASSCOUNTER
 
-    if(oldPlayerClassTeam != NewPlayerClassTeam) {
+u8[][] numberPlayersInClassTeam(2,6);
+// 0 - knight blue
+// 1 - knight red
+// 2 - builder blue
+// 3 - builder red
+// 4 - archer blue
+// 5 - archer red
 
-        if(oldPlayerClassTeam != "") {
-            this.add_s32(oldPlayerClassTeam + "Count", -1);
-	        this.Sync(oldPlayerClassTeam + "Count", true);
-        }
-        this.add_s32(NewPlayerClassTeam + "Count", 1);
-        this.Sync(NewPlayerClassTeam + "Count", true);
-
-        this.set_string(player.getUsername() + "class+team", NewPlayerClassTeam);
-	    this.Sync(player.getUsername() + "class+team", true);
-    }
-}
-
-void Reset(CRules@ this) {
-    if (!isServer()) return;
-    //this.set_s32("builder0Count", 0);
-    //this.Sync("builder0Count", true);
-    //
-    //this.set_s32("builder1Count", 0);
-    //this.Sync("builder1Count", true);
-    //
-    //this.set_s32("knight0Count", 0);
-    //this.Sync("knight0Count", true);
-    //
-    //this.set_s32("knight1Count", 0);
-    //this.Sync("knight1Count", true);
-    //
-    //this.set_s32("archer0Count", 0);
-    //this.Sync("archer0Count", true);
-    //
-    //this.set_s32("archer1Count", 0);
-    //this.Sync("archer1Count", true);
-}
-
-void onInit(CRules@ this)
-{
-	Reset(this);
-}
-
-void onRestart(CRules@ this)
-{
-	Reset(this);
-}
+u8 oldMas = 0;
+u8 newMas = 1;
 
 void onTick(CRules@ this) {
-    if (!isServer()) return;
+    if (!isServer() || getGameTime() % 30 != 0) return;
+	// check every ~30 seconds
 
-    // TODO: rewrite this shit to something good
-    string[] P_Archers_b;
-	string[] P_Archers_r;
-	string[] P_Builders_b;
-	string[] P_Builders_r;
-	string[] P_Knights_b;
-	string[] P_Knights_r;
+	// check technical value of available classes and change factual values
+	for(int i = 0; i < 6; i++)
+		numberPlayersInClassTeam[newMas][i] = 0;
 
-    // check technical value of available classes and change factual values
-    // we using old code chunk because it's more reliable method
-    if (getGameTime() % 900 == 0) { // check every ~30 seconds
-        printf("[INFO] Checking players on classes...");
+	for(u32 i = 0, playersCount = getPlayersCount(); i < playersCount; i++) {
+		CPlayer@ player = getPlayer(i);
+		u8 team = player.getTeamNum();
+		if(team < 2 && player.lastBlobConfig != "") {
+			u8 blobConfig = player.lastBlobConfig[0];
 
-	    // calculating amount of players in classes
-	    for (u32 i = 0; i < getPlayersCount(); i++) {
-		    if (getPlayer(i).getBlob() is null) continue;
+			if(blobConfig == 107) // == 'k'
+				numberPlayersInClassTeam[newMas][0 + team] += 1;
+			else if(blobConfig == 98) // == 'b'
+				numberPlayersInClassTeam[newMas][2 + team] += 1;
+			else //if(blobConfig == 97) // == 'a'
+				numberPlayersInClassTeam[newMas][4 + team] += 1;
+		}
+	}
 
-		    if (getPlayer(i).getBlob().getName() == "archer") {
-		        if (getPlayer(i).getTeamNum() == 0) P_Archers_b.push_back(getPlayer(i).getUsername());
-		        else if (getPlayer(i).getTeamNum() == 1) P_Archers_r.push_back(getPlayer(i).getUsername());
-		    }
+	if (numberPlayersInClassTeam[oldMas][0] != numberPlayersInClassTeam[newMas][0]) {
+		this.set_s32("knight0Count", numberPlayersInClassTeam[newMas][0]);
+		this.Sync("knight0Count", true);
+	}
 
-		    if (getPlayer(i).getBlob().getName() == "builder") {
-		        if (getPlayer(i).getTeamNum() == 0) P_Builders_b.push_back(getPlayer(i).getUsername());
-		        else if (getPlayer(i).getTeamNum() == 1) P_Builders_r.push_back(getPlayer(i).getUsername());
-		    }
+	if (numberPlayersInClassTeam[oldMas][1] != numberPlayersInClassTeam[newMas][1]) {
+		this.set_s32("knight1Count", numberPlayersInClassTeam[newMas][1]);
+		this.Sync("knight1Count", true);
+	}
 
-		    if (getPlayer(i).getBlob().getName() == "knight") {
-		        if (getPlayer(i).getTeamNum() == 0) P_Knights_b.push_back(getPlayer(i).getUsername());
-		        else if (getPlayer(i).getTeamNum() == 1) P_Knights_r.push_back(getPlayer(i).getUsername());
-		    }
+	if (numberPlayersInClassTeam[oldMas][2] != numberPlayersInClassTeam[newMas][2]) {
+		this.set_s32("builder0Count", numberPlayersInClassTeam[newMas][2]);
+		this.Sync("builder0Count", true);
+	}
 
-		    //printf("We have: " + P_Archers_r.length + " Archers, " + P_Builders_r.length + " Builders, " + P_Knights_r.length + " Knights in red team");
-		    //printf("We have: " + P_Archers_b.length + " Archers, " + P_Builders_b.length + " Builders, " + P_Knights_b.length + " Knights in blue team");
-        }
+	if (numberPlayersInClassTeam[oldMas][3] != numberPlayersInClassTeam[newMas][3]) {
+		this.set_s32("builder1Count", numberPlayersInClassTeam[newMas][3]);
+		this.Sync("builder1Count", true);
+	}
 
-        // change values to real, if they fake
-        if (this.get_s32("builder0Count") < P_Builders_b.length() || this.get_s32("builder0Count") > P_Builders_b.length()) {
-            printf("[INFO] We have fake value on Blue B! Fixing...");
+	if (numberPlayersInClassTeam[oldMas][4] != numberPlayersInClassTeam[newMas][4]) {
+		this.set_s32("archer0Count", numberPlayersInClassTeam[newMas][4]);
+		this.Sync("archer0Count", true);
+	}
 
-            this.set_s32("builder0Count", P_Builders_b.length());
-            this.Sync("builder0Count", true);
-        }
-            
-        if (this.get_s32("builder1Count") < P_Builders_r.length() || this.get_s32("builder1Count") > P_Builders_r.length()) {
-            printf("[INFO] We have fake value on Red B! Fixing...");
+	if (numberPlayersInClassTeam[oldMas][5] != numberPlayersInClassTeam[newMas][5]) {
+		this.set_s32("archer1Count", numberPlayersInClassTeam[newMas][5]);
+		this.Sync("archer1Count", true);
+	}
 
-            this.set_s32("builder1Count", P_Builders_r.length());
-            this.Sync("builder1Count", true);
-        }
-            
-        if (this.get_s32("knight0Count") < P_Knights_b.length() || this.get_s32("knight0Count") > P_Knights_b.length()) {
-            printf("[INFO] We have fake value on Blue K! Fixing...");
+	//! к числам не работает аутизм поэтому вот такая фигня аналог так сказать
+	//В начале мы инвертируем биты числа затем отбрасываем все биты кроме первого
+	oldMas = ~oldMas&1;
+	newMas = ~newMas&1;
+	//printf("" + oldMas + " " + newMas+ "");
 
-            this.set_s32("knight0Count", P_Knights_b.length());
-            this.Sync("knight0Count", true);
-        }
-            
-        if (this.get_s32("knight1Count") < P_Knights_r.length() || this.get_s32("knight1Count") > P_Knights_r.length()) {
-            printf("[INFO] We have fake value on Red K! Fixing...");
-
-            this.set_s32("knight1Count", P_Knights_r.length());
-            this.Sync("knight1Count", true);
-        }
-
-        if (this.get_s32("archer0Count") < P_Archers_b.length() || this.get_s32("archer0Count") > P_Archers_b.length()) {
-            printf("[INFO] We have fake value on Blue A! Fixing...");
-
-            this.set_s32("archer0Count", P_Archers_b.length());
-            this.Sync("archer0Count", true);
-        }
-            
-        if (this.get_s32("archer1Count") < P_Archers_r.length() || this.get_s32("archer1Count") > P_Archers_r.length()) {
-            printf("[INFO] We have fake value on Red A! Fixing...");
-
-            this.set_s32("archer1Count", P_Archers_r.length());
-            this.Sync("archer1Count", true);
-        }
-    }
-}
-
-void onPlayerLeave(CRules@ this, CPlayer@ player) {
-    if (!isServer()) return;
-    string PlayerClassTeam = this.get_string(player.getUsername() + "class+team");
-    if(PlayerClassTeam != "") {
-        this.add_s32(PlayerClassTeam + "Count", -1);
-        this.Sync(PlayerClassTeam + "Count", true);
-    }
-}
-
-void onPlayerChangedTeam(CRules@ this, CPlayer@ player, u8 oldteam, u8 newteam) {
-    if (!isServer() || newteam != this.getSpectatorTeamNum()) return;
-    string PlayerClassTeam = this.get_string(player.getUsername() + "class+team");
-    if(PlayerClassTeam != "") {
-        this.add_s32(PlayerClassTeam + "Count", -1);
-        this.Sync(PlayerClassTeam + "Count", true);
-    }
-    this.set_string(player.getUsername() + "class+team", "spectator");
-    this.Sync(player.getUsername() + "class+team", true);
+	//Что бы начать дебаг нужно раскомментрировать "#define DEBUG_CLASSCOUNTER" 
+	#ifdef DEBUG_CLASSCOUNTER
+		//По возможности весь код для дебага фигачить сюда
+		printf("[INFO] Checking players on classes...");
+		for(int i = 0; i < 2; i++)
+			printf("We have: " + numberPlayersInClassTeam[newMas][i] + " Knights, " + numberPlayersInClassTeam[newMas][2 + i] + " Builders, " + numberPlayersInClassTeam[newMas][4 + i] + " Archers in" + i + " team");
+	#endif
 }
