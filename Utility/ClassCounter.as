@@ -55,6 +55,7 @@ void onRestart(CRules@ this)
 void onTick(CRules@ this) {
     if (!isServer()) return;
 
+    // TODO: rewrite this shit to something good
     string[] P_Archers_b;
 	string[] P_Archers_r;
 	string[] P_Builders_b;
