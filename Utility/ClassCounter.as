@@ -13,7 +13,7 @@ u8 newMas = 1;
 
 void onTick(CRules@ this) {
     if (!isServer() || getGameTime() % 30 != 0) return;
-	// check every ~30 seconds
+	// check every one second
 
 	// check technical value of available classes and change factual values
 	for(int i = 0; i < 6; i++)
@@ -35,31 +35,37 @@ void onTick(CRules@ this) {
 	}
 
 	if (numberPlayersInClassTeam[oldMas][0] != numberPlayersInClassTeam[newMas][0]) {
+        printf("[CLASS COUNTER] We have fake values in blue knights counter, fixing it");
 		this.set_s32("knight0Count", numberPlayersInClassTeam[newMas][0]);
 		this.Sync("knight0Count", true);
 	}
 
 	if (numberPlayersInClassTeam[oldMas][1] != numberPlayersInClassTeam[newMas][1]) {
+        printf("[CLASS COUNTER] We have fake values in red knights counter, fixing it");
 		this.set_s32("knight1Count", numberPlayersInClassTeam[newMas][1]);
 		this.Sync("knight1Count", true);
 	}
 
 	if (numberPlayersInClassTeam[oldMas][2] != numberPlayersInClassTeam[newMas][2]) {
+        printf("[CLASS COUNTER] We have fake values in blue builders counter, fixing it");
 		this.set_s32("builder0Count", numberPlayersInClassTeam[newMas][2]);
 		this.Sync("builder0Count", true);
 	}
 
 	if (numberPlayersInClassTeam[oldMas][3] != numberPlayersInClassTeam[newMas][3]) {
+        printf("[CLASS COUNTER] We have fake values in red builders counter, fixing it");
 		this.set_s32("builder1Count", numberPlayersInClassTeam[newMas][3]);
 		this.Sync("builder1Count", true);
 	}
 
 	if (numberPlayersInClassTeam[oldMas][4] != numberPlayersInClassTeam[newMas][4]) {
+        printf("[CLASS COUNTER] We have fake values in blue archers counter, fixing it");
 		this.set_s32("archer0Count", numberPlayersInClassTeam[newMas][4]);
 		this.Sync("archer0Count", true);
 	}
 
 	if (numberPlayersInClassTeam[oldMas][5] != numberPlayersInClassTeam[newMas][5]) {
+        printf("[CLASS COUNTER] We have fake values in red archers counter, fixing it");
 		this.set_s32("archer1Count", numberPlayersInClassTeam[newMas][5]);
 		this.Sync("archer1Count", true);
 	}
