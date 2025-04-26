@@ -421,7 +421,6 @@ string[][] vsetting_texts =
 		Names::annoyingvoicelines,
 		Names::annoyingtags,
 		Names::customdpsounds,
-		Names::classpanels,
 		Names::customboomeffects,
 		"Snow Render Type",
 		"Player Kill Sounds"
@@ -444,7 +443,6 @@ string[][] vsetting_file_names =
 		"annoying_voicelines",
 		"annoying_tags",
 		"custom_death_and_pain_sounds",
-		"class_panels",
 		"custom_boom_effects",
 		"snow_type",
 		"killsounds_toggle"
@@ -503,10 +501,6 @@ string[][][] vsetting_options =
 		},
 		{
 			Descriptions::universaloff,       // DEATH AND PAIN
-			Descriptions::universalon
-		},
-		{
-			Descriptions::universaloff,       // CLASS PANELS
 			Descriptions::universalon
 		},
 		{
@@ -579,10 +573,6 @@ string[][][] vsetting_option_names =
 		},
 		{
 			"off",       // DEATH AND PAIN
-			"on"
-		},
-		{
-			"off",       // CLASS PANELS
 			"on"
 		},
 		{
