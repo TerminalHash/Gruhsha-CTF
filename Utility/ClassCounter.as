@@ -36,37 +36,37 @@ void onTick(CRules@ this) {
 	}
 
 	if (numberPlayersInClassTeam[oldMas][0] != numberPlayersInClassTeam[newMas][0]) {
-        printf("[CLASS COUNTER] Adding new blue knight");
+        printf("[CLASS COUNTER] Changing blue knights number");
 		this.set_s32("knight0Count", numberPlayersInClassTeam[newMas][0]);
 		this.Sync("knight0Count", true);
 	}
 
 	if (numberPlayersInClassTeam[oldMas][1] != numberPlayersInClassTeam[newMas][1]) {
-        printf("[CLASS COUNTER] Adding new red knight");
+        printf("[CLASS COUNTER] Changing red knights number");
 		this.set_s32("knight1Count", numberPlayersInClassTeam[newMas][1]);
 		this.Sync("knight1Count", true);
 	}
 
 	if (numberPlayersInClassTeam[oldMas][2] != numberPlayersInClassTeam[newMas][2]) {
-        printf("[CLASS COUNTER] Adding new blue builder");
+        printf("[CLASS COUNTER] Changing blue builders number");
 		this.set_s32("builder0Count", numberPlayersInClassTeam[newMas][2]);
 		this.Sync("builder0Count", true);
 	}
 
 	if (numberPlayersInClassTeam[oldMas][3] != numberPlayersInClassTeam[newMas][3]) {
-        printf("[CLASS COUNTER] Adding new red builder");
+        printf("[CLASS COUNTER] Changing red builders number");
 		this.set_s32("builder1Count", numberPlayersInClassTeam[newMas][3]);
 		this.Sync("builder1Count", true);
 	}
 
 	if (numberPlayersInClassTeam[oldMas][4] != numberPlayersInClassTeam[newMas][4]) {
-        printf("[CLASS COUNTER] Adding new blue archer");
+        printf("[CLASS COUNTER] Changing blue archers number");
 		this.set_s32("archer0Count", numberPlayersInClassTeam[newMas][4]);
 		this.Sync("archer0Count", true);
 	}
 
 	if (numberPlayersInClassTeam[oldMas][5] != numberPlayersInClassTeam[newMas][5]) {
-        printf("[CLASS COUNTER] Adding new red archer");
+        printf("[CLASS COUNTER] Changing red archers number");
 		this.set_s32("archer1Count", numberPlayersInClassTeam[newMas][5]);
 		this.Sync("archer1Count", true);
 	}
