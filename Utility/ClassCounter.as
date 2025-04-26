@@ -1,6 +1,6 @@
 //#define DEBUG_CLASSCOUNTER
 
-u8[][] numberPlayersInClassTeam(2,6);
+u8[][] numberPlayersInClassTeam = {{0,0,0,0,0,0},{0,0,0,0,0,0}};
 // 0 - knight blue
 // 1 - knight red
 // 2 - builder blue
@@ -76,7 +76,7 @@ void onTick(CRules@ this) {
 	newMas = ~newMas&1;
 	//printf("" + oldMas + " " + newMas+ "");
 
-	//Что бы начать дебаг нужно раскомментрировать "#define DEBUG_CLASSCOUNTER" 
+	//Что бы начать дебаг нужно раскомментрировать "#define DEBUG_CLASSCOUNTER"
 	#ifdef DEBUG_CLASSCOUNTER
 		//По возможности весь код для дебага фигачить сюда
 		printf("[INFO] Checking players on classes...");
