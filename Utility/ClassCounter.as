@@ -1,3 +1,4 @@
+#define SERVER_ONLY
 //#define DEBUG_CLASSCOUNTER
 
 u8[][] numberPlayersInClassTeam = {{0,0,0,0,0,0},{0,0,0,0,0,0}};
