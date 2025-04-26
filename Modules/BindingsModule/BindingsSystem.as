@@ -208,11 +208,6 @@ void onInit(CRules@ this)
 			{
 				sfile.add_string("nomenubuying_b", "no");
 			}
-
-			/*if (!sfile.exists("pickup_wheel_type"))
-			{
-				sfile.add_string("pickup_wheel_type", "old");
-			}*/
 		}
 		else // default settings
 		{
@@ -226,7 +221,6 @@ void onInit(CRules@ this)
 			sfile.add_string("pickbomb_archer", "yes");
 			sfile.add_string("nomenubuying", "no");
 			sfile.add_string("nomenubuying_b", "no");
-			//sfile.add_string("pickup_wheel_type", "old");
 
 			printf("Creating local settings file with default values for Gruhsha.");
 		}
@@ -275,11 +269,6 @@ void onInit(CRules@ this)
 				sfile2.add_string("clusterfuck", "on");
 			}
 
-			if (!sfile2.exists("clusterfuck_blood"))
-			{
-				sfile2.add_string("clusterfuck_blood", "on");
-			}
-
 			if (!sfile2.exists("clusterfuck_smoke"))
 			{
 				sfile2.add_string("clusterfuck_smoke", "on");
@@ -310,11 +299,6 @@ void onInit(CRules@ this)
 				sfile2.add_string("custom_death_and_pain_sounds", "on");
 			}
 
-			if (!sfile2.exists("class_panels"))
-			{
-				sfile2.add_string("class_panels", "off");
-			}
-
 			if (!sfile2.exists("custom_boom_effects"))
 			{
 				sfile2.add_string("custom_boom_effects", "on");
@@ -338,14 +322,12 @@ void onInit(CRules@ this)
 			sfile2.add_string("body_tilting", "on");
 			sfile2.add_string("head_rotating", "on");
 			sfile2.add_string("clusterfuck", "on");
-			sfile2.add_string("clusterfuck_blood", "on");
 			sfile2.add_string("clusterfuck_smoke", "on");
 			sfile2.add_string("drillzone_borders", "on");
 			sfile2.add_string("annoying_nature", "on");
 			sfile2.add_string("annoying_voicelines", "on");
 			sfile2.add_string("annoying_tags", "on");
 			sfile2.add_string("custom_death_and_pain_sounds", "on");
-			sfile2.add_string("class_panels", "off");
 			sfile2.add_string("custom_boom_effects", "on");
 			sfile2.add_string("snow_type", "sparse");
 			sfile2.add_string("killsounds_toggle", "on");

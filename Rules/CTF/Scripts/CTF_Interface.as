@@ -189,7 +189,44 @@ void onRender(CRules@ this)
 	}
 
 	// main panel
-	GUI::DrawIcon("CTF_Panel.png", 0, Vec2f(73,61), Vec2f(0, 140));
+	GUI::DrawIcon("CTF_Panel.png", 0, Vec2f(76,122), Vec2f(0, 145));
+	
+	// materials
+	u8 team = p.getTeamNum();
+	
+	if (p.getTeamNum() == team) {
+		GUI::SetFont("hud");
+		string msg1 = this.get_s32("teamwood" + team);
+		string msg2 = this.get_s32("teamstone" + team);
+		
+		Vec2f wood_text = Vec2f(23, 341); // for >= 1000
+		if (this.get_s32("teamwood" + team) >= 10000) {
+			wood_text = Vec2f(19, 341);
+		} else if (this.get_s32("teamwood" + team) >= 100 && this.get_s32("teamwood" + team) < 1000) {
+			wood_text = Vec2f(26, 341);
+		} else if (this.get_s32("teamwood" + team) >= 10 && this.get_s32("teamwood" + team) < 1000) {
+			wood_text = Vec2f(30, 341);
+		} else if (this.get_s32("teamwood" + team) >= 0 && this.get_s32("teamwood" + team) < 1000) {
+			wood_text = Vec2f(32, 341);
+		}
+		
+		Vec2f stone_text = Vec2f(96, 341); // for >= 1000
+		if (this.get_s32("teamstone" + team) >= 10000) {
+			stone_text = Vec2f(93, 341);
+		} else if (this.get_s32("teamstone" + team) >= 100 && this.get_s32("teamstone" + team) < 1000) {
+			stone_text = Vec2f(100, 341);
+		} else if (this.get_s32("teamstone" + team) >= 10 && this.get_s32("teamstone" + team) < 1000) {
+			stone_text = Vec2f(104, 341);
+		} else if (this.get_s32("teamstone" + team) >= 0 && this.get_s32("teamstone" + team) < 1000) {
+			stone_text = Vec2f(108, 341);
+		}
+
+		//wood
+		GUI::DrawText(msg1, wood_text, color_white);
+
+		//stone
+		GUI::DrawText(msg2, stone_text, color_white);
+	}
 }
 
 void onNewPlayerJoin( CRules@ this, CPlayer@ player )
