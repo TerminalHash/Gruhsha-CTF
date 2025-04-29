@@ -157,15 +157,7 @@ void onRender(CRules@ this)
 		GUI::DrawText(Descriptions::thirtyminutesleft, Vec2f(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 7), color_white);
 	}
 
-	Vec2f skull = Vec2f(12, 250);
-
-	if (getRules().get_string("class_panels") == "off") {
-		skull = Vec2f(12, 250);
-	}
-
-	if (getRules().get_string("class_panels") == "on") {
-		skull = Vec2f(12, 410);
-	}
+	Vec2f skull = Vec2f(12, 370);
 
 	float x = skull.x + 8;
 
