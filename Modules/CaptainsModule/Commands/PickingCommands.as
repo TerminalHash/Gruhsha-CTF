@@ -435,6 +435,8 @@ class TagBuilder : ChatCommand
 
 		rules.set_string("team_" + player.getTeamNum() + "_builder", tagged_player.getUsername());
 		rules.Sync("team_" + player.getTeamNum() + "_builder", true);
+
+		printf("[CAPTAINS SYSTEM] " + player.getUsername() + " was tagged " + tagged_player.getUsername() + " as builder in team " + player.getTeamNum());
 	}
 }
 
