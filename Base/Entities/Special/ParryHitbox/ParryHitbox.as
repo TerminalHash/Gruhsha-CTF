@@ -11,9 +11,12 @@ void onInit(CBlob@ this)
 
 f32 onHit( CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData )
 {
-	//no explosives can deflect blobs
+	//no explosives and water-related shit can deflect blobs
+	// btw icebomb has very funny bug, what it's sets the velocity as (-inf, -inf)
+	// so dont remove isWaterHitter bool from this condition
 	if (customData==Hitters::keg  ||
 		customData==Hitters::bomb ||
+		isWaterHitter(customData) ||
 		customData==GruhshaHitters::hazelnut_shell || 
 		customData==GruhshaHitters::sticky_bomb) return 0;
 
@@ -41,6 +44,8 @@ f32 onHit( CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hit
 
 	blob_to_parry.setVelocity((velocity/(velocity.Length()))*Maths::Min(12, vellen+hitterBlob.getVelocity().Length()+2));
 	//blob_to_parry.AddForce(Vec2f(Maths::Min(100, (vellen+2)*30), 0).RotateBy(-(velocity/(velocity.Length())).getAngleDegrees()));
+
+	//printf("Velocity of blob is " + blob_to_parry.getVelocity());
 
 	ChangeOwner(this, hitterBlob);
 
