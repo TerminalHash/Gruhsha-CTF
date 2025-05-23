@@ -514,3 +514,45 @@ class UpdateMats : ChatCommand
 		}
 	}
 }
+
+class TeamRandomizer : ChatCommand
+{
+	TeamRandomizer()
+	{
+		super("teamrandom", "Make teams with random");
+		AddAlias("random");
+		AddAlias("rand");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		RulesCore@ core;
+		rules.get("core", @core);
+
+		for (int i = 0; i < getPlayerCount(); i++) 
+		{
+			CPlayer@ p = getPlayer(i);
+			if (p is null) continue;
+
+			u8 team = XORRandom(2);
+			u8 playersinteam = getPlayerCount();
+			if (CountPlayersInTeam(team) > playersinteam)
+				if (team == 1) team = 0;
+			else team = 1;
+
+			core.ChangePlayerTeam(p, team);
+		}
+
+		server_AddToChat("Teams randomized, have fun!", SColor(0xff474ac6));
+	}
+}

@@ -19,4 +19,5 @@ void RegisterGruhshaChatCommands(ChatCommandManager@ manager)
 	manager.RegisterCommand(TagBuilder());
 	manager.RegisterCommand(ToggleEditor());
 	manager.RegisterCommand(UpdateMats());
+	manager.RegisterCommand(TeamRandomizer());
 }

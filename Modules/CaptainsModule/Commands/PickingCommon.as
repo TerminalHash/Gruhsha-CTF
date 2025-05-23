@@ -49,6 +49,20 @@ void PutEveryoneInSpec()
 	}
 }
 
+int CountPlayersInTeam(int teamNum) {
+    int count = 0;
+
+    for (int i=0; i < getPlayerCount(); i++) {
+        CPlayer@ p = getPlayer(i);
+        if (p is null) continue;
+
+        if (p.getTeamNum() == teamNum)
+            count++;
+    }
+
+    return count;
+}
+
 CPlayer@ getPlayerByNamePart(string username)
 {
 	username = username.toLower();
