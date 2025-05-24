@@ -20,7 +20,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 			{
 				this.getSprite().PlaySound("SwordCling");
 
-				return damage * 0; // dont damage our knights, we wanna keep this funny parrying
+				//return 0; // dont damage our knights, we wanna keep this funny parrying
 			}
 		}
 	}
