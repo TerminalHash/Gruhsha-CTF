@@ -89,7 +89,7 @@ void onTick(CBlob@ this)
 			f32 y = this.getPosition().y;
 			//printf("My height is " + y);
 
-			if (y < -10)
+			if (y < -20)
 			{
 				if (getGameTime() % 15 == 0)
 					this.server_Hit(this, this.getPosition(), Vec2f(0, 0), y < 50 ? (y < 0 ? 2.0f : 1.0f) : 0.25f, 0, true);
