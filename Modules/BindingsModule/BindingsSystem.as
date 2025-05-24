@@ -313,6 +313,11 @@ void onInit(CRules@ this)
 			{
 				sfile2.add_string("killsounds_toggle", "on");
 			}
+
+			if (!sfile2.exists("misc_custom_toggle"))
+			{
+				sfile2.add_string("misc_custom_toggle", "on");
+			}
 		}
 		else // default settings
 		{
@@ -331,6 +336,7 @@ void onInit(CRules@ this)
 			sfile2.add_string("custom_boom_effects", "on");
 			sfile2.add_string("snow_type", "sparse");
 			sfile2.add_string("killsounds_toggle", "on");
+			sfile2.add_string("misc_custom_toggle", "on");
 
 			printf("Creating local visual and sound settings file with default values for Gruhsha.");
 		}
