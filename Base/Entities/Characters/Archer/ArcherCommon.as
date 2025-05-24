@@ -17,12 +17,13 @@ namespace ArcherParams
 	const ::s32 ready_time = 11;
 
 	const ::s32 shoot_period = 30;
-	const ::s32 shoot_period_1 = ArcherParams::shoot_period / 3;
-	const ::s32 shoot_period_2 = 2 * ArcherParams::shoot_period / 3;
+	const ::s32 shoot_period_1 = ArcherParams::shoot_period / 3;		// unused?
+	const ::s32 shoot_period_2 = 2 * ArcherParams::shoot_period / 3;	// unused?
 	const ::s32 legolas_period = ArcherParams::shoot_period * 3;
 
 	const ::s32 fired_time = 7;
 	const ::f32 shoot_max_vel = 17.59f;
+	const ::f32 shoot_max_vel_icy = 8.59f;
 
 	const ::s32 legolas_charge_time = 5;
 	const ::s32 legolas_arrows_count = 1;
