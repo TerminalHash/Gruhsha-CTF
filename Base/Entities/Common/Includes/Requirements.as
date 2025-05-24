@@ -84,7 +84,7 @@ string getButtonRequirementsText(CBitStream& inout bs, bool missing)
 		else if (requiredType == "buy delay" && missing)
 		{
 			text += quantityColor;
-			text += "You must wait before buy next " + friendlyName + "!";
+			text += "You must wait " + quantity + " seconds before buy next " + friendlyName + "!";
 			text += " \n\n";
 			text += quantityColor;
 		}
