@@ -6,6 +6,15 @@
 
 string[] players_list = {};
 
+// hardcoded list for blobs, what has req "buy delay"
+string[] blob_list = {
+	"keg",
+	"hazelnut",
+	"fumokeg",
+	"slidemine",
+	"mat_bombarrows"
+};
+
 void onTick(CRules@ this) {
 	if (this.getCurrentState() != WARMUP && this.getCurrentState() != INTERMISSION) {
 		if (getGameTime() % 30 == 0) {
@@ -36,16 +45,49 @@ void onTick(CRules@ this) {
 			}
 		}
 	}
+	
+	// DEBUG
+	/*
+	if (getControls().isKeyJustPressed(KEY_LSHIFT)) {
+        for (int i=0; i<getPlayersCount(); i++) {
+			CPlayer@ cp = getPlayer(i);
+
+			// reset buy delay, we dont need this in new round
+			for (int b = 0; b < blob_list.length; ++b) {
+				string bloba = blob_list[b];
+
+				if (this.exists(cp.getUsername() + "_bought_item_" + bloba)) {
+					 printf("Buy delay for player " + cp.getUsername() + " for item + " + bloba + " is: " + this.get_s32(cp.getUsername() + "_bought_item_" + bloba));
+				}
+			}
+		}
+    }
+	*/
 }
 
 void onRestart(CRules@ this) {
 	if (isServer()) {
-		for (int i=0; i<players_list.length; ++i) {
+		for (int i = 0; i < players_list.length; ++i) {
 			this.set_s32("play_time" + players_list[i], 0);
 			this.Sync("play_time" + players_list[i], true);
 
 			this.set_f32("damage_impact_" + players_list[i], 0);
 			this.Sync("damage_impact_" + players_list[i], true);
+		}
+		
+		for (int i = 0; i < getPlayersCount(); i++) {
+			CPlayer@ cp = getPlayer(i);
+
+			// reset buy delay, we dont need this in new round
+			// FIXME: it's hardcoded because we cant receive properly blob name
+			for (int b = 0; b < blob_list.length; ++b) {
+				string bloba = blob_list[b];
+
+				if (this.exists(cp.getUsername() + "_bought_item_" + blob_list[b])) {
+					this.set_s32(cp.getUsername() + "_bought_item_" + blob_list[b], 0);
+					this.Sync(cp.getUsername() + "_bought_item_" + blob_list[b], true);
+				}
+			}
 		}
 	}
 }
