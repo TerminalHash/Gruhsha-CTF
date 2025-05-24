@@ -89,7 +89,7 @@ void onInit(CBlob@ this)
 	{
 		ShopItem@ s = addShopItem(this, "Keg", getTeamIcon("keg", "Keg.png", team_num, Vec2f(16, 16), 0), "keg", Descriptions::keg, false);
 		AddRequirement(s.requirements, "coin", "", "Coins", dynamic_keg_cost /*CTFCosts::keg*/);
-		AddRequirement(s.requirements, "buy delay", "keg", "Keg");
+		AddRequirement(s.requirements, "buy delay", "keg", "Keg", 60);
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Drill", getTeamIcon("drill", "Drill.png", team_num, Vec2f(32, 16), 0), "drill", Descriptions::drill, false);
@@ -118,7 +118,7 @@ void onInit(CBlob@ this)
 		ShopItem@ s = addShopItem(this, Names::slidemine, getTeamIcon("slidemine", "SlideMine.png", team_num, Vec2f(16, 16), 1), "slidemine", Descriptions::slideminedesc, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::slidemine);
 		AddRequirement(s.requirements, "no more", "slidemine", "Slide Mine", 3);
-		AddRequirement(s.requirements, "buy delay", "slidemine", "Slide Mine");
+		AddRequirement(s.requirements, "buy delay", "slidemine", "Slide Mine", 30);
 	}
 	{
 		ShopItem@ s = addShopItem(this, Names::booster, "$booster$", "mat_boosters", Descriptions::boosterdesc, true);
@@ -134,7 +134,7 @@ void onInit(CBlob@ this)
 		ShopItem@ s = addShopItem(this, /*Names::hazelnut*/ "Hazelnut", "$hazelnut$", "hazelnut", /*Descriptions::hazelnutdesc*/ "A genetically modified hazelnut that releases five explosive kernels when shattered.", false);
 		AddRequirement(s.requirements, "coin", "", "Coins", 200);
 		AddRequirement(s.requirements, "no more", "hazelnut", "Hazelnut", 2);
-		AddRequirement(s.requirements, "buy delay", "hazelnut", "Hazelnut");
+		AddRequirement(s.requirements, "buy delay", "hazelnut", "Hazelnut", 60);
 	}
 }
 
