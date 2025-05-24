@@ -10,7 +10,6 @@ string[] players_list = {};
 string[] blob_list = {
 	"keg",
 	"hazelnut",
-	"fumokeg",
 	"slidemine",
 	"mat_bombarrows"
 };
