@@ -292,10 +292,10 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 			CPlayer@ player1 = inv1 !is null ? inv1.getBlob().getPlayer() : null;
 			if (player1 !is null && 
 				getRules().exists(player1.getUsername() + "_bought_item_" + blobName) &&
-				(getGameTime() < (getRules().get_s32(player1.getUsername() + "_bought_item_" + blobName) + (60 * getTicksASecond()))) &&
+				(getGameTime() < (getRules().get_s32(player1.getUsername() + "_bought_item_" + blobName) + (quantity * getTicksASecond()))) &&
 				getRules().get_s32(player1.getUsername() + "_bought_item_" + blobName) != 0)
 			{
-				AddRequirement(missingBs, req, blobName, friendlyName);
+				AddRequirement(missingBs, req, blobName, friendlyName, quantity);
 				has = false;
 			}
 		}
