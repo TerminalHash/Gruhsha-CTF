@@ -19,9 +19,11 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 			        sprite.isAnimation("strike_down") || sprite.isAnimation("strike_up"))
 			{
 				this.getSprite().PlaySound("SwordCling");
+
+				return damage * 0; // dont damage our knights, we wanna keep this funny parrying
 			}
 		}
 	}
 
-	return damage * 0; // dont damage our knights, we wanna keep this funny parrying
+	return damage; //no block, damage goes through
 }
