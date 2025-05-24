@@ -37,7 +37,7 @@ void onInit(CBlob@ this)
 	// Dynamic prices
 	u32 dynamic_bomb_cost = 25;
 	u32 dynamic_water_bomb_cost = 70;
-	u32 dynamic_keg_cost = 170;
+	u32 dynamic_keg_cost = 160;
 	u32 player_amount = getRules().get_s32("amount_in_team");
 
 	if (player_amount >= 12 && player_amount < 14)
