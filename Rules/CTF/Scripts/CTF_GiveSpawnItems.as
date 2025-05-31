@@ -62,6 +62,74 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ attacker, u8 customData
 	}
 }
 
+// egor's function for builder resupplies
+// backported from Pear Seed and modified
+void doGiveMats(CRules@ this) {
+	s32 gametime = getGameTime();
+
+	mat_delay = materials_wait;
+
+	s32 next_resuply = gametime + mat_delay * getTicksASecond();
+	this.set_s32("nextresuply", next_resuply);
+	this.Sync("nextresuply", true);
+
+	int wood_amount = matchtime_wood_amount;
+	int stone_amount = matchtime_stone_amount;
+
+	builders_limit = this.get_u8("builders_limit");
+
+	if (getGameTime() > lower_mats_timer * getTicksASecond()) {
+		wood_amount = lower_wood;
+		stone_amount = lower_stone;
+	}
+
+	// check amount of builders and give mats depending on the number of builders
+	// ONLY FOR OFFI MATCHES
+	if (this.hasTag("offi match")) {
+		wood_limit = 2000;
+		stone_limit = 1000;
+
+		if (builders_limit > 1) {
+			wood_amount = matchtime_wood_amount * builders_limit;
+			stone_amount = matchtime_stone_amount * builders_limit;
+
+			mat_delay = materials_wait_longer;
+
+			wood_limit = 4000;
+			stone_limit = 2000;
+		}
+
+		if (builders_limit > 1 && getGameTime() > lower_mats_timer * getTicksASecond()) {
+			wood_amount = lower_wood * builders_limit;
+			stone_amount = lower_stone * builders_limit;
+
+			mat_delay = materials_wait_longer;
+
+			wood_limit = 4000;
+			stone_limit = 2000;
+		}
+	}
+
+	for (int team = 0; team < 2; team++) {
+		if (this.get_s32("teamwood" + team) < wood_limit) {
+			this.add_s32("teamwood" + team, wood_amount);
+			this.Sync("teamwood" + team, true);
+		}
+
+		if (this.get_s32("teamstone" + team) < stone_limit) {
+			this.add_s32("teamstone" + team, stone_amount);
+			this.Sync("teamstone" + team, true);
+		}
+	}
+
+	for (int i = 0; i < getPlayerCount(); i++) {
+		CPlayer@ player = getPlayer(i);
+		if (player is null) continue;
+
+		SetCTFTimer(this, player, next_resuply, "builder");
+	}
+}
+
 //takes into account and sets the limiting timer
 //prevents dying over and over, and allows getting more mats throughout the game
 void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
@@ -85,7 +153,7 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 		}
 	}*/
 
-	if (name == "builder" && !this.get_bool("is_warmup")) {
+	/*if (name == "builder" && !this.get_bool("is_warmup")) {
 		if (gametime > getCTFTimer(this, p, "builder")) {
 			u8 team = p.getTeamNum();
 
@@ -136,7 +204,7 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 
 			SetCTFTimer(this, p, gametime + (this.isWarmup() ? materials_wait_warmup : mat_delay) * getTicksASecond(), "builder");
 		}
-	}
+	}*/
 }
 
 void Reset(CRules@ this)
@@ -248,7 +316,7 @@ void onTick(CRules@ this)
 		}
 	}
 
-	if (this.getCurrentState() == GAME) { // automatic resupplies for builders
+	/*if (this.getCurrentState() == GAME) { // automatic resupplies for builders
 		for (int i = 0; i < getPlayerCount(); i++) {
 			CPlayer@ player = getPlayer(i);
 			if (player is null) continue;
@@ -262,6 +330,11 @@ void onTick(CRules@ this)
 				doGiveSpawnMats(this, player, blob);
 			}
 		}
+	}*/
+
+	// automatic resupplies for builders
+	if (gametime >= this.get_s32("nextresuply")) {
+		doGiveMats(this);
 	}
 }
 
@@ -270,10 +343,15 @@ void onNewPlayerJoin(CRules@ this, CPlayer@ player)
 {
 	s32 next_add_time = getGameTime() + (this.isWarmup() ? materials_wait_warmup : materials_wait) * getTicksASecond();
 
+	if (this.getCurrentState() == WARMUP)
+		SetCTFTimer(this, player, 0, "builder");
+	else
+		SetCTFTimer(this, player, this.get_s32("nextresuply"), "builder");
+
 	//if (next_add_time < getCTFTimer(this, player, "builder") || next_add_time < getCTFTimer(this, player, "archer"))
-	if (next_add_time < getCTFTimer(this, player, "builder"))
+	/*if (next_add_time < getCTFTimer(this, player, "builder"))
 	{
 		SetCTFTimer(this, player, getGameTime(), "builder");
 		//SetCTFTimer(this, player, getGameTime(), "archer");
-	}
+	}*/
 }
