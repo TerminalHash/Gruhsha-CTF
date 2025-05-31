@@ -49,6 +49,7 @@ void onSetPlayer(CRules@ this, CBlob@ blob, CPlayer@ player)
 	if (player is null) return;
 	
 	doGiveSpawnMats(this, player, blob);
+	doGiveMats(this);
 }
 
 //when player dies, unset archer flag so he can get arrows if he really sucks :)
@@ -153,7 +154,7 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 		}
 	}*/
 
-	/*if (name == "builder" && !this.get_bool("is_warmup")) {
+	if (name == "builder" && !this.get_bool("is_warmup")) {
 		if (gametime > getCTFTimer(this, p, "builder")) {
 			u8 team = p.getTeamNum();
 
@@ -204,7 +205,7 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 
 			SetCTFTimer(this, p, gametime + (this.isWarmup() ? materials_wait_warmup : mat_delay) * getTicksASecond(), "builder");
 		}
-	}*/
+	}
 }
 
 void Reset(CRules@ this)
@@ -349,9 +350,9 @@ void onNewPlayerJoin(CRules@ this, CPlayer@ player)
 		SetCTFTimer(this, player, this.get_s32("nextresuply"), "builder");
 
 	//if (next_add_time < getCTFTimer(this, player, "builder") || next_add_time < getCTFTimer(this, player, "archer"))
-	/*if (next_add_time < getCTFTimer(this, player, "builder"))
+	if (next_add_time < getCTFTimer(this, player, "builder"))
 	{
-		SetCTFTimer(this, player, getGameTime(), "builder");
+		SetCTFTimer(this, player, this.get_s32("nextresuply"), "builder");
 		//SetCTFTimer(this, player, getGameTime(), "archer");
-	}*/
+	}
 }
