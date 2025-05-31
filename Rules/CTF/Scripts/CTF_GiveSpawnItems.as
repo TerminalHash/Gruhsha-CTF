@@ -203,7 +203,7 @@ void doGiveSpawnMats(CRules@ this, CPlayer@ p, CBlob@ b)
 				this.Sync("teamstone" + team, true);
 			}
 
-			SetCTFTimer(this, p, gametime + (this.isWarmup() ? materials_wait_warmup : mat_delay) * getTicksASecond(), "builder");
+			SetCTFTimer(this, p, this.get_s32("nextresuply"), "builder");
 		}
 	}
 }
