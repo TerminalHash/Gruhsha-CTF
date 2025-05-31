@@ -232,6 +232,9 @@ void Reset(CRules@ this)
 	this.Sync("teamstone" + 1, true);
 	//this.set_s32("teamgold" + 1, 0);
 	//this.Sync("teamgold" + 1, true);
+
+	this.set_s32("nextresuply", 0);
+	this.Sync("nextresuply", true);
 }
 
 void onRestart(CRules@ this)
