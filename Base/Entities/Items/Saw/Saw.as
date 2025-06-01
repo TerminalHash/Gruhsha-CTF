@@ -13,11 +13,22 @@ void onInit(CBlob@ this)
 {
 	this.Tag("saw");
 	
-	this.getShape().SetRotationsAllowed(false);
+	//this.getShape().SetRotationsAllowed(false);
 
 	this.addCommandID(toggle_id);
 	this.addCommandID(toggle_id_client);
 	this.addCommandID(sawteammate_id_client);
+
+	////////////////////////////////////////
+	// code chunk picked from TrampolineLogic.as
+	this.Tag("no falldamage");
+	this.Tag("medium weight");
+	// Because BlobPlacement.as is *AMAZING*
+	this.Tag("place norotate");
+
+	AttachmentPoint@ point = this.getAttachments().getAttachmentPointByName("PICKUP");
+	point.SetKeysToTake(key_action1 | key_action2);
+	////////////////////////////////////////
 
 	this.getCurrentScript().runFlags |= Script::tick_onscreen;
 
@@ -201,6 +212,9 @@ bool canSaw(CBlob@ this, CBlob@ blob)
 		const f32 len = off.Normalize();
 
 		const f32 dot = off * (Vec2f(0, -1).RotateBy(this.getAngleDegrees(), Vec2f()));
+
+		// prevent teamkilling, we dont want them to leave so fast
+		if (blob.getTeamNum() == this.getTeamNum()) return false;
 
 		if (dot > 0.8f)
 		{
@@ -423,4 +437,34 @@ void onTick(CBlob@ this)
 			}
 		}
 	}
+
+	//////////////////////////////////////////////
+	// allow rotating for saws like trampolines
+	// code chunk picked from TrampolineLogic.as
+	CRules@ rules = getRules();
+	AttachmentPoint@ point = this.getAttachments().getAttachmentPointByName("PICKUP");
+
+	CBlob@ holder = point.getOccupied();
+	if (holder is null) return;
+
+	Vec2f ray = holder.getAimPos() - this.getPosition();
+	ray.Normalize();
+
+	f32 angle = ray.Angle();
+
+	if (point.isKeyPressed(key_action2)) {
+		// set angle to what was on previous tick
+		angle = this.get_f32("old angle");
+		this.setAngleDegrees(angle);
+	} else if (point.isKeyPressed(key_action1)) {
+		// rotate in 45 degree steps
+		angle = Maths::Floor((angle - 67.5f) / 45) * 45;
+		this.setAngleDegrees(-angle);
+	} else {
+		// follow cursor normally
+		this.setAngleDegrees(-angle + 90);
+	}
+
+	this.set_f32("old angle", this.getAngleDegrees());
+	////////////////////////////////////////
 }
