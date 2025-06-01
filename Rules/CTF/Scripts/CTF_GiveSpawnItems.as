@@ -48,7 +48,7 @@ void onSetPlayer(CRules@ this, CBlob@ blob, CPlayer@ player)
 	if (blob is null) return;
 	if (player is null) return;
 	
-	doGiveSpawnMats(this, player, blob);
+	//doGiveSpawnMats(this, player, blob);
 	doGiveMats(this);
 }
 
