@@ -15,6 +15,8 @@ void onBlobDie(CRules@ this, CBlob@ blob) {
         CPlayer@ killer = blob.getPlayerOfRecentDamage();
         CPlayer@ victim = blob.getPlayer();
 
+        if (blob is null || killer is null || victim is null) return;
+
         if (victim !is null) {
             // requires victim so that killing trees matters
             // also it shouldnt be played, when killer commits suicide
