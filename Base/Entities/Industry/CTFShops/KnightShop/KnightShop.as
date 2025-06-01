@@ -80,7 +80,7 @@ void onInit(CBlob@ this)
 		ShopItem@ s = addShopItem(this, "Water Bomb", "$waterbomb$", "mat_waterbombs", Descriptions::waterbomb, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", dynamic_water_bomb_cost /*CTFCosts::waterbomb*/);
 		AddRequirement(s.requirements, "no more", "mat_waterbombs", "Water Bomb", 3);
-		AddRequirement(s.requirements, "buy delay", "mat_waterbombs", "Water Bomb", 15);
+		AddRequirement(s.requirements, "buy delay", "mat_waterbombs", "Water Bomb", 25);
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Mine", getTeamIcon("mine", "Mine.png", team_num, Vec2f(16, 16), 1), "mine", Descriptions::mine, false);
@@ -110,7 +110,7 @@ void onInit(CBlob@ this)
 		ShopItem@ s = addShopItem(this, Names::icebomb, "$icebomb$", "mat_icebombs", Descriptions::icebombdesc, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::icebomb);
 		AddRequirement(s.requirements, "no more", "mat_icebombs", "Ice Bomb", 3);
-		AddRequirement(s.requirements, "buy delay", "mat_icebombs", "Ice Bomb", 15);
+		AddRequirement(s.requirements, "buy delay", "mat_icebombs", "Ice Bomb", 25);
 	}
 	{
 		ShopItem@ s = addShopItem(this, Names::goldenmine, getTeamIcon("golden_mine", "GoldenMine.png", team_num, Vec2f(16, 16), 1), "golden_mine", Descriptions::goldenminedesc, true);
