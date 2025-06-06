@@ -88,11 +88,13 @@ void onInit(CBlob@ this)
 	AddIconToken("$quarters_egg$", "Quarters.png", Vec2f(24, 24), 8);
 	AddIconToken("$quarters_burger$", "Quarters.png", Vec2f(24, 24), 9);
 	AddIconToken("$quarters_pear$", "Pear_Quarters.png", Vec2f(24, 24), 0);
+	AddIconToken("$quarters_bizon$", "bison_icon.png", Vec2f(16, 16), 0);
+	AddIconToken("$quarters_shark$", "shark_icon.png", Vec2f(16, 16), 0);
 	AddIconToken("$rest$", "InteractionIcons.png", Vec2f(32, 32), 29);
 
 	// SHOP
 	this.set_Vec2f("shop offset", Vec2f_zero);
-	this.set_Vec2f("shop menu size", Vec2f(7, 1));
+	this.set_Vec2f("shop menu size", Vec2f(7, 2));
 	this.set_string("shop description", "Buy");
 	this.set_u8("shop icon", 25);
 
@@ -129,6 +131,14 @@ void onInit(CBlob@ this)
 		s.customButton = true;
 		s.buttonwidth = 1;
 		s.buttonheight = 1;
+	}
+	{
+		ShopItem@ s = addShopItem(this, "Cage with Bison", "$quarters_bizon$", "cagebizon", "Buy a cage and let your pet out in the wild!", true);
+		AddRequirement(s.requirements, "coin", "", "Coins", 250);
+	}
+	{
+		ShopItem@ s = addShopItem(this, "Cage with Shark", "$quarters_shark$", "cageshark", "Buy a cage and let the shark out into the fresh air!", true);
+		AddRequirement(s.requirements, "coin", "", "Coins", 200);
 	}
 }
 
