@@ -389,4 +389,9 @@ void onTick(CSprite@ this) {
 			this.SetAnimation("hp_5");
 		}
 	}
+
+	// remove the lock
+	if (blob.get_s32("release timer") != 0 && getGameTime() >= blob.get_s32("release timer")) {
+		this.RemoveSpriteLayer("cage_lock");
+	}
 }
