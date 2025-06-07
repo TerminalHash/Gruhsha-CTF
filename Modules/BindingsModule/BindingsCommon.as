@@ -120,7 +120,9 @@ string[][] button_texts =
 		Names::eggnmb,
 		Names::burgernmb,
 		Names::pearnmb,
-		Names::sleepnmb
+		Names::sleepnmb,
+		"Cage with Bison",
+		"Cage with Shark"
 	},
 	{							// VEHICLE SHOP
 		Names::catapultnmb,
@@ -244,7 +246,9 @@ string[][] button_file_names =
 		"kfc_egg",
 		"kfc_burger",
 		"kfc_pear",
-		"kfc_sleep"
+		"kfc_sleep",
+		"kfc_bison",
+		"kfc_shark"
 	},
 	{
 		"vehicle_catapult",

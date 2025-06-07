@@ -110,6 +110,10 @@ void onInit(CRules@ this)
 		if (!file.exists("kfc_pear$2")) file.add_s32("kfc_pear$2", -1);
 		if (!file.exists("kfc_sleep$1")) file.add_s32("kfc_sleep$1", 54);
 		if (!file.exists("kfc_sleep$2")) file.add_s32("kfc_sleep$2", -1);
+		if (!file.exists("kfc_bison$1")) file.add_s32("kfc_bison$1", 55);
+		if (!file.exists("kfc_bison$2")) file.add_s32("kfc_bison$2", -1);
+		if (!file.exists("kfc_shark$1")) file.add_s32("kfc_shark$1", 56);
+		if (!file.exists("kfc_shark$2")) file.add_s32("kfc_shark$2", -1);
 
 		// vehicle shop
 		if (!file.exists("vehicle_catapult$1")) file.add_s32("vehicle_catapult$1", 49);
