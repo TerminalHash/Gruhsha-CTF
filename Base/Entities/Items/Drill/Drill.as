@@ -615,19 +615,20 @@ void onRender(CSprite@ this)
 	CRules@ rules = getRules();
 
 	CPlayer@ local = getLocalPlayer();
-	CBlob@ localBlob = local.getBlob();
+	if (local is null) return;
 
-	if (local is null || localBlob is null)
-		return;
+	CBlob@ localBlob = local.getBlob();
+	if (localBlob is null) return;
 
 	CBlob@ blob = this.getBlob();
 	u16 holderID = blob.get_u16("showHeatTo");
+	if (blob is null) return;
 
 	CPlayer@ holder = holderID == 0 ? null : getPlayerByNetworkId(holderID);
 	if (holder is null){return;}
 
 	CBlob@ holderBlob = holder.getBlob();
-	if (holderBlob is null){return;}
+	if (holderBlob is null) return;
 
 	Vec2f mousePos = getControls().getMouseWorldPos();
 	Vec2f blobPos = blob.getPosition();
