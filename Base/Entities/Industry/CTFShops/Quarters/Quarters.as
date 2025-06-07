@@ -134,11 +134,13 @@ void onInit(CBlob@ this)
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Cage with Bison", "$quarters_bizon$", "cagebizon", "Buy a cage and let your pet out in the wild!", true);
-		AddRequirement(s.requirements, "coin", "", "Coins", 250);
+		AddRequirement(s.requirements, "coin", "", "Coins", 300);
+		AddRequirement(s.requirements, "no more", "cagebizon", "Cage with Bison", 1);
 	}
 	{
 		ShopItem@ s = addShopItem(this, "Cage with Shark", "$quarters_shark$", "cageshark", "Buy a cage and let the shark out into the fresh air!", true);
-		AddRequirement(s.requirements, "coin", "", "Coins", 200);
+		AddRequirement(s.requirements, "coin", "", "Coins", 250);
+		AddRequirement(s.requirements, "no more", "cageshark", "Cage with Shark", 1);
 	}
 }
 
