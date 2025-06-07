@@ -296,6 +296,14 @@ void onTick(CBlob@ this)
 					wanna_buy = true;
 					item_id	= 5;
 				}
+				if (b_KeyJustPressed("kfc_bison")) {
+					wanna_buy = true;
+					item_id	= 6;
+				}
+				if (b_KeyJustPressed("kfc_shark")) {
+					wanna_buy = true;
+					item_id	= 7;
+				}
 
 				if (wanna_buy) {
 					dont_show_emotes = true;
@@ -555,7 +563,9 @@ void onRender(CSprite@ this)
 		"kfc_egg",
 		"kfc_burger",
 		"kfc_pear",
-		"kfc_sleep"
+		"kfc_sleep",
+		"kfc_bison",
+		"kfc_shark"
 		};
 
 		if (thekfc.get("shop array", @shopitems)) {
