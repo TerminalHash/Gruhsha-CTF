@@ -180,7 +180,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		}
 	}
 
-	if (cmd == this.getCommandID("set release timer") && isClient()) {
+	if (cmd == this.getCommandID("set release timer") && isServer()) {
 		CPlayer@ p = getNet().getActiveCommandPlayer();
 		if (p is null) return;
 					
