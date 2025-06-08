@@ -132,6 +132,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 
 				// need for hearts particles
 				animal.set_bool("released from cage", true);
+				animal.Sync("released from cage", true);
 			}
 		}
 
@@ -159,16 +160,20 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		if (this.hasTag("cage is fine")) return;
 
 		for (uint i = 0; i < animals_to_spawn; i++) {
-			CBlob@ bizon = server_CreateBlob("bison", 255, Vec2f(this.getPosition().x + 35, this.getPosition().y));
-			if (bizon !is null) {
-				if (bizon.get_s16("mad timer") <= MAD_TIME / 8) {
-					bizon.getSprite().PlaySound("/BisonMad");
+			CBlob@ animal = server_CreateBlob("bison", 255, Vec2f(this.getPosition().x + 35, this.getPosition().y));
+			if (animal !is null) {
+				if (animal.get_s16("mad timer") <= MAD_TIME / 8) {
+					animal.getSprite().PlaySound("/BisonMad");
 				}
 
-				bizon.set_s16("mad timer", MAD_TIME);
-				bizon.set_u8(personality_property, DEFAULT_PERSONALITY | AGGRO_BIT);
-				bizon.set_u8(state_property, MODE_TARGET);
-				bizon.set_netid(target_property, caller.getNetworkID());
+				animal.set_s16("mad timer", MAD_TIME);
+				animal.set_u8(personality_property, DEFAULT_PERSONALITY | AGGRO_BIT);
+				animal.set_u8(state_property, MODE_TARGET);
+				animal.set_netid(target_property, caller.getNetworkID());
+
+				// need for angry particles
+				animal.set_bool("released from cage with attack", true);
+				animal.Sync("released from cage with attack", true);
 			}
 		}
 
