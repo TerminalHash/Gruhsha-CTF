@@ -22,8 +22,8 @@ void onInit(CBlob@ this)
 	this.addCommandID("release animal client");
 	this.addCommandID("set release timer");
 
-	this.set_u32("release secs", releaseSecs);
-	this.set_u32("release timer", 0);
+	this.set_s32("release secs", releaseSecs);
+	this.set_s32("release timer", 0);
 
 	this.set_Vec2f("required space", Vec2f(5, 4));
 
@@ -181,7 +181,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		const f32 DISTANCE_MAX = this.getRadius() + caller.getRadius() + 8.0f;
 		if (this.getDistanceTo(caller) > DISTANCE_MAX || this.isAttached()) return;
 
-		this.set_u32("release timer", getGameTime() + this.get_u32("release secs") * getTicksASecond());
+		this.set_s32("release timer", getGameTime() + this.get_s32("release secs") * getTicksASecond());
 		this.Sync("release timer", true);
 	}
 }
@@ -190,7 +190,11 @@ void onDie(CBlob@ this) {
 	if (this is null) return;
 
 	if (this !is null && this.hasTag("cage is being damaged")) {
-		this.SendCommand(this.getCommandID("release animal"));
+		for (uint i = 0; i < animals_to_spawn; i++) {
+			CBlob@ shark = server_CreateBlob("shark", 255, Vec2f(this.getPosition().x + 35, this.getPosition().y));
+		}
+
+		this.SendCommand(this.getCommandID("release animal client"));
 	}
 }
 
@@ -275,7 +279,7 @@ void onRender(CSprite@ this)
 
 	Vec2f pos2d = blob.getScreenPos();
 	const u32 gameTime = getGameTime();
-	const u32 unpackTime = blob.get_u32("release timer");
+	const u32 unpackTime = blob.get_s32("release timer");
 
 	if (unpackTime > gameTime)
 	{
@@ -285,7 +289,7 @@ void onRender(CSprite@ this)
 		const int secs = 1 + (unpackTime - gameTime) / getTicksASecond();
 		Vec2f upperleft(pos2d.x - dim.x / 2, top - dim.y - dim.y);
 		Vec2f lowerright(pos2d.x + dim.x / 2, top - dim.y);
-		const f32 progress = 1.0f - (f32(secs) / f32(blob.get_u32("release secs")));
+		const f32 progress = 1.0f - (f32(secs) / f32(blob.get_s32("release secs")));
 		GUI::DrawProgressBar(upperleft, lowerright, progress);
 	}
 
