@@ -1202,7 +1202,7 @@ void ShootArrow(CBlob@ this)
 
 	f32 arrowspeed;
 
-/*	s32 shoot_velocity = ArcherParams::shoot_max_vel;
+	s32 shoot_velocity = ArcherParams::shoot_max_vel;
 
 	if (this.hasTag("icy")) {
 		shoot_velocity = ArcherParams::shoot_max_vel_icy;
@@ -1219,20 +1219,6 @@ void ShootArrow(CBlob@ this)
 	else
 	{
 		arrowspeed = shoot_velocity;
-	}
-*/
-
-	if (charge_time < MIDSHOT_CHARGE)
-	{
-		arrowspeed = ArcherParams::shoot_max_vel * (1.0f / 3.0f);
-	}
-	else if (charge_time < FULLSHOT_CHARGE)
-	{
-		arrowspeed = ArcherParams::shoot_max_vel * (4.0f / 5.0f);
-	}
-	else
-	{
-		arrowspeed = ArcherParams::shoot_max_vel;
 	}
 
 	Vec2f offset(this.isFacingLeft() ? 2 : -2, -2);
