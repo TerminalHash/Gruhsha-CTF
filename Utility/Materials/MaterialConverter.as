@@ -172,6 +172,9 @@ void onRemoveFromInventory(CBlob@ this, CBlob@ blob) {
 void onDie(CBlob@ this)
 {
 	if (isServer()) {
+        // prevent saving resources on warmup stage
+        if (getRules().getCurrentState() == WARMUP) return;
+
         if (this.hasTag("dead") && getRules().get_s32("teamstone" + this.getTeamNum()) > 0) {
             int team_stone = getRules().get_s32("teamstone" + this.getTeamNum());
 
