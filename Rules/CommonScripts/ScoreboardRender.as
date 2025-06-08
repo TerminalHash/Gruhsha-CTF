@@ -111,6 +111,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 
 	//draw player table header
 	GUI::DrawText(getTranslatedString("Player"), Vec2f(tl.x, tl.y), SColor(0xffffffff));
+	GUI::DrawText(getTranslatedString("Coins"), Vec2f(br.x - 580, tl.y), SColor(0xffffffff));
 	GUI::DrawText(getTranslatedString("Username"), Vec2f(br.x - 470, tl.y), SColor(0xffffffff));
 	GUI::DrawText(getTranslatedString("Ping"), Vec2f(br.x - 330, tl.y), SColor(0xffffffff));
 	GUI::DrawText(getTranslatedString("Kills"), Vec2f(br.x - 260, tl.y), kdr_color);      // Waffle: Change header color for old stats
@@ -652,6 +653,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 		s32 assists = p.getAssists();
 		f32 dmgdeal = getRules().get_f32("damage_impact_" + p.getUsername());
 		f32 kpm = getKPM(p);
+		f32 coins = p.getCoins();
 
 		if (old_stats)
 		{
@@ -679,6 +681,7 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 			}
 		}
 
+		GUI::DrawText("" + coins, Vec2f(br.x - 570, tl.y), SColor(0xffffffff));
 		GUI::DrawText("" + username, Vec2f(br.x - 470, tl.y), namecolour);
 		GUI::DrawText("" + ping_in_ms, Vec2f(br.x - 330, tl.y), SColor(0xffffffff));
 		GUI::DrawText("" + kills, Vec2f(br.x - 260, tl.y), kdr_color);
@@ -687,6 +690,8 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 		//GUI::DrawText("" + deaths, Vec2f(br.x - 190, tl.y), kdr_color);
 		//GUI::DrawText("" + assists, Vec2f(br.x - 120, tl.y), kdr_color);
 		//GUI::DrawText("" + formatFloat(kills / Maths::Max(f32(deaths), 1.0f), "", 0, 2), Vec2f(br.x - 50, tl.y), kdr_color);
+
+		GUI::DrawIcon("coins.png", 1, Vec2f(16, 16), Vec2f(br.x - 595, tl.y - 8), 1.0f, 0);
 
 		int teamIndexSpectators = 200;
 		int teamIndexBlue = 0;
