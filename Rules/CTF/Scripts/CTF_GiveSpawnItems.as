@@ -338,6 +338,7 @@ void onTick(CRules@ this)
 
 	// automatic resupplies for builders
 	if (gametime >= this.get_s32("nextresuply")) {
+		printf("Free resupplies!");
 		doGiveMats(this);
 	}
 }
@@ -345,7 +346,7 @@ void onTick(CRules@ this)
 // Reset timer in case player who joins has an outdated timer
 void onNewPlayerJoin(CRules@ this, CPlayer@ player)
 {
-	s32 next_add_time = getGameTime() + (this.isWarmup() ? materials_wait_warmup : materials_wait) * getTicksASecond();
+	//s32 next_add_time = getGameTime() + (this.isWarmup() ? materials_wait_warmup : materials_wait) * getTicksASecond();
 
 	if (this.getCurrentState() == WARMUP)
 		SetCTFTimer(this, player, 0, "builder");
@@ -353,9 +354,9 @@ void onNewPlayerJoin(CRules@ this, CPlayer@ player)
 		SetCTFTimer(this, player, this.get_s32("nextresuply"), "builder");
 
 	//if (next_add_time < getCTFTimer(this, player, "builder") || next_add_time < getCTFTimer(this, player, "archer"))
-	if (next_add_time < getCTFTimer(this, player, "builder"))
-	{
-		SetCTFTimer(this, player, this.get_s32("nextresuply"), "builder");
+	//if (next_add_time < getCTFTimer(this, player, "builder"))
+	//{
+	//	SetCTFTimer(this, player, this.get_s32("nextresuply"), "builder");
 		//SetCTFTimer(this, player, getGameTime(), "archer");
-	}
+	//}
 }
