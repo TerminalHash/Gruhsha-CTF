@@ -13,7 +13,7 @@ namespace GruhshaHitters {
 		fumo_keg = 57,
 
 		// animals
-		bison
+		bison = 58
 	};
 }
 
