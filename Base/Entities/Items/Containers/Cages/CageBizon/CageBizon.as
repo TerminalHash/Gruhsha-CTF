@@ -7,7 +7,7 @@ const s16 MAD_TIME = 600;
 // only one animal allowed to spawn
 const int animals_to_spawn = 1;
 
-const u32 releaseSecs = 3;
+const s32 releaseSecs = 3;
 
 void onInit(CBlob@ this)
 {
@@ -22,8 +22,8 @@ void onInit(CBlob@ this)
 	this.addCommandID("release animal client");
 	this.addCommandID("set release timer");
 
-	this.set_u32("release secs", releaseSecs);
-	this.set_u32("release timer", 0);
+	this.set_s32("release secs", releaseSecs);
+	this.set_s32("release timer", 0);
 
 	this.set_Vec2f("required space", Vec2f(5, 4));
 
@@ -129,6 +129,9 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 			if (animal !is null) {
 				animal.set_netid(friend_property, caller.getNetworkID());
 				animal.set_u8(state_property, MODE_FRIENDLY);
+
+				// need for hearts particles
+				animal.set_bool("released from cage", true);
 			}
 		}
 
@@ -191,7 +194,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		const f32 DISTANCE_MAX = this.getRadius() + caller.getRadius() + 8.0f;
 		if (this.getDistanceTo(caller) > DISTANCE_MAX || this.isAttached()) return;
 
-		this.set_u32("release timer", getGameTime() + this.get_u32("release secs") * getTicksASecond());
+		this.set_s32("release timer", getGameTime() + this.get_s32("release secs") * getTicksASecond());
 		this.Sync("release timer", true);
 	}
 }
@@ -285,7 +288,7 @@ void onRender(CSprite@ this)
 
 	Vec2f pos2d = blob.getScreenPos();
 	const u32 gameTime = getGameTime();
-	const u32 unpackTime = blob.get_u32("release timer");
+	const s32 unpackTime = blob.get_s32("release timer");
 
 	if (unpackTime > gameTime)
 	{
@@ -295,7 +298,7 @@ void onRender(CSprite@ this)
 		const int secs = 1 + (unpackTime - gameTime) / getTicksASecond();
 		Vec2f upperleft(pos2d.x - dim.x / 2, top - dim.y - dim.y);
 		Vec2f lowerright(pos2d.x + dim.x / 2, top - dim.y);
-		const f32 progress = 1.0f - (f32(secs) / f32(blob.get_u32("release secs")));
+		const f32 progress = 1.0f - (f32(secs) / f32(blob.get_s32("release secs")));
 		GUI::DrawProgressBar(upperleft, lowerright, progress);
 	}
 
