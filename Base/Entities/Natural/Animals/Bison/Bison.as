@@ -19,6 +19,7 @@ void onInit(CSprite@ this)
 void onTick(CSprite@ this)
 {
 	CBlob@ blob = this.getBlob();
+	if (blob is null) return;
 
 	if (!blob.hasTag("dead"))
 	{
@@ -36,6 +37,44 @@ void onTick(CSprite@ this)
 	{
 		this.SetAnimation("dead");
 		this.getCurrentScript().runFlags |= Script::remove_after_this;
+	}
+
+	// spawn heart particles after releasing from cage
+	if (blob.get_bool("released from cage")) {
+		for (uint i = 0; i < 8; i++) {
+			const string particleName = "HeartParticle.png";
+			const Vec2f pos = blob.getPosition() + getRandomVelocity(0, blob.getRadius(), XORRandom(360));
+
+			CParticle@ p = ParticleAnimated(particleName, pos, Vec2f(0,0),  0.0f, 1.0f, 1+XORRandom(5), -0.1f, false);
+			if (p !is null)
+			{
+				p.diesoncollide = true;
+				p.fastcollision = true;
+				p.lighting = true; // required unless you want it so show up under ground
+			}
+		}
+
+		blob.set_bool("released from cage", false);
+		blob.Sync("released from cage", true);
+	}
+
+	// spawn angry particles after releasing from cage
+	if (blob.get_bool("released from cage with attack")) {
+		for (uint i = 0; i < 8; i++) {
+			const string particleName = "AngryParticle.png";
+			const Vec2f pos = blob.getPosition() + getRandomVelocity(0, blob.getRadius(), XORRandom(360));
+
+			CParticle@ p = ParticleAnimated(particleName, pos, Vec2f(0,0),  0.0f, 1.0f, 1+XORRandom(5), -0.1f, false);
+			if (p !is null)
+			{
+				p.diesoncollide = true;
+				p.fastcollision = true;
+				p.lighting = true; // required unless you want it so show up under ground
+			}
+		}
+
+		blob.set_bool("released from cage with attack", false);
+		blob.Sync("released from cage with attack", true);
 	}
 }
 
@@ -152,44 +191,6 @@ void onTick(CBlob@ this)
 				this.getSprite().PlaySound("/StoneStep", volume, 0.75f);
 			}
 		}
-	}
-
-	// spawn heart particles after releasing from cage
-	if (this.get_bool("released from cage")) {
-		for (uint i = 0; i < 8; i++) {
-			const string particleName = "HeartParticle.png";
-			const Vec2f pos = this.getPosition() + getRandomVelocity(0, this.getRadius(), XORRandom(360));
-
-			CParticle@ p = ParticleAnimated(particleName, pos, Vec2f(0,0),  0.0f, 1.0f, 1+XORRandom(5), -0.1f, false);
-			if (p !is null)
-			{
-				p.diesoncollide = true;
-				p.fastcollision = true;
-				p.lighting = true; // required unless you want it so show up under ground
-			}
-		}
-
-		this.set_bool("released from cage", false);
-		this.Sync("released from cage", true);
-	}
-
-	// spawn angry particles after releasing from cage
-	if (this.get_bool("released from cage with attack")) {
-		for (uint i = 0; i < 8; i++) {
-			const string particleName = "AngryParticle.png";
-			const Vec2f pos = this.getPosition() + getRandomVelocity(0, this.getRadius(), XORRandom(360));
-
-			CParticle@ p = ParticleAnimated(particleName, pos, Vec2f(0,0),  0.0f, 1.0f, 1+XORRandom(5), -0.1f, false);
-			if (p !is null)
-			{
-				p.diesoncollide = true;
-				p.fastcollision = true;
-				p.lighting = true; // required unless you want it so show up under ground
-			}
-		}
-
-		this.set_bool("released from cage with attack", false);
-		this.Sync("released from cage with attack", true);
 	}
 }
 
