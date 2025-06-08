@@ -52,6 +52,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		{
 			if (getRules().get_string("clusterfuck") == "on") {
 				s.Gib();
+				s.PlaySound("/EggCrack" + XORRandom(2) + ".ogg");
 			}
 		}
 	}
