@@ -170,6 +170,26 @@ void onTick(CBlob@ this)
 		}
 
 		this.set_bool("released from cage", false);
+		this.Sync("released from cage", true);
+	}
+
+	// spawn angry particles after releasing from cage
+	if (this.get_bool("released from cage with attack")) {
+		for (uint i = 0; i < 8; i++) {
+			const string particleName = "AngryParticle.png";
+			const Vec2f pos = this.getPosition() + getRandomVelocity(0, this.getRadius(), XORRandom(360));
+
+			CParticle@ p = ParticleAnimated(particleName, pos, Vec2f(0,0),  0.0f, 1.0f, 1+XORRandom(5), -0.1f, false);
+			if (p !is null)
+			{
+				p.diesoncollide = true;
+				p.fastcollision = true;
+				p.lighting = true; // required unless you want it so show up under ground
+			}
+		}
+
+		this.set_bool("released from cage with attack", false);
+		this.Sync("released from cage with attack", true);
 	}
 }
 
