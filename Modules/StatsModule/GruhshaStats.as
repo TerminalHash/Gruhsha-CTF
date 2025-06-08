@@ -142,6 +142,8 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 				case Hitters::drill:			hitter_string = "drill"; break;
 				case Hitters::saw:				hitter_string = "saw"; break;
 
+				case Hitters::bite:				hitter_string = "bite"; break;
+
 				// MOD HITTERS
 				// Special
 				case GruhshaHitters::tile_entity:		hitter_string = "tile_entity"; break;
@@ -156,6 +158,9 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 				// Kegs
 				case GruhshaHitters::hazelnut_shell:	hitter_string = "hazelnut_shell"; break;
 				case GruhshaHitters::fumo_keg:			hitter_string = "fumo_keg"; break;
+
+				// Animals
+				case GruhshaHitters::bison:				hitter_string = "bison"; break;
 
 
 				default: 						hitter_string = "fall";
