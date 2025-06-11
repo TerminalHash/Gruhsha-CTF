@@ -85,7 +85,7 @@ void onInit(CBlob@ this)
 	{
 		ShopItem@ s = addShopItem(this, Names::bombarrow, "$mat_bombarrows$", "mat_bombarrows", Descriptions::bombarrows, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", dynamic_bomb_arrow_cost /*CTFCosts::bombarrows*/);
-		AddRequirement(s.requirements, "buy delay", "mat_bombarrows", "Bomb Arrow", 90);
+		AddRequirement(s.requirements, "buy delay", "mat_bombarrows", "Bomb Arrow", 25);
 	}
 	{
 		ShopItem@ s = addShopItem(this, Names::woodenarrow, "$blockarrows$", "mat_blockarrows", Descriptions::woodenarrowdesc, true);
