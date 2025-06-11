@@ -207,6 +207,8 @@ void onTick(CBlob@ this)
 				sprite.animation.loop = true;
 			}
 
+			bool isSuddenDeath = getRules().hasTag("sudden death");	
+
 			// decrease strength of explosion with time of life
 			// it should increase reward for agressive playing
 			if (this !is null) {
