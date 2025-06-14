@@ -57,6 +57,8 @@ void onInit(CBlob@ this)
 	{
 		SetupBomb(this, bomb_fuse, 48.0f, 1.5f, 36.0f, 0.5f, true);
 		this.set_u8("custom_hitter", Hitters::bomb_arrow);
+		// HACK: this code so shitty, so we neew set property INTO FUCKING ARROW
+		this.set_f32("map_damage_radius", 36.0f);
 	}
 	else if (arrowType == ArrowType::water)
 	{
@@ -204,8 +206,21 @@ void onTick(CBlob@ this)
 				sprite.animation.time = 2;
 				sprite.animation.loop = true;
 			}
-		}
 
+			bool isSuddenDeath = getRules().hasTag("sudden death");	
+
+			// decrease strength of explosion with time of life
+			// it should increase reward for agressive playing
+			if (this !is null) {
+				if (!isSuddenDeath) {
+					if (this.getTickSinceCreated() > 20 && this.get_f32("map_damage_radius") == 36.0f) {
+							this.set_f32("map_damage_radius", 28.0f);
+
+						//printf("My map damage is " + this.get_f32("map_damage_radius"));
+					}
+				}
+			}
+		}
 
 		// ignite arrow
 		if (arrowType == ArrowType::normal && this.isInFlames())
