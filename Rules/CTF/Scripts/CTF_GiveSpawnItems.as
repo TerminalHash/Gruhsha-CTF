@@ -60,7 +60,7 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ attacker, u8 customData
 		SetCTFTimer(this, victim, 0, "archer");
 
 		// possible fix issue with broken timer for builder
-		//SetCTFTimer(this, victim, 0, "builder");
+		SetCTFTimer(this, victim, this.get_s32("nextresuply"), "builder");
 	}
 }
 
@@ -335,7 +335,7 @@ void onTick(CRules@ this)
 				
 				if (isShop && name.find(class_name) == -1) continue; // NOTE: builder doesn't get wood+stone at archershop, archer doesn't get arrows at buildershop
 
-				doGiveSpawnMats(this, p, overlapped);
+				//doGiveSpawnMats(this, p, overlapped);
 			}
 		}
 	}
