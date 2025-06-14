@@ -59,7 +59,7 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ attacker, u8 customData
 		SetCTFTimer(this, victim, 0, "archer");
 
 		// possible fix issue with broken timer for builder
-		SetCTFTimer(this, victim, 0, "builder");
+		//SetCTFTimer(this, victim, 0, "builder");
 	}
 }
 
