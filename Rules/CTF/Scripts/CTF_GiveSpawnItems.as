@@ -49,7 +49,8 @@ void onSetPlayer(CRules@ this, CBlob@ blob, CPlayer@ player)
 	if (player is null) return;
 	
 	//doGiveSpawnMats(this, player, blob);
-	doGiveMats(this);
+	if (blob !is null && blob.getConfig() == "builder")
+		doGiveMats(this);
 }
 
 //when player dies, unset archer flag so he can get arrows if he really sucks :)
