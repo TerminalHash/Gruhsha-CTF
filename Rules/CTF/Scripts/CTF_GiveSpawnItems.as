@@ -66,6 +66,8 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ attacker, u8 customData
 // egor's function for builder resupplies
 // backported from Pear Seed and modified
 void doGiveMats(CRules@ this) {
+	printf("[DEBUG] Starting material distribution!");
+
 	s32 gametime = getGameTime();
 
 	mat_delay = materials_wait;
@@ -82,11 +84,14 @@ void doGiveMats(CRules@ this) {
 	if (getGameTime() > lower_mats_timer * getTicksASecond()) {
 		wood_amount = lower_wood;
 		stone_amount = lower_stone;
+
+		printf("[DEBUG] We have half of match, lowering materials");
 	}
 
 	// check amount of builders and give mats depending on the number of builders
 	// ONLY FOR OFFI MATCHES
 	if (this.hasTag("offi match")) {
+		printf("[DEBUG] Set limits, wood to " + wood_limit + ", stone to " + stone_limit);
 		wood_limit = 2000;
 		stone_limit = 1000;
 
@@ -98,6 +103,8 @@ void doGiveMats(CRules@ this) {
 
 			wood_limit = 4000;
 			stone_limit = 2000;
+
+			printf("[DEBUG] Update material limits, delay and amount of materials");
 		}
 
 		if (builders_limit > 1 && getGameTime() > lower_mats_timer * getTicksASecond()) {
@@ -108,18 +115,26 @@ void doGiveMats(CRules@ this) {
 
 			wood_limit = 4000;
 			stone_limit = 2000;
+
+			printf("[DEBUG] Update material limits, delay and lower amount of materials");
 		}
 	}
 
 	for (int team = 0; team < 2; team++) {
+		printf("[DEBUG] Trying to add wood and stone, checking limits...");
+	
 		if (this.get_s32("teamwood" + team) < wood_limit) {
 			this.add_s32("teamwood" + team, wood_amount);
 			this.Sync("teamwood" + team, true);
+
+			printf("[DEBUG] Add " + wood_amount + " of wood to team " + team);
 		}
 
 		if (this.get_s32("teamstone" + team) < stone_limit) {
 			this.add_s32("teamstone" + team, stone_amount);
 			this.Sync("teamstone" + team, true);
+
+			printf("[DEBUG] Add " + stone_amount + " of stone to team " + team);
 		}
 	}
 
@@ -128,6 +143,10 @@ void doGiveMats(CRules@ this) {
 		if (player is null) continue;
 
 		SetCTFTimer(this, player, next_resuply, "builder");
+		printf("[DEBUG] Timer is set for players, material distribution is done!");
+		printf("[DEBUG] Next resupply willwill be delivered in " + next_resuply);
+		printf("[DEBUG] Current time is " + getGameTime());
+		printf("---------------------------------------");
 	}
 }
 
@@ -338,6 +357,7 @@ void onTick(CRules@ this)
 
 	// automatic resupplies for builders
 	if (gametime >= this.get_s32("nextresuply")) {
+		printf("---------------------------------------");
 		printf("Free resupplies!");
 		doGiveMats(this);
 	}
