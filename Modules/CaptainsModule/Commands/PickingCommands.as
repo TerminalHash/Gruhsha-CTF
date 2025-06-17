@@ -61,11 +61,11 @@ class AppointCommand : ChatCommand
 			CPlayer@ red_leader = getPlayerByNamePart(RED_LEADER_NAME);
 
 			if (blue_leader is null) {
-				error("[CAPTAINS SYSTEM] blue leader doesn't not exists! try again");
+				error("[CAPTAINS SYSTEM] blue leader doesn't exists! try again");
 				return;
 			}
 			if (red_leader is null) {
-				error("[CAPTAINS SYSTEM] red leader doesn't not exists! try again");
+				error("[CAPTAINS SYSTEM] red leader doesn't exists! try again");
 				return;
 			}
 
