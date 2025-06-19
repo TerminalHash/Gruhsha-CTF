@@ -1,6 +1,7 @@
 //knight HUD
 #include "/Entities/Common/GUI/ActorHUDStartPos.as";
 #include "MaterialIndicatorHUD.as";
+#include "BuffTracker.as";
 #include "pathway.as";
 
 const string iconsFilename = "Entities/Characters/Knight/KnightIcons.png";
@@ -103,6 +104,9 @@ void onRender(CSprite@ this)
 
 	// draw mats ui
 	DrawPersonalMats();
+
+	// draw buffs
+	DrawBuffs();
 
 	// draw class icon
 	GUI::DrawIcon(iconsFilename, frame, Vec2f(16, 32), tl + Vec2f(8 + (slotsSize - 1) * 40, -16), 1.0f, blob.getTeamNum());
