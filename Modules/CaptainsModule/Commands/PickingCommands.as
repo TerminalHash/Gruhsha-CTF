@@ -439,7 +439,62 @@ class TagBuilder : ChatCommand
 		printf("[CAPTAINS SYSTEM] " + player.getUsername() + " was tagged " + tagged_player.getUsername() + " as builder in team " + player.getTeamNum());
 	}
 }
+/*
+class AppointBuilders : ChatCommand
+{
+	AppointBuilders()
+	{
+		super("setbuilders", "Choose players, what will be builder in match");
+		SetUsage("<blue builder> <red builder>");
+	}
 
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		if (args.size() < 1) return;
+
+		const string BLUE_BUILDER_NAME = args[0];
+		const string RED_BUILDER_NAME = args[1];
+
+		CPlayer@ blue_builder = getPlayerByNamePart(BLUE_BUILDER_NAME);
+		CPlayer@ red_builder = getPlayerByNamePart(RED_BUILDER_NAME);
+
+		if (blue_builder is null) {
+			error("[CAPTAINS SYSTEM] blue leader doesn't exists! try again");
+			return;
+		}
+		if (red_builder is null) {
+			error("[CAPTAINS SYSTEM] red leader doesn't exists! try again");
+			return;
+		}
+
+		// if admin accidentally wrote the same player's name twice
+		if (blue_builder.getUsername() == red_builder.getUsername() || red_builder.getUsername() == blue_builder.getUsername())
+		{
+			error("[CAPTAINS SYSTEM] One player cannot be a builder in two teams at the same time!");
+			return;
+		}
+
+		if (blue_builder !is null && red_builder !is null) {
+			rules.set_string("team_" + 0 + "_builder", blue_builder.getUsername());
+			rules.set_string("team_" + 1 + "_builder", red_builder.getUsername());
+			rules.Sync("team_" + 0 + "_builder", true);
+			rules.Sync("team_" + 1 + "_builder", true);
+		}
+
+		printf("[CAPTAINS SYSTEM] Builders is set! Blue builder is " + rules.get_string("team_0_builder") + " red builder is " + rules.get_string("team_1_builder"));
+	}
+}
+*/
 class ToggleEditor : ChatCommand
 {
 	ToggleEditor()
