@@ -7,6 +7,7 @@
 //#include "/Entities/Common/GUI/ActorHUDStartPos.as";
 //#include "MaterialTeamIndicatorHUD.as";
 #include "MaterialIndicatorHUD.as";
+#include "BuffTracker.as";
 #include "pathway.as";
 
 const string iconsFilename = "Entities/Characters/Builder/BuilderIcons.png";
@@ -97,6 +98,9 @@ void onRender(CSprite@ this)
 	// draw mats ui
 	DrawPersonalMats();
 	//DrawTeamMaterialsIndicator(); // old, we dont have teampool anymore
+
+	// draw buff tracker
+	DrawBuffs();
 
 	// draw coins
 

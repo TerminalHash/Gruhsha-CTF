@@ -2,6 +2,7 @@
 #include "/Entities/Common/GUI/ActorHUDStartPos.as";
 #include "MaterialIndicatorHUD.as";
 #include "HolidaySprites.as";
+#include "BuffTracker.as";
 #include "pathway.as";
 
 const string iconsFilename = "Entities/Characters/Knight/KnightIcons.png";
@@ -105,6 +106,9 @@ void onRender(CSprite@ this)
 
 	// draw mats ui
 	DrawPersonalMats();
+
+	// draw buffs
+	DrawBuffs();
 
 	// draw class icon
 	if (isAnyHoliday()) {

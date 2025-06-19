@@ -5,6 +5,7 @@
 #include "ArcherResupplyHUD.as";
 #include "MaterialIndicatorHUD.as";
 #include "HolidaySprites.as";
+#include "BuffTracker.as";
 #include "pathway.as";
 
 const string iconsFilename = "Entities/Characters/Archer/ArcherIcons.png";
@@ -95,6 +96,9 @@ void onRender(CSprite@ this)
 
 	// draw mats ui
 	DrawPersonalMats();
+
+	// draw buffs
+	DrawBuffs();
 
 	// class weapon icon
 	if (isAnyHoliday()) {
