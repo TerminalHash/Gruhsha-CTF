@@ -562,6 +562,16 @@ void onTick(CBlob@ this)
 			this.sub_s32("fire sword delay", 1);
 	}*/
 
+	// timer for broken shield
+	if (this.hasTag("broken shield")) {
+		this.sub_s32("broken shield timer", 1);
+		this.Sync("broken shield timer", true);
+
+		if (this.get_s32("broken shield timer") <= 0) {
+			this.Untag("broken shield");
+			this.Sync("broken shield", true);
+		}
+	}
 }
 
 bool getInAir(CBlob@ this)
