@@ -11,7 +11,9 @@ string[] blob_list = {
 	"keg",
 	"hazelnut",
 	"slidemine",
-	"mat_bombarrows"
+	"mat_bombarrows",
+	"mat_waterbombs",
+	"mat_icebombs"
 };
 
 void onTick(CRules@ this) {
