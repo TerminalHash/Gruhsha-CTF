@@ -114,10 +114,10 @@ void doGiveMats(CRules@ this) {
 		if (player is null) continue;
 
 		SetCTFTimer(this, player, next_resuply, "builder");
-		printf("[DEBUG] Timer is set for players, material distribution is done!");
-		printf("[DEBUG] Next resupply willwill be delivered in " + next_resuply);
-		printf("[DEBUG] Current time is " + getGameTime());
-		printf("---------------------------------------");
+		//printf("[DEBUG] Timer is set for players, material distribution is done!");
+		//printf("[DEBUG] Next resupply willwill be delivered in " + next_resuply);
+		//printf("[DEBUG] Current time is " + getGameTime());
+		//printf("---------------------------------------");
 	}
 }
 
