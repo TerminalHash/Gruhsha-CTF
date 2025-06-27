@@ -47,7 +47,15 @@ void onRender(CRules@ this)
 	if (myblob is null) return;
 
 	if (me !is null && myblob !is null) {
-		if (myblob.hasTag("icy"))
-			GUI::DrawIcon("Sprites/HUD/Snowflake.png", 0, Vec2f(17, 19), Vec2f(myblob.getInterpolatedScreenPos().x - 15, myblob.getInterpolatedScreenPos().y - 70), 1.0f, 255);
+		int bobr = 70;
+
+		if (myblob.hasTag("icy")) {
+			GUI::DrawIcon("Sprites/HUD/DebuffIcons.png", 0, Vec2f(17, 19), Vec2f(myblob.getInterpolatedScreenPos().x - 15, myblob.getInterpolatedScreenPos().y - bobr), 1.0f, 255);
+			bobr += 40;
+		}
+
+		if (myblob.hasTag("broken shield")) {
+			GUI::DrawIcon("Sprites/HUD/DebuffIcons.png", 1, Vec2f(17, 19), Vec2f(myblob.getInterpolatedScreenPos().x - 15, myblob.getInterpolatedScreenPos().y - bobr), 1.0f, me.getTeamNum());
+		}
 	}
 }

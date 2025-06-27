@@ -3,6 +3,9 @@
 #include "Hitters.as"
 #include "GenericButtonCommon.as"
 #include "ParticleSparks.as"
+#include "KnockedCommon.as"
+#include "KnightCommon.as"
+#include "ShieldCommon.as";
 #include "TreeCommon.as"  // Waffle: Need tree vars
 
 const string toggle_id = "toggle_power";
@@ -59,6 +62,8 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 	if (!canSeeButtons(this, caller)) return;
 
 	if (caller.getTeamNum() != this.getTeamNum() || this.getDistanceTo(caller) > 16) return;
+
+	if (this.hasTag("broken saw")) return;
 
 	const string desc = getTranslatedString("Turn Saw " + (getSawOn(this) ? "Off" : "On"));
 	caller.CreateGenericButton(8, Vec2f(0, 0), this, this.getCommandID(toggle_id), desc);
