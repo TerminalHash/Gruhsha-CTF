@@ -176,6 +176,21 @@ void Blend(CBlob@ this, CBlob@ tobeblended)
 		}
 	}
 
+	if (tobeblended !is null && tobeblended.getConfig() == "knight" && !tobeblended.hasTag("broken shield")) {
+		KnightInfo@ knight;
+		if (!tobeblended.get("knightInfo", @knight)) {
+			return;
+		}
+
+		ShieldVars@ shieldVars = getShieldVars(tobeblended);
+		if (shieldVars is null) return;
+
+		bool shieldState = isShieldState(knight.state);
+
+		if (shieldState) return;
+	}
+
+	//printf("Blend kill");
 	//give no fucks about teamkilling
 	tobeblended.server_SetHealth(-1.0f);
 	tobeblended.server_Die();
@@ -266,8 +281,47 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
     {
         Vec2f pos = this.getPosition();
         Vec2f bpos = blob.getPosition();
+
+		// knights with broken shield automatically have
+		if (blob !is null && blob.getConfig() == "knight" && !blob.hasTag("broken shield")) {
+			KnightInfo@ knight;
+			if (!blob.get("knightInfo", @knight)) {
+				return;
+			}
+
+			ShieldVars@ shieldVars = getShieldVars(blob);
+			if (shieldVars is null) return;
+
+			bool shieldState = isShieldState(knight.state);
+
+			if (shieldState) {
+				blob.Tag("broken shield");
+				blob.set_s32("broken shield timer", 5 * 30); // 5 seconds
+				blob.Sync("broken shield", true);
+				blob.Sync("broken shield timer", true);
+
+				Sound::Play("/Stun", bpos, 1.0f, this.getSexNum() == 0 ? 1.0f : 1.5f);
+				setKnocked(blob, 20);
+
+				// i guess it will be rewrote to commands, need tests
+				sparks(blob.getPosition(), 180.0f - blob.getOldVelocity().Angle(), 0.5f, 60.0f, 0.5f);
+				this.getSprite().PlaySound("ShieldHit", 1.0f, 1.0f);
+
+				// disable our saw immediately and block toggle for a some time
+				SetSawOn(this, !getSawOn(this));
+				this.set_s32("broken saw timer", 60 * 30); // one minute
+				this.Tag("broken saw");
+				this.Sync("broken saw timer", true);
+				this.Sync("broken saw", true);
+
+				return;
+			}
+		}
+
         blob.server_SetHealth(-1);
         this.server_Hit(blob, bpos, bpos - pos, 0.0f, Hitters::saw);
+
+		//printf("onCollision kill");
     }
 
 	const string name = blob.getName();
@@ -410,6 +464,16 @@ void onTick(CBlob@ this)
 	}
 
 	UpdateSprite(this);
+
+	if (this.hasTag("broken saw")) {
+		this.sub_s32("broken saw timer", 1);
+		this.Sync("broken saw timer", true);
+
+		if (this.get_s32("broken saw timer") <= 0) {
+			this.Untag("broken saw");
+			this.Sync("broken saw", true);
+		}
+	}
 
 	// Waffle: Automatically chop trees behind the saw if they're fully grown
 	if (this.getTickSinceCreated() % 15 == 0 && !this.isAttached() && getSawOn(this))
