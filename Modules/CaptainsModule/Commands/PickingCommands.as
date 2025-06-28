@@ -439,7 +439,7 @@ class TagBuilder : ChatCommand
 		printf("[CAPTAINS SYSTEM] " + player.getUsername() + " was tagged " + tagged_player.getUsername() + " as builder in team " + player.getTeamNum());
 	}
 }
-/*
+
 class AppointBuilders : ChatCommand
 {
 	AppointBuilders()
@@ -469,11 +469,11 @@ class AppointBuilders : ChatCommand
 		CPlayer@ red_builder = getPlayerByNamePart(RED_BUILDER_NAME);
 
 		if (blue_builder is null) {
-			error("[CAPTAINS SYSTEM] blue leader doesn't exists! try again");
+			error("[CAPTAINS SYSTEM] blue builder doesn't exists! try again");
 			return;
 		}
 		if (red_builder is null) {
-			error("[CAPTAINS SYSTEM] red leader doesn't exists! try again");
+			error("[CAPTAINS SYSTEM] red builder doesn't exists! try again");
 			return;
 		}
 
@@ -491,10 +491,12 @@ class AppointBuilders : ChatCommand
 			rules.Sync("team_" + 1 + "_builder", true);
 		}
 
+		if (isServer()) server_AddToChat("Builders in that match: " + blue_builder.getUsername() + " for BLUE and " + red_builder.getUsername() + " for RED!", SColor(0xff474ac6));
+
 		printf("[CAPTAINS SYSTEM] Builders is set! Blue builder is " + rules.get_string("team_0_builder") + " red builder is " + rules.get_string("team_1_builder"));
 	}
 }
-*/
+
 class ToggleEditor : ChatCommand
 {
 	ToggleEditor()
@@ -609,5 +611,33 @@ class TeamRandomizer : ChatCommand
 		}
 
 		server_AddToChat("Teams randomized, have fun!", SColor(0xff474ac6));
+	}
+}
+
+class BrokeResupplies : ChatCommand
+{
+	BrokeResupplies()
+	{
+		super("fuckres", "Broke resupplies, allowing them to arrive after the death of each player on the team");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		rules.Tag("fucked resupplies");
+
+		if (rules.hasTag("fucked resupplies"))
+			server_AddToChat("Infinity resupplies is on!", SColor(0xff474ac6));
+		else
+			server_AddToChat("Infinity resupplies is off!", SColor(0xff474ac6));
 	}
 }

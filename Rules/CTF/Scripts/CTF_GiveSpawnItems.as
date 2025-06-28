@@ -21,16 +21,19 @@ void onSetPlayer(CRules@ this, CBlob@ blob, CPlayer@ player)
 	if (player is null) return;
 	
 	//doGiveSpawnMats(this, player, blob);
-	//if (blob !is null && blob.getConfig() == "builder")
-		//doGiveMats(this);
+
+	if (this.hasTag("fucked resupplies"))
+		doGiveMats(this);
 }
 
 //when player dies, unset archer flag so he can get arrows if he really sucks :)
 //give a guy a break :)
 void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ attacker, u8 customData) {
 	if (victim !is null) {
-		// possible fix issue with broken timer for builder
-		SetCTFTimer(this, victim, this.get_s32("nextresuply"), "builder");
+		if (this.hasTag("fucked resupplies"))
+			SetCTFTimer(this, victim, 0, "builder");
+		else
+			SetCTFTimer(this, victim, this.get_s32("nextresuply"), "builder");
 	}
 }
 
