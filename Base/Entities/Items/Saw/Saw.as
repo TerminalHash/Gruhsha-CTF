@@ -50,6 +50,7 @@ bool onReceiveCreateData(CBlob@ this, CBitStream@ stream)
 void SetSawOn(CBlob@ this, const bool on)
 {
 	this.set_bool("saw_on", on);
+	this.Sync("saw_on", true);
 }
 
 bool getSawOn(CBlob@ this)
