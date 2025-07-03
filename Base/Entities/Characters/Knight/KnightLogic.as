@@ -616,7 +616,7 @@ class NormalState : KnightState
 				return true;
 			}
 		}
-		else if (this.isKeyPressed(key_action2))
+		else if (this.isKeyPressed(key_action2) && !this.hasTag("broken shield"))
 		{
 			if (canRaiseShield(this))
 			{
