@@ -325,6 +325,8 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 				GUI::DrawIcon("CaptainMark/Custom/cm_aidic.png", 0, Vec2f(45, 9), tl + Vec2f(-79, 0), 1.0f, 0);
 			else if (username == "petgreendino")
 				GUI::DrawIcon("CaptainMark/Custom/cm_dino.png", 0, Vec2f(39, 9), tl + Vec2f(-78, 0), 1.0f, 0);
+			else if (username == "tigorsun")
+				GUI::DrawIcon("CaptainMark/Custom/cm_tigor.png", 0, Vec2f(30, 9), tl + Vec2f(-69, 0), 1.0f, 0);
 			// if player doesn't have custom plate - set default
 			else if (g_locale == "ru")
 				GUI::DrawIcon("CaptainMark/ru.png", 0, Vec2f(38, 9), tl + Vec2f(-84, 0), 1.0f, 0);
