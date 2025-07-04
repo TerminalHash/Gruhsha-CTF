@@ -34,6 +34,7 @@ void InitClasses(CBlob@ this)
 	addPlayerClass(this, "Builder", "$builder_class_icon$", "builder", "Build ALL the towers.");
 	addPlayerClass(this, "Knight", "$knight_class_icon$", "knight", "Hack and Slash.");
 	addPlayerClass(this, "Archer", "$archer_class_icon$", "archer", "The Ranged Advantage.");
+	addPlayerClass(this, "Crusher", "$crusher_class_icon$", "crusher", "Heavy hitting hammer weilder.");
 	this.addCommandID("change class");
 }
 
@@ -57,6 +58,7 @@ void buildSpawnMenu(CBlob@ this, CBlob@ caller)
 	AddIconToken("$builder_class_icon$", "GUI/MenuItems.png", Vec2f(32, 32), 8, caller.getTeamNum());
 	AddIconToken("$knight_class_icon$", "GUI/MenuItems.png", Vec2f(32, 32), 12, caller.getTeamNum());
 	AddIconToken("$archer_class_icon$", "GUI/MenuItems.png", Vec2f(32, 32), 16, caller.getTeamNum());
+	AddIconToken("$crusher_class_icon$", "GUI/MenuItems_MOD.png", Vec2f(32, 32), 32, caller.getTeamNum());
 	BuildRespawnMenuFor(this, caller);
 }
 
@@ -84,9 +86,11 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		P_Archers = rules.get_s32("archer" + callerp.getTeamNum() + "Count");
 		P_Builders = rules.get_s32("builder" + callerp.getTeamNum() + "Count");
 		P_Knights = rules.get_s32("knight" + callerp.getTeamNum() + "Count");
+		P_Crushers = rules.get_s32("crusher" + callerp.getTeamNum() + "Count");
 
 		archers_limit = rules.get_u8("archers_limit");
 		builders_limit = rules.get_u8("builders_limit");
+		crushers_limit = rules.get_u8("crushers_limit");
 		////////////////////////////////////////////////
 
 		string classconfig = "knight";
@@ -134,6 +138,12 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 
 		if (classconfig == "builder" && !rules.isWarmup()) {
 			if (P_Builders >= builders_limit) {
+				return;
+			}
+		}
+		
+		if (classconfig == "crusher") {
+			if (P_Crushers >= crushers_limit) {
 				return;
 			}
 		}

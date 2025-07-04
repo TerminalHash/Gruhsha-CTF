@@ -161,6 +161,9 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 
 				// Animals
 				case GruhshaHitters::bison:				hitter_string = "bison"; break;
+				
+				case GruhshaHitters::hammer:			hitter_string = "hammer"; break;
+				case GruhshaHitters::hammer_heavy:		hitter_string = "hammer_heavy"; break;
 
 
 				default: 						hitter_string = "fall";

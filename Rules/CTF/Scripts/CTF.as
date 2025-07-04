@@ -831,6 +831,10 @@ void Reset(CRules@ this)
 
 	this.Sync("team_" + "0" + "_builder", true);
 	this.Sync("team_" + "1" + "_builder", true);
+	
+	// Explicity set crushers limit to one
+	this.set_u8("crushers_limit", 1);
+	this.Sync("crushers_limit", true);
 }
 
 void onRestart(CRules@ this)

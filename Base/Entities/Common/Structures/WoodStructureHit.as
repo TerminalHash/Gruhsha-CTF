@@ -4,6 +4,7 @@
 //      arrows do half
 
 #include "Hitters.as";
+#include "GruhshaHitters.as";
 
 f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData)
 {
@@ -70,6 +71,13 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 
 		case Hitters::flying: // boat ram
 			dmg *= 8.0f;
+			break;
+		
+		case GruhshaHitters::hammer:
+			dmg *= 0.5f;
+			break;
+		case GruhshaHitters::hammer_heavy:
+			dmg *= 1.0f;
 			break;
 	}
 

@@ -20,4 +20,10 @@ void onTick (CRules@ this) {
 	if (this.get_s32("end_in")  < 2220) {
 		this.set_u32("game_end_time", (99 * 30) * 60);
 	}
+
+	// set crushers limit to 99
+	if (this.get_u8("crushers_limit") == 1) {
+		this.set_u8("crushers_limit", 99);
+		this.Sync("crushers_limit", true);
+	}
 }

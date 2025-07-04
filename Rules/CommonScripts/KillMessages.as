@@ -209,7 +209,10 @@ class KillFeed
 				case GruhshaHitters::fumo_keg:			hitterIcon = "$killfeed_fumo_keg$"; break;
 
 				// Animals
-				case GruhshaHitters::bison:			hitterIcon = "$killfeed_bison$"; break;
+				case GruhshaHitters::bison:				hitterIcon = "$killfeed_bison$"; break;
+				
+				case GruhshaHitters::hammer:			hitterIcon = "$killfeed_hammer$"; break;
+				case GruhshaHitters::hammer_heavy:		hitterIcon = "$killfeed_hammer$"; break;
 
 				default: 						hitterIcon = "$killfeed_fall$";
 			}
@@ -302,13 +305,14 @@ void onInit(CRules@ this)
 	AddIconToken("$killfeed_shark$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 22);
 
 	// Custom hitters
+	AddIconToken("$killfeed_bison$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 23);
 	AddIconToken("$killfeed_tile_entity$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 24);
 	AddIconToken("$killfeed_slide_mine$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 25);
 	AddIconToken("$killfeed_golden_mine$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 26);
 	AddIconToken("$killfeed_sticky_bomb$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 27);
 	AddIconToken("$killfeed_hazelnut_shell$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 28);
 	AddIconToken("$killfeed_fumo_keg$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 29);
-	AddIconToken("$killfeed_bison$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 23);
+	AddIconToken("$killfeed_hammer$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 30);
 }
 
 void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customdata)

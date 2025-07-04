@@ -2,6 +2,7 @@
 //      knights, arrows and fire doesn't deal damage
 
 #include "Hitters.as";
+#include "GruhshaHitters.as";
 
 f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData)
 {
@@ -41,6 +42,13 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 
 		case Hitters::flying: // boat ram
 			dmg *= 7.0f;
+			break;
+
+		case GruhshaHitters::hammer:
+			dmg *= 0.2f;
+			break;
+		case GruhshaHitters::hammer_heavy:
+			dmg *= 0.6f;
 			break;
 	}
 

@@ -17,9 +17,11 @@ shared class PlayerClass
 int P_Archers;
 int P_Builders;
 int P_Knights;
+int P_Crushers;
 // initialization limits
 int archers_limit;
 int builders_limit;
+int crushers_limit;
 
 
 const f32 CLASS_BUTTON_SIZE = 2;
@@ -55,6 +57,7 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 		P_Archers = rules.get_s32("archer" + getLocalPlayer().getTeamNum() + "Count");
 		P_Builders = rules.get_s32("builder" + getLocalPlayer().getTeamNum() + "Count");
 		P_Knights = rules.get_s32("knight" + getLocalPlayer().getTeamNum() + "Count");
+		P_Crushers = rules.get_s32("crusher" + getLocalPlayer().getTeamNum() + "Count");
 
 		for (uint i = 0 ; i < classes.length; i++) {
 			CRules@ rules = getRules();
@@ -66,6 +69,7 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 			// Limiting classes stuff
 			archers_limit = rules.get_u8("archers_limit");
 			builders_limit = rules.get_u8("builders_limit");
+			crushers_limit = rules.get_u8("crushers_limit");
 
 			bool is_warmup = rules.get_bool("is_warmup");
 
@@ -84,6 +88,14 @@ void addClassesToMenu(CBlob@ this, CGridMenu@ menu, u16 callerID)
 					button.SetHoverText( "    " + P_Builders + " / " + builders_limit + "\n");
 				} else if (P_Builders >= builders_limit && !is_warmup) {
 					button.SetHoverText( "    " + Descriptions::totaltext + P_Builders + " / " + builders_limit + "\n");
+
+					button.SetEnabled(false);
+				}
+			} else if (pclass.configFilename == "crusher") {
+				if (P_Crushers < crushers_limit) {
+					button.SetHoverText( "    " + P_Crushers + " / " + crushers_limit + "\n");
+				} else if (P_Crushers >= crushers_limit) {
+					button.SetHoverText( "    " + Descriptions::totaltext + P_Crushers + " / " + crushers_limit + "\n");
 
 					button.SetEnabled(false);
 				}
