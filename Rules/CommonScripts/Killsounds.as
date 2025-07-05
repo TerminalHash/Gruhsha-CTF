@@ -11,11 +11,14 @@ string kill_sound = soundsdir + "Sounds/Killsounds/";
 void onBlobDie(CRules@ this, CBlob@ blob) {
     if (this.get_string("killsounds_toggle") != "on") return;
 
+    if (blob is null) return;
+
     if (blob !is null) {
         CPlayer@ killer = blob.getPlayerOfRecentDamage();
         CPlayer@ victim = blob.getPlayer();
 
-        if (blob is null || killer is null || victim is null) return;
+        if (killer is null) return;
+        if (victim is null) return;
 
         if (victim !is null) {
             // requires victim so that killing trees matters
