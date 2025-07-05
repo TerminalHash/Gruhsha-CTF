@@ -52,7 +52,7 @@ void onTick(CBlob@ this)
 			Vec2f tile_vel = Vec2f(-radius/3.5, 0).RotateBy(-(pos-tpos).getAngle()+angle_factor_account);
 			f32 tile_vellen = tile_vel.Length();
 			tile_vel.Normalize();
-			tile_vel *= Maths::Min(tile_vellen, 14);
+			tile_vel *= Maths::Min(tile_vellen, 7);
 			
 			e_tile.setVelocity(tile_vel);
 		}
