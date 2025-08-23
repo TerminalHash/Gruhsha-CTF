@@ -120,8 +120,10 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		CBlob@ b = p.getBlob();
 		if (b is null) return;
 	
-		sparks(b.getPosition(), 180.0f - b.getOldVelocity().Angle(), 0.5f, 60.0f, 0.5f);
-		this.getSprite().PlaySound("ShieldHit", 1.0f, 1.0f);
+		if (this !is null && b !is null) {
+			sparks(b.getPosition(), 180.0f - b.getOldVelocity().Angle(), 0.5f, 60.0f, 0.5f);
+			this.getSprite().PlaySound("ShieldHit", 1.0f, 1.0f);
+		}
 	}
 }
 
@@ -293,10 +295,13 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 			this.getTeamNum() != hitterBlob.getTeamNum()
 		) {
 			// disable our saw immediately and block toggle for a some time
-			this.SendCommand(this.getCommandID(toggle_id));
+			SetSawOn(this, !getSawOn(this));
+			UpdateSprite(this);
+
 			setBrokenState(this);
 
-			this.SendCommand(this.getCommandID("broke saw client"));
+			sparks(hitterBlob.getPosition(), 180.0f - hitterBlob.getOldVelocity().Angle(), 0.5f, 60.0f, 0.5f);
+			this.getSprite().PlaySound("ShieldHit", 1.0f, 1.0f);
 		}
 	}
 
@@ -359,7 +364,9 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 				this.getSprite().PlaySound("ShieldHit", 1.0f, 1.0f);
 
 				// disable our saw immediately and block toggle for a some time
-				this.SendCommand(this.getCommandID(toggle_id));
+				SetSawOn(this, !getSawOn(this));
+				UpdateSprite(this);
+
 				setBrokenState(this);
 
 				return;
