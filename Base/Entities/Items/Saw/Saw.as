@@ -291,10 +291,16 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 
 void setBrokenState(CBlob@ this) {
 	if (isServer()) {
+		SetSawOn(this, !getSawOn(this));
+
 		this.set_s32("broken saw timer", 60 * 30); // one minute
 		this.Tag("broken saw");
 		this.Sync("broken saw timer", true);
 		this.Sync("broken saw", true);
+	}
+
+	if (isClient()) {
+		Sound::Play("/Stun", this.getPosition(), 1.0f, this.getSexNum() == 0 ? 1.0f : 1.5f);
 	}
 }
 
@@ -304,6 +310,13 @@ void setBrokenShieldState(CBlob@ blob) {
 		blob.set_s32("broken shield timer", 5 * 30); // 5 seconds
 		blob.Sync("broken shield", true);
 		blob.Sync("broken shield timer", true);
+
+		setKnocked(blob, 20);
+	}
+
+	if (isClient()) {
+		sparks(blob.getPosition(), 180.0f - blob.getOldVelocity().Angle(), 0.5f, 60.0f, 0.5f);
+		blob.getSprite().PlaySound("ShieldHit", 1.0f, 1.0f);
 	}
 }
 
@@ -337,21 +350,6 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 
 			if (shieldState) {
 				setBrokenShieldState(blob);
-
-				if (isClient()) {
-					Sound::Play("/Stun", bpos, 1.0f, this.getSexNum() == 0 ? 1.0f : 1.5f);
-				}
-
-				setKnocked(blob, 20);
-
-				// i guess it will be rewrote to commands, need tests
-				if (isClient()) {
-					sparks(blob.getPosition(), 180.0f - blob.getOldVelocity().Angle(), 0.5f, 60.0f, 0.5f);
-					this.getSprite().PlaySound("ShieldHit", 1.0f, 1.0f);
-				}
-
-				// disable our saw immediately and block toggle for a some time
-				SetSawOn(this, !getSawOn(this));
 				setBrokenState(this);
 
 				return;
