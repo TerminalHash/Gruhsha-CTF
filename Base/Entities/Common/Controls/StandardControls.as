@@ -267,6 +267,14 @@ void onTick(CBlob@ this)
 		this.SendCommand(this.getCommandID("drill command"));
 	}
 
+	// camera mode toggle
+	if (b_KeyJustPressed("cameramode")) {
+		if (g_fixedcamera)
+			g_fixedcamera = false;
+		else
+			g_fixedcamera = true;
+	}
+
 	// custom key for item putting into inventory
 	if (b_KeyJustPressed("put_item")) {
 		CBlob@ held = this.getCarriedBlob();

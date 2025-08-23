@@ -68,7 +68,8 @@ string[][] button_texts =
 		Names::putitemcommand,
 		Names::blockrotatecommand,
 		Names::activateorthrowbomb,
-		Names::showinvkey
+		Names::showinvkey,
+		"Toggle Camera Mode"
 		//Names::pickupwheelkey
 	},
 	{
@@ -195,7 +196,8 @@ string[][] button_file_names =
 		"put_item",
 		"blob_rotate",
 		"bomb_key",
-		"showinv"
+		"showinv",
+		"cameramode"
 		//"pickup_wheel_key"
 	},
 	{
