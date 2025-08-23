@@ -288,7 +288,8 @@ bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
 }
 
 // allow to block saws with drills
-f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData) {
+// FIX ME: epic sync problems, idk how fix that actually lol
+/*f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData) {
 	if (isServer()) {
 		if (this !is null && hitterBlob !is null) {
 			if (customData == Hitters::drill && 
@@ -307,7 +308,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 	}
 
 	return damage;
-}
+}*/
 
 void setBrokenState(CBlob@ this) {
 	if (isServer()) {
