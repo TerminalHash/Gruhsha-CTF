@@ -28,7 +28,7 @@ TerminalHash, Skemonde, egor0928931
 TerminalHash, Skemonde, cosm_akylka
 
 ## Большое спасибо:
-Bunnie aka HomekGod - с её разрешения были взяты некоторые изменения из VanillaNoRequiem и EU Captains;
-mehwaffle - некоторые изменения были взяты из US Captains.
-kussakaa - кнопки пиков, причёсывание некоторых скриптов, KUI.
-Vagrament aka FeeRant - помощь на первых порах.
+* Bunnie aka HomekGod - с её разрешения были взяты некоторые изменения из VanillaNoRequiem и EU Captains;
+* mehwaffle - некоторые изменения были взяты из US Captains.
+* kussakaa - кнопки пиков, причёсывание некоторых скриптов, KUI.
+* Vagrament aka FeeRant - помощь на первых порах.
