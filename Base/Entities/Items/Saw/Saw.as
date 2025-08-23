@@ -273,6 +273,37 @@ bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
 	return true;
 }
 
+// allow to block saws with drills
+f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData) {
+	if (this !is null && hitterBlob !is null) {
+		if (customData == Hitters::drill) {
+			// disable our saw immediately and block toggle for a some time
+			SetSawOn(this, !getSawOn(this));
+			setBrokenState(this);
+		}
+	}
+
+	return damage;
+}
+
+void setBrokenState(CBlob@ this) {
+	if (isServer()) {
+		this.set_s32("broken saw timer", 60 * 30); // one minute
+		this.Tag("broken saw");
+		this.Sync("broken saw timer", true);
+		this.Sync("broken saw", true);
+	}
+}
+
+void setBrokenShieldState(CBlob@ blob) {
+	if (isServer()) {
+		blob.Tag("broken shield");
+		blob.set_s32("broken shield timer", 5 * 30); // 5 seconds
+		blob.Sync("broken shield", true);
+		blob.Sync("broken shield timer", true);
+	}
+}
+
 void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 {
     if (blob is null ||
@@ -289,6 +320,8 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 
 		// knights with broken shield automatically have
 		if (blob !is null && blob.getConfig() == "knight" && !blob.hasTag("broken shield")) {
+			if (!isServer()) return;
+
 			KnightInfo@ knight;
 			if (!blob.get("knightInfo", @knight)) {
 				return;
@@ -300,24 +333,23 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 			bool shieldState = isShieldState(knight.state);
 
 			if (shieldState) {
-				blob.Tag("broken shield");
-				blob.set_s32("broken shield timer", 5 * 30); // 5 seconds
-				blob.Sync("broken shield", true);
-				blob.Sync("broken shield timer", true);
+				setBrokenShieldState(blob);
 
-				Sound::Play("/Stun", bpos, 1.0f, this.getSexNum() == 0 ? 1.0f : 1.5f);
+				if (isClient()) {
+					Sound::Play("/Stun", bpos, 1.0f, this.getSexNum() == 0 ? 1.0f : 1.5f);
+				}
+
 				setKnocked(blob, 20);
 
 				// i guess it will be rewrote to commands, need tests
-				sparks(blob.getPosition(), 180.0f - blob.getOldVelocity().Angle(), 0.5f, 60.0f, 0.5f);
-				this.getSprite().PlaySound("ShieldHit", 1.0f, 1.0f);
+				if (isClient()) {
+					sparks(blob.getPosition(), 180.0f - blob.getOldVelocity().Angle(), 0.5f, 60.0f, 0.5f);
+					this.getSprite().PlaySound("ShieldHit", 1.0f, 1.0f);
+				}
 
 				// disable our saw immediately and block toggle for a some time
 				SetSawOn(this, !getSawOn(this));
-				this.set_s32("broken saw timer", 60 * 30); // one minute
-				this.Tag("broken saw");
-				this.Sync("broken saw timer", true);
-				this.Sync("broken saw", true);
+				setBrokenState(this);
 
 				return;
 			}
@@ -346,6 +378,12 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
         		// but it's annoying here so we're giving it same mass as normal bombs
         		blob.SetMass(20.0); 
         	}
+
+			// momentally kill saw, if it's enemy's bomb
+			if (name == "bomb" && blob.getTeamNum() != this.getTeamNum()) {
+				this.server_Die();
+				blob.server_Die();
+			}
 
             // give a horizontal boost to the bombs coming from the top based on their original velocity
             f32 xboost = 60.0f * Maths::Clamp(oldVelocity.x / 8.0f, -1.0f, 1.0f) * (1.0f - ratio);
