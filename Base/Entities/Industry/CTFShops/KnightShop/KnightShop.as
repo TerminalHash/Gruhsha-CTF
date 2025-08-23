@@ -123,10 +123,12 @@ void onInit(CBlob@ this)
 		AddRequirement(s.requirements, "no more", "slidemine", "Slide Mine", 3);
 		AddRequirement(s.requirements, "buy delay", "slidemine", "Slide Mine", 30);
 	}
-	{
+	// reserving place for booster, idk will be it used in future
+	// btw it's fucking useless item for now lol
+	/*{
 		ShopItem@ s = addShopItem(this, Names::booster, "$booster$", "mat_boosters", Descriptions::boosterdesc, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", 15);
-	}
+	}*/
 	{
 		ShopItem@ s = addShopItem(this, Names::fumokegname, getTeamIcon("fumokeg", "FumoKegIcon.png", team_num, Vec2f(16, 16), 0), "fumokeg", Descriptions::fumokegdesc, false);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::fumokeg);

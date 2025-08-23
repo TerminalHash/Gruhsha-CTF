@@ -114,17 +114,20 @@ void onTick(CBlob@ this)
 					wanna_buy = true;
 					item_id	= 9;
 				}
-				if (b_KeyJustPressed("k_booster")) {
+				///////////////////////////
+				// reserved for future
+				/*if (b_KeyJustPressed("k_booster")) {
+					wanna_buy = true;
+					item_id	= 10;
+				}*/
+				///////////////////////////
+				if (b_KeyJustPressed("k_fumokeg")) {
 					wanna_buy = true;
 					item_id	= 10;
 				}
-				if (b_KeyJustPressed("k_fumokeg")) {
-					wanna_buy = true;
-					item_id	= 11;
-				}
 				if (b_KeyJustPressed("k_hazelnut")) {
 					wanna_buy = true;
-					item_id	= 12;
+					item_id	= 11;
 				}
 
 				if (wanna_buy) {
@@ -485,7 +488,7 @@ void onRender(CSprite@ this)
 		"k_icebomb",
 		"k_goldmine",
 		"k_slidemine",
-		"k_booster",
+		//"k_booster",
 		"k_fumokeg",
 		"k_hazelnut"
 		};
@@ -563,9 +566,9 @@ void onRender(CSprite@ this)
 		"kfc_egg",
 		"kfc_burger",
 		"kfc_pear",
-		"kfc_sleep",
-		"kfc_bison",
-		"kfc_shark"
+		"kfc_sleep"
+		//"kfc_bison",
+		//"kfc_shark"
 		};
 
 		if (thekfc.get("shop array", @shopitems)) {
