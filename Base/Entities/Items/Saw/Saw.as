@@ -289,20 +289,20 @@ bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
 
 // allow to block saws with drills
 f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData) {
-	if (!isServer()) return;
+	if (isServer()) {
+		if (this !is null && hitterBlob !is null) {
+			if (customData == Hitters::drill && 
+				!this.hasTag("broken saw") && 
+				this.getTeamNum() != hitterBlob.getTeamNum()
+			) {
+				// disable our saw immediately and block toggle for a some time
+				SetSawOn(this, !getSawOn(this));
+				UpdateSprite(this);
 
-	if (this !is null && hitterBlob !is null) {
-		if (customData == Hitters::drill && 
-			!this.hasTag("broken saw") && 
-			this.getTeamNum() != hitterBlob.getTeamNum()
-		) {
-			// disable our saw immediately and block toggle for a some time
-			SetSawOn(this, !getSawOn(this));
-			UpdateSprite(this);
+				setBrokenState(this);
 
-			setBrokenState(this);
-
-			this.SendCommand(this.getCommandID("broke saw client"));
+				this.SendCommand(this.getCommandID("broke saw client"));
+			}
 		}
 	}
 
