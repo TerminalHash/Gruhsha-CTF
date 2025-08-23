@@ -88,7 +88,7 @@ string[][] button_texts =
 		Names::goldenminenmb,
 		Names::icebombnmb,
 		Names::slideminenmb,
-		Names::boosternmb,
+		//Names::boosternmb,
 		Names::fumokegnmb,
 		"Hazelnut"
 		//Names::hazelnutnmb
@@ -120,9 +120,9 @@ string[][] button_texts =
 		Names::eggnmb,
 		Names::burgernmb,
 		Names::pearnmb,
-		Names::sleepnmb,
-		"Cage with Bison",
-		"Cage with Shark"
+		Names::sleepnmb
+		//"Cage with Bison",
+		//"Cage with Shark"
 	},
 	{							// VEHICLE SHOP
 		Names::catapultnmb,
@@ -215,7 +215,7 @@ string[][] button_file_names =
 		"k_icebomb",
 		"k_goldmine",
 		"k_slidemine",
-		"k_booster",
+		//"k_booster",
 		"k_fumokeg",
 		"k_hazelnut"
 	},
@@ -246,9 +246,9 @@ string[][] button_file_names =
 		"kfc_egg",
 		"kfc_burger",
 		"kfc_pear",
-		"kfc_sleep",
-		"kfc_bison",
-		"kfc_shark"
+		"kfc_sleep"
+		//"kfc_bison",
+		//"kfc_shark"
 	},
 	{
 		"vehicle_catapult",
