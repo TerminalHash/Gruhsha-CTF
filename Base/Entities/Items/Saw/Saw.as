@@ -289,6 +289,8 @@ bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
 
 // allow to block saws with drills
 f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData) {
+	if (!isServer()) return;
+
 	if (this !is null && hitterBlob !is null) {
 		if (customData == Hitters::drill && 
 			!this.hasTag("broken saw") && 
@@ -300,8 +302,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 
 			setBrokenState(this);
 
-			sparks(hitterBlob.getPosition(), 180.0f - hitterBlob.getOldVelocity().Angle(), 0.5f, 60.0f, 0.5f);
-			this.getSprite().PlaySound("ShieldHit", 1.0f, 1.0f);
+			this.SendCommand(this.getCommandID("broke saw client"));
 		}
 	}
 
