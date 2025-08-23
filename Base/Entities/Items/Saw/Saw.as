@@ -21,6 +21,7 @@ void onInit(CBlob@ this)
 	this.addCommandID(toggle_id);
 	this.addCommandID(toggle_id_client);
 	this.addCommandID(sawteammate_id_client);
+	this.addCommandID("broke saw client");
 
 	////////////////////////////////////////
 	// code chunk picked from TrampolineLogic.as
@@ -110,6 +111,17 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 	{
 		SetSawOn(this, !getSawOn(this));
 		UpdateSprite(this);
+	}
+	
+	if (cmd == this.getCommandID("broke saw client") && isClient()) {
+		CPlayer@ p = getNet().getActiveCommandPlayer();
+		if (p is null) return;
+
+		CBlob@ b = p.getBlob();
+		if (b is null) return;
+	
+		sparks(b.getPosition(), 180.0f - b.getOldVelocity().Angle(), 0.5f, 60.0f, 0.5f);
+		this.getSprite().PlaySound("ShieldHit", 1.0f, 1.0f);
 	}
 }
 
@@ -281,11 +293,10 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 			this.getTeamNum() != hitterBlob.getTeamNum()
 		) {
 			// disable our saw immediately and block toggle for a some time
-			SetSawOn(this, !getSawOn(this));
+			this.SendCommand(this.getCommandID(toggle_id));
 			setBrokenState(this);
 
-			sparks(hitterBlob.getPosition(), 180.0f - hitterBlob.getOldVelocity().Angle(), 0.5f, 60.0f, 0.5f);
-			this.getSprite().PlaySound("ShieldHit", 1.0f, 1.0f);
+			this.SendCommand(this.getCommandID("broke saw client"));
 		}
 	}
 
@@ -348,7 +359,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 				this.getSprite().PlaySound("ShieldHit", 1.0f, 1.0f);
 
 				// disable our saw immediately and block toggle for a some time
-				SetSawOn(this, !getSawOn(this));
+				this.SendCommand(this.getCommandID(toggle_id));
 				setBrokenState(this);
 
 				return;
