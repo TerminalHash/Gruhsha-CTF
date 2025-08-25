@@ -750,7 +750,7 @@ void ManageBow(CBlob@ this, ArcherInfo@ archer, RunnerMoveVars@ moveVars)
 						const string itemname = item.getName();
 						if (!holding && bombTypeNames[bombType] == itemname)
 						{
-							if (bombType >= 5)
+							if (bombType >= 4)
 							{
 								this.server_Pickup(item);
 								client_SendThrowOrActivateCommand(this);
@@ -1539,7 +1539,8 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 						blob.Tag("splash ray cast");
 					}
 				}
-				else if (bombType == 4)
+				// reserved slot for future
+				/*else if (bombType == 4)
 				{
 					CBlob @blob = server_CreateBlob("booster", this.getTeamNum(), this.getPosition());
 					if (blob !is null)
@@ -1553,7 +1554,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 						blob.set_string("custom_explosion_sound", "/GlassBreak2");
 						blob.set_u8("custom_hitter", Hitters::water);
 					}
-				}
+				}*/
 			}
 		}
 		SetFirstAvailableBomb(this);
@@ -1674,7 +1675,7 @@ void onCreateInventoryMenu(CBlob@ this, CBlob@ forBlob, CGridMenu @gridmenu)
 	AddIconToken("$WaterBomb$", icons_file_name, Vec2f(16, 32), 2, this.getTeamNum());
 	AddIconToken("$StickyBomb$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 5, this.getTeamNum());
 	AddIconToken("$IceBomb$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 6, this.getTeamNum());
-	AddIconToken("$Booster$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 8, this.getTeamNum());
+	//AddIconToken("$Booster$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 8, this.getTeamNum());
 	
 	if (arrowTypeNames.length == 0)
 	{

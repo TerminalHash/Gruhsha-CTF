@@ -80,7 +80,7 @@ namespace BombType
 		water,
 		sticky,
 		ice,
-		booster,
+		//booster,
 		count
 	};
 }
@@ -88,22 +88,22 @@ namespace BombType
 const string[] bombNames = { "Bomb",
                              "Water Bomb",
                              "Sticky Bomb",
-							 "Ice Bomb",
-							 "Booster"
+							 "Ice Bomb"
+							 //"Booster"
                            };
 
 const string[] bombIcons = { "$BombIcon$",
                              "$WaterBombIcon$",
                              "$StickyBomb$",
-							 "$IceBomb$",
-							 "$Booster$"
+							 "$IceBomb$"
+							 //"$Booster$"
                            };
 
 const string[] bombTypeNames = { "mat_bombs",
                                  "mat_waterbombs",
                                  "mat_stickybombs",
-								 "mat_icebombs",
-								 "mat_boosters"
+								 "mat_icebombs"
+								 //"mat_boosters"
                                };
 
 bool hasBombs(CBlob@ this, u8 bombType)
