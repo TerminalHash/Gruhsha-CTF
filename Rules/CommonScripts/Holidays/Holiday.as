@@ -37,7 +37,7 @@ void onRestart(CRules@ this)
 	{
 		print("Checking any holidays...");
 
-		holiday_cache = this.get_string(holiday_prop);
+		holiday_cache = getStringFromHoliday(this.get_s8(holiday_prop));
 		holiday = GetCurrentHoliday();
 		
 		sync = true;
@@ -55,16 +55,12 @@ void SyncHoliday(CRules@ this, string _holiday, string _holiday_cache)
 		if (_holiday_cache != "")
 		{
 			if (HolidayList.find(_holiday_cache) == -1) {
-			if (HolidayList.find(_holiday_cache) == -1) {
 				warn("script " + _holiday_cache + " cache not found inside script list");
 				return;
 			} 
 			print("removing " + _holiday_cache + " holiday script");
 			//remove old holiday
 			this.RemoveScript(_holiday_cache + ".as");
-#ifdef STAGING
-			CFileMatcher::RemoveOverlay(_holiday_cache);
-#endif
 #ifdef STAGING
 			CFileMatcher::RemoveOverlay(_holiday_cache);
 #endif
@@ -75,7 +71,6 @@ void SyncHoliday(CRules@ this, string _holiday, string _holiday_cache)
 		}
 		if (_holiday != "")
 		{
-			if (HolidayList.find(_holiday) == -1) {
 			if (HolidayList.find(_holiday) == -1) {
 				warn("script " + _holiday + " not found inside script list");
 				return;
@@ -89,10 +84,6 @@ void SyncHoliday(CRules@ this, string _holiday, string _holiday_cache)
 			CFileMatcher::AddOverlay(_holiday);
 #endif
 
-#ifdef STAGING
-			CFileMatcher::AddOverlay(_holiday);
-#endif
-
 			if(isServer())
 			{
 				//this is 100% local, so we only have it if we actually attached a script
@@ -100,8 +91,15 @@ void SyncHoliday(CRules@ this, string _holiday, string _holiday_cache)
 				holiday_cache = _holiday;
 			}
 		}
-		print(getHolidayFromString(holiday) + " | " + holiday);
+
 		this.set_s8(holiday_prop, getHolidayFromString(holiday));
+
+		// avoid restarting the map if we are in the middle of a game, which can
+		// happen when rebuilding the holiday script
+		if (isServer() && getGameTime() == 0)
+		{
+			LoadMap(getMap().getMapName());
+		}
 	}
 }
 
@@ -150,6 +148,8 @@ string GetCurrentHoliday()
 		holiday_start = calendar[i].m_date;
 		holiday_end = (holiday_start + calendar[i].m_length) % (365 + server_leap);
 
+		if (i == 2) { return calendar[i].m_name; } // HACK TEST
+
 		bool holiday_active = false;
 		if (holiday_start <= holiday_end)
 		{
@@ -166,5 +166,5 @@ string GetCurrentHoliday()
 		}
 	}
 
-	return "Christmas";
+	return "";
 }

@@ -1,8 +1,10 @@
 // Bomb logic
 
 #include "Hitters.as"
+#include "HolidayCommon.as"
 #include "MakeDustParticle.as"
 #include "KnockedCommon.as"
+
 
 void SetupBomb(CBlob@ this, const int fuseTicks, const f32 explRadius, const f32 explosive_damage, const f32 map_damage_radius, const f32 map_damage_ratio, const bool map_damage_raycast)
 {
@@ -80,10 +82,6 @@ bool UpdateBomb(CBlob@ this)
 			const f32 speed = 1.0f + (1.0f - 2.0f * ((f32(timer) / f32(fuseTicks))));
 			this.getSprite().SetEmitSoundSpeed(speed);
 			this.getSprite().SetEmitSoundVolume(speed);
-
-			#ifdef STAGING
-		    this.getSprite().SetEmitSoundVolume(2.5f);
-		    #endif
 		}
 	}
 	return true;

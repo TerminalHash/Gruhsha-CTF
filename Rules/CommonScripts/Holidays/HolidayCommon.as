@@ -12,14 +12,6 @@ enum Holidays {
 }
 
 string[] HolidayList = {
-enum Holidays {
-	None = -1,
-	Birthday = 0,
-	Halloween = 1,
-	Christmas = 2,
-}
-
-string[] HolidayList = {
 	"Birthday",
 	"Halloween",
 	"Christmas",
@@ -31,6 +23,13 @@ int getHoliday() {
 
 int getHolidayFromString(const string&in holiday) {
 	return HolidayList.find(holiday);
+}
+
+string getStringFromHoliday(s8 holiday) {
+	if (holiday == -1)
+		return "";
+	
+	return HolidayList[holiday];
 }
 
 shared class Holiday

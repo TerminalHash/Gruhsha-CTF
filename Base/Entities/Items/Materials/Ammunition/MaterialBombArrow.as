@@ -9,7 +9,7 @@ void onInit(CBlob@ this) {
 
     this.set_f32("important-pickup", 30.0f);
 
-    if (getHoliday() == Holidays::Christmas) == "Christmas") {
+    if (getHoliday() == Holidays::Christmas) {
         this.AddScript("SetTeamToCarrier.as");
     }
 }
