@@ -147,7 +147,7 @@ string GetCurrentHoliday()
 	Holiday[] calendar = {
 		Holiday(holiday_names[HOLIDAY_BIRTHDAY], 116 + server_leap - 1, 3)
 		, Holiday(holiday_names[HOLIDAY_HALLOWEEN], 301 + server_leap - 1, 8)
-		, Holiday(holiday_names[HOLIDAY_CHRISTMAS], 357 + server_leap - 2, 16)
+		, Holiday(holiday_names[HOLIDAY_CHRISTMAS], 352 + server_leap - 2, 31)
 	};
 
 	s16 holiday_start;
