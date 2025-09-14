@@ -112,7 +112,7 @@ void onInit(CBlob@ this)
 		Animation@ anim = sprite.addAnimation("bomb arrow halloween", 0, false);
 		anim.AddFrame(18);
 		anim.AddFrame(19);
-		if (arrowType == ArrowType::bomb && getHoliday() == Holidays::Christmas)
+		if (arrowType == ArrowType::bomb && getHoliday() == HOLIDAY_CHRISTMAS)
 			sprite.SetAnimation(anim);
 	}
 
@@ -120,7 +120,7 @@ void onInit(CBlob@ this)
 		Animation@ anim = sprite.addAnimation("bomb arrow christmas", 0, false);
 		anim.AddFrame(20);
 		anim.AddFrame(21);
-		if (arrowType == ArrowType::bomb && getHoliday() == Holidays::Christmas)
+		if (arrowType == ArrowType::bomb && getHoliday() == HOLIDAY_CHRISTMAS)
 			sprite.SetAnimation(anim);
 	}
 }

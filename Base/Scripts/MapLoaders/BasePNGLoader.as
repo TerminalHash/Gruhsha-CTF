@@ -432,7 +432,7 @@ class PNGLoader
 
 			string default_tree 	= map_random.NextRanged(35) < 21 ? "tree_pine" : "tree_bushy";
 			string christmas_tree 	= "tree_pine";
-			CBlob@ tree = server_CreateBlobNoInit(getHoliday() == Holidays::Christmas ? christmas_tree : default_tree);
+			CBlob@ tree = server_CreateBlobNoInit(getHoliday() == HOLIDAY_CHRISTMAS ? christmas_tree : default_tree);
 			if(tree !is null)
 			{
 				tree.Tag("startbig");

@@ -52,7 +52,7 @@ bool UpdateBomb(CBlob@ this)
 
 			if (this.getConfig() == "waterbomb") {
 			#ifdef STAGING
-				if (getHoliday() == Holidays::Halloween)
+				if (getHoliday() == HOLIDAY_HALLOWEEN)
 					lightColor = SColor(255, 100, 113, 96);
 				else 
 			#endif
