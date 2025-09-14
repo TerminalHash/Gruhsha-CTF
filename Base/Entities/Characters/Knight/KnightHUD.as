@@ -1,12 +1,10 @@
 //knight HUD
 #include "/Entities/Common/GUI/ActorHUDStartPos.as";
 #include "MaterialIndicatorHUD.as";
-#include "HolidaySprites.as";
 #include "BuffTracker.as";
 #include "pathway.as";
 
 const string iconsFilename = "Entities/Characters/Knight/KnightIcons.png";
-string icons_file_name;
 
 const int slotsSize = 6;
 
@@ -111,12 +109,7 @@ void onRender(CSprite@ this)
 	DrawBuffs();
 
 	// draw class icon
-	if (isAnyHoliday()) {
-		icons_file_name = getHolidayVersionFileName("KnightIcons");
-		GUI::DrawIcon(icons_file_name, frame, Vec2f(16, 32), tl + Vec2f(8 + (slotsSize - 1) * 40, -16), 1.0f, blob.getTeamNum());
-	} else {
-		GUI::DrawIcon(iconsFilename, frame, Vec2f(16, 32), tl + Vec2f(8 + (slotsSize - 1) * 40, -16), 1.0f, blob.getTeamNum());
-	}
+	GUI::DrawIcon(iconsFilename, frame, Vec2f(16, 32), tl + Vec2f(8 + (slotsSize - 1) * 40, -16), 1.0f, blob.getTeamNum());
 
 	//GUI::DrawIcon(iconsFilename, frame, Vec2f(16, 32), tl + Vec2f(8 + (slotsSize - 1) * 40, -16), 1.0f, blob.getTeamNum());
 }

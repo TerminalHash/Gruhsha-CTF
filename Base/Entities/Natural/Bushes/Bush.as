@@ -1,8 +1,5 @@
 // Bush logic
 #include "canGrow.as";
-#include "HolidaySprites.as";
-
-string bush_file_name;
 
 void onInit(CBlob@ this)
 {
@@ -83,11 +80,5 @@ void LoadSprite(CSprite@ this)
 		this.SetAnimation(anim_wiggle);
 	}
 
-	if (isAnyHoliday())
-	{
-		bush_file_name = getHolidayVersionFileName("Bushes");
-		this.ReloadSprite(bush_file_name);
-	} else {
-		this.ReloadSprite("Bushes.png");
-	}
+	this.ReloadSprite("Bushes.png");
 }

@@ -10,9 +10,6 @@
 #include "ActivationThrowCommon.as"
 #include "PlacementCommon.as";
 #include "HolidayCommon.as";
-#include "HolidaySprites.as";
-
-string gibs_file_name;
 
 const s32 bomb_fuse = 120;
 const f32 arrowMediumSpeed = 8.0f;
@@ -36,8 +33,6 @@ void onInit(CBlob@ this)
 	consts.bullet = false;
 	consts.net_threshold_multiplier = 4.0f;
 	this.Tag("projectile");
-
-	gibs_file_name = isAnyHoliday() ? getHolidayVersionFileName("GenericGibs") : "GenericGibs.png";
 
 	//dont collide with top of the map
 	this.SetMapEdgeFlags(CBlob::map_collide_left | CBlob::map_collide_right);
@@ -117,7 +112,7 @@ void onInit(CBlob@ this)
 		Animation@ anim = sprite.addAnimation("bomb arrow halloween", 0, false);
 		anim.AddFrame(18);
 		anim.AddFrame(19);
-		if (arrowType == ArrowType::bomb && getRules().get_string(holiday_prop) == "Halloween")
+		if (arrowType == ArrowType::bomb && getHoliday() == HOLIDAY_CHRISTMAS)
 			sprite.SetAnimation(anim);
 	}
 
@@ -125,7 +120,7 @@ void onInit(CBlob@ this)
 		Animation@ anim = sprite.addAnimation("bomb arrow christmas", 0, false);
 		anim.AddFrame(20);
 		anim.AddFrame(21);
-		if (arrowType == ArrowType::bomb && getRules().get_string(holiday_prop) == "Christmas")
+		if (arrowType == ArrowType::bomb && getHoliday() == HOLIDAY_CHRISTMAS)
 			sprite.SetAnimation(anim);
 	}
 }
@@ -855,7 +850,7 @@ void onDie(CBlob@ this)
 		{
 			Vec2f vel = this.getVelocity();
 			makeGibParticle(
-				gibs_file_name, pos, vel,
+				"GenericGibs.png", pos, vel,
 				1, _gib_r.NextRanged(4) + 4,
 				Vec2f(8, 8), 2.0f, 20, "/thud",
 				this.getTeamNum()

@@ -2,10 +2,7 @@
 //script for a chicken
 
 #include "AnimalConsts.as";
-#include "HolidaySprites.as";
 #include "ChickenCommon.as";
-
-string chicken_file_name;
 
 const u8 DEFAULT_PERSONALITY = SCARED_BIT;
 const string ALLOW_SOUND_TIME = "last sound time";
@@ -13,15 +10,6 @@ const u8 SOUND_DELAY = getTicksASecond();
 const string EGG_INTERVAL = "egg interval";
 
 //sprite
-
-void onInit(CSprite@ this)
-{
-	if (isAnyHoliday())
-	{
-		chicken_file_name = getHolidayVersionFileName("Chicken");
-		this.ReloadSprite(chicken_file_name);
-	}
-}
 
 void onTick(CSprite@ this)
 {

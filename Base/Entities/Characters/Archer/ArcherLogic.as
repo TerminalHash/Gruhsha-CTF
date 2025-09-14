@@ -11,7 +11,6 @@
 #include "BombCommon.as";
 #include "RedBarrierCommon.as";
 #include "StandardControlsCommon.as";
-#include "HolidaySprites.as";
 #include "BindingsCommon.as"
 
 const int FLETCH_COOLDOWN = 45;
@@ -1656,23 +1655,17 @@ void Callback_PickArrow(CBitStream@ params)
 	blob.SendCommand(blob.getCommandID("pick " + matname));
 }
 
-string icons_file_name;
-string arrow_icons_file_name;
-
 // arrow pick menu
 void onCreateInventoryMenu(CBlob@ this, CBlob@ forBlob, CGridMenu @gridmenu)
 {
-	icons_file_name = isAnyHoliday() ? getHolidayVersionFileName("KnightIcons") : "KnightIcons.png";
-	arrow_icons_file_name = isAnyHoliday() ? getHolidayVersionFileName("ArcherIcons") : "ArcherIcons.png";
-
 	AddIconToken("$Arrow$", "Entities/Characters/Archer/ArcherIcons.png", Vec2f(16, 32), 0, this.getTeamNum());
 	AddIconToken("$WaterArrow$", "Entities/Characters/Archer/ArcherIcons.png", Vec2f(16, 32), 1, this.getTeamNum());
 	AddIconToken("$FireArrow$", "Entities/Characters/Archer/ArcherIcons.png", Vec2f(16, 32), 2, this.getTeamNum());
-	AddIconToken("$BombArrow$", arrow_icons_file_name, Vec2f(16, 32), 3, this.getTeamNum());
+	AddIconToken("$BombArrow$", "Entities/Characters/Archer/ArcherIcons.png", Vec2f(16, 32), 3, this.getTeamNum());
 	AddIconToken("$BlockArrow$", "Entities/Characters/Archer/ArcherIcons.png", Vec2f(16, 32), 4, this.getTeamNum());
 	AddIconToken("$StoneBlockArrow$", "Entities/Characters/Archer/ArcherIcons.png", Vec2f(16, 32), 5, this.getTeamNum());
-	AddIconToken("$Bomb$", icons_file_name, Vec2f(16, 32), 0, this.getTeamNum());
-	AddIconToken("$WaterBomb$", icons_file_name, Vec2f(16, 32), 2, this.getTeamNum());
+	AddIconToken("$Bomb$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 0, this.getTeamNum());
+	AddIconToken("$WaterBomb$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 2, this.getTeamNum());
 	AddIconToken("$StickyBomb$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 5, this.getTeamNum());
 	AddIconToken("$IceBomb$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 6, this.getTeamNum());
 	//AddIconToken("$Booster$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 8, this.getTeamNum());
