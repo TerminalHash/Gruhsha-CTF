@@ -102,8 +102,6 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 	f32 ping_offset = 26;
 	f32 info_icon_offset = ping_offset + 480;
 
-	//const int tier_start = (draw_age ? age_start : accolades_start) + 70;
-
 	// Waffle: Change header color for old stats
 	CControls@ controls = getControls();
 	bool old_stats = controls.isKeyPressed(KEY_SHIFT) || controls.isKeyPressed(KEY_LSHIFT) || controls.isKeyPressed(KEY_RSHIFT);
@@ -117,24 +115,6 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 	GUI::DrawText(getTranslatedString("Kills"), Vec2f(br.x - 260, tl.y), kdr_color);      // Waffle: Change header color for old stats
 	GUI::DrawText(Names::damagedealtsc, Vec2f(br.x - 170, tl.y), kdr_color);
 	GUI::DrawText(Names::killsperminute, Vec2f(br.x - 100, tl.y), kdr_color);
-
-	// OLD STUFF
-	//GUI::DrawText(getTranslatedString("Deaths"), Vec2f(br.x - 190, tl.y), kdr_color);     // Waffle: --
-	//GUI::DrawText(getTranslatedString("Assists"), Vec2f(br.x - 120, tl.y), kdr_color);    // Waffle: --
-	//GUI::DrawText(getTranslatedString("KDR"), Vec2f(br.x - 50, tl.y), kdr_color);         // Waffle: --
-
-	// Old accolades shit, we dont using this anymore
-	/*GUI::DrawText(getTranslatedString("Accolades"), Vec2f(br.x - accolades_start, tl.y), SColor(0xffffffff));
-	if(draw_age)
-	{
-		GUI::DrawText(getTranslatedString("Age"), Vec2f(br.x - age_start, tl.y), SColor(0xffffffff));
-	}
-	if(draw_tier)
-	{
-		GUI::DrawText(getTranslatedString("Tier"), Vec2f(br.x - tier_start, tl.y), SColor(0xffffffff));
-	}*/
-
-	//GUI::DrawText(Names::matssection, Vec2f(br.x - 600, tl.y), SColor(0xffffffff));
 
 	tl.y += stepheight * 0.5f;
 
@@ -357,22 +337,6 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 			GUI::GetTextDimensions(clantag, clantag_actualsize);
 			GUI::DrawText(clantag, tl + Vec2f(name_buffer, 0), SColor(0xff888888));
 
-			/*if (clantag.toUpper() == "MINECULT") {
-				GUI::DrawIcon("Sprites/clan_badges.png", 0, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, teamIndex);
-			} else if (clantag.toUpper() == "TTOGAD") {
-				GUI::DrawIcon("Sprites/clan_badges.png", 1, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
-			} else if (clantag.toUpper() == "MAGMUS") {
-				GUI::DrawIcon("Sprites/clan_badges.png", 2, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, teamIndex);
-			} else if (clantag.toUpper() == "HOMEK") {
-				GUI::DrawIcon("Sprites/clan_badges.png", 3, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
-			} else if (clantag.toUpper() == "BUTTER") {
-				GUI::DrawIcon("Sprites/clan_badges.png", 4, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
-			} else if (clantag.toUpper() == "GRUHSHA") {
-				GUI::DrawIcon("Sprites/clan_badges.png", 5, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, 0);
-			} else if (clantag.toUpper() == "BUTTERMINA" || clantag.toUpper() == "BUTTERCULT") {
-				GUI::DrawIcon("Sprites/clan_badges.png", 6, Vec2f(16, 16), Vec2f(br.x, tl.y), 0.5f, teamIndex);
-			}*/
-
 			// recolor clantag for TerminalHash
 			if (username == "TerminalHash") {
 				GUI::DrawText(clantag, tl + Vec2f(name_buffer, 0), SColor(0xffad7fa8));
@@ -406,248 +370,6 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 				hovered_pos = card_icon_pos;
 			}
 		}
-		///////////////////////////////////////////////
-
-		// Old accolades shit, we dont using this anymore
-		//draw account age indicator
-		/*if (draw_age)
-		{
-			int regtime = p.getRegistrationTime();
-			if (regtime > 0)
-			{
-				int reg_month = Time_Month(regtime);
-				int reg_day = Time_MonthDate(regtime);
-				int reg_year = Time_Year(regtime);
-
-				int days = Time_DaysSince(regtime);
-
-				int age_icon_start = 32;
-				int icon = 0;
-				bool show_years = false;
-				int age = 0;
-				//less than a month?
-				if (days < 28)
-				{
-					int week = days / 7;
-					icon = week;
-				}
-				else
-				{
-					//we use 30 day "months" here
-					//for simplicity and consistency of badge allocation
-					int months = days / 30;
-					if (months < 12)
-					{
-						switch(months) {
-							case 0:
-							case 1:
-								icon = 0;
-								break;
-							case 2:
-								icon = 1;
-								break;
-							case 3:
-							case 4:
-							case 5:
-								icon = 2;
-								break;
-							case 6:
-							case 7:
-							case 8:
-								icon = 3;
-								break;
-							case 9:
-							case 10:
-							case 11:
-							default:
-								icon = 4;
-								break;
-						}
-						icon += 4;
-					}
-					else
-					{
-						//figure out birthday
-						int month_delta = Time_Month() - reg_month;
-						int day_delta = Time_MonthDate() - reg_day;
-						int birthday_delta = -1;
-
-						if (month_delta < 0 || month_delta == 0 && day_delta < 0)
-						{
-							birthday_delta = -1;
-						}
-						else if (month_delta == 0 && day_delta == 0)
-						{
-							birthday_delta = 0;
-						}
-						else
-						{
-							birthday_delta = 1;
-						}
-
-						//check if its cake day
-						if (birthday_delta == 0)
-						{
-							icon = 9;
-						}
-						else
-						{
-							//check if we're in the extra "remainder" days from using 30 month days
-							if(days < 366)
-							{
-								//(9 months badge still)
-								icon = 8;
-							}
-							else
-							{
-								//years delta
-								icon = (Time_Year() - reg_year) - 1;
-								//before or after birthday?
-								if (birthday_delta == -1)
-								{
-									icon -= 1;
-								}
-								show_years = true;
-								age = icon + 1; // icon frames start from 0
-								//ensure sane
-								icon = Maths::Clamp(icon, 0, 9);
-								//shift line
-								icon += 16;
-							}
-						}
-					}
-				}
-
-				float x = br.x - age_start + 8;
-				float extra = 8;
-
-				if(show_years)
-				{
-					drawAgeIcon(age, Vec2f(x, tl.y));
-				}
-				else
-				{
-					GUI::DrawIcon("AccoladeBadges", age_icon_start + icon, Vec2f(16, 16), Vec2f(x, tl.y), 0.5f, teamIndex);
-				}
-
-				if (playerHover && mousePos.x > x - extra && mousePos.x < x + 16 + extra)
-				{
-					hovered_age = icon;
-				}
-			}
-
-		}
-
-		//draw support tier
-		if(draw_tier)
-		{
-			int tier = p.getSupportTier();
-
-			if(tier > 0)
-			{
-				int tier_icon_start = 15;
-				float x = br.x - tier_start + 8;
-				float extra = 8;
-				GUI::DrawIcon("AccoladeBadges", tier_icon_start + tier, Vec2f(16, 16), Vec2f(x, tl.y), 0.5f, teamIndex);
-
-				if (playerHover && mousePos.x > x - extra && mousePos.x < x + 16 + extra)
-				{
-					hovered_tier = tier;
-				}
-			}
-
-		}
-
-		//render player accolades
-		Accolades@ acc = getPlayerAccolades(username);
-		if (acc !is null)
-		{
-			//(remove crazy amount of duplicate code)
-			int[] badges_encode = {
-				//count,                icon,  show_text, group
-
-				//misc accolades
-				(acc.community_contributor ?
-					1 : 0),             4,     0,         0,
-				(acc.github_contributor ?
-					1 : 0),             5,     0,         0,
-				(acc.map_contributor ?
-					1 : 0),             6,     0,         0,
-				(acc.moderation_contributor && (
-						//always show accolade of others if local player is special
-						(p !is localPlayer && isSpecial(localPlayer)) ||
-						//always show accolade for ex-admins
-						!isSpecial(p) ||
-						//show accolade only if colored name is visible
-						coloredNameEnabled(getRules(), p)
-					) ?
-					1 : 0),             7,     0,         0,
-				(p.getOldGold() ?
-					1 : 0),             8,     0,         0,
-				(acc.grusha_contributor ?
-					1 : 0),				9,     0,         0,
-
-				//tourney badges
-				acc.gold,               0,     1,         1,
-				acc.silver,             1,     1,         1,
-				acc.bronze,             2,     1,         1,
-				acc.participation,      3,     1,         1,
-
-				//(final dummy)
-				0, 0, 0, 0,
-			};
-			//encoding per-group
-			int[] group_encode = {
-				//singles
-				accolades_start,                 24,
-				//medals
-				accolades_start - (24 * 5 + 12), 38,
-			};
-
-			for(int bi = 0; bi < badges_encode.length; bi += 4)
-			{
-				int amount    = badges_encode[bi+0];
-				int icon      = badges_encode[bi+1];
-				int show_text = badges_encode[bi+2];
-				int group     = badges_encode[bi+3];
-
-				int group_idx = group * 2;
-
-				if(
-					//non-awarded
-					amount <= 0
-					//erroneous
-					|| group_idx < 0
-					|| group_idx >= group_encode.length
-				) continue;
-
-				int group_x = group_encode[group_idx];
-				int group_step = group_encode[group_idx+1];
-
-				float x = br.x - group_x;
-
-				GUI::DrawIcon("AccoladeBadges", icon, Vec2f(16, 16), Vec2f(x, tl.y), 0.5f, teamIndex);
-				if (show_text > 0)
-				{
-					string label_text = "" + amount;
-					int label_center_offset = label_text.size() < 2 ? 4 : 0;
-					GUI::DrawText(
-						label_text,
-						Vec2f(x + 15 + label_center_offset, tl.y),
-						SColor(0xffffffff)
-					);
-				}
-
-				if (playerHover && mousePos.x > x && mousePos.x < x + 16)
-				{
-					hovered_accolade = icon;
-				}
-
-				//handle repositioning
-				group_encode[group_idx] -= group_step;
-
-			}
-		}*/
 
 		// Waffle: Keep old stats
 		s32 kills   = p.getKills();
@@ -689,9 +411,6 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 		GUI::DrawText("" + kills, Vec2f(br.x - 260, tl.y), kdr_color);
 		GUI::DrawText("" + dmgdeal, Vec2f(br.x - 170, tl.y), kdr_color);
 		GUI::DrawText("" + formatFloat(kpm, "", 0, 2), Vec2f(br.x - 100, tl.y), kdr_color);
-		//GUI::DrawText("" + deaths, Vec2f(br.x - 190, tl.y), kdr_color);
-		//GUI::DrawText("" + assists, Vec2f(br.x - 120, tl.y), kdr_color);
-		//GUI::DrawText("" + formatFloat(kills / Maths::Max(f32(deaths), 1.0f), "", 0, 2), Vec2f(br.x - 50, tl.y), kdr_color);
 
 		GUI::DrawIcon("coins.png", 1, Vec2f(16, 16), Vec2f(br.x - 595, tl.y - 8), 1.0f, 0);
 
@@ -1038,12 +757,7 @@ void onRenderScoreboard(CRules@ this) {
 			makePlayerCard(player, card_topLeft);
 		}
 	}
-
-	//drawPlayerCard(hoveredPlayer, hoveredPos);
 	///////////////////////////////////////////////
-
-	// Old accolades shit, we dont using this anymore
-	/*drawHoverExplanation(hovered_accolade, hovered_age, hovered_tier, Vec2f(getScreenWidth() * 0.5, tl.y));*/
 
 	ScoreboardField(
 		Vec2f(screenWidth - tl.x - 200, 115 - scrollOffset),
@@ -1154,25 +868,6 @@ void getMapName(CRules@ this)
 		this.Sync("map_name",true);
 	}
 }
-
-/*
-void drawAgeIcon(int age, Vec2f position)
-{
-	int number_gap = 8;
-	int years_frame_start = 48;
-	if(age >= 10)
-	{
-		position.x -= number_gap - 4;
-		GUI::DrawIcon("AccoladeBadges", years_frame_start + (age / 10), Vec2f(16, 16), position, 0.5f, 0);
-		age = age % 10;
-		position.x += number_gap;
-	}
-	GUI::DrawIcon("AccoladeBadges", years_frame_start + age, Vec2f(16, 16), position, 0.5f, 0);
-	position.x += 4;
-	if(age == 1) position.x -= 1; // fix y letter offset for number 1
-	GUI::DrawIcon("AccoladeBadges", 58, Vec2f(16, 16), position, 0.5f, 0); // y letter
-}
-*/
 
 void DrawFancyCopiedText(string username, Vec2f mousePos, uint duration)
 {
