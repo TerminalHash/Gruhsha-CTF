@@ -396,6 +396,8 @@ shared class CTFCore : RulesCore
 		@ctf_spawns = cast < CTFSpawns@ > (_respawns);
 		_rules.set_string("music - base name", base_name());
 		server_CreateBlob("ctf_music");
+		// HACK: spawn special blob for sudden death sound
+		server_CreateBlob("sudden_death_sound_blob");
 		players_in_small_team = -1;
 	}
 
