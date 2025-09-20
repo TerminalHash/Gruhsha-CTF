@@ -28,7 +28,9 @@ void onInit(CRules@ this)
 
 	sv_max_localplayers = 1;
 
-	PrecacheTextures();
+	if (isClient()) {
+		PrecacheTextures();
+	}
 
 	//smooth shader
 	Driver@ driver = getDriver();
