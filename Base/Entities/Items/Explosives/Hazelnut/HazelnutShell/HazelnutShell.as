@@ -9,7 +9,11 @@ void onInit(CBlob@ this)
 	this.set_f32("explosive_damage", 10.0f);
 	this.set_u8("custom_hitter", GruhshaHitters::hazelnut_shell);
 	this.set_string("custom_explosion_sound", "Entities/Items/Explosives/KegExplosion.ogg");
-	this.set_f32("map_damage_radius", 16.0f); // default radius
+	// dont accumulate power too fast on sudden death
+	if (getRules().hasTag("sudden death"))
+		this.set_f32("map_damage_radius", 24.0f);
+	else
+		this.set_f32("map_damage_radius", 36.0f); // default radius
 	this.set_f32("map_damage_ratio", 0.8f);
 	this.set_bool("map_damage_raycast", false);
 	this.set_f32("keg_time", 180.0f);  // 180.0f
@@ -57,14 +61,15 @@ void onTick(CBlob@ this)
 	// increase map damage radius with time of life after 15 ticks since blob created.
 	// TODO: need to watch the power for a few rounds.
 	if (this.hasTag("exploding")) {
-		if (!isSuddenDeath) {
+		/*if (!isSuddenDeath) {
 			if (this.getTickSinceCreated() > 15 && this.get_f32("map_damage_radius") < 36.0f) {
 				if (getGameTime() % 5 == 0)
 					this.add_f32("map_damage_radius", 2.0f);
 
 				//printf("My map damage is " + this.get_f32("map_damage_radius"));
 			}
-		} else if (isSuddenDeath) {
+		} else if (isSuddenDeath) {*/
+		if (isSuddenDeath) {
 			if (this.getTickSinceCreated() > 15 && this.get_f32("map_damage_radius") < 72.0f) {
 				if (getGameTime() % 2 == 0)
 					this.add_f32("map_damage_radius", 2.0f);
