@@ -15,6 +15,8 @@ CParticle@ makeFireParticle(Vec2f pos, int smokeRandom = 1)
 		case 3: texture = "Entities/Effects/Sprites/SmallSmoke2.png"; break;
 	}
 
+	if (getRules().get_string("clusterfuck_smoke") == "off") return;
+
 	return ParticleAnimated(texture, pos, Vec2f(0, 0), 0.0f, 1.0f, 5, -0.1, true);
 }
 
@@ -29,6 +31,8 @@ CParticle@ makeSmokeParticle(Vec2f pos, f32 gravity = -0.06f)
 
 		case 1: texture = "Entities/Effects/Sprites/SmallSmoke2.png"; break;
 	}
+
+	if (getRules().get_string("clusterfuck_smoke") == "off") return;
 
 	return ParticleAnimated(texture, pos, Vec2f(0, 0), 0.0f, 1.0f, 5, gravity, true);
 }
