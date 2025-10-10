@@ -38,6 +38,7 @@ void onInit(CBlob@ this)
 	u32 dynamic_bomb_cost = 25;
 	u32 dynamic_water_bomb_cost = 30;
 	u32 dynamic_keg_cost = 160;
+	u32 dynamic_hazelnut_cost = 200;
 	u32 player_amount = getRules().get_s32("amount_in_team");
 
 	if (player_amount >= 12 && player_amount < 14)
@@ -68,6 +69,7 @@ void onInit(CBlob@ this)
 
 	if (getRules().hasTag("sudden death")) {
 		dynamic_keg_cost = 220;
+		dynamic_hazelnut_cost = 325;
 	}
 
 	int team_num = this.getTeamNum();
@@ -137,7 +139,7 @@ void onInit(CBlob@ this)
 	}
 	{
 		ShopItem@ s = addShopItem(this, /*Names::hazelnut*/ "Hazelnut", "$hazelnut$", "hazelnut", /*Descriptions::hazelnutdesc*/ "A genetically modified hazelnut that releases five explosive kernels when shattered.", false);
-		AddRequirement(s.requirements, "coin", "", "Coins", 200);
+		AddRequirement(s.requirements, "coin", "", "Coins", dynamic_hazelnut_cost);
 		AddRequirement(s.requirements, "no more", "hazelnut", "Hazelnut", 2);
 		AddRequirement(s.requirements, "buy delay", "hazelnut", "Hazelnut", 60);
 	}
