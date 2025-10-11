@@ -123,28 +123,12 @@ void onTick(CRules@ rules)
 					last_taunt = selected.visible_name;
 					cooldown_time = globalTaunt ? GLOBAL_COOLDOWN : TEAM_COOLDOWN;
 
-					if (rules.get_string("annoying_voicelines") != "off" || !rules.get_bool(blob.getPlayer().getUsername() + "is_sounds_muted"))
-					{
-						if (selected.name == "kurwa") {
-							int random_kurwa = XORRandom(11) + 1;
-							Sound::Play(selected.name + random_kurwa + ".ogg", pos, 5.0f);
-						} else if (selected.name == "sosal") {
-							int random_sosal = XORRandom(2) + 1;
-							Sound::Play(selected.name + random_sosal + ".ogg", pos, 5.0f);
-						} else if (selected.name == "tuturu") {
-							int random_tuturu = XORRandom(9) + 1;
-							Sound::Play(selected.name + random_tuturu + ".ogg", pos, 5.0f);
-						} else {
-							Sound::Play(selected.name + ".ogg", pos, 5.0f);
-						}
-					}
-					//else
-					//{
-					//	CBitStream params;
-					//	params.write_string(selected.visible_name);
-					//	params.write_bool(globalTaunt);
-					//	rules.SendCommand(rules.getCommandID("play voiceline"), params, true);
-					//}
+					string taunt_name = selected.name;
+
+					CBitStream params;
+					params.write_string(taunt_name);
+					rules.SendCommand(rules.getCommandID("play voiceline"), params, true);
+					//printf("SENDING COMMAND");
 				}
 				else
 				{
@@ -169,7 +153,7 @@ void onTick(CRules@ rules)
 		}
 	}
 }
-/*
+
 void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 {
 	if (cmd == this.getCommandID("play voiceline") && isServer())
@@ -182,43 +166,69 @@ void onCommand(CRules@ this, u8 cmd, CBitStream @params)
 
 		string taunt;
 		if (!params.saferead_string(taunt)) return;
+		
+		Vec2f pos = caller.getPosition();
+		
+		u8 random_number;
 
-		bool globalTaunt;
-		if (!params.saferead_bool(globalTaunt)) return;
+		if (taunt == "kurwa") {
+			random_number = XORRandom(11) + 1;
+		} else if (taunt == "sosal") {
+			random_number = XORRandom(2) + 1;
+		} else if (taunt == "tuturu") {
+			random_number = XORRandom(9) + 1;
+		} else {
+			random_number = 0;
+		}
+
+		// if player banned from using voicelines, dont play the sound
+		if (this.get_bool(callerp.getUsername() + "is_sounds_muted")) return;
 
 		CBitStream bt;
 		bt.write_u16(caller.getNetworkID());
 		bt.write_string(taunt);
-		bt.write_bool(globalTaunt);
+		bt.write_u8(random_number);
 		this.SendCommand(this.getCommandID("play voiceline client"), bt);
+		printf("SERVER COMMAND");
 	}
 	else if (cmd == this.getCommandID("play voiceline client") && isClient())
 	{
 		u16 id;
-		if (params.saferead_u16(id)) return;
+		//printf("ID is not null");
+		if (!params.saferead_u16(id)) return;
 
 		string taunt;
+		//printf("Taunt is not null");
 		if (!params.saferead_string(taunt)) return;
 
-		bool globalTaunt;
-		if (!params.saferead_bool(globalTaunt)) return;
-
 		CBlob@ caller = getBlobByNetworkID(id);
+		//printf("Caller is not null");
 
-		if (caller is null || !cl_chatbubbles)
+		if (caller is null)
 		{
 			return;
 		}
+
+		u8 random_number;
+		//printf("Taunt is not null");
+		if (!params.saferead_u8(random_number)) return;
 
 		CPlayer@ player = getLocalPlayer();
 		
 		Vec2f pos = caller.getPosition();
 
 		//only show team taunts to teammates
-		if (globalTaunt || (player !is null && player.getTeamNum() == caller.getTeamNum()))
-		{
-			Sound::Play(taunt + ".ogg", pos, 5.0f);
+		if (this.get_string("annoying_voicelines") == "on") {
+			if (taunt == "kurwa" && random_number != 0) {
+				Sound::Play(taunt + random_number + ".ogg", pos, 5.0f);
+			} else if (taunt == "sosal"  && random_number != 0) {
+				Sound::Play(taunt + random_number + ".ogg", pos, 5.0f);
+			} else if (taunt == "tuturu"  && random_number != 0) {
+				Sound::Play(taunt + random_number + ".ogg", pos, 5.0f);
+			} else {
+				Sound::Play(taunt + ".ogg", pos, 5.0f);
+			}
 		}
+		//printf("CLIENT COMMAND");
 	}
 }
-*/
