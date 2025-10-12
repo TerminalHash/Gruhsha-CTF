@@ -315,11 +315,13 @@ shared class CTFSpawns : RespawnSystem
 		if (getRules().hasTag("offi match")) {
 			if (getGameTime() >= 780 * getTicksASecond() && getGameTime() <= 1380 * getTicksASecond()) {			// 10 min
 				tickspawndelay = s32(getTicksASecond() * 7);
-			} else if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) {	// 20 min
+			} else if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1500 * getTicksASecond()) {	// 20 min
 				tickspawndelay = s32(getTicksASecond() * 10);
-			} else if (getGameTime() >= 1980 * getTicksASecond()) {											// 30 min
+			} else if (getGameTime() >= 1500 * getTicksASecond()) {											// 25 min
+				tickspawndelay = s32(getTicksASecond() * 20);
+			} /*else if (getGameTime() >= 1980 * getTicksASecond()) {											// 30 min
 				tickspawndelay = s32(getTicksASecond() * 15);
-			}
+			}*/
 		}
 
 		CTFPlayerInfo@ info = cast < CTFPlayerInfo@ > (core.getInfoFromPlayer(player));
