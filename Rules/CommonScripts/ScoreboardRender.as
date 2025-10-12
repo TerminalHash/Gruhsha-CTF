@@ -276,44 +276,57 @@ float drawScoreboard(CPlayer@ localPlayer, CPlayer@[] players, Vec2f tl, CTeam@ 
 		}
 
 		// Mark captain in scoreboard
-		if (getRules().get_string("team_"+teamIndex+"_leader")==username)
-		{
+		if (getRules().get_string("team_"+teamIndex+"_leader")==username) {
+			// additional gap for plate
+			// TODO: replace it with CFileImage thing???
+			Vec2f plate_gap = Vec2f(-72, 0);
+			Vec2f plate_gap_lang = Vec2f(-82, 0);
+
 			// set custom plate first
-			if (username == "kusaka79")
-				GUI::DrawIcon("CaptainMark/Custom/cm_kusaka.png", 0, Vec2f(33, 9), tl + Vec2f(-74, 0), 1.0f, 0);
-			else if (username == "TerminalHash")
-				GUI::DrawIcon("CaptainMark/Custom/cm_terminal.png", 0, Vec2f(33, 9), tl + Vec2f(-72, 0), 1.0f, 0);
-			else if (username == "Pnext")
-				GUI::DrawIcon("CaptainMark/Custom/cm_pnext.png", 0, Vec2f(33, 9), tl + Vec2f(-72, 0), 1.0f, 0);
-			else if (username == "egor0928931")
-				GUI::DrawIcon("CaptainMark/Custom/cm_egor.png", 0, Vec2f(35, 9), tl + Vec2f(-76, 0), 1.0f, 0);
-			else if (username == "Think_About")
-				GUI::DrawIcon("CaptainMark/Custom/cm_think.png", 0, Vec2f(31, 9), tl + Vec2f(-72, 0), 1.0f, 0);
-			else if (username == "Bohdanu")
-				GUI::DrawIcon("CaptainMark/Custom/cm_bohdanu.png", 0, Vec2f(34, 9), tl + Vec2f(-73, 0), 1.0f, 0);
-			else if (username == "QuickToast")
-				GUI::DrawIcon("CaptainMark/Custom/cm_quicktoast.png", 0, Vec2f(29, 9), tl + Vec2f(-72, 0), 1.0f, 0);
-			else if (username == "cosm_akylka")
-				GUI::DrawIcon("CaptainMark/Custom/cm_akylka.png", 0, Vec2f(38, 9), tl + Vec2f(-77, 0), 1.0f, 0);
-			else if (username == "H1996R")
-				GUI::DrawIcon("CaptainMark/Custom/cm_hallios.png", 0, Vec2f(29, 9), tl + Vec2f(-72, 0), 1.0f, 0);
-			else if (username == "NoahTheLegend")
-				GUI::DrawIcon("CaptainMark/Custom/cm_noah.png", 0, Vec2f(26, 9), tl + Vec2f(-72, 0), 1.0f, 0);
-			else if (username == "Wzzzzzzzzzzzzz")
-				GUI::DrawIcon("CaptainMark/Custom/cm_walidz.png", 0, Vec2f(35, 9), tl + Vec2f(-76, 0), 1.0f, 0);
-			else if (username == "arsenpip")
-				GUI::DrawIcon("CaptainMark/Custom/cm_aidic.png", 0, Vec2f(45, 9), tl + Vec2f(-79, 0), 1.0f, 0);
-			else if (username == "petgreendino")
-				GUI::DrawIcon("CaptainMark/Custom/cm_dino.png", 0, Vec2f(39, 9), tl + Vec2f(-78, 0), 1.0f, 0);
-			else if (username == "tigorsun")
-				GUI::DrawIcon("CaptainMark/Custom/cm_tigor.png", 0, Vec2f(30, 9), tl + Vec2f(-69, 0), 1.0f, 0);
+			if (username == "kusaka79") {
+				plate_gap += Vec2f(-1, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_kusaka.png", 0, Vec2f(33, 9), tl + plate_gap, 1.0f, 0);
+			} else if (username == "TerminalHash") {
+				GUI::DrawIcon("CaptainMark/Custom/cm_terminal.png", 0, Vec2f(33, 9), tl + plate_gap, 1.0f, 0);
+			} else if (username == "Pnext") {
+				GUI::DrawIcon("CaptainMark/Custom/cm_pnext.png", 0, Vec2f(33, 9), tl + plate_gap, 1.0f, 0);
+			}else if (username == "egor0928931") {
+				plate_gap += Vec2f(-4, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_egor.png", 0, Vec2f(35, 9), tl + plate_gap, 1.0f, 0);
+			} else if (username == "Think_About") {
+				GUI::DrawIcon("CaptainMark/Custom/cm_think.png", 0, Vec2f(31, 9), tl + plate_gap, 1.0f, 0);
+			} else if (username == "Bohdanu") {
+				plate_gap += Vec2f(-2, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_bohdanu.png", 0, Vec2f(34, 9), tl + plate_gap, 1.0f, 0);
+			} else if (username == "QuickToast") {
+				GUI::DrawIcon("CaptainMark/Custom/cm_quicktoast.png", 0, Vec2f(29, 9), tl + plate_gap, 1.0f, 0);
+			} else if (username == "cosm_akylka") {
+				plate_gap += Vec2f(-10, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_akylka.png", 0, Vec2f(38, 9), tl + plate_gap, 1.0f, 0);
+			} else if (username == "H1996R") {
+				GUI::DrawIcon("CaptainMark/Custom/cm_hallios.png", 0, Vec2f(29, 9), tl + plate_gap, 1.0f, 0);
+			} else if (username == "NoahTheLegend") {
+				GUI::DrawIcon("CaptainMark/Custom/cm_noah.png", 0, Vec2f(26, 9), tl + plate_gap, 1.0f, 0);
+			} else if (username == "Wzzzzzzzzzzzzz") {
+				plate_gap += Vec2f(-5, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_walidz.png", 0, Vec2f(35, 9), tl + plate_gap, 1.0f, 0);
+			} else if (username == "arsenpip") {
+				plate_gap += Vec2f(-25, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_aidic.png", 0, Vec2f(45, 9), tl + plate_gap, 1.0f, 0);
+			} else if (username == "petgreendino") {
+				plate_gap += Vec2f(-12, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_dino.png", 0, Vec2f(39, 9), tl + plate_gap, 1.0f, 0);
+			} else if (username == "tigorsun") {
+				plate_gap += Vec2f(6, 0);
+				GUI::DrawIcon("CaptainMark/Custom/cm_tigor.png", 0, Vec2f(30, 9), tl + plate_gap, 1.0f, 0);
 			// if player doesn't have custom plate - set default
-			else if (g_locale == "ru")
-				GUI::DrawIcon("CaptainMark/ru.png", 0, Vec2f(38, 9), tl + Vec2f(-84, 0), 1.0f, 0);
-			else if (g_locale == "de")
-				GUI::DrawIcon("CaptainMark/de.png", 0, Vec2f(38, 9), tl + Vec2f(-82, 0), 1.0f, 0);
-			else
-				GUI::DrawIcon("CaptainMark/en.png", 0, Vec2f(38, 9), tl + Vec2f(-82, 0), 1.0f, 0);
+			} else if (g_locale == "ru") {
+				GUI::DrawIcon("CaptainMark/ru.png", 0, Vec2f(38, 9), tl + plate_gap_lang, 1.0f, 0);
+			} else if (g_locale == "de") {
+				GUI::DrawIcon("CaptainMark/de.png", 0, Vec2f(38, 9), tl + plate_gap_lang, 1.0f, 0);
+			} else {
+				GUI::DrawIcon("CaptainMark/en.png", 0, Vec2f(38, 9), tl + plate_gap_lang, 1.0f, 0);
+			}
 		}
 
 		// Tag builder in scoreboard
