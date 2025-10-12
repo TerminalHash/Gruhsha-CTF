@@ -122,7 +122,7 @@ void onRender(CRules@ this)
 	}
 
 	// Notification
-	if (end_in > 290 && end_in < 310) {
+	if (end_in > 590 && end_in < 610) {
 		Vec2f dim = Vec2f(342, 155);
 		Vec2f ul(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12);
 		Vec2f tl = ul + Vec2f(-10, -10);
