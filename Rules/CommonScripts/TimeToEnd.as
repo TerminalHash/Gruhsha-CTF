@@ -36,24 +36,14 @@ void onTick(CRules@ this)
 	s32 end_in = this.get_s32("end_in");
 	//bool kurwa = this.get_bool("kurwa");
 
-	// Special tag for buffs on 5 min
-	//if (end_in == 1200) {
-	if (end_in == 300) {
+	// Special tag for buffs on 10 min
+	//if (end_in == 1200) {  // 20 min
+	// (end_in == 300) {     // 5 min
+	if (end_in == 600) {
 		if(!isServer()) return;
 
 		this.Tag("sudden death");
 		this.Sync("sudden death", true);
-
-		// FIXME: play sound
-		// works as shit, dont use it
-		/*
-		this.set_bool("kurwa", true);
-		this.Sync("kurwa", true);
-
-		CBitStream bs;
-		bs.write_bool(kurwa);
-		this.SendCommand(this.getCommandID("sudden death sound"), bs);
-		*/
 
 		// Change prices in shops
 		// knight shop
@@ -110,18 +100,7 @@ void onTick(CRules@ this)
 		this.SetCurrentState(3);
 	}
 }
-/*
-void onCommand(CRules@ this, u8 cmd, CBitStream @params) {
-	if (cmd == this.getCommandID("sudden death sound") && isClient()) {
-		bool kurwa;
-		if (!params.saferead_bool(kurwa)) return;
 
-		if (kurwa) {
-			Sound::Play("suddendeath.ogg");
-		}
-	}
-}
-*/
 void onRender(CRules@ this)
 {
 	if (g_videorecording)
