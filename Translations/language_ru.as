@@ -113,7 +113,7 @@ namespace ru
 	// Quarters.as
 	d_beertext								= "Кружка освежающего кваса.",
 	d_mealtext								= "Нажористый и вкусный борщ.",
-	d_burgertext							= "Пирожок с грушами с собой в дорогу.",
+	//d_burgertext							= "Пирожок с грушами с собой в дорогу.",
 	d_peartext								= "Сочная и сладкая груша.",
 	d_sleeptext								= "Прилечь поспать. Бесплатно!",
 
@@ -223,7 +223,7 @@ namespace ru
 	n_beernmb								= "Квас",
 	n_mealnmb								= "Борщ",
 	n_eggnmb								= "Яйцо",
-	n_burgernmb								= "Пирожок с грушей",
+	n_burgernmb								= "Бургер",
 	n_pearnmb								= "Груша",
 	n_sleepnmb								= "Спать",
 
@@ -285,7 +285,7 @@ namespace ru
 	n_pressdelete							= "Выбери клавишу и нажми [DELETE] для очистки хоткея!",
 
 	// Food.as
-	n_burgerinv								= "Пирожок с грушами",
+	n_burgerinv								= "Бургер",
 
 	// KnightShop.as
 	n_stickybomb							= "Липкая бомба",
@@ -314,8 +314,8 @@ namespace ru
 	n_mealitem								= "Борщ - Полное здоровье",
 	//n_mealitem								= "Мясное блюдо - Полное здоровье",
 	n_eggitem								= "Яйцо - Полное здоровье",
-	n_burgeritem							= "Пирожок с грушами - Полное здоровье",
-	//n_burgeritem							= "Бургер - Полное здоровье",
+	//n_burgeritem							= "Пирожок с грушами - Полное здоровье",
+	n_burgeritem							= "Бургер - Полное здоровье",
 	n_pearitem								= "Груша - 2 Сердца",
 	n_sleepaction							= "Лечь спать",
 
