@@ -94,7 +94,7 @@ void onInit(CBlob@ this)
 
 	// SHOP
 	this.set_Vec2f("shop offset", Vec2f_zero);
-	this.set_Vec2f("shop menu size", Vec2f(7, 2));
+	this.set_Vec2f("shop menu size", Vec2f(7, 1));
 	this.set_string("shop description", "Buy");
 	this.set_u8("shop icon", 25);
 
@@ -118,7 +118,7 @@ void onInit(CBlob@ this)
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::egg);
 	}
 	{
-		ShopItem@ s = addShopItem(this, Names::burgeritem, "$quarters_burger$", "food", Descriptions::burgertext, true);
+		ShopItem@ s = addShopItem(this, Names::burgeritem, "$quarters_burger$", "food", Descriptions::burger, true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::burger);
 	}
 	{
