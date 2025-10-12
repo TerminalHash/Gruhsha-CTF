@@ -1,4 +1,4 @@
-20// language_en.as
+// language_en.as
 /*
     English translation for Grusha CTF.
     -- -- -- -- -- -- -- -- --

@@ -39,6 +39,8 @@ void onInit(CBlob@ this)
 	u32 dynamic_water_bomb_cost = 30;
 	u32 dynamic_keg_cost = 160;
 	u32 dynamic_hazelnut_cost = 200;
+	u32 dynamic_fumo_gold = 80;
+	u32 dynamic_fumo_coin = 600;
 	u32 player_amount = getRules().get_s32("amount_in_team");
 
 	if (player_amount >= 12 && player_amount < 14)
@@ -70,6 +72,10 @@ void onInit(CBlob@ this)
 	if (getRules().hasTag("sudden death")) {
 		dynamic_keg_cost = 220;
 		dynamic_hazelnut_cost = 325;
+
+		// fixing tie: a little cheaper fumo
+		dynamic_fumo_gold = 100;
+		dynamic_fumo_coin = 0;
 	}
 
 	int team_num = this.getTeamNum();
@@ -133,8 +139,8 @@ void onInit(CBlob@ this)
 	}*/
 	{
 		ShopItem@ s = addShopItem(this, Names::fumokegname, getTeamIcon("fumokeg", "FumoKegIcon.png", team_num, Vec2f(16, 16), 0), "fumokeg", Descriptions::fumokegdesc, false);
-		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::fumokeg);
-		AddRequirement(s.requirements, "blob", "mat_gold", "Gold", CTFCosts::fumokeg_gold);
+		AddRequirement(s.requirements, "coin", "", "Coins", /*CTFCosts::fumokeg*/ dynamic_fumo_coin);
+		AddRequirement(s.requirements, "blob", "mat_gold", "Gold", /*CTFCosts::fumokeg_gold*/ dynamic_fumo_gold);
 		AddRequirement(s.requirements, "no more", "fumokeg", "Fumo Keg", 1);
 	}
 	{
