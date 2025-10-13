@@ -322,6 +322,17 @@ void onTick(CBlob@ this)
 			//knocked = true;
 		}
 	}
+	
+	if (this.get_bool("used dash")) {
+		knight.state = KnightStates::normal; //cancel any attacks or shielding
+		knight.swordTimer = 0;
+		knight.slideTime = 0;
+		knight.doubleslash = false;
+		this.set_s32("currentKnightState", 0);
+
+		pressed_a1 = false;
+		pressed_a2 = false;
+	}
 
 	if (knocked)
 	{
@@ -609,7 +620,7 @@ class NormalState : KnightState
 				if (carried.getName() == "drill") magicdrill = true;
 			}
 
-			if (!magicdrill)
+			if (!magicdrill || !this.get_bool("used dash"))
 			{
 				knight.state = KnightStates::sword_drawn;
 				return true;
@@ -663,7 +674,7 @@ class ShieldingState : KnightState
 				if (carried.getName() == "drill") magicdrill = true;
 			}
 
-			if (!magicdrill)
+			if (!magicdrill || !this.get_bool("used dash"))
 			{
 				knight.state = KnightStates::sword_drawn;
 				return true;
@@ -726,7 +737,7 @@ class ShieldGlideState : KnightState
 				if (carried.getName() == "drill") magicdrill = true;
 			}
 
-			if (!magicdrill)
+			if (!magicdrill || !this.get_bool("used dash"))
 			{
 				knight.state = KnightStates::sword_drawn;
 				return true;
@@ -751,7 +762,7 @@ class ShieldGlideState : KnightState
 		{
 			Vec2f vec;
 			const int direction = this.getAimDirection(vec);
-			if (direction == -1 && !forcedrop && !getMap().isInWater(pos + Vec2f(0, 16)) && !moveVars.wallsliding)
+			if (direction == -1 && !forcedrop && !getMap().isInWater(pos + Vec2f(0, 16)) && !moveVars.wallsliding && !this.get_bool("used dash"))
 			{
 				// already in KnightStates::shieldgliding;
 			}
@@ -818,7 +829,7 @@ class ShieldSlideState : KnightState
 				if (carried.getName() == "drill") magicdrill = true;
 			}
 
-			if (!magicdrill)
+			if (!magicdrill || !this.get_bool("used dash"))
 			{
 				knight.state = KnightStates::sword_drawn;
 				return true;
@@ -1061,7 +1072,6 @@ class CutState : KnightState
 		{
 			knight.state = KnightStates::normal;
 			return false;
-
 		}
 
 		this.Tag("prevent crouch");
@@ -1150,7 +1160,7 @@ class SlashState : KnightState
 		s32 delta = getSwordTimerDelta(knight);
 
 		if (knight.state == KnightStates::sword_power_super
-			&& this.isKeyJustPressed(key_action1))
+			&& this.isKeyJustPressed(key_action1) && !this.get_bool("used dash"))
 		{
 			CBlob@ carried = this.getCarriedBlob();
 			bool magicdrill = false;
@@ -1160,7 +1170,7 @@ class SlashState : KnightState
 				if (carried.getName() == "drill") magicdrill = true;
 			}
 
-			if (!magicdrill)
+			if (!magicdrill || !this.get_bool("used dash"))
 			{
 				knight.doubleslash = true;
 			}
@@ -1241,7 +1251,7 @@ class ResheathState : KnightState
 				if (carried.getName() == "drill") magicdrill = true;
 			}
 
-			if (!magicdrill)
+			if (!magicdrill || !this.get_bool("used dash"))
 			{
 				knight.state = KnightStates::sword_drawn;
 				return true;
