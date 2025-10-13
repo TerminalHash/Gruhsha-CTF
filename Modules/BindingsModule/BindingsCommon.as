@@ -70,7 +70,9 @@ string[][] button_texts =
 		Names::activateorthrowbomb,
 		Names::showinvkey,
 		"Toggle Camera Mode",
-		"Voiceline Wheel"
+		"Voiceline Wheel",
+		"Dash"
+		//Names::pickupwheelkey
 	},
 	{
 		"Go away"								// TECHNICAL LINE DONT TOUCH PLEASE
@@ -198,7 +200,9 @@ string[][] button_file_names =
 		"bomb_key",
 		"showinv",
 		"cameramode",
-		"voicelinewheel"
+		"voicelinewheel",
+		"dash_keybind"
+		//"pickup_wheel_key"
 	},
 	{
 		"go away"								// TECHNICAL LINE DONT TOUCH PLEASE
