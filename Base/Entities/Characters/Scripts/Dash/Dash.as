@@ -20,17 +20,15 @@
 #include "BindingsCommon.as"
 
 void onInit(CBlob@ this) {
-    SyncDashTime(this, 0);
+    SyncDashTime(this, 0, 0, false);
     //SyncDashKeyTime(this, 0);
 }
 
 void onTick(CBlob@ this) {
     // set special boolean for forcing normal state
-    if (this !is null && getGameTime() > (this.get_u32("last_dash") + DASH_MAGIC_NUMBER)) {
-        if (this.getConfig() == "knight") {
-            this.set_bool("used dash", false);
-            this.Sync("used dash", true);
-        }
+    if (this !is null && getGameTime() == (this.get_u32("last_dash") + (DASH_COOLDOWN * 30))) {
+        this.set_bool("used dash", false);
+        this.Sync("used dash", true);
     }
 
     // drop carried blob after some time, if it's our restricted blob
@@ -42,6 +40,11 @@ void onTick(CBlob@ this) {
 
         // FIXME: erzats block for attacks via knock
         //setKnocked(this, 10);
+    }
+
+    if (this.get_bool("used dash")) {
+        this.sub_u32("dash cooldown time", 1);
+        this.Sync("dash cooldown time", true);
     }
 
     if (b_KeyJustPressed("dash_keybind")) {
@@ -73,7 +76,7 @@ void onTick(CBlob@ this) {
                 dashforce.Normalize();
                 this.AddForce(dashforce * DASH_FORCE);
 
-                SyncDashTime(this, getGameTime());
+                SyncDashTime(this, getGameTime(), DASH_COOLDOWN * getTicksASecond(), true);
             }
         }
     }

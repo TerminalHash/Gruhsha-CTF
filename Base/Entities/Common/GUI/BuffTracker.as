@@ -34,6 +34,9 @@ void DrawBuffs() {
         // broken shield time stuff
         s32 brokenShieldTime = p.getBlob().get_s32("broken shield timer");
         s32 secondsToBrokenShielsEnd = brokenShieldTime / 30 % 60;
+        
+        s32 dashCooldownTime = p.getBlob().get_u32("dash cooldown time");
+        s32 secondsToDashCooldownEnd = dashCooldownTime / 30 % 60;
 
         if (p.getBlob().hasTag("icy")) {
 		    GUI::DrawIcon("DebuffOnHUD.png", 0, Vec2f(33, 19),  ul + kurwa);
@@ -50,6 +53,23 @@ void DrawBuffs() {
             drawRulesFont(getTranslatedString("{SEC}")
 		    	.replace("{SEC}", "" + ((secondsToBrokenShielsEnd < 10) ? "0" + secondsToBrokenShielsEnd : "" + secondsToBrokenShielsEnd)),
 		         SColor(255, 255, 255, 255), ul + kurwa2, ul, true, false);
+            
+            kurwa += Vec2f(80, 0);
+            kurwa2 += Vec2f(160, 0);
+        }
+
+        if (p.getBlob().hasTag("used dash")) {
+            GUI::DrawIcon("DebuffOnHUD.png", 2, Vec2f(33, 19),  ul + kurwa);
+            drawRulesFont(getTranslatedString("{SEC}")
+		    	.replace("{SEC}", "" + ((secondsToDashCooldownEnd < 10) ? "0" + secondsToDashCooldownEnd : "" + secondsToDashCooldownEnd)),
+		         SColor(255, 255, 255, 255), ul + kurwa2, ul, true, false);
+
+            kurwa += Vec2f(80, 0);
+            kurwa2 += Vec2f(160, 0);
+        }
+
+        if (p.getBlob().hasTag("disabled attacks")) {
+            GUI::DrawIcon("DebuffOnHUD.png", 3, Vec2f(33, 19),  ul + kurwa);
         }
 	}
 }
