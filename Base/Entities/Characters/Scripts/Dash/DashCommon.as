@@ -1,5 +1,5 @@
 // DashCommom.as
-const s32 DASH_FORCE = 250.0;
+const s32 DASH_FORCE = 225.0;
 
 // time in seconds!!!
 const s32 DASH_COOLDOWN = 5;
@@ -16,7 +16,7 @@ string[] disallowed_items = {
 	"chicken"
 };
 
-void SyncDashTime(CBlob@ this, u32 last_dash_time) {
+void SyncDashTime(CBlob@ this, u32 last_dash_time, u32 dash_cooldown_time, bool used_dash) {
     if (this is null) return;
 
     printf("Syncing last dash time, wait...");
@@ -24,10 +24,11 @@ void SyncDashTime(CBlob@ this, u32 last_dash_time) {
         this.set_u32("last_dash", last_dash_time);
         this.Sync("last_dash", true);
 
-        if (this.getConfig() == "knight") {
-            this.set_bool("used dash", true);
-            this.Sync("used dash", true);
-        }
+        this.set_u32("dash cooldown time", dash_cooldown_time);
+        this.Sync("dash cooldown time", true);
+
+        this.set_bool("used dash", used_dash);
+        this.Sync("used dash", true);
     }
 }
 
