@@ -25,10 +25,39 @@ void onInit(CBlob@ this) {
 }
 
 void onTick(CBlob@ this) {
-    // set special boolean for forcing normal state
+    bool inair = (!this.isOnGround() && !this.isOnLadder());
+    bool disable_debuff = this.get_bool("unblock attacks");
+
+    // more powerful solution for attack blocking
+    // checks for InAir state and disables any attacks via tag
+    // also disable that debuff, if player already grounded and trying to defend yourself
+    if (this !is null && this.getConfig() == "knight") {
+        if (inair && this.get_bool("used dash") && !disable_debuff) {
+            this.Tag("disabled attacks");
+            this.Sync("disabled attacks", true);
+        }
+
+        if (!inair && disable_debuff) {
+            this.Untag("disabled attacks");
+            this.Sync("disabled attacks", true);
+        }
+
+        if (!inair && !disable_debuff && this.get_bool("used dash")) {
+            this.set_bool("unblock attacks", true);
+            this.Sync("unblock attacks", true);
+        }
+    }
+
+    // reset dash state for the player, he can use dashes now
     if (this !is null && getGameTime() == (this.get_u32("last_dash") + (DASH_COOLDOWN * 30))) {
         this.set_bool("used dash", false);
         this.Sync("used dash", true);
+
+        this.Untag("disabled attacks");
+        this.Sync("disabled attacks", true);
+
+        this.set_bool("unblock attacks", false);
+        this.Sync("unblock attacks", true);
     }
 
     // drop carried blob after some time, if it's our restricted blob
@@ -37,9 +66,6 @@ void onTick(CBlob@ this) {
         if (carriedBlob !is null && !disallowedItemsWhileDashing (this, carriedBlob)) {
             this.DropCarried();
         }
-
-        // FIXME: erzats block for attacks via knock
-        //setKnocked(this, 10);
     }
 
     if (this.get_bool("used dash")) {
