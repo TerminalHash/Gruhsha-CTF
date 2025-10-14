@@ -29,6 +29,9 @@ void SyncDashTime(CBlob@ this, u32 last_dash_time, u32 dash_cooldown_time, bool 
 
         this.set_bool("used dash", used_dash);
         this.Sync("used dash", true);
+        
+        this.set_bool("unblock attacks", false);
+        this.Sync("unblock attacks", true);
     }
 }
 
