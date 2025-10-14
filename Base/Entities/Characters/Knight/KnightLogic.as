@@ -745,13 +745,13 @@ class ShieldGlideState : KnightState
 				knight.state = KnightStates::sword_drawn;
 				return true;
 			}
-			else if (!this.isKeyPressed(key_action2))
+			else if (!this.isKeyPressed(key_action2) || this.hasTag("disabled attacks"))
 			{
 				knight.state = KnightStates::normal;
 				return false;
 			}
 		}
-		else if (!this.isKeyPressed(key_action2))
+		else if (!this.isKeyPressed(key_action2) || this.hasTag("disabled attacks"))
 		{
 			knight.state = KnightStates::normal;
 			return false;
@@ -761,7 +761,7 @@ class ShieldGlideState : KnightState
 		bool forcedrop = getForceDrop(this, moveVars);
 
 		bool inair = getInAir(this);
-		if (inair && !this.isInWater())
+		if (inair && !this.isInWater() || !this.hasTag("disabled attacks"))
 		{
 			Vec2f vec;
 			const int direction = this.getAimDirection(vec);
