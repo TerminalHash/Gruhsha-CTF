@@ -20,6 +20,7 @@
 #include "BindingsCommon.as"
 
 void onInit(CBlob@ this) {
+    this.addCommandID("sync dash values");
     SyncDashTime(this, 0, 0, false);
     //SyncDashKeyTime(this, 0);
 }
@@ -102,8 +103,36 @@ void onTick(CBlob@ this) {
                 dashforce.Normalize();
                 this.AddForce(dashforce * DASH_FORCE);
 
-                SyncDashTime(this, getGameTime(), DASH_COOLDOWN * getTicksASecond(), true);
+                CBitStream params;
+			    params.write_u32(getGameTime());
+                params.write_u32(DASH_COOLDOWN);
+                params.write_bool(true);
+			    this.SendCommand(this.getCommandID("sync dash values"), params);
             }
         }
     }
+}
+
+void onCommand(CBlob@ this, u8 cmd, CBitStream @params) {
+	if (cmd == this.getCommandID("sync dash values") && isServer())
+	{
+		CPlayer@ callerp = getNet().getActiveCommandPlayer();
+		if (callerp is null) return;
+
+		CBlob@ caller = callerp.getBlob();
+		if (caller is null) return;
+
+		if (caller !is this) return;
+
+		u32 dash_time;
+		if (!params.saferead_u32(dash_time)) return;
+
+        u32 dash_cooldown_time;
+		if (!params.saferead_u32(dash_cooldown_time)) return;
+
+        bool isDashUsed;
+        if (!params.saferead_bool(isDashUsed)) return;
+
+		SyncDashTime(caller, dash_time, dash_cooldown_time * getTicksASecond(), isDashUsed);
+	}
 }
