@@ -19,7 +19,7 @@ string[] disallowed_items = {
 void SyncDashTime(CBlob@ this, u32 last_dash_time, u32 dash_cooldown_time, bool used_dash) {
     if (this is null) return;
 
-    printf("Syncing last dash time, wait...");
+    //printf("Syncing last dash time, wait...");
     if (isServer()) {
         this.set_u32("last_dash", last_dash_time);
         this.Sync("last_dash", true);
