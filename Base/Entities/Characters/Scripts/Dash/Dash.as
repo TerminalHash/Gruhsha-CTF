@@ -116,6 +116,7 @@ void onTick(CBlob@ this) {
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params) {
 	if (cmd == this.getCommandID("sync dash values") && isServer())
 	{
+        printf("SERVER COMMAND");
 		CPlayer@ callerp = getNet().getActiveCommandPlayer();
 		if (callerp is null) return;
 
