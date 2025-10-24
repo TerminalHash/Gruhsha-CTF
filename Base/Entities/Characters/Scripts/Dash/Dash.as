@@ -1,17 +1,11 @@
 /*
     Dash.as
     Mechanics of dashes for classes.
-    
-    TODO:
-    - improve attack blocking for knights, it's sucks currently
-    - check how it works on dedicated server
-    - check for desyncs and fix them (or delete nahui this mechanic, if it's impossible)
-    - tweak time variables for more good values
-    - maybe make dynamic DASH_FORCE system (with values only below 250) for items?
 
-    - disable damage from stomps after dashes and enable it after some time (use DASH_KNOCK_TICKS???)
-    OR
-    - decrease horizontal velocity for prevent powerful stomps
+    TODO:
+    - maybe make dynamic DASH_FORCE system (with values only below 250) for items?
+    - enable tag "disabled attacks" after jumping on trampoline from hights
+    - add indication of cooldown for enemies with setting for toggle it
 */
 
 #include "DashCommon.as"
@@ -22,7 +16,6 @@
 void onInit(CBlob@ this) {
     this.addCommandID("sync dash values");
     SyncDashTime(this, 0, 0, false);
-    //SyncDashKeyTime(this, 0);
 }
 
 void onTick(CBlob@ this) {
@@ -75,7 +68,7 @@ void onTick(CBlob@ this) {
     }
 
     if (b_KeyJustPressed("dash_keybind")) {
-        printf("Dash key is pressed");
+        //printf("Dash key is pressed");
         if (this !is null && getGameTime() > (this.get_u32("last_dash") + (DASH_COOLDOWN * 30))) {
             //printf("Player " + this.getPlayer().getUsername() + " is dashing!");
 
@@ -114,9 +107,8 @@ void onTick(CBlob@ this) {
 }
 
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params) {
-	if (cmd == this.getCommandID("sync dash values") && isServer())
-	{
-        printf("SERVER COMMAND");
+	if (cmd == this.getCommandID("sync dash values") && isServer()) {
+        //printf("SERVER COMMAND");
 		CPlayer@ callerp = getNet().getActiveCommandPlayer();
 		if (callerp is null) return;
 
