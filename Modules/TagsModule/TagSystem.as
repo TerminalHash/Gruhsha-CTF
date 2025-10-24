@@ -19,6 +19,11 @@
     7             KEG
     8             WiT SENCE
 
+    TODO:
+    1. rewrite commands, they looks like autistic shit
+    2. move custom wheels thing into new script
+    3. rewrite tag packs thing to cfgs files, they shouldn't be hardcoded into script
+    4. improve tag packs thing???
 */
 
 #include "TagCommon.as";
@@ -75,6 +80,33 @@ bool shouldShowIndicator(CRules@ rules, CPlayer@ tag_initiator)
     return false;
 }
 
+// experimental tag packs realization
+string[] tag_pack_first =
+{
+    "none",                     // TECNHICAL LINE
+    "tag_default.ogg",          // GO HERE
+    "tag_dig.ogg",              // DIG HERE
+    "tag_attack.ogg",           // ATTACK
+    "tag_danger.ogg",           // DANGER
+    "tag_retreat.ogg",          // RETREAT
+    "tag_help.ogg",             // HELP
+    "tag_keg.ogg",              // KEG
+    "tag_wit.ogg"               // WiT SENCE
+};
+
+string[] tag_pack_second =
+{
+    "none",                     // TECNHICAL LINE
+    "tag_default2.ogg",         // GO HERE
+    "tag_dig2.ogg",             // DIG HERE
+    "tag_attack2.ogg",          // ATTACK
+    "tag_danger2.ogg",          // DANGER
+    "tag_retreat2.ogg",         // RETREAT
+    "tag_help2.ogg",            // HELP
+    "tag_keg2.ogg",             // KEG
+    "tag_wit.ogg"               // WiT SENCE
+};
+
 void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
 {
     if (cmd == rules.getCommandID(tag_cmd_id) && isServer())
@@ -130,17 +162,26 @@ void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
                         upd_cooldown = 15;
                     }
 
+                    // use pack, which user picked in settings
+                    // it can make boom, but whatever i guess
+                    string tag_pack;
+                    if (getRules().get_string("tag_packs") == "first") {
+                        tag_pack = tag_pack_first[kind];
+                    } else {
+                        tag_pack = tag_pack_second[kind];
+                    }
+
                     if (annoying_tags_sounds == "off") {
                         rules.set_u32(player.getUsername() + "tag_cooldown_time", upd_cooldown);
                     } else {
-                        if      (kind == 1) { Sound::Play(soundsdir + "tag_default", pos, 1.5f); }   // GO HERE
-                        else if (kind == 2) { Sound::Play(soundsdir + "tag_dig", pos, 1.5f); }       // DIG HERE
-                        else if (kind == 3) { Sound::Play(soundsdir + "tag_attack", pos, 1.5f); }    // ATTACK
-                        else if (kind == 4) { Sound::Play(soundsdir + "tag_danger", pos, 1.5f); }    // DANGER
-                        else if (kind == 5) { Sound::Play(soundsdir + "tag_retreat", pos, 1.5f); }   // RETREAT
-                        else if (kind == 6) { Sound::Play(soundsdir + "tag_help", pos, 1.5f); }      // HELP
-                        else if (kind == 7) { Sound::Play(soundsdir + "tag_keg", pos, 1.5f); }       // KEG
-                        else if (kind == 8) { Sound::Play(soundsdir + "tag_wit", pos, 1.5f); }       // WiT SENCE
+                        if      (kind == 1) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }   // GO HERE
+                        else if (kind == 2) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // DIG HERE
+                        else if (kind == 3) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }    // ATTACK
+                        else if (kind == 4) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }    // DANGER
+                        else if (kind == 5) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }   // RETREAT
+                        else if (kind == 6) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }      // HELP
+                        else if (kind == 7) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // KEG
+                        else if (kind == 8) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // WiT SENCE
 
                         rules.set_u32(player.getUsername() + "tag_cooldown_time", upd_cooldown);
                     }
@@ -214,17 +255,26 @@ void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
                         upd_cooldown = 15;
                     }
 
+                    // use pack, which user picked in settings
+                    // it can make boom, but whatever i guess
+                    string tag_pack;
+                    if (getRules().get_string("tag_packs") == "first") {
+                        tag_pack = tag_pack_first[kind];
+                    } else {
+                        tag_pack = tag_pack_second[kind];
+                    }
+
                     if (annoying_tags_sounds == "off") {
                         rules.set_u32(player.getUsername() + "tag_cooldown_time", upd_cooldown);
                     } else {
-                        if      (kind == 1) { Sound::Play(soundsdir + "tag_default", pos, 1.5f); }   // GO HERE
-                        else if (kind == 2) { Sound::Play(soundsdir + "tag_dig", pos, 1.5f); }       // DIG HERE
-                        else if (kind == 3) { Sound::Play(soundsdir + "tag_attack", pos, 1.5f); }    // ATTACK
-                        else if (kind == 4) { Sound::Play(soundsdir + "tag_danger", pos, 1.5f); }    // DANGER
-                        else if (kind == 5) { Sound::Play(soundsdir + "tag_retreat", pos, 1.5f); }   // RETREAT
-                        else if (kind == 6) { Sound::Play(soundsdir + "tag_help", pos, 1.5f); }      // HELP
-                        else if (kind == 7) { Sound::Play(soundsdir + "tag_keg", pos, 1.5f); }       // KEG
-                        else if (kind == 8) { Sound::Play(soundsdir + "tag_wit", pos, 1.5f); }       // WiT SENCE
+                        if      (kind == 1) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }   // GO HERE
+                        else if (kind == 2) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // DIG HERE
+                        else if (kind == 3) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }    // ATTACK
+                        else if (kind == 4) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }    // DANGER
+                        else if (kind == 5) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }   // RETREAT
+                        else if (kind == 6) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }      // HELP
+                        else if (kind == 7) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // KEG
+                        else if (kind == 8) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // WiT SENCE
 
                         rules.set_u32(player.getUsername() + "tag_cooldown_time", upd_cooldown);
                     }
