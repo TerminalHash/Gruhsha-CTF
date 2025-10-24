@@ -76,7 +76,7 @@ void onTick(CBlob@ this) {
     if (b_KeyJustPressed("dash_keybind")) {
         printf("Dash key is pressed");
         if (this !is null && getGameTime() > (this.get_u32("last_dash") + (DASH_COOLDOWN * 30))) {
-            printf("Player " + this.getPlayer().getUsername() + " is dashing!");
+            //printf("Player " + this.getPlayer().getUsername() + " is dashing!");
 
             // disable dashing, when knight or archer charging his attack
             // also block dashing while knight is trying to dash with gliding state
