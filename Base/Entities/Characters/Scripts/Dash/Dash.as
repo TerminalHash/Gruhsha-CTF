@@ -25,7 +25,7 @@ void onTick(CBlob@ this) {
     // more powerful solution for attack blocking
     // checks for InAir state and disables any attacks via tag
     // also disable that debuff, if player already grounded and trying to defend yourself
-    if (this !is null && this.getConfig() == "knight") {
+    if (this !is null && this.getConfig() != "archer") {
         if (inair && this.get_bool("used dash") && !disable_debuff) {
             this.Tag("disabled attacks");
             this.Sync("disabled attacks", true);

@@ -178,6 +178,9 @@ void onCreateInventoryMenu(CInventory@ this, CBlob@ forBlob, CGridMenu@ menu)
 	CBlob@ blob = this.getBlob();
 	if (blob is null) return;
 
+	// block building while our builder is dashed
+	if (blob !is null && blob.hasTag("disabled attacks")) return;
+
 	const Vec2f INVENTORY_POS = this.getInventorySlots() * GRID_SIZE / 2 + menu.getUpperLeftPosition();
 	blob.set_Vec2f("backpack position", INVENTORY_POS);
 
@@ -405,6 +408,9 @@ void onTick(CBlob@ this)
 	// FOR SOME REASON, THIS HAS TO BE HERE IN ORDER FOR THE FOLLOWING CODE TO WORK. NEVER REMOVE THIS!!!
 	// FOR SOME REASON, THIS HAS TO BE HERE IN ORDER FOR THE FOLLOWING CODE TO WORK. NEVER REMOVE THIS!!!
 	bool weird = controls.isKeyJustPressed(KEY_LBUTTON);
+
+	// block building while our builder is dashed
+	if (this !is null && this.hasTag("disabled attacks")) return;
 
 	if (bmenu !is null)
 	{
