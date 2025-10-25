@@ -74,6 +74,7 @@ void onTick(CBlob@ this) {
 
             // disable dashing, when knight or archer charging his attack
             // also block dashing while knight is trying to dash with gliding state
+            // also clear selected block/tool for builder
             if (this.getConfig() == "archer") {
                 if (this.isKeyPressed(key_action1)) return;
             } else if (this.getConfig() == "knight") {
@@ -84,6 +85,12 @@ void onTick(CBlob@ this) {
 
                 if (this.isKeyPressed(key_action1)) return;
                 if (knight.state == KnightStates::shieldgliding) return;
+            } else if (this.getConfig() == "builder") {
+                this.set_u8("bunnie_tile", 255);
+
+                CBitStream kekrams;
+                kekrams.write_u8(255);
+                this.SendCommand(this.getCommandID("tool clear"));
             }
 
             // disallow dashing with items in hands
