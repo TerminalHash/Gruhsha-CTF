@@ -21,12 +21,11 @@
 
     TODO:
     1. rewrite commands, they looks like autistic shit
-    2. move custom wheels thing into new script
-    3. rewrite tag packs thing to cfgs files, they shouldn't be hardcoded into script
-    4. improve tag packs thing???
 */
 
 #include "TagCommon.as";
+#include "TagPacksCommon.as";
+#include "CustomTagWheels.as";
 #include "BindingsCommon.as"
 
 // Utility
@@ -79,33 +78,6 @@ bool shouldShowIndicator(CRules@ rules, CPlayer@ tag_initiator)
 
     return false;
 }
-
-// experimental tag packs realization
-string[] tag_pack_first =
-{
-    "none",                     // TECNHICAL LINE
-    "tag_default.ogg",          // GO HERE
-    "tag_dig.ogg",              // DIG HERE
-    "tag_attack.ogg",           // ATTACK
-    "tag_danger.ogg",           // DANGER
-    "tag_retreat.ogg",          // RETREAT
-    "tag_help.ogg",             // HELP
-    "tag_keg.ogg",              // KEG
-    "tag_wit.ogg"               // WiT SENCE
-};
-
-string[] tag_pack_second =
-{
-    "none",                     // TECNHICAL LINE
-    "tag_default2.ogg",         // GO HERE
-    "tag_dig2.ogg",             // DIG HERE
-    "tag_attack2.ogg",          // ATTACK
-    "tag_danger2.ogg",          // DANGER
-    "tag_retreat2.ogg",         // RETREAT
-    "tag_help2.ogg",            // HELP
-    "tag_keg2.ogg",             // KEG
-    "tag_wit.ogg"               // WiT SENCE
-};
 
 void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
 {
@@ -174,12 +146,12 @@ void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
                     if (annoying_tags_sounds == "off") {
                         rules.set_u32(player.getUsername() + "tag_cooldown_time", upd_cooldown);
                     } else {
-                        if      (kind == 1) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }   // GO HERE
+                        if      (kind == 1) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // GO HERE
                         else if (kind == 2) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // DIG HERE
-                        else if (kind == 3) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }    // ATTACK
-                        else if (kind == 4) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }    // DANGER
-                        else if (kind == 5) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }   // RETREAT
-                        else if (kind == 6) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }      // HELP
+                        else if (kind == 3) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // ATTACK
+                        else if (kind == 4) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // DANGER
+                        else if (kind == 5) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // RETREAT
+                        else if (kind == 6) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // HELP
                         else if (kind == 7) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // KEG
                         else if (kind == 8) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // WiT SENCE
 
@@ -267,12 +239,12 @@ void onCommand(CRules@ rules, u8 cmd, CBitStream @params)
                     if (annoying_tags_sounds == "off") {
                         rules.set_u32(player.getUsername() + "tag_cooldown_time", upd_cooldown);
                     } else {
-                        if      (kind == 1) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }   // GO HERE
+                        if      (kind == 1) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // GO HERE
                         else if (kind == 2) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // DIG HERE
-                        else if (kind == 3) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }    // ATTACK
-                        else if (kind == 4) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }    // DANGER
-                        else if (kind == 5) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }   // RETREAT
-                        else if (kind == 6) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }      // HELP
+                        else if (kind == 3) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // ATTACK
+                        else if (kind == 4) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // DANGER
+                        else if (kind == 5) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // RETREAT
+                        else if (kind == 6) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // HELP
                         else if (kind == 7) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // KEG
                         else if (kind == 8) { Sound::Play(soundsdir + tag_pack, pos, 1.5f); }       // WiT SENCE
 
@@ -596,61 +568,4 @@ void onRender(CRules@ rules)
         GUI::GetTextDimensions(player_display_name, text_dimensions_1);
         GUI::DrawText(player_display_name, tag_screen_pos - text_dimensions_1 * .5f + Vec2f(0.f, text_dimensions_0.y - 8 * resolution_scale) + Vec2f(0, Maths::Sin(getGameTime() / 3.0f) * 4), name_color);
     }
-}
-
-// Custom tag wheels for some players
-bool tagWheels(string username)
-{
-    CControls@ controls = getControls();
-
-    if (username == "egor0928931")
-    {
-        TagMenu@ menu = TagMenu(controls.getMouseScreenPos());
-
-        TagMenuEntry@ entry4 = TagMenuEntry("4", controls.getMouseScreenPos());
-        entry4.visible_name = "DANGER";
-        entry4.t_color = SColor( 255, 235,  0,  0);
-        menu.add_entry(entry4);
-
-        TagMenuEntry@ entry = TagMenuEntry("1", controls.getMouseScreenPos());
-        entry.visible_name = "GO HERE";
-        entry.t_color = SColor( 255, 122,  255,  104);
-        menu.add_entry(entry);
-
-        TagMenuEntry@ entry2 = TagMenuEntry("2", controls.getMouseScreenPos());
-        entry2.visible_name = "DIG HERE";
-        entry2.t_color = SColor( 255, 169,  113,  80);
-        menu.add_entry(entry2);
-
-        TagMenuEntry@ entry7 = TagMenuEntry("7", controls.getMouseScreenPos());
-        entry7.visible_name = "KEG";
-        entry7.t_color = SColor( 255, 255,  126,  126);
-        menu.add_entry(entry7);
-
-        TagMenuEntry@ entry5 = TagMenuEntry("5", controls.getMouseScreenPos());
-        entry5.visible_name = "RETREAT";
-        entry5.t_color = SColor( 255, 232,  124,  0);
-        menu.add_entry(entry5);
-
-        TagMenuEntry@ entry6 = TagMenuEntry("6", controls.getMouseScreenPos());
-        entry6.visible_name = "HELP";
-        entry6.t_color = SColor( 255, 169,  235,  255);
-        menu.add_entry(entry6);
-
-        TagMenuEntry@ entry3 = TagMenuEntry("3", controls.getMouseScreenPos());
-        entry3.visible_name = "ATTACK";
-        entry3.t_color = SColor( 255, 238,  200,  0);
-        menu.add_entry(entry3);
-
-        TagMenuEntry@ entry8 = TagMenuEntry("8", controls.getMouseScreenPos());
-        entry8.visible_name = "WiT SENCE";
-        entry8.t_color = SColor( 255,  255, 255, 255);
-        menu.add_entry(entry8);
-
-        tmenu = menu;
-
-        return true;
-    }
-
-    return false;
 }
