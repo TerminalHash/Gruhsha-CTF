@@ -74,8 +74,8 @@ void onInit(CBlob@ this)
 		dynamic_hazelnut_cost = 325;
 
 		// fixing tie: a little cheaper fumo
-		dynamic_fumo_gold = 100;
-		dynamic_fumo_coin = 0;
+		dynamic_fumo_gold = 40;
+		dynamic_fumo_coin = 300;
 	}
 
 	int team_num = this.getTeamNum();

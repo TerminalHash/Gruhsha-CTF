@@ -201,6 +201,8 @@ void onCommand( CRules@ this, u8 cmd, CBitStream@ params )
 		if (p !is null) {
 			string player_name = p.getUsername();
 			rules.set_bool("EditorMode_"+player_name, !rules.get_bool("EditorMode_"+player_name));
+			rules.Sync("EditorMode_"+player_name, true);
+
 			string the_line = p.getCharacterName() + "'s Editor Mode was changed to " + (rules.get_bool("EditorMode_"+player_name) ? "BLOBS" : "TILES");
 			if (p.isMyPlayer())
 				client_AddToChat(the_line, SColor(0xff474ac6));

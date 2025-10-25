@@ -204,6 +204,11 @@ void onInit(CRules@ this)
 			{
 				sfile.add_string("nomenubuying_b", "no");
 			}
+			
+			if (!sfile.exists("tag_packs"))
+			{
+				sfile.add_string("tag_packs", "first");
+			}
 		}
 		else // default settings
 		{
@@ -217,6 +222,7 @@ void onInit(CRules@ this)
 			sfile.add_string("pickbomb_archer", "yes");
 			sfile.add_string("nomenubuying", "no");
 			sfile.add_string("nomenubuying_b", "no");
+			sfile.add_string("tag_packs", "first");
 
 			printf("Creating local settings file with default values for Gruhsha.");
 		}

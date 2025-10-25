@@ -8,6 +8,8 @@ void DrawPersonalMats()
 	u8 team = p.getTeamNum();
 
 	if (p is null || !p.isMyPlayer()) { return; }
+	
+	bool editor_mode = getRules().get_bool("EditorMode_"+p.getUsername());
 
 	if (p.getBlob() !is null && p.getTeamNum() == team)
 	{
@@ -29,7 +31,7 @@ void DrawPersonalMats()
 		ul += Vec2f(480, -28);
 
 		Vec2f ul2 = ul + Vec2f(0, 40);
-		Vec2f ul3 = ul2 + Vec2f(0, 40);
+		Vec2f ul3 = ul + Vec2f(0, -70);
 
 		string msg1 = getRules().get_s32("teamwood" + team);
 		string msg2 = getRules().get_s32("teamstone" + team);
@@ -48,6 +50,16 @@ void DrawPersonalMats()
 		//GUI::DrawPane(ul2 + Vec2f(0, 4), ul2 + Vec2f(material_display_width+leftside_indent, material_display_height), SColor(255, 200, 200, 200));
 		GUI::DrawIcon("mats_ui.png", ul2 + Vec2f(0,-8));
 
+		// editor mode indicator
+		if (getRules().hasTag("editor is active")) {
+			if (editor_mode) {
+				GUI::DrawIcon("EditorMode_Panel.png", 0, Vec2f(48, 30), ul3 + Vec2f(0,-8));
+			} else {
+				GUI::DrawIcon("EditorMode_Panel.png", 1, Vec2f(48, 30), ul3 + Vec2f(0,-8));
+			}
+		}
+
+		//GUI::DrawIcon("mats_ui.png", ul2 + Vec2f(0,-8));
 		//GUI::DrawPane(ul3 + Vec2f(0, 4), ul3 + Vec2f(material_display_width+leftside_indent, material_display_height), SColor(255, 200, 200, 200));
 
 		//wood

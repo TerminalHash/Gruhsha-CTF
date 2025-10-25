@@ -121,13 +121,13 @@ namespace en
 	d_bomberdesc							= "Air vehicle, can carry two people and some cargo. Can bombard on Space.",
 
 	// TimeToEnd.as
-	d_thirtyminutesleft						= "5 minutes left, hurry up!",
+	d_thirtyminutesleft						= "10 minutes left, hurry up!",
 	d_suddenactive							= "SUDDEN DEATH MODE IS ACTIVE!",
 	d_kegbuff								= "* Kegs are buffed;",
 	d_drillbuff1							= "* Drillzone compeletly disabled;",
 	d_drillbuff2							= "* Knights and archers get less heat while drilling;",
 	d_blockreqdebuff						= "* Block requirements on mid is multiplied by 1.35;",
-	d_respawndebuff							= "* Respawn time is 20 seconds;",
+	d_respawndebuff							= "* Respawn time is 15 seconds and 20 seconds (second half);",
 	d_shielddebuff							= "* Shields miss half of the damage from slashes and jabs;",
 	d_swordbuff								= "* Knight gains the ability to strike fire once every 30 seconds;",
 	d_pricedebuff							= "* Prices for some items are being recalculated.",
