@@ -71,7 +71,6 @@ string[][] button_texts =
 		Names::showinvkey,
 		"Toggle Camera Mode",
 		"Voiceline Wheel"
-		//Names::pickupwheelkey
 	},
 	{
 		"Go away"								// TECHNICAL LINE DONT TOUCH PLEASE
@@ -200,7 +199,6 @@ string[][] button_file_names =
 		"showinv",
 		"cameramode",
 		"voicelinewheel"
-		//"pickup_wheel_key"
 	},
 	{
 		"go away"								// TECHNICAL LINE DONT TOUCH PLEASE
@@ -292,8 +290,6 @@ string[][] setting_texts =
 		Names::nomenubuyingset,
 		Names::nomenubuyingboldarset,
 		"Tag Sound Pack"
-		//"Pickup Wheel Type"
-		//Names::pickupwheeltype
 	}
 };
 
@@ -311,7 +307,6 @@ string[][] setting_file_names =
 		"nomenubuying",
 		"nomenubuying_b",
 		"tag_packs"
-		//"pickup_wheel_type"
 	}
 };
 
@@ -359,13 +354,9 @@ string[][][] setting_options =
 			Descriptions::universalyes // 20
 		},
 		{
-			"First",
-			"Second"
+			"Default",				   // 10	TAG PACKS
+			"Kayf-Life"				   // 20
 		}
-		/*{
-			Descriptions::universalold, // 10	PICKUP WHEEL TYPE
-			Descriptions::universalnew  // 20
-		}*/
 	}
 };
 
@@ -416,10 +407,6 @@ string[][][] setting_option_names =
 			"first",
 			"second"
 		}
-		/*{
-			"old", // 10   PICKUP WHEEL TYPE
-			"new"  // 20
-		}*/
 	}
 };
 
@@ -443,7 +430,6 @@ string[][] vsetting_texts =
 		"Snow Render Type",
 		"Player Kill Sounds",
 		"Misc Custom Sounds"
-		//Names::snowrendertype
 	}
 };
 
