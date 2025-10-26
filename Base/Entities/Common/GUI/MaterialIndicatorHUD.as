@@ -44,12 +44,6 @@ void DrawPersonalMats()
 			dcolor = red.color;
 		}
 
-		//GUI::DrawPane(ul + Vec2f(0, 4), ul + Vec2f(material_display_width+leftside_indent, material_display_height), SColor(255, 200, 200, 200));
-		GUI::DrawIcon("mats_ui.png", ul + Vec2f(0,-15));
-
-		//GUI::DrawPane(ul2 + Vec2f(0, 4), ul2 + Vec2f(material_display_width+leftside_indent, material_display_height), SColor(255, 200, 200, 200));
-		GUI::DrawIcon("mats_ui.png", ul2 + Vec2f(0,-8));
-
 		// editor mode indicator
 		if (getRules().hasTag("editor is active")) {
 			if (editor_mode) {
@@ -58,6 +52,14 @@ void DrawPersonalMats()
 				GUI::DrawIcon("EditorMode_Panel.png", 1, Vec2f(48, 30), ul3 + Vec2f(0,-8));
 			}
 		}
+
+		if (getRules().get_string("internal_game_mode") == "tavern") return;
+
+		//GUI::DrawPane(ul + Vec2f(0, 4), ul + Vec2f(material_display_width+leftside_indent, material_display_height), SColor(255, 200, 200, 200));
+		GUI::DrawIcon("mats_ui.png", ul + Vec2f(0,-15));
+
+		//GUI::DrawPane(ul2 + Vec2f(0, 4), ul2 + Vec2f(material_display_width+leftside_indent, material_display_height), SColor(255, 200, 200, 200));
+		GUI::DrawIcon("mats_ui.png", ul2 + Vec2f(0,-8));
 
 		//GUI::DrawIcon("mats_ui.png", ul2 + Vec2f(0,-8));
 		//GUI::DrawPane(ul3 + Vec2f(0, 4), ul3 + Vec2f(material_display_width+leftside_indent, material_display_height), SColor(255, 200, 200, 200));

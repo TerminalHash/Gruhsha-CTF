@@ -14,8 +14,8 @@ void onRender(CRules@ this)
 	if (g_videorecording)
 		return;
 
-    // rip
-    //if (getRules().get_string("class_panels") == "off") return;
+    // remove class counter text
+    if (this.get_string("internal_game_mode") == "tavern") return;
 
     GUI::SetFont("menu");
 

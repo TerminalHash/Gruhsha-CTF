@@ -53,6 +53,10 @@ void Config(CTFCore@ this)
 	//how many kills needed to win the match, per player on the smallest team
 	//hardcoded value, this gamemode only for fun and waiting players
 	this.kills_to_win_per_player = 30;
+
+	// modifies if the fall damage velocity is higher or lower - TDM has lower velocity
+	if (getRules().get_string("internal_game_mode") == "tavern")
+		getRules().set_f32("fall vel modifier", cfg.read_f32("fall_dmg_nerf", 1.3f));
 }
 
 shared string base_name() { return "tent"; }
@@ -408,6 +412,15 @@ shared class CTFCore : RulesCore
 
 	void Update()
 	{
+		//HUD
+		// lets save the CPU and do this only once in a while
+		if (rules.get_string("internal_game_mode") == "tavern") {
+			if (getGameTime() % 16 == 0)
+			{
+				updateHUD();
+			}
+		}
+
 		if (rules.isGameOver()) { return; }
 
 		s32 ticksToStart = gamestart + warmUpTime - getGameTime();
@@ -502,6 +515,86 @@ shared class CTFCore : RulesCore
 		CheckStalemate();
 		CheckTeamWon();
 
+	}
+
+	// TDM hud
+	void updateHUD()
+	{
+		bool hidekills = (rules.isIntermission() || rules.isWarmup());
+		CBitStream serialised_tavern_hud;
+		serialised_tavern_hud.write_u16(0x5afe); //check bits
+
+		for (uint team_num = 0; team_num < teams.length; ++team_num)
+		{
+			TAVERN_HUD hud;
+			CTFTeamInfo@ team = cast < CTFTeamInfo@ > (teams[team_num]);
+			hud.team_num = team_num;
+			hud.kills = team.kills;
+			hud.kills_limit = -1;
+			if (!hidekills)
+			{
+				if (kills_to_win <= 0)
+					hud.kills_limit = -2;
+				else
+					hud.kills_limit = kills_to_win;
+			}
+
+			string temp = "";
+
+			for (uint player_num = 0; player_num < players.length; ++player_num)
+			{
+				CTFPlayerInfo@ player = cast < CTFPlayerInfo@ > (players[player_num]);
+
+				if (player.team == team_num)
+				{
+					CPlayer@ e_player = getPlayerByUsername(player.username);
+
+					if (e_player !is null)
+					{
+						CBlob@ player_blob = e_player.getBlob();
+						bool blob_alive = player_blob !is null && player_blob.getHealth() > 0.0f;
+
+						if (blob_alive)
+						{
+							string player_char = "k"; //default to sword
+
+							if (player_blob.getName() == "archer")
+							{
+								player_char = "a";
+							}
+
+							temp += player_char;
+						}
+						else
+						{
+							temp += "s";
+						}
+					}
+				}
+			}
+
+			hud.unit_pattern = temp;
+
+			bool set_spawn_time = false;
+			if (team.spawns.length > 0 && !rules.isIntermission())
+			{
+				u32 st = cast < CTFPlayerInfo@ > (team.spawns[0]).can_spawn_time;
+				if (st < 200)
+				{
+					hud.spawn_time = (st / 30);
+					set_spawn_time = true;
+				}
+			}
+			if (!set_spawn_time)
+			{
+				hud.spawn_time = 255;
+			}
+
+			hud.Serialise(serialised_tavern_hud);
+		}
+
+		rules.set_CBitStream("tavern_serialised_team_hud", serialised_tavern_hud);
+		rules.Sync("tavern_serialised_team_hud", true);
 	}
 
 	//HELPERS
@@ -870,6 +963,10 @@ shared class CTFCore : RulesCore
 		if (team >= 0 && team < int(teams.length))
 		{
 			CTFTeamInfo@ team_info = cast < CTFTeamInfo@ > (teams[team]);
+
+			// increase kills count in team info, while it TDM
+			if (rules.get_string("internal_game_mode") == "tavern")
+				team_info.kills++;
 		}
 	}
 

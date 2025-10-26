@@ -135,3 +135,37 @@ shared class CTF_HUD
 	}
 
 };
+
+shared class TAVERN_HUD
+{
+	//is this our team?
+	u8 team_num;
+	//exclaim!
+	string unit_pattern;
+	u8 spawn_time;
+	//units
+	s16 kills;
+	s16 kills_limit; //here for convenience
+
+	TAVERN_HUD() { }
+	TAVERN_HUD(CBitStream@ bt) { Unserialise(bt); }
+
+	void Serialise(CBitStream@ bt)
+	{
+		bt.write_u8(team_num);
+		bt.write_string(unit_pattern);
+		bt.write_u8(spawn_time);
+		bt.write_s16(kills);
+		bt.write_s16(kills_limit);
+	}
+
+	void Unserialise(CBitStream@ bt)
+	{
+		team_num = bt.read_u8();
+		unit_pattern = bt.read_string();
+		spawn_time = bt.read_u8();
+		kills = bt.read_s16();
+		kills_limit = bt.read_s16();
+	}
+
+};
