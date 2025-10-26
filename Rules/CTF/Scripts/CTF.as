@@ -21,7 +21,7 @@ void Config(CTFCore@ this)
 	s32 warmUpTimeSeconds = cfg.read_s32("warmup_time", 30);
 	//how long to wait for everyone to spawn in?
 	if (getRules().get_string("internal_game_mode") == "tavern") {
-		warmUpTimeSeconds = 5;
+		warmUpTimeSeconds = 3;
 	}
 
 	this.warmUpTime = (getTicksASecond() * warmUpTimeSeconds);
@@ -701,7 +701,7 @@ shared class CTFCore : RulesCore
 				respawnPos.y -= 8.0f;
 				SetupBase(server_CreateBlob(base_name(), 0, respawnPos));
 			} else {
-				respawnPos.y -= 23.0f;
+				respawnPos.y -= 15.0f;
 				SetupBase(server_CreateBlob(base_name_tavern(), 0, respawnPos));
 			}
 
@@ -715,7 +715,7 @@ shared class CTFCore : RulesCore
 				respawnPos.y -= 8.0f;
 				SetupBase(server_CreateBlob(base_name(), 1, respawnPos));
 			} else {
-				respawnPos.y -= 23.0f;
+				respawnPos.y -= 15.0f;
 				SetupBase(server_CreateBlob(base_name_tavern(), 1, respawnPos));
 			}
 
