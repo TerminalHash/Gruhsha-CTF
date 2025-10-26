@@ -316,9 +316,9 @@ shared class CTFSpawns : RespawnSystem
 		if (getRules().hasTag("offi match")) {
 			if (getGameTime() >= 780 * getTicksASecond() && getGameTime() <= 1380 * getTicksASecond()) {			// 10 min
 				tickspawndelay = s32(getTicksASecond() * 6);
-			} else if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1620 * getTicksASecond()) {	// 20 min
+			} else if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1680 * getTicksASecond()) {	// 20 min
 				tickspawndelay = s32(getTicksASecond() * 12);
-			} else if (getGameTime() >= 1620 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) {											// 25 min
+			} else if (getGameTime() >= 1680 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) {											// 25 min
 				tickspawndelay = s32(getTicksASecond() * 15);
 			} else if (getGameTime() >= 1980 * getTicksASecond()) {											// 30 min
 				tickspawndelay = s32(getTicksASecond() * 20);
