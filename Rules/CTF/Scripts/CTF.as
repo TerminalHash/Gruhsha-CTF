@@ -49,9 +49,14 @@ void Config(CTFCore@ this)
 	//spawn after death time
 	this.spawnTime = (getTicksASecond() * cfg.read_s32("spawn_time", 15));
 
+	// TDM stuff
+	//how many kills needed to win the match, per player on the smallest team
+	//hardcoded value, this gamemode only for fun and waiting players
+	this.kills_to_win_per_player = 30;
 }
 
 shared string base_name() { return "tent"; }
+shared string base_name_tavern() { return "tdm_spawn"; }
 shared string flag_name() { return "ctf_flag"; }
 shared string flag_spawn_name() { return "flag_base"; }
 
@@ -194,28 +199,50 @@ shared class CTFSpawns : RespawnSystem
 	Vec2f getSpawnLocation(PlayerInfo@ p_info)
 	{
 		CTFPlayerInfo@ c_info = cast < CTFPlayerInfo@ > (p_info);
-		if (c_info !is null)
-		{
-			CBlob@ pickSpawn = getBlobByNetworkID(c_info.spawn_point);
-			if (pickSpawn !is null &&
-			        pickSpawn.hasTag("respawn") &&
-			        !pickSpawn.hasTag("under raid") &&
-			        pickSpawn.getTeamNum() == p_info.team)
+		if (getRules().get_string("internal_game_mode") != "tavern") {
+			if (c_info !is null)
 			{
-				return pickSpawn.getPosition();
-			}
-			else
-			{
-				CBlob@[] spawns;
-				PopulateSpawnList(spawns, p_info.team);
+				CBlob@ pickSpawn = getBlobByNetworkID(c_info.spawn_point);
+				if (pickSpawn !is null &&
+						pickSpawn.hasTag("respawn") &&
+						!pickSpawn.hasTag("under raid") &&
+						pickSpawn.getTeamNum() == p_info.team)
+				{
+					return pickSpawn.getPosition();
+				}
+				else
+				{
+					CBlob@[] spawns;
+					PopulateSpawnList(spawns, p_info.team);
 
+					for (uint step = 0; step < spawns.length; ++step)
+					{
+						if (spawns[step].getTeamNum() == s32(p_info.team))
+						{
+							return spawns[step].getPosition();
+						}
+					}
+				}
+			}
+		} else {
+			CBlob@[] spawns;
+			CBlob@[] teamspawns;
+
+			if (getBlobsByName("tdm_spawn", @spawns))
+			{
 				for (uint step = 0; step < spawns.length; ++step)
 				{
 					if (spawns[step].getTeamNum() == s32(p_info.team))
 					{
-						return spawns[step].getPosition();
+						teamspawns.push_back(spawns[step]);
 					}
 				}
+			}
+
+			if (teamspawns.length > 0)
+			{
+				int spawnindex = XORRandom(997) % teamspawns.length;
+				return teamspawns[spawnindex].getPosition();
 			}
 		}
 
@@ -289,7 +316,7 @@ shared class CTFSpawns : RespawnSystem
 				tickspawndelay = s32(getTicksASecond() * 7);
 			} else if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1680 * getTicksASecond()) {	// 20 min
 				tickspawndelay = s32(getTicksASecond() * 10);
-			} else if (getGameTime() >= 1680 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) {	// 25 min										// 25 min
+			} else if (getGameTime() >= 1680 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) {	// 25 min
 				tickspawndelay = s32(getTicksASecond() * 15);
 			} else if (getGameTime() >= 1980 * getTicksASecond()) {													// 30 min
 				tickspawndelay = s32(getTicksASecond() * 20);
@@ -346,6 +373,10 @@ shared class CTFCore : RulesCore
 	s32 stalemateOutcomeTime;
 
 	s32 minimum_players_in_team;
+
+	// TDM stuff
+	s32 kills_to_win;
+	s32 kills_to_win_per_player;
 
 	s32 players_in_small_team;
 	bool scramble_teams;
@@ -429,6 +460,26 @@ shared class CTFCore : RulesCore
 			rules.SetGlobalMessage("Match starts in {SEC}");
 			rules.AddGlobalMessageReplacement("SEC", "" + ((ticksToStart / 30) + 1));
 			ctf_spawns.force = true;
+
+			//set kills and cache #players in smaller team
+			if (rules.get_string("internal_game_mode") == "tavern") {
+				if (players_in_small_team == -1 || (getGameTime() % 30) == 4)
+				{
+					players_in_small_team = 100;
+
+					for (uint team_num = 0; team_num < teams.length; ++team_num)
+					{
+						CTFTeamInfo@ team = cast < CTFTeamInfo@ > (teams[team_num]);
+
+						if (team.players_count < players_in_small_team)
+						{
+							players_in_small_team = team.players_count;
+						}
+					}
+
+					kills_to_win = Maths::Max(players_in_small_team, 1) * kills_to_win_per_player;
+				}
+			}
 		}
 
 		if ((rules.isIntermission() || rules.isWarmup()) && (!allTeamsHavePlayers()))  //CHECK IF TEAMS HAVE ENOUGH PLAYERS
@@ -527,7 +578,12 @@ shared class CTFCore : RulesCore
 	{
 		// destroy all previous spawns if present
 		CBlob@[] oldBases;
-		getBlobsByName(base_name(), @oldBases);
+
+		if (rules.get_string("internal_game_mode") != "tavern") {
+			getBlobsByName(base_name(), @oldBases);
+		} else {
+			getBlobsByName(base_name_tavern(), @oldBases);
+		}
 
 		for (uint i = 0; i < oldBases.length; i++)
 		{
@@ -549,8 +605,13 @@ shared class CTFCore : RulesCore
 				respawnPos = Vec2f(auto_distance_from_edge_tents, map.getLandYAtX(auto_distance_from_edge_tents / map.tilesize) * map.tilesize - 16.0f);
 			}
 
-			respawnPos.y -= 8.0f;
-			SetupBase(server_CreateBlob(base_name(), 0, respawnPos));
+			if (rules.get_string("internal_game_mode") != "tavern") {
+				respawnPos.y -= 8.0f;
+				SetupBase(server_CreateBlob(base_name(), 0, respawnPos));
+			} else {
+				respawnPos.y -= 23.0f;
+				SetupBase(server_CreateBlob(base_name_tavern(), 0, respawnPos));
+			}
 
 			if (!getMap().getMarker("red main spawn", respawnPos))
 			{
@@ -558,8 +619,13 @@ shared class CTFCore : RulesCore
 				respawnPos = Vec2f(map.tilemapwidth * map.tilesize - auto_distance_from_edge_tents, map.getLandYAtX(map.tilemapwidth - (auto_distance_from_edge_tents / map.tilesize)) * map.tilesize - 16.0f);
 			}
 
-			respawnPos.y -= 8.0f;
-			SetupBase(server_CreateBlob(base_name(), 1, respawnPos));
+			if (rules.get_string("internal_game_mode") != "tavern") {
+				respawnPos.y -= 8.0f;
+				SetupBase(server_CreateBlob(base_name(), 1, respawnPos));
+			} else {
+				respawnPos.y -= 23.0f;
+				SetupBase(server_CreateBlob(base_name_tavern(), 1, respawnPos));
+			}
 
 			//setup the flags
 
@@ -568,40 +634,43 @@ shared class CTFCore : RulesCore
 
 			f32 auto_distance_from_edge = Maths::Min(map.tilemapwidth * 0.25f * 8.0f, 400.0f);
 
-			//blue flags
-			if (getMap().getMarkers("blue spawn", flagPlaces))
-			{
-				for (uint i = 0; i < flagPlaces.length; i++)
+			// set flags for CTF gamemode, but disable them, if we playing in TDM
+			if (rules.get_string("internal_game_mode") != "tavern") {
+				//blue flags
+				if (getMap().getMarkers("blue spawn", flagPlaces))
 				{
-					server_CreateBlob(flag_spawn_name(), 0, flagPlaces[i] + Vec2f(0, map.tilesize));
+					for (uint i = 0; i < flagPlaces.length; i++)
+					{
+						server_CreateBlob(flag_spawn_name(), 0, flagPlaces[i] + Vec2f(0, map.tilesize));
+					}
+
+					flagPlaces.clear();
+				}
+				else
+				{
+					warn("CTF: Blue flag added");
+					f32 x = auto_distance_from_edge;
+					respawnPos = Vec2f(x, (map.getLandYAtX(x / map.tilesize) - 2) * map.tilesize);
+					server_CreateBlob(flag_spawn_name(), 0, respawnPos);
 				}
 
-				flagPlaces.clear();
-			}
-			else
-			{
-				warn("CTF: Blue flag added");
-				f32 x = auto_distance_from_edge;
-				respawnPos = Vec2f(x, (map.getLandYAtX(x / map.tilesize) - 2) * map.tilesize);
-				server_CreateBlob(flag_spawn_name(), 0, respawnPos);
-			}
-
-			//red flags
-			if (getMap().getMarkers("red spawn", flagPlaces))
-			{
-				for (uint i = 0; i < flagPlaces.length; i++)
+				//red flags
+				if (getMap().getMarkers("red spawn", flagPlaces))
 				{
-					server_CreateBlob(flag_spawn_name(), 1, flagPlaces[i] + Vec2f(0, map.tilesize));
-				}
+					for (uint i = 0; i < flagPlaces.length; i++)
+					{
+						server_CreateBlob(flag_spawn_name(), 1, flagPlaces[i] + Vec2f(0, map.tilesize));
+					}
 
-				flagPlaces.clear();
-			}
-			else
-			{
-				warn("CTF: Red flag added");
-				f32 x = (map.tilemapwidth-1) * map.tilesize - auto_distance_from_edge;
-				respawnPos = Vec2f(x, (map.getLandYAtX(x / map.tilesize) - 2) * map.tilesize);
-				server_CreateBlob(flag_spawn_name(), 1, respawnPos);
+					flagPlaces.clear();
+				}
+				else
+				{
+					warn("CTF: Red flag added");
+					f32 x = (map.tilemapwidth-1) * map.tilesize - auto_distance_from_edge;
+					respawnPos = Vec2f(x, (map.getLandYAtX(x / map.tilesize) - 2) * map.tilesize);
+					server_CreateBlob(flag_spawn_name(), 1, respawnPos);
+				}
 			}
 		}
 		else
@@ -622,52 +691,76 @@ shared class CTFCore : RulesCore
 	{
 		if (!rules.isMatchRunning()) { return; }
 
-		// get all the flags
-		CBlob@[] flags;			// Total flags
-		CBlob@[] flags_red;		// Red flags
-		CBlob@[] flags_blue;	// Blue flags
-		getBlobsByName(flag_name(), @flags);
-
-		for (uint i = 0; i < flags.length; i++) {
-			if (flags[i].getTeamNum() == 0) {
-				flags_blue.push_back(flags[i]);
-			} else if (flags[i].getTeamNum() == 1) {
-				flags_red.push_back(flags[i]);
-			}
-		}
-
 		int winteamIndex = -1;
 		CTFTeamInfo@ winteam = null;
 		s8 team_wins_on_end = -1;
 
-		for (uint team_num = 0; team_num < teams.length; ++team_num)
-		{
-			CTFTeamInfo@ team = cast < CTFTeamInfo@ > (teams[team_num]);
+		if (rules.get_string("internal_game_mode") != "tavern") {
+			// get all the flags
+			CBlob@[] flags;			// Total flags
+			CBlob@[] flags_red;		// Red flags
+			CBlob@[] flags_blue;	// Blue flags
+			getBlobsByName(flag_name(), @flags);
 
-			bool win = true;
-
-			for (uint i = 0; i < flags.length; i++)
-			{
-				//if there exists an enemy flag, we didn't win yet
-				if (flags[i].getTeamNum() != team_num)
-				{
-					win = false;
-					break;
+			for (uint i = 0; i < flags.length; i++) {
+				if (flags[i].getTeamNum() == 0) {
+					flags_blue.push_back(flags[i]);
+				} else if (flags[i].getTeamNum() == 1) {
+					flags_red.push_back(flags[i]);
 				}
 			}
 
-			if (team_num == 0 && flags_red.length < flags_blue.length) {
-				team_wins_on_end = 0;
-			} else if (team_num == 1 && flags_blue.length < flags_red.length) {
-				team_wins_on_end = 1;
-			} else if (flags_blue.length == flags_red.length) {
-				team_wins_on_end = -1;
-			}
-
-			if (win)
+			for (uint team_num = 0; team_num < teams.length; ++team_num)
 			{
-				winteamIndex = team_num;
-				@winteam = team;
+				CTFTeamInfo@ team = cast < CTFTeamInfo@ > (teams[team_num]);
+
+				bool win = true;
+
+				for (uint i = 0; i < flags.length; i++)
+				{
+					//if there exists an enemy flag, we didn't win yet
+					if (flags[i].getTeamNum() != team_num)
+					{
+						win = false;
+						break;
+					}
+				}
+
+				if (team_num == 0 && flags_red.length < flags_blue.length) {
+					team_wins_on_end = 0;
+				} else if (team_num == 1 && flags_blue.length < flags_red.length) {
+					team_wins_on_end = 1;
+				} else if (flags_blue.length == flags_red.length) {
+					team_wins_on_end = -1;
+				}
+
+				if (win)
+				{
+					winteamIndex = team_num;
+					@winteam = team;
+				}
+			}
+		} else {
+			int highkills = 0;
+			for (uint team_num = 0; team_num < teams.length; ++team_num)
+			{
+				CTFTeamInfo@ team = cast < CTFTeamInfo@ > (teams[team_num]);
+
+				if (team.kills > highkills)
+				{
+					highkills = team.kills;
+					team_wins_on_end = team_num;
+
+					if (team.kills >= kills_to_win)
+					{
+						@winteam = team;
+						winteamIndex = team_num;
+					}
+				}
+				else if (team.kills > 0 && team.kills == highkills)
+				{
+					team_wins_on_end = -1;
+				}
 			}
 		}
 

@@ -641,3 +641,36 @@ class BrokeResupplies : ChatCommand
 			server_AddToChat("Infinity resupplies is off!", SColor(0xff474ac6));
 	}
 }
+
+class SetInternalGamemode : ChatCommand
+{
+	SetInternalGamemode()
+	{
+		super("gm", "Change internal Gruhsha's gamemode");
+		AddAlias("gamemode");
+		SetUsage("<gm name> (CTF or TDM)");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		if (rules.get_string("internal_game_mode") == "tavern") {
+			rules.set_string("internal_game_mode", "gruhsha");
+			LoadMapCycle("mapcycle.cfg");
+			server_AddToChat("Changed gamemode to CTF! Change the map, please.", SColor(0xff474ac6));
+		} else {
+			rules.set_string("internal_game_mode", "tavern");
+			LoadMapCycle("mapcycle_tavern.cfg");
+			server_AddToChat("Changed gamemode to TDM! Change the map, please.", SColor(0xff474ac6));
+		}
+	}
+}
