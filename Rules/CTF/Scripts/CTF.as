@@ -280,47 +280,18 @@ shared class CTFSpawns : RespawnSystem
 
 	void AddPlayerToSpawn(CPlayer@ player)
 	{
-		//s32 tickspawndelay = s32(CTF_core.spawnTime);
 		s32 tickspawndelay = s32(getTicksASecond() * 5);
 
-		// Dynamic respawn shit
-		/*s32 tickspawndelay = s32(getTicksASecond() * 7);
-
-		u32 counteg = 0;
-		for (int i=0; i<getPlayersCount(); ++i) {
-			CPlayer@ p = getPlayer(i);
-
-			if (p !is null) {
-				if (p.getTeamNum() == 0 || p.getTeamNum() == 1) {
-					counteg++;
-				}
-			}
-		}
-
-		if (counteg <= 8) {
-			tickspawndelay = s32(getTicksASecond() * 2);
-		} else if (counteg <= 10) {
-			tickspawndelay = s32(getTicksASecond() * 4);
-		} else if (counteg <= 12) {
-			tickspawndelay = s32(getTicksASecond() * 5);
-		} else if (counteg <= 14) {
-			tickspawndelay = s32(getTicksASecond() * 7);
-		} else if (counteg <= 16) {
-			tickspawndelay = s32(getTicksASecond() * 9);
-		} else if (counteg >= 16) {
-			tickspawndelay = s32(getTicksASecond() * 10);
-		}*/
-
 		// Sudden Death Mode: increase respawn time, if we have stalemate
-		// formula = 60 * n + 180
+		// formula - 60 * n + 180
 		if (getRules().hasTag("offi match")) {
 			if (getGameTime() >= 780 * getTicksASecond() && getGameTime() <= 1380 * getTicksASecond()) {			// 10 min
 				tickspawndelay = s32(getTicksASecond() * 6);
 			} else if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1680 * getTicksASecond()) {	// 20 min
-				tickspawndelay = s32(getTicksASecond() * 12);
-			} else if (getGameTime() >= 1680 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) {											// 25 min
+				tickspawndelay = s32(getTicksASecond() * 10);
+			} else if (getGameTime() >= 1680 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) {	// 25 min										// 25 min
 				tickspawndelay = s32(getTicksASecond() * 15);
-			} else if (getGameTime() >= 1980 * getTicksASecond()) {											// 30 min
+			} else if (getGameTime() >= 1980 * getTicksASecond()) {													// 30 min
 				tickspawndelay = s32(getTicksASecond() * 20);
 			}
 		}
