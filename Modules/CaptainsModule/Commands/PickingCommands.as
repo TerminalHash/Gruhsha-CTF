@@ -663,14 +663,25 @@ class SetInternalGamemode : ChatCommand
 	{
 		CRules@ rules = getRules();
 
-		if (rules.get_string("internal_game_mode") == "tavern") {
+		if (args.size() == 0) {
+			server_AddToChat("Write gamemode name before changing!", ConsoleColour::ERROR, player);
+			return;
+		}
+
+		string MODE_TO_SET = args[0];
+
+		if (MODE_TO_SET.toUpper() == "CTF" || MODE_TO_SET.toUpper() == "GRUHSHA") {
 			rules.set_string("internal_game_mode", "gruhsha");
 			LoadMapCycle("mapcycle.cfg");
-			server_AddToChat("Changed gamemode to CTF! Change the map, please.", SColor(0xff474ac6));
-		} else {
+			server_AddToChat("Changed gamemode to CTF!", SColor(0xff474ac6));
+			LoadNextMap();
+		} 
+
+		if (MODE_TO_SET.toUpper() == "TDM" || MODE_TO_SET.toUpper() == "TAVERN" || MODE_TO_SET.toUpper() == "SLIVA") {
 			rules.set_string("internal_game_mode", "tavern");
 			LoadMapCycle("mapcycle_tavern.cfg");
-			server_AddToChat("Changed gamemode to TDM! Change the map, please.", SColor(0xff474ac6));
+			server_AddToChat("Changed gamemode to TDM!", SColor(0xff474ac6));
+			LoadNextMap();
 		}
 	}
 }
