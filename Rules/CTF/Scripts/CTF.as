@@ -589,11 +589,11 @@ shared class CTFCore : RulesCore
 				hud.spawn_time = 255;
 			}
 
-			hud.Serialise(serialised_tavern_hud);
+			hud.Serialise(serialised_team_hud);
 		}
 
-		rules.set_CBitStream("tavern_serialised_team_hud", serialised_tavern_hud);
-		rules.Sync("tavern_serialised_team_hud", true);
+		rules.set_CBitStream("ctf_serialised_team_hud", serialised_team_hud);
+		rules.Sync("ctf_serialised_team_hud", true);
 	}
 
 	//HELPERS
