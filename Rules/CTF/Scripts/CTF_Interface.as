@@ -18,9 +18,9 @@ void onInit(CRules@ this)
 void onRestart( CRules@ this )
 {
 	if (this.get_string("internal_game_mode") == "tavern") {
-		CBitStream stream;
-		stream.write_u16(0xDEAD);
-		this.set_CBitStream("tdm_serialised_team_hud", stream);
+		//CBitStream stream;
+		//stream.write_u16(0xDEAD);
+		//this.set_CBitStream("tdm_serialised_team_hud", stream);
 	} else {
     	UIData ui;
 
@@ -118,8 +118,8 @@ void onRender(CRules@ this)
 	CBitStream serialised_team_hud;
 	this.get_CBitStream("ctf_serialised_team_hud", serialised_team_hud);
 
-	CBitStream serialised_tavern_hud;
-	this.get_CBitStream("tavern_serialised_team_hud", serialised_tavern_hud);
+	//CBitStream serialised_tavern_hud;
+	//this.get_CBitStream("tavern_serialised_team_hud", serialised_tavern_hud);
 
 	if (this.get_string("internal_game_mode") != "tavern") {
 	if (serialised_team_hud.getBytesUsed() > 8)
