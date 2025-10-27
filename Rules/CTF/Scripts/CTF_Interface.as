@@ -229,6 +229,7 @@ void onRender(CRules@ this)
 		//stone
 		GUI::DrawText(msg2, stone_text, color_white);
 	}
+	}
 	/*} else {
 		GUI::SetFont("menu");
 		if (serialised_tavern_hud.getBytesUsed() > 10)
