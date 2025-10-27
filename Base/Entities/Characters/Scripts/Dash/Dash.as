@@ -15,7 +15,7 @@
 
 void onInit(CBlob@ this) {
     this.addCommandID("sync dash values");
-    SyncDashTime(this, 0, 0, false);
+    SyncDashTime(this, -1, -1, false);
 }
 
 void onTick(CBlob@ this) {
