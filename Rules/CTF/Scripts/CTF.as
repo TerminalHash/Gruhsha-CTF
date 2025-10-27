@@ -517,7 +517,7 @@ shared class CTFCore : RulesCore
 	}
 
 	// TDM hud
-	/*void updateHUD()
+	void updateHUD()
 	{
 		bool hidekills = (rules.isIntermission() || rules.isWarmup());
 		CBitStream serialised_team_hud;
@@ -594,7 +594,7 @@ shared class CTFCore : RulesCore
 
 		rules.set_CBitStream("tavern_serialised_team_hud", serialised_tavern_hud);
 		rules.Sync("tavern_serialised_team_hud", true);
-	}*/
+	}
 
 	//HELPERS
 	bool allTeamsHavePlayers()
