@@ -167,6 +167,16 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 					this.server_Die();
 				}
 			}*/
+			
+			if (blob.get_bool("used dash")) {
+				//printf("[DASHES] Dash used!");
+				if (!blob.get_bool("disabled attacks")) {
+					//printf("[DASHES] Attacks disabled");
+				} else {
+					//printf("[DASHES] Attacks enabled! We smelling wild cocks");
+					blob.set_s32("trampodash", getGameTime());
+				}
+			}
 
 			CSprite@ sprite = this.getSprite();
 			if (sprite !is null) {

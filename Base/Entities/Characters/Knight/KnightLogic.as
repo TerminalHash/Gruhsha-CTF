@@ -323,6 +323,20 @@ void onTick(CBlob@ this)
 		}
 	}
 
+	// disable attacks after dashing and when player still in air
+	if (inair) {
+		if (this.hasTag("disabled attacks")) {
+			knight.state = KnightStates::normal; //cancel any attacks or shielding
+			knight.swordTimer = 0;
+			knight.slideTime = 0;
+			knight.doubleslash = false;
+			this.set_s32("currentKnightState", 0);
+
+			pressed_a1 = false;
+			pressed_a2 = false;
+		}
+	}
+
 	if (knocked)
 	{
 		knight.state = KnightStates::normal; //cancel any attacks or shielding
@@ -731,13 +745,13 @@ class ShieldGlideState : KnightState
 				knight.state = KnightStates::sword_drawn;
 				return true;
 			}
-			else if (!this.isKeyPressed(key_action2))
+			else if (!this.isKeyPressed(key_action2) || this.hasTag("disabled attacks"))
 			{
 				knight.state = KnightStates::normal;
 				return false;
 			}
 		}
-		else if (!this.isKeyPressed(key_action2))
+		else if (!this.isKeyPressed(key_action2) || this.hasTag("disabled attacks"))
 		{
 			knight.state = KnightStates::normal;
 			return false;
@@ -747,7 +761,7 @@ class ShieldGlideState : KnightState
 		bool forcedrop = getForceDrop(this, moveVars);
 
 		bool inair = getInAir(this);
-		if (inair && !this.isInWater())
+		if (inair && !this.isInWater() || !this.hasTag("disabled attacks"))
 		{
 			Vec2f vec;
 			const int direction = this.getAimDirection(vec);
@@ -1061,7 +1075,6 @@ class CutState : KnightState
 		{
 			knight.state = KnightStates::normal;
 			return false;
-
 		}
 
 		this.Tag("prevent crouch");
