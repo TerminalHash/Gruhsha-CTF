@@ -886,6 +886,9 @@ shared class CTFCore : RulesCore
 	{
 		//Stalemate code courtesy of Pirate-Rob
 
+		// disable stalemate check for TDM mode
+		if (rules.get_string("internal_game_mode") == "tavern") return;
+
 		//cant stalemate outside of match time
 		if (!rules.isMatchRunning()) return;
 
