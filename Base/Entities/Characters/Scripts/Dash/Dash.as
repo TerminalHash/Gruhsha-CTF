@@ -31,6 +31,17 @@ void onTick(CBlob@ this) {
             this.Sync("disabled attacks", true);
         }
 
+        // HACK: return special tag after jumping on trampoline
+        // if we dont do this, player would be available to glide and attack
+        if (!this.hasTag("disabled attacks")) {
+            if (getGameTime() >= this.get_s32("trampodash") + 20 && this.get_s32("trampodash") != -1) {
+                this.Tag("disabled attacks");
+                this.Sync("disabled attacks", true);
+            
+                this.set_s32("trampodash", -1);
+            }
+        }
+
         if (!inair && disable_debuff) {
             this.Untag("disabled attacks");
             this.Sync("disabled attacks", true);
