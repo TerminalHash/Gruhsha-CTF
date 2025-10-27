@@ -520,12 +520,12 @@ shared class CTFCore : RulesCore
 	void updateHUD()
 	{
 		bool hidekills = (rules.isIntermission() || rules.isWarmup());
-		CBitStream serialised_team_hud;
-		serialised_team_hud.write_u16(0x5afe); //check bits
+		CBitStream serialised_tavern_hud;
+		serialised_tavern_hud.write_u16(0x5afe); //check bits
 
 		for (uint team_num = 0; team_num < teams.length; ++team_num)
 		{
-			CTF_HUD hud;
+			TAVERN_HUD hud;
 			CTFTeamInfo@ team = cast < CTFTeamInfo@ > (teams[team_num]);
 			hud.team_num = team_num;
 			hud.kills = team.kills;
@@ -589,11 +589,11 @@ shared class CTFCore : RulesCore
 				hud.spawn_time = 255;
 			}
 
-			hud.Serialise(serialised_team_hud);
+			hud.Serialise(serialised_tavern_hud);
 		}
 
-		rules.set_CBitStream("ctf_serialised_team_hud", serialised_team_hud);
-		rules.Sync("ctf_serialised_team_hud", true);
+		rules.set_CBitStream("tavern_serialised_team_hud", serialised_tavern_hud);
+		rules.Sync("tavern_serialised_team_hud", true);
 	}
 
 	//HELPERS
