@@ -94,6 +94,10 @@ void onInit(CBlob@ this)
 	ControlsCycle@ controls_cycle = @onCycle;
 	this.set("onCycle handle", @controls_cycle);
 
+	// initiliaze spike shield variables
+	this.set_u8("spike_shield_hit_count", 0);
+	this.set_f32("spike_shield_broke_time", 0);
+
 	this.addCommandID("activate/throw bomb");
 
 	this.push("names to activate", "keg");
@@ -348,6 +352,30 @@ void onTick(CBlob@ this)
 		pressed_a1 = false;
 		pressed_a2 = false;
 		walking = false;
+	}
+
+	// variables for tweaking "spike shield" mechanic
+	// another piece of code for it in Spikes.as:L301
+	f32 spike_shield_cooldown = 15;
+	u8 spike_hit_count = 4;
+
+	// "broke" shield for spikes and let knight to wait a some time,
+	// before they can to use shield against spikes again
+	if (this.get_u8("spike_shield_hit_count") == spike_hit_count) {
+		this.set_f32("spike_shield_broke_time", getGameTime());
+		this.set_u8("spike_shield_hit_count", 0);
+		this.set_bool("spike_broken_shield", true);
+
+		this.Sync("spike_shield_broke_time", true);
+		this.Sync("spike_shield_hit_count", true);
+		this.Sync("spike_broken_shield", true);
+	}
+
+	// wait 15 seconds for "fixing" shield, so knight can use shield against
+	// spikes again
+	if (this.get_f32("spike_shield_broke_time") == (getGameTime() + (spike_shield_cooldown * getTicksASecond()))) {
+		this.set_bool("spike_broken_shield", false);
+		this.Sync("spike_broken_shield", true);
 	}
 
 	//throwing bombs

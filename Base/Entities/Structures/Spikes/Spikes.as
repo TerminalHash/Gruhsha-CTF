@@ -301,7 +301,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 	////////////////////////////////////////////////
 	// special clause for knights
 	// most part of code picked from KnightLogic.as
-	/*if (blob !is null && blob.getConfig() == "knight")
+	if (blob !is null && blob.getConfig() == "knight")
 	{
 		KnightInfo@ knight;
 		if (!blob.get("knightInfo", @knight))
@@ -319,26 +319,40 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 			state == falling &&
 			blob.getConfig() == "knight" &&
 			shieldState &&
-			((knight.state == KnightStates::shielding && direction == -1) || knight.state == KnightStates::shieldgliding)
+			((knight.state == KnightStates::shielding && direction == -1) || knight.state == KnightStates::shieldgliding) &&
+			// if our knight collided with few spikes, his shield is "broken" for them
+			!blob.get_bool("spike_broken_shield")
 			)
 		{
 			ignore_spike = true;
 			this.server_Die();
+
+			blob.add_u8("spike_shield_hit_count", 1);
+			blob.Sync("spike_shield_hit_count", true);
 		}
-	}*/
+	}
 	////////////////////////////////////////////////
 
-	if (state == falling)
-	{
+	if (state == falling) {
 		float vellen = this.getVelocity().Length();
 		if (vellen < 4.0f && !ignore_spike) //slow, minimal dmg
 			this.server_Hit(blob, point, Vec2f(0, 1), 1.0f, Hitters::spikes, true);
 		else if (vellen < 5.5f && !ignore_spike) //faster, kill archer
 			this.server_Hit(blob, point, Vec2f(0, 1), 2.0f, Hitters::spikes, true);
-		else if (vellen < 7.0f && !ignore_spike) //faster, kill builder
-			this.server_Hit(blob, point, Vec2f(0, 1), 3.0f, Hitters::spikes, true);
-		else if (vellen > 7.0f && !ignore_spike)			//fast, instakill
-			this.server_Hit(blob, point, Vec2f(0, 1), 4.0f, Hitters::spikes, true);
+		else if (vellen < 7.0f) { 				 //faster, kill builder
+			if (ignore_spike)
+				this.server_Hit(blob, point, Vec2f(0, 1), 2.0f, Hitters::spikes, true);
+			else
+				this.server_Hit(blob, point, Vec2f(0, 1), 3.0f, Hitters::spikes, true);
+		} else if (vellen > 7.0f) {				  //fast, instakill
+			// if our blob is knight, instakill them without shield and
+			// hit them, if shield is raised
+			if (ignore_spike)
+				this.server_Hit(blob, point, Vec2f(0, 1), 2.5f, Hitters::spikes, true);
+			else
+				this.server_Hit(blob, point, Vec2f(0, 1), 4.0f, Hitters::spikes, true);
+		}
+
 		return;
 	}
 
