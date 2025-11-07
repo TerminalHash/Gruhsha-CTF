@@ -15,7 +15,7 @@
 
 void onInit(CBlob@ this) {
     this.addCommandID("sync dash values");
-    SyncDashTime(this, -1, -1, false);
+    SyncDashTime(this, 0, 0, false);
 }
 
 void onTick(CBlob@ this) {
@@ -25,7 +25,7 @@ void onTick(CBlob@ this) {
     // more powerful solution for attack blocking
     // checks for InAir state and disables any attacks via tag
     // also disable that debuff, if player already grounded and trying to defend yourself
-    if (this !is null && this.getConfig() != "archer") {
+    if (this !is null && this.getConfig() != "archer" && this.get_u32("last_dash") != 0) {
         if (inair && this.get_bool("used dash") && !disable_debuff) {
             this.Tag("disabled attacks");
             this.Sync("disabled attacks", true);
