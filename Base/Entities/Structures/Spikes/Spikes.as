@@ -1,6 +1,7 @@
 #include "Hitters.as"
 #include "KnightCommon.as";
 #include "ShieldCommon.as";
+#include "ParticleSparks.as";
 
 enum facing_direction
 {
@@ -33,6 +34,8 @@ void onInit(CBlob@ this)
 	consts.mapCollisions = false;	 // we have our own map collision
 
 	this.Tag("place norotate");
+
+	this.addCommandID("collide with shield client");
 
 	this.getCurrentScript().runFlags |= Script::tick_not_attached;
 	//dont set radius flags here so we orient to the ground first
@@ -299,10 +302,9 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 	bool ignore_spike = false;
 
 	////////////////////////////////////////////////
-	// special clause for knights
+	// Allow to block spikes with shield for knights
 	// most part of code picked from KnightLogic.as
-	if (blob !is null && blob.getConfig() == "knight")
-	{
+	if (blob !is null && blob.getConfig() == "knight") {
 		KnightInfo@ knight;
 		if (!blob.get("knightInfo", @knight))
 		{
@@ -324,7 +326,23 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 			!blob.get_bool("spike_broken_shield")
 			)
 		{
+			//printf("Collided with spike, increasing hit counter...");
 			ignore_spike = true;
+
+			//////////////////////////////
+			// CLIENT SOUND
+			// play ShieldHit sound when spike is collided with shield
+			// also create sparks
+			Vec2f spike_pos = this.getPosition();
+			Vec2f spike_vel = this.getVelocity();
+
+			CBitStream sparams;
+			sparams.write_Vec2f(spike_pos);
+			sparams.write_Vec2f(spike_vel);
+
+			this.SendCommand(this.getCommandID("collide with shield client"), sparams);
+			//////////////////////////////
+
 			this.server_Die();
 
 			blob.add_u8("spike_shield_hit_count", 1);
@@ -333,24 +351,34 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 	}
 	////////////////////////////////////////////////
 
+	// aaaaaand here we go
 	if (state == falling) {
 		float vellen = this.getVelocity().Length();
-		if (vellen < 4.0f && !ignore_spike) //slow, minimal dmg
+
+		// Slow fall velocity, deal a minimal damage to the target
+		if (vellen < 4.0f && !ignore_spike) { //slow, minimal dmg
+			//printf("Spike vellen is " + vellen + ", dealing few damage");
 			this.server_Hit(blob, point, Vec2f(0, 1), 1.0f, Hitters::spikes, true);
-		else if (vellen < 5.5f && !ignore_spike) //faster, kill archer
+		// A little faster fall velocity, it can kill the archer in one hit
+		} else if (vellen > 4.0f && vellen < 5.5f && !ignore_spike) { //faster, kill archer
+			//printf("Spike vellen is " + vellen + ", dealing a little more damage");
 			this.server_Hit(blob, point, Vec2f(0, 1), 2.0f, Hitters::spikes, true);
-		else if (vellen < 7.0f) { 				 //faster, kill builder
-			if (ignore_spike)
-				this.server_Hit(blob, point, Vec2f(0, 1), 2.0f, Hitters::spikes, true);
-			else
-				this.server_Hit(blob, point, Vec2f(0, 1), 3.0f, Hitters::spikes, true);
-		} else if (vellen > 7.0f) {				  //fast, instakill
-			// if our blob is knight, instakill them without shield and
-			// hit them, if shield is raised
-			if (ignore_spike)
-				this.server_Hit(blob, point, Vec2f(0, 1), 2.5f, Hitters::spikes, true);
-			else
-				this.server_Hit(blob, point, Vec2f(0, 1), 4.0f, Hitters::spikes, true);
+		// Medium fall velocity, it can instakill the builder in one hit and greatly damage the knight
+		} else if (vellen > 5.5f && vellen < 7.0f && !ignore_spike) { 				 //faster, kill builder
+			//printf("Spike vellen is " + vellen + ", dealing more damage");
+			this.server_Hit(blob, point, Vec2f(0, 1), 3.0f, Hitters::spikes, true);
+		// Or not, if the target is knight and them trying to defend yourself
+		} else if (vellen > 5.5f && vellen < 7.0f && ignore_spike && !blob.get_bool("spike_broken_shield")) { 				 //faster, kill builder
+			//printf("Spike vellen is " + vellen + ", dealing more damage");
+			this.server_Hit(blob, point, Vec2f(0, 1), 1.5f, Hitters::spikes, true);
+		// High velocity, instakill our target
+		} else if (vellen > 7.0f && !ignore_spike) {
+			//printf("Spike vellen is " + vellen + ", dealing fatal damage");
+			this.server_Hit(blob, point, Vec2f(0, 1), 4.0f, Hitters::spikes, true);
+		// Or not, if the target is knight and them trying to defend yourself
+		} else if (vellen > 7.0f && ignore_spike && !blob.get_bool("spike_broken_shield")) {
+			//printf("Spike vellen is " + vellen + ", dealing less fatal damage");
+			this.server_Hit(blob, point, Vec2f(0, 1), 2.5f, Hitters::spikes, true);
 		}
 
 		return;
@@ -477,4 +505,19 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 			break;
 	}
 	return dmg;
+}
+
+void onCommand(CBlob@ this, u8 cmd, CBitStream @params) {
+	if (cmd == this.getCommandID("collide with shield client") && isClient()) {
+		Vec2f spike_pos;
+		if (!params.saferead_Vec2f(spike_pos)) return;
+
+		Vec2f spike_vel;
+		if (!params.saferead_Vec2f(spike_vel)) return;
+
+		float spike_vellen = spike_vel.Length();
+
+		Sound::Play("ShieldHit.ogg", spike_pos, 1.0f);
+		sparks(spike_pos, -spike_vel.Angle(), Maths::Max(spike_vellen * 0.05f, 1.0f));
+	}
 }
