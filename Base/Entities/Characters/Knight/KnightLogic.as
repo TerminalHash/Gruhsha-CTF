@@ -362,10 +362,12 @@ void onTick(CBlob@ this)
 	// "broke" shield for spikes and let knight to wait a some time,
 	// before they can to use shield against spikes again
 	if (this.get_u8("spike_shield_hit_count") == spike_hit_count) {
+		this.set_f32("spike shield time", spike_shield_cooldown * getTicksASecond());
 		this.set_f32("spike_shield_broke_time", getGameTime());
 		this.set_u8("spike_shield_hit_count", 0);
 		this.set_bool("spike_broken_shield", true);
 
+		this.Sync("spike shield time", true);
 		this.Sync("spike_shield_broke_time", true);
 		this.Sync("spike_shield_hit_count", true);
 		this.Sync("spike_broken_shield", true);
@@ -373,8 +375,13 @@ void onTick(CBlob@ this)
 
 	// wait 15 seconds for "fixing" shield, so knight can use shield against
 	// spikes again
-	if (this.get_f32("spike_shield_broke_time") == (getGameTime() + (spike_shield_cooldown * getTicksASecond()))) {
+	if (this.get_f32("spike shield time") == 0) {
 		this.set_bool("spike_broken_shield", false);
+		this.Sync("spike_broken_shield", true);
+	}
+
+	if (this.get_bool("spike_broken_shield") && this.get_f32("spike shield time") != 0) {
+		this.sub_f32("spike shield time", 1);
 		this.Sync("spike_broken_shield", true);
 	}
 
