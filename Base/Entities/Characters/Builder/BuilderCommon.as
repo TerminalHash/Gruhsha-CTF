@@ -246,3 +246,5 @@ bool hasBombs(CBlob@ this, u8 bombType)
 {
     return bombType < BombType::count && this.getBlobCount(bombTypeNames[bombType]) > 0;
 }
+
+const f32 SHIELD_BLOCK_ANGLE = 175.0f;
