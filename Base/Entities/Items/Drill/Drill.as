@@ -661,6 +661,35 @@ void onRender(CSprite@ this)
 		DrawDrillHeat(blob, new_ul);
 	}
 
+	// drill shield HP indicator
+	if (holderBlob !is null && holderBlob.getConfig() == "builder") {
+		if ((hover && inRange) || (holder !is null && holder.isLocal()))
+		{
+			int transparency = 255;
+			f32 shieldhp = blob.get_f32("shield health");
+			f32 percentage = Maths::Min(1.0, f32(shieldhp) / f32(1.0f));
+
+			//Vec2f pos = blob.getScreenPos() + Vec2f(-22, 16);
+
+			Vec2f pos = holderBlob.getInterpolatedScreenPos() + (blob.getScreenPos() - holderBlob.getScreenPos()) + Vec2f(-22, 16);
+			Vec2f dimension = Vec2f(40, 4);
+			Vec2f bar = Vec2f(pos.x + (dimension.x * percentage), pos.y + dimension.y);
+
+			if (shieldhp > 0) {
+				if ((shieldhp > 0 && show_heatbar_when_idle) || (blob.get_bool(buzz_prop))) {
+					GUI::DrawIconByName("$opaque_heatbar$", pos);
+				} else {
+					transparency = 168;
+					GUI::DrawIconByName("$transparent_heatbar$", pos);
+				}
+
+				GUI::DrawRectangle(pos + Vec2f(4, 4), bar + Vec2f(4, 4), SColor(transparency, 59, 20, 6));
+				GUI::DrawRectangle(pos + Vec2f(6, 6), bar + Vec2f(2, 4), SColor(transparency, 148, 27, 27));
+				GUI::DrawRectangle(pos + Vec2f(6, 6), bar + Vec2f(2, 2), SColor(transparency, 183, 51, 51));
+			}
+		}
+	}
+
 	/*if ((hover && inRange) || (holder !is null && holder.isLocal()))
 	{
 		int transparency = 255;
