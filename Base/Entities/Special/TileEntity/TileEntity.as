@@ -217,6 +217,7 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 				Sound::Play("Entities/Characters/Knight/ShieldHit.ogg", this.getPosition());
 				sparks(this.getPosition(), shieldVec.Angle() - 45.0f + XORRandom(90), 1 + XORRandom(6));
 				carried.sub_f32("shield health", 0.5f);
+				carried.Sync("shield health", true);
 				shield_hit = true;
 			}
 		}

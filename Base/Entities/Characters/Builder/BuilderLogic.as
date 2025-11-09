@@ -351,6 +351,14 @@ void onTick(CBlob@ this)
 				    }
 			    }
 		    }
+
+			if (!drilla.hasTag("no shielding") && drilla.get_f32("shield health") > 0) {
+				if (drilla.get_u8("drill heat") > 70 && drilla.get_u8("drill heat") < 150) {
+					if (getGameTime() % 30 == 0)
+						drilla.sub_f32("shield health", 0.05f);
+						drilla.Sync("shield health", true);
+				}
+			}
         } else {
 			setShieldEnabled(this, false);
 		}
