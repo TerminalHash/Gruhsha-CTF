@@ -48,10 +48,8 @@ void onTick(CBlob@ this) {
 	    bool walking = (holder.isKeyPressed(key_left) || holder.isKeyPressed(key_right));
 
 		if (holder.getConfig() == "builder" && !this.hasTag("no shielding")) {
-			if (shieldVars.enabled = false) {
-                setShieldEnabled(this, true);
-                setShieldAngle(this, SHIELD_BLOCK_ANGLE);
-            }
+            setShieldEnabled(this, true);
+            setShieldAngle(this, SHIELD_BLOCK_ANGLE);
 
             int horiz = this.isFacingLeft() ? -1 : 1;
 
@@ -77,9 +75,6 @@ void onTick(CBlob@ this) {
 			    }
 		    }
         }
-    } else {
-        if (shieldVars.enabled = true)
-            setShieldEnabled(this, false);
     }
 
     if (!this.hasTag("no shielding") && this.get_f32("shield health") <= 0.0f) {
@@ -131,4 +126,18 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
     }
 
 	return damage;
+}
+
+void onDetach(CBlob@ this, CBlob@ attached, AttachmentPoint @attachedPoint ) {
+    ShieldVars@ shieldVars = getShieldVars(this);
+    if (shieldVars is null) return;
+
+	setShieldEnabled(attached, false);
+}
+
+void onThisAddToInventory(CBlob@ this, CBlob@ inventoryBlob ) {
+	ShieldVars@ shieldVars = getShieldVars(this);
+    if (shieldVars is null) return;
+
+	setShieldEnabled(this, false);
 }
