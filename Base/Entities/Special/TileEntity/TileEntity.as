@@ -200,6 +200,27 @@ void onCollision( CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f poin
 		}
 	}
 
+	if (blob !is null && blob.getConfig() == "builder") {
+		CBlob@ carried = blob.getCarriedBlob();
+		
+		if (carried !is null && carried.getName() == "drill") {
+			ShieldVars@ shieldVars = getShieldVars(carried);
+			if (shieldVars is null) return;
+
+			Vec2f tileVec = this.getVelocity();
+			tileVec.Normalize();
+			Vec2f shieldVec = shieldVars.direction;
+			shieldVec.Normalize();
+			f32 dot = tileVec.x * shieldVec.x + tileVec.y * shieldVec.y;
+
+			if (dot < -0.71) {
+				Sound::Play("Entities/Characters/Knight/ShieldHit.ogg", this.getPosition());
+				sparks(this.getPosition(), shieldVec.Angle() - 45.0f + XORRandom(90), 1 + XORRandom(6));
+				shield_hit = true;
+			}
+		}
+	}
+
 	if (blob is null) return;
 
 	if (this.getOldVelocity().Length()<2) return;
