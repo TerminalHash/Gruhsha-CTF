@@ -17,6 +17,7 @@
 #include "ShieldCommon.as";
 #include "KnightCommon.as";
 #include "Hitters.as";
+#include "GruhshaHitters.as";
 
 // shield things
 const f32 drill_shield_health = 1.0f;
@@ -90,14 +91,10 @@ void onTick(CBlob@ this) {
 }
 
 f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData) {
-	if (customData == Hitters::sword && !this.hasTag("no shielding")) {
-		this.sub_f32("shield health", 0.5f);
-	}
-
 	// just formality - put that condition under special check
 	if (hitterBlob !is null && hitterBlob.getConfig() == "knight") {
 		KnightInfo@ knight;
-		if (!this.get("knightInfo", @knight)) {
+		if (!hitterBlob.get("knightInfo", @knight)) {
 			return damage;
 		}
 
@@ -111,11 +108,17 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
             !this.hasTag("no shielding")
 			) {
 				this.sub_f32("shield health", 0.2f);
-		}
+		} else if (customData == Hitters::sword && !this.hasTag("no shielding")) {
+		    this.sub_f32("shield health", 0.5f);
+        }
 	}
 
     // every explosion hitter disables shielding mechanic for drill
     if (isExplosionHitter(customData) && !this.hasTag("no shielding")) {
+        this.sub_f32("shield health", 1.0f);
+    }
+
+    if (isCustomExplosionHitter(customData) && !this.hasTag("no shielding")) {
         this.sub_f32("shield health", 1.0f);
     }
 
