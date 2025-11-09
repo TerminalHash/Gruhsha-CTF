@@ -562,8 +562,7 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 		makeSteamPuff(this);
 	}
 
-	if (customData == Hitters::sword)
-	{
+	if (customData == Hitters::sword) {
 		damage = 0;
 	}
 
