@@ -29,7 +29,9 @@ void onInit(CBlob@ this) {
 void onTick(CBlob@ this) {
     if (!this.hasTag("no shielding") && this.get_f32("shield health") <= 0.0f) {
      	this.Tag("no shielding");
+		this.set_f32("shield health", 0.0f);
      	this.Sync("no shielding", true);
+		this.Sync("shield health", true);
     }
 }
 
@@ -51,26 +53,32 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
             !this.hasTag("no shielding")
 			) {
 				this.sub_f32("shield health", 0.2f);
+				this.Sync("shield health", true);
 		} else if (customData == Hitters::sword && !this.hasTag("no shielding")) {
 		    this.sub_f32("shield health", 0.5f);
+			this.Sync("shield health", true);
         }
 	}
 
     // every explosion hitter disables shielding mechanic for drill
     if (isExplosionHitter(customData) && !this.hasTag("no shielding")) {
         this.sub_f32("shield health", 1.0f);
+		this.Sync("shield health", true);
     }
 
     if (isCustomExplosionHitter(customData) && !this.hasTag("no shielding")) {
         this.sub_f32("shield health", 1.0f);
+		this.Sync("shield health", true);
     }
 
     if (customData == Hitters::builder && !this.hasTag("no shielding")) {
         this.sub_f32("shield health", 0.37f);
+		this.Sync("shield health", true);
     }
 
     if (customData == Hitters::arrow && !this.hasTag("no shielding")) {
         this.sub_f32("shield health", 0.2f);
+		this.Sync("shield health", true);
     }
 
 	return damage;
