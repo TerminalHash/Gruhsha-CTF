@@ -296,8 +296,10 @@ void onTick(CBlob@ this)
 		}
 	}
 
+	//////////////////////////////////////
+	// drill shielding mechanic
+	//////////////////////////////////////
 	CBlob@ drilla = this.getCarriedBlob();
-
 	if (drilla !is null && drilla.getConfig() == "drill") {
    	 	ShieldVars@ shieldVars = getShieldVars(this);
     	if (shieldVars is null) return;
@@ -344,6 +346,8 @@ void onTick(CBlob@ this)
 	} else {
 		setShieldEnabled(this, false);
 	}
+	//////////////////////////////////////
+	//////////////////////////////////////
 }
 
 //bomb management
