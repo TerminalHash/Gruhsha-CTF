@@ -40,22 +40,22 @@ void onRender(CRules@ this)
 	builders_limit = this.get_u8("builders_limit");
 
     Vec2f archer_pan = Vec2f(12, 270);
-    Vec2f archer_pan_text = Vec2f(113, 284);
+    Vec2f archer_pan_text = Vec2f(264, 14);
     if (archers_limit < 10) {
-        archer_pan_text = Vec2f(117, 284);
+        archer_pan_text = Vec2f(268, 14);
     }
     
     Vec2f knight_pan = Vec2f(12, 320);
-    Vec2f knight_pan_text = Vec2f(72, 284);
+    Vec2f knight_pan_text = Vec2f(196, 14);
     
     if (P_Knights >= 10) {
-        knight_pan_text = Vec2f(69, 284);
+        knight_pan_text = Vec2f(193, 14);
     }
     
     Vec2f builder_pan = Vec2f(12, 370);
-    Vec2f builder_pan_text = Vec2f(13, 284);
+    Vec2f builder_pan_text = Vec2f(110, 14);
     if (builders_limit < 10) {
-        builder_pan_text = Vec2f(17, 284);
+        builder_pan_text = Vec2f(114, 14);
     }
     
 
