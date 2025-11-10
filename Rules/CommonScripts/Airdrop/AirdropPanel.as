@@ -19,6 +19,6 @@ void onRender(CRules@ this)
 		drawRulesFont(getTranslatedString("{MIN}:{SEC}")
 						.replace("{MIN}", "" + ((MinutesToEnd < 10) ? "0" + MinutesToEnd : "" + MinutesToEnd))
 						.replace("{SEC}", "" + ((secondsToEnd < 10) ? "0" + secondsToEnd : "" + secondsToEnd)),
-		              SColor(255, 255, 255, 255), Vec2f(10, 208), Vec2f(170, 180), true, false);
+		              SColor(255, 255, 255, 255), Vec2f(10, 49), Vec2f(410, 180), true, false);
 	}
 }

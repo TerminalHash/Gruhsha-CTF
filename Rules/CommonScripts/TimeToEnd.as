@@ -118,7 +118,7 @@ void onRender(CRules@ this)
 		drawRulesFont(getTranslatedString("{MIN}:{SEC}")
 						.replace("{MIN}", "" + ((MinutesToEnd < 10) ? "0" + MinutesToEnd : "" + MinutesToEnd))
 						.replace("{SEC}", "" + ((secondsToEnd < 10) ? "0" + secondsToEnd : "" + secondsToEnd)),
-		              SColor(255, 255, 255, 255), Vec2f(10, 178), Vec2f(170, 180), true, false);
+		              SColor(255, 255, 255, 255), Vec2f(10, 49), Vec2f(227, 5), true, false);
 	}
 
 	// Notification
@@ -136,21 +136,21 @@ void onRender(CRules@ this)
 		GUI::DrawText(Descriptions::thirtyminutesleft, Vec2f(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 7), color_white);
 	}
 
-	Vec2f skull = Vec2f(12, 370);
+	Vec2f skull = Vec2f(5, 4);
 
-	float x = skull.x + 8;
+	float x = skull.x - 8;
 
 	CControls@ controls = getControls();
 	Vec2f mousePos = controls.getMouseScreenPos();
 
 	if (this.hasTag("sudden death")) {
-		GUI::DrawIcon("MenuItems.png", 18, Vec2f(32, 32), skull, 1.5f);
+		GUI::DrawIcon("CTF_States.png", 2, Vec2f(32, 32), skull, 1.0f);
 
 		Vec2f dim = Vec2f(342, 295);
 		Vec2f ul(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12);
 		Vec2f tl = ul + Vec2f(-190, -100);
 
-		if (mousePos.x > x -4 && mousePos.x < x + 74 && mousePos.y < skull.y + 85 && mousePos.y > skull.y +12) {
+		if (mousePos.x > x && mousePos.x < x + 74 && mousePos.y < skull.y + 64 && mousePos.y > skull.y) {
 			GUI::DrawSunkenPane(tl, tl + Vec2f(490, 150));
 			GUI::DrawText(Descriptions::suddenactive, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y - 80), color_white);
 			GUI::DrawText(Descriptions::kegbuff, Vec2f(getHUDX() - dim.x / 2.0f - 180, getHUDY() - dim.y - 65), color_white);
