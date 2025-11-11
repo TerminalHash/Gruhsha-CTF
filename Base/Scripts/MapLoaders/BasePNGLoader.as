@@ -411,6 +411,8 @@ class PNGLoader
 
 			// Mod blobs
 			case map_colors::fridge:          autotile(offset); spawnBlob(map, "fridge",         offset + 2); break;
+			case map_colors::koth_cp:         autotile(offset); spawnBlob(map, "controlpoint",   offset); break;
+			case map_colors::midshop:     	  autotile(offset); spawnBlob(map, "midshop",  offset); break;
 
 			default:
 				HandleCustomTile( map, offset, pixel );

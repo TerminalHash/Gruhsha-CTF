@@ -28,5 +28,9 @@ void onRestart(CRules@ this) {
              string KUI = CFileMatcher("KUI.ttf").getFirst();
              GUI::LoadFont("KUI", KUI, 14, true);
         }
+        if (!GUI::isFontLoaded("AveriaSerif-big")) {
+             string AveriaSerif = CFileMatcher("AveriaSerif-big.ttf").getFirst();
+             GUI::LoadFont("AveriaSerif-big", AveriaSerif, 26, true);
+        }
     }
 }

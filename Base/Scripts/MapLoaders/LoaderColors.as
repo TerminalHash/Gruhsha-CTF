@@ -265,6 +265,8 @@ namespace map_colors
 		redbarrier			   = 0xFFE43771,
 
 		// FRIDGE
-		fridge				   = 0xFF528C4A
+		fridge				   = 0xFF528C4A,
+		koth_cp				   = 0xFFCD9DAF,
+		midshop				   = 0xFF343E5D
 	};
 }
