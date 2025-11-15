@@ -356,8 +356,8 @@ void onTick(CBlob@ this)
 
 	// variables for tweaking "spike shield" mechanic
 	// another piece of code for it in Spikes.as:L301
-	f32 spike_shield_cooldown = 15;
-	u8 spike_hit_count = 4;
+	f32 spike_shield_cooldown = 7;
+	u8 spike_hit_count = 5;
 
 	// "broke" shield for spikes and let knight to wait a some time,
 	// before they can to use shield against spikes again
