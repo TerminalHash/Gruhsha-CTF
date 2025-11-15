@@ -12,6 +12,7 @@
 #include "KnightCommon.as";
 #include "KnockedCommon.as"
 #include "BindingsCommon.as"
+#include "PlacementCommon.as";
 
 void onInit(CBlob@ this) {
     this.addCommandID("sync dash values");
@@ -85,7 +86,7 @@ void onTick(CBlob@ this) {
 
             // disable dashing, when knight or archer charging his attack
             // also block dashing while knight is trying to dash with gliding state
-            // also clear selected block/tool for builder
+            // also clear selected build block/blob for builder
             if (this.getConfig() == "archer") {
                 if (this.isKeyPressed(key_action1)) return;
             } else if (this.getConfig() == "knight") {
@@ -98,10 +99,14 @@ void onTick(CBlob@ this) {
                 if (knight.state == KnightStates::shieldgliding) return;
             } else if (this.getConfig() == "builder") {
                 this.set_u8("bunnie_tile", 255);
+                this.set_u8("buildblob", 255);
+		        this.set_TileType("buildtile", 0);
 
-                CBitStream kekrams;
-                kekrams.write_u8(255);
-                this.SendCommand(this.getCommandID("tool clear"));
+		        CBlob@ blob = this.getCarriedBlob();
+		        if (blob !is null && blob.hasTag("temp blob")) {
+			        blob.Untag("temp blob");
+			        blob.server_Die();
+		        }
             }
 
             // disallow dashing with items in hands
