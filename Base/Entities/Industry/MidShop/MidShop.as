@@ -22,7 +22,7 @@ void onInit(CBlob@ this)
 
 	// SHOP
 	this.set_Vec2f("shop offset", Vec2f_zero);
-	this.set_Vec2f("shop menu size", Vec2f(6, 2));
+	this.set_Vec2f("shop menu size", Vec2f(6, 3));
 	this.set_string("shop description", "Buy");
 	this.set_u8("shop icon", 25);
 
@@ -33,56 +33,138 @@ void onInit(CBlob@ this)
 	AddIconToken("$quarters_pear$", "Pear_Quarters.png", Vec2f(24, 24), 0);
 
 	int team_num = this.getTeamNum();
-	{
-		ShopItem@ s = addShopItem(this, "Bomb", "$bomb$", "mat_bombs", Descriptions::bomb, true);
-		AddRequirement(s.requirements, "coin", "", "Coins", 15);
-		s.quantityLimit = 1;
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Water Bomb", "$waterbomb$", "mat_waterbombs", Descriptions::waterbomb, true);
-		AddRequirement(s.requirements, "coin", "", "Coins", 45);
-	}
-	{
-		ShopItem@ s = addShopItem(this, Names::stickybomb, "$stickybombs$", "mat_stickybombs", Descriptions::stickybombdesc, true);
-		AddRequirement(s.requirements, "coin", "", "Coins", 35);
-	}
-	{
-		ShopItem@ s = addShopItem(this, Names::icebomb, "$icebomb$", "mat_icebombs", Descriptions::icebombdesc, true);
-		AddRequirement(s.requirements, "coin", "", "Coins", 45);
-	}
-	{
-		ShopItem@ s = addShopItem(this, Names::goldenmine, getTeamIcon("golden_mine", "GoldenMine.png", team_num, Vec2f(16, 16), 1), "golden_mine", Descriptions::goldenminedesc, true);
-		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::golden_mine);
-		AddRequirement(s.requirements, "no more", "golden_mine", "Golden Mine", 2);
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Drill", "$drill$", "drill", Descriptions::drill, false);
-		AddRequirement(s.requirements, "coin", "", "Coins", 15);
-		s.spawnToInventory = true;
-		s.customButton = true;
-		s.buttonwidth = 1;
-		s.buttonheight = 1;
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Fire Arrows", "$mat_firearrows$", "mat_firearrows", Descriptions::firearrows, true);
-		AddRequirement(s.requirements, "coin", "", "Coins", 20);
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Bomb Arrows", "$mat_bombarrows$", "mat_bombarrows", Descriptions::bombarrows, true);
-		AddRequirement(s.requirements, "coin", "", "Coins", 50);
-	}
-	{
-		ShopItem@ s = addShopItem(this, Names::stonearrow, "$stoneblockarrows$", "mat_stoneblockarrows", Descriptions::stonearrowdesc, true);
-		AddRequirement(s.requirements, "coin", "", "Coins", 30);
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Crate (wood)", getTeamIcon("crate", "Crate.png", team_num, Vec2f(32, 16), 5), "crate", Descriptions::crate, false);
-		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", CTFCosts::crate_wood);
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Filled Bucket", "$_buildershop_filled_bucket$", "filled_bucket", Descriptions::filled_bucket, false);
-		s.spawnNothing = true;
-		AddRequirement(s.requirements, "coin", "", "Coins", 5);
+	if (getRules().get_string("internal_game_mode") != "tavern") {
+		{
+			ShopItem@ s = addShopItem(this, "Bomb", "$bomb$", "mat_bombs", Descriptions::bomb, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", 15);
+			s.quantityLimit = 1;
+		}
+		{
+			ShopItem@ s = addShopItem(this, "Water Bomb", "$waterbomb$", "mat_waterbombs", Descriptions::waterbomb, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", 45);
+		}
+		{
+			ShopItem@ s = addShopItem(this, Names::stickybomb, "$stickybombs$", "mat_stickybombs", Descriptions::stickybombdesc, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", 35);
+		}
+		{
+			ShopItem@ s = addShopItem(this, Names::icebomb, "$icebomb$", "mat_icebombs", Descriptions::icebombdesc, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", 45);
+		}
+		{
+			ShopItem@ s = addShopItem(this, Names::goldenmine, getTeamIcon("golden_mine", "GoldenMine.png", team_num, Vec2f(16, 16), 1), "golden_mine", Descriptions::goldenminedesc, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::golden_mine);
+			AddRequirement(s.requirements, "no more", "golden_mine", "Golden Mine", 2);
+		}
+		{
+			ShopItem@ s = addShopItem(this, "Drill", "$drill$", "drill", Descriptions::drill, false);
+			AddRequirement(s.requirements, "coin", "", "Coins", 15);
+			s.spawnToInventory = true;
+			s.customButton = true;
+			s.buttonwidth = 1;
+			s.buttonheight = 1;
+		}
+		{
+			ShopItem@ s = addShopItem(this, "Fire Arrows", "$mat_firearrows$", "mat_firearrows", Descriptions::firearrows, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", 20);
+		}
+		{
+			ShopItem@ s = addShopItem(this, "Bomb Arrows", "$mat_bombarrows$", "mat_bombarrows", Descriptions::bombarrows, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", 50);
+		}
+		{
+			ShopItem@ s = addShopItem(this, Names::stonearrow, "$stoneblockarrows$", "mat_stoneblockarrows", Descriptions::stonearrowdesc, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", 30);
+		}
+		{
+			ShopItem@ s = addShopItem(this, "Crate (wood)", getTeamIcon("crate", "Crate.png", team_num, Vec2f(32, 16), 5), "crate", Descriptions::crate, false);
+			AddRequirement(s.requirements, "blob", "mat_wood", "Wood", CTFCosts::crate_wood);
+		}
+		{
+			ShopItem@ s = addShopItem(this, "Filled Bucket", "$_buildershop_filled_bucket$", "filled_bucket", Descriptions::filled_bucket, false);
+			s.spawnNothing = true;
+			AddRequirement(s.requirements, "coin", "", "Coins", 5);
+		}
+	} else {
+		{
+			ShopItem@ s = addShopItem(this, "Bomb", "$bomb$", "mat_bombs", Descriptions::bomb, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", 15);
+			s.quantityLimit = 1;
+		}
+		{
+			ShopItem@ s = addShopItem(this, "Water Bomb", "$waterbomb$", "mat_waterbombs", Descriptions::waterbomb, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", 45);
+		}
+		{
+			ShopItem@ s = addShopItem(this, Names::stickybomb, "$stickybombs$", "mat_stickybombs", Descriptions::stickybombdesc, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", 35);
+		}
+		{
+			ShopItem@ s = addShopItem(this, Names::icebomb, "$icebomb$", "mat_icebombs", Descriptions::icebombdesc, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", 45);
+		}
+		{
+			ShopItem@ s = addShopItem(this, "Keg", getTeamIcon("keg", "Keg.png", team_num, Vec2f(16, 16), 0), "keg", Descriptions::keg, false);
+			AddRequirement(s.requirements, "coin", "", "Coins", 160);
+		}
+		{
+			ShopItem@ s = addShopItem(this, /*Names::hazelnut*/ "Hazelnut", "$hazelnut$", "hazelnut", /*Descriptions::hazelnutdesc*/ "A genetically modified hazelnut that releases five explosive kernels when shattered.", false);
+			AddRequirement(s.requirements, "coin", "", "Coins", 180);
+			AddRequirement(s.requirements, "no more", "hazelnut", "Hazelnut", 2);
+			AddRequirement(s.requirements, "buy delay", "hazelnut", "Hazelnut", 60);
+		}
+		{
+			ShopItem@ s = addShopItem(this, "Mine", getTeamIcon("mine", "Mine.png", team_num, Vec2f(16, 16), 1), "mine", Descriptions::mine, false);
+			AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::mine);
+			AddRequirement(s.requirements, "no more", "mine", "Mine", 5);
+		}
+		{
+			ShopItem@ s = addShopItem(this, Names::goldenmine, getTeamIcon("golden_mine", "GoldenMine.png", team_num, Vec2f(16, 16), 1), "golden_mine", Descriptions::goldenminedesc, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::golden_mine);
+			AddRequirement(s.requirements, "no more", "golden_mine", "Golden Mine", 2);
+		}
+		{
+			ShopItem@ s = addShopItem(this, Names::slidemine, getTeamIcon("slidemine", "SlideMine.png", team_num, Vec2f(16, 16), 1), "slidemine", Descriptions::slideminedesc, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::slidemine);
+			AddRequirement(s.requirements, "no more", "slidemine", "Slide Mine", 3);
+			AddRequirement(s.requirements, "buy delay", "slidemine", "Slide Mine", 30);
+		}
+		{
+			ShopItem@ s = addShopItem(this, "Water Arrows", "$mat_waterarrows$", "mat_waterarrows", Descriptions::waterarrows, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::waterarrows);
+			AddRequirement(s.requirements, "no more", "mat_waterarrows", "Water Arrows", 2); // half of inventory
+		}
+		{
+			ShopItem@ s = addShopItem(this, "Fire Arrows", "$mat_firearrows$", "mat_firearrows", Descriptions::firearrows, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", 20);
+		}
+		{
+			ShopItem@ s = addShopItem(this, "Bomb Arrows", "$mat_bombarrows$", "mat_bombarrows", Descriptions::bombarrows, true);
+			AddRequirement(s.requirements, "coin", "", "Coins", 50);
+		}
+		{
+			ShopItem@ s = addShopItem(this, "Sponge", "$sponge$", "sponge", Descriptions::sponge, false);
+			AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::sponge);
+		}
+		{
+			ShopItem@ s = addShopItem(this, "Boulder", "$boulder$", "boulder", Descriptions::boulder, false);
+			s.customButton = true;
+			s.buttonwidth = 2;
+			s.buttonheight = 1;
+			AddRequirement(s.requirements, "blob", "mat_stone", "Stone", CTFCosts::boulder_stone);
+		}
+		{
+			ShopItem@ s = addShopItem(this, "Crate (wood)", getTeamIcon("crate", "Crate.png", team_num, Vec2f(32, 16), 5), "crate", Descriptions::crate, false);
+			AddRequirement(s.requirements, "blob", "mat_wood", "Wood", CTFCosts::crate_wood);
+		}
+		{
+			ShopItem@ s = addShopItem(this, "Drill", "$drill$", "drill", Descriptions::drill, false);
+			AddRequirement(s.requirements, "coin", "", "Coins", 15);
+			s.spawnToInventory = true;
+			s.customButton = true;
+			s.buttonwidth = 1;
+			s.buttonheight = 1;
+		}
 	}
 }
 
