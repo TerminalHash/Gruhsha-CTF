@@ -56,6 +56,8 @@ void Config(CTFCore@ this)
 	// modifies if the fall damage velocity is higher or lower - TDM has lower velocity
 	if (getRules().get_string("internal_game_mode") == "tavern")
 		getRules().set_f32("fall vel modifier", cfg.read_f32("fall_dmg_nerf", 1.3f));
+	else
+		getRules().set_f32("fall vel modifier", cfg.read_f32("fall_dmg_nerf", 1.0f));
 }
 
 shared string base_name() { return "tent"; }
@@ -428,34 +430,31 @@ shared class CTFCore : RulesCore
 		// Change player classes to knight explicity
 		if (ticksToStart <= 5 * 30 && rules.getCurrentState() != GAME)
 		{
-			for (int l = 0; l < getPlayersCount(); ++l)
-			{
-				CPlayer @p = getPlayer(l);
-				if (p !is null)
-				{
-					CBlob @b = p.getBlob();
+			if (rules.get_string("internal_game_mode") != "tavern") {
+				for (int l = 0; l < getPlayersCount(); ++l) {
+					CPlayer @p = getPlayer(l);
+					if (p !is null) {
+						CBlob @b = p.getBlob();
 
-					if (b !is null)
-					{
-						string role;
-						int teamNum = p.getTeamNum();
+						if (b !is null) {
+							string role;
+							int teamNum = p.getTeamNum();
 
-						if (b.getName() == "builder" &&
-						!(
-							getRules().get_string("team_" + teamNum + "_leader") == p.getUsername() ||
-							getRules().get_string("team_" + teamNum + "_builder") == p.getUsername())
-						)
-						{
-							role = "knight";
-							CBlob@ test = server_CreateBlobNoInit(role);
+							if (b.getName() == "builder" &&
+							!(
+								getRules().get_string("team_" + teamNum + "_leader") == p.getUsername() ||
+								getRules().get_string("team_" + teamNum + "_builder") == p.getUsername())
+							) {
+								role = "knight";
+								CBlob@ test = server_CreateBlobNoInit(role);
 
-							if (test !is null)
-							{
-								test.setPosition(b.getPosition());
-								b.server_Die();
-								test.Init();
-								test.server_SetPlayer(p);
-								test.server_setTeamNum(p.getTeamNum());
+								if (test !is null) {
+									test.setPosition(b.getPosition());
+									b.server_Die();
+									test.Init();
+									test.server_SetPlayer(p);
+									test.server_setTeamNum(p.getTeamNum());
+								}
 							}
 						}
 					}

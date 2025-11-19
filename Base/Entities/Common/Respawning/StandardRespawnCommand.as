@@ -126,15 +126,17 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		// CLASS LIMIT CODE BLOCK
 
 		// Limit classes, if game started
-		if (classconfig == "archer") {
-			if (P_Archers >= archers_limit) {
-				return;
+		if (rules.get_string("internal_game_mode") != "tavern") {
+			if (classconfig == "archer") {
+				if (P_Archers >= archers_limit) {
+					return;
+				}
 			}
-		}
 
-		if (classconfig == "builder" && !rules.isWarmup()) {
-			if (P_Builders >= builders_limit) {
-				return;
+			if (classconfig == "builder" && !rules.isWarmup()) {
+				if (P_Builders >= builders_limit) {
+					return;
+				}
 			}
 		}
 		////////////////////////////////////////////////

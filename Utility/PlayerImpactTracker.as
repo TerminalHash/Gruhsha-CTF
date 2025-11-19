@@ -89,6 +89,13 @@ void onRestart(CRules@ this) {
 					this.Sync(cp.getUsername() + "_bought_item_" + blob_list[b], true);
 				}
 			}
+
+			// reset with_drill variable for players, if they played on builder on TDM
+			if (this.get_string("internal_game_mode") == "tavern") {
+				if (this.exists(cp.getUsername() + "_with_drill")) {
+					this.set_string(cp.getUsername() + "_with_drill", "no");
+				}
+			}
 		}
 	}
 }

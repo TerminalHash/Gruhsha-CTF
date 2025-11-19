@@ -71,7 +71,6 @@ void onInit(CBlob@ this)
 	this.push("names to activate", "hazelnut");
 	this.push("names to activate", "hazelnutshell");
 	this.push("names to activate", "satchel");
-	
 }
 
 void onSetPlayer(CBlob@ this, CPlayer@ player)
@@ -108,6 +107,18 @@ void onTick(CBlob@ this)
 		}
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////
+
+	// give drill for our builder on TDM
+	if (this !is null && getRules().get_string("internal_game_mode") == "tavern") {
+		if (getGameTime() == 60  && getRules().get_string(this.getPlayer().getUsername() + "_with_drill") != "yes") {
+			CBlob@ startdrill = server_CreateBlob("drill");
+			if (startdrill !is null) {
+				this.server_PutInInventory(startdrill);
+				// prevent drill spamming with special string
+				getRules().set_string(this.getPlayer().getUsername() + "_with_drill", "yes");
+			}
+		}
+	}
 
 	const bool ismyplayer = this.isMyPlayer();
 
