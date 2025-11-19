@@ -201,10 +201,8 @@ shared class CTFSpawns : RespawnSystem
 
 	Vec2f getSpawnLocation(PlayerInfo@ p_info)
 	{
-			printf("Getting spawn locations");
 		CTFPlayerInfo@ c_info = cast < CTFPlayerInfo@ > (p_info);
 		if (getRules().get_string("internal_game_mode") != "tavern") {
-			printf("CTF SPAWNS");
 			if (c_info !is null)
 			{
 				CBlob@ pickSpawn = getBlobByNetworkID(c_info.spawn_point);
@@ -230,7 +228,6 @@ shared class CTFSpawns : RespawnSystem
 				}
 			}
 		} else {
-			printf("TDM SPAWNS");
 			CBlob@[] spawns;
 			CBlob@[] teamspawns;
 
@@ -416,12 +413,12 @@ shared class CTFCore : RulesCore
 	{
 		//HUD
 		// lets save the CPU and do this only once in a while
-		/*if (rules.get_string("internal_game_mode") == "tavern") {
+		if (rules.get_string("internal_game_mode") == "tavern") {
 			if (getGameTime() % 16 == 0)
 			{
 				updateHUD();
 			}
-		}*/
+		}
 
 		if (rules.isGameOver()) { return; }
 
@@ -520,7 +517,7 @@ shared class CTFCore : RulesCore
 	}
 
 	// TDM hud
-	/*void updateHUD()
+	void updateHUD()
 	{
 		bool hidekills = (rules.isIntermission() || rules.isWarmup());
 		CBitStream serialised_tavern_hud;
@@ -597,7 +594,7 @@ shared class CTFCore : RulesCore
 
 		rules.set_CBitStream("tavern_serialised_team_hud", serialised_tavern_hud);
 		rules.Sync("tavern_serialised_team_hud", true);
-	}*/
+	}
 
 	//HELPERS
 	bool allTeamsHavePlayers()

@@ -135,7 +135,7 @@ shared class CTF_HUD
 	}
 
 };
-/*
+
 shared class TAVERN_HUD
 {
 	//is this our team?
@@ -169,4 +169,3 @@ shared class TAVERN_HUD
 	}
 
 };
-*/
