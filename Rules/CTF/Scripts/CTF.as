@@ -203,8 +203,10 @@ shared class CTFSpawns : RespawnSystem
 
 	Vec2f getSpawnLocation(PlayerInfo@ p_info)
 	{
+			printf("Getting spawn locations");
 		CTFPlayerInfo@ c_info = cast < CTFPlayerInfo@ > (p_info);
 		if (getRules().get_string("internal_game_mode") != "tavern") {
+			printf("CTF SPAWNS");
 			if (c_info !is null)
 			{
 				CBlob@ pickSpawn = getBlobByNetworkID(c_info.spawn_point);
@@ -230,6 +232,7 @@ shared class CTFSpawns : RespawnSystem
 				}
 			}
 		} else {
+			printf("TDM SPAWNS");
 			CBlob@[] spawns;
 			CBlob@[] teamspawns;
 
