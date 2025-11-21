@@ -340,7 +340,7 @@ void onRender(CRules@ this)
 
 		// main panel
 		GUI::DrawIcon("TDM_Panel.png", 0, Vec2f(73,55), Vec2f(0, 145));
-	}
+	}*/
 }
 
 void onNewPlayerJoin( CRules@ this, CPlayer@ player )
