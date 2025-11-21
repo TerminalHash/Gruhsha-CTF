@@ -45,7 +45,7 @@ void onRestart( CRules@ this )
 
 		//set for all clients to ensure safe sync
 		this.set_s16("stalemate_breaker", 0);
-	//}
+	}
 }
 
 //only for after the fact if you spawn a flag
@@ -54,7 +54,7 @@ void onBlobCreated( CRules@ this, CBlob@ blob )
     if(!getNet().isServer())
         return;
 
-	//if (this.get_string("internal_game_mode") != "tavern") {
+	if (this.get_string("internal_game_mode") != "tavern") {
     	if(blob.getName() == "ctf_flag")
     	{
         	UIData@ ui;
@@ -72,7 +72,7 @@ void onBlobCreated( CRules@ this, CBlob@ blob )
 			this.set_CBitStream("ctf_serialised_team_hud", bt);
 			this.Sync("ctf_serialised_team_hud", true);
     	}
-	//}
+	}
 }
 
 void onBlobDie( CRules@ this, CBlob@ blob )
@@ -80,7 +80,7 @@ void onBlobDie( CRules@ this, CBlob@ blob )
     if(!getNet().isServer())
         return;
 
-	//if (this.get_string("internal_game_mode") != "tavern") {
+	if (this.get_string("internal_game_mode") != "tavern") {
     	if(blob.getName() == "ctf_flag")
     	{
         	UIData@ ui;
@@ -103,7 +103,7 @@ void onBlobDie( CRules@ this, CBlob@ blob )
 			this.set_CBitStream("ctf_serialised_team_hud", bt);
 			this.Sync("ctf_serialised_team_hud", true);
     	}
-	//}
+	}
 }
 
 void onRender(CRules@ this)
@@ -121,7 +121,7 @@ void onRender(CRules@ this)
 	CBitStream serialised_tavern_hud;
 	this.get_CBitStream("tavern_serialised_team_hud", serialised_tavern_hud);
 
-	//if (this.get_string("internal_game_mode") != "tavern") {
+	if (this.get_string("internal_game_mode") != "tavern") {
 	if (serialised_team_hud.getBytesUsed() > 8)
 	{
 		serialised_team_hud.Reset();
@@ -340,7 +340,7 @@ void onRender(CRules@ this)
 
 		// main panel
 		GUI::DrawIcon("TDM_Panel.png", 0, Vec2f(73,55), Vec2f(0, 145));
-	}*/
+	}
 }
 
 void onNewPlayerJoin( CRules@ this, CPlayer@ player )
