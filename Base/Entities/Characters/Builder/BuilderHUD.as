@@ -143,8 +143,14 @@ void onRender(CSprite@ this)
 	u8 selected_i = -1;
 
 	selected_i = blob.get_u8("bunnie_tile");
+	
+	u8 blocks_quantity = 11;
+	
+	if (getRules().get_string("internal_game_mode") == "tavern") {
+		blocks_quantity = 2;
+	}
 
-	for (int i=0; i<11; ++i)
+	for (int i = 0; i < blocks_quantity; ++i)
 	{
 		f32 scale = 1.5;
 		if (i == 9) scale = 1.0;
