@@ -94,6 +94,16 @@ bool isSwordState(u8 state)
 	return (state >= KnightStates::sword_drawn && state <= KnightStates::sword_power_super);
 }
 
+bool isShieldState(u8 state)
+{
+	return (state >= KnightStates::shielding && state <= KnightStates::shieldgliding);
+}
+
+bool isSpecialShieldState(u8 state)
+{
+	return (state > KnightStates::shielding && state <= KnightStates::shieldgliding);
+}
+
 bool inMiddleOfAttack(u8 state)
 {
 	return ((state > KnightStates::sword_drawn && state <= KnightStates::sword_power_super));

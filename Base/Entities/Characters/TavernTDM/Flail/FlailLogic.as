@@ -4,6 +4,7 @@
 #include "FlailCommon.as";
 #include "RunnerCommon.as";
 #include "Hitters.as";
+#include "GruhshaHitters.as";
 #include "ShieldCommon.as";
 #include "KnockedCommon.as"
 #include "Help.as";
@@ -384,7 +385,7 @@ void onTick(CBlob@ this)
 			}
 			else if (delta > DELTA_BEGIN_ATTACK && delta < 10)
 			{
-				DoAttack(this, 2.0f, -(vec.Angle()), 120.0f, Hitters::sword, delta, knight); // Flail Damage (3.0f = 3 hearts);
+				DoAttack(this, 2.0f, -(vec.Angle()), 120.0f, GruhshaHitters::flail, delta, knight); // Flail Damage (3.0f = 3 hearts);
 			}
 			else if (delta >= KnightVars::slash_time ||
 			         (knight.doubleslash && delta >= KnightVars::double_slash_time))

@@ -4,6 +4,7 @@
 #include "RogueCommon.as";
 #include "RunnerCommon.as";
 #include "Hitters.as";
+#include "GruhshaHitters.as";
 #include "ShieldCommon.as";
 #include "KnockedCommon.as"
 #include "Help.as";
@@ -300,7 +301,7 @@ void onTick(CBlob@ this)
 					attackarc *= 0.9f;
 				}
 
-				DoAttack(this, 2.0f, attackAngle, attackarc, Hitters::sword, delta, knight);
+				DoAttack(this, 2.0f, attackAngle, attackarc, GruhshaHitters::knife, delta, knight);
 			}
 			else if (delta >= 15)
 			{
@@ -326,7 +327,7 @@ void onTick(CBlob@ this)
 			}
 			else if (delta > DELTA_BEGIN_ATTACK && delta < 10)
 			{
-				DoAttack(this, 2.5f, -(vec.Angle()), 120.0f, Hitters::sword, delta, knight);
+				DoAttack(this, 2.5f, -(vec.Angle()), 120.0f, GruhshaHitters::knife, delta, knight);
 			}
 			else if (delta >= KnightVars::slash_time ||
 			         (knight.doubleslash && delta >= KnightVars::double_slash_time))

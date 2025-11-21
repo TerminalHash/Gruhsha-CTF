@@ -17,7 +17,9 @@ namespace GruhshaHitters {
 
 		// other
 		hammer = 59,
-		hammer_heavy = 60
+		hammer_heavy = 60,
+		flail = 61,
+		knife = 62
 	};
 }
 
