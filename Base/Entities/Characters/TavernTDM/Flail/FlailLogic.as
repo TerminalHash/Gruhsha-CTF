@@ -878,6 +878,7 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 	bool dontHitMore = false;
 	bool dontHitMoreMap = false;
 	const bool jab = isJab(damage);
+	bool dontHitMoreLogs = false;
 
 	//get the actual aim angle
 	f32 exact_aimangle = (this.getAimPos() - blobPos).Angle();
@@ -886,45 +887,111 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 	HitInfo@[] hitInfos;
 	if (map.getHitInfosFromArc(pos, aimangle, arcdegrees, radius + attack_distance, this, @hitInfos))
 	{
-		//HitInfo objects are sorted, first come closest hits
-		for (uint i = 0; i < hitInfos.length; i++)
+		// HitInfo objects are sorted, first come closest hits
+		// start from furthest ones to avoid doing too many redundant raycasts
+		for (int i = hitInfos.size() - 1; i >= 0; i--)
 		{
 			HitInfo@ hi = hitInfos[i];
 			CBlob@ b = hi.blob;
-			if (b !is null && !dontHitMore) // blob
+
+			if (b !is null)
 			{
-				if (b.hasTag("ignore sword")) continue;
-
-				//big things block attacks
-				const bool large = b.hasTag("blocks sword") && !b.isAttached() && b.isCollidable();
-
-				if (!canHit(this, b))
+				if (b.hasTag("ignore sword") 
+				    || !canHit(this, b)
+				    || knight_has_hit_actor(this, b)) 
 				{
-					// no TK
-					if (large)
-						dontHitMore = true;
-
 					continue;
 				}
 
-				if (knight_has_hit_actor(this, b))
+				Vec2f hitvec = hi.hitpos - pos;
+
+				// we do a raycast to given blob and hit everything hittable between knight and that blob
+				// raycast is stopped if it runs into a "large" blob (typically a door)
+				// raycast length is slightly higher than hitvec to make sure it reaches the blob it's directed at
+				HitInfo@[] rayInfos;
+				map.getHitInfosFromRay(pos, -(hitvec).getAngleDegrees(), hitvec.Length() + 2.0f, this, rayInfos);
+
+				for (int j = 0; j < rayInfos.size(); j++)
 				{
-					if (large)
-						dontHitMore = true;
+					CBlob@ rayb = rayInfos[j].blob;
+					
+					if (rayb is null) break; // means we ran into a tile, don't need blobs after it if there are any
+					if (rayb.hasTag("ignore sword") || !canHit(this, rayb)) continue;
 
-					continue;
-				}
+					bool large = rayb.hasTag("blocks sword") && !rayb.isAttached() && rayb.isCollidable(); // usually doors, but can also be boats/some mechanisms
+					if (knight_has_hit_actor(this, rayb)) 
+					{
+						// check if we hit any of these on previous ticks of slash
+						if (large) break;
+						if (rayb.getName() == "log")
+						{
+							dontHitMoreLogs = true;
+						}
+						continue;
+					}
+					if (!canHit(this, rayb)) continue;
 
-				knight_add_actor_limit(this, b);
-				if (!dontHitMore)
-				{
-					Vec2f velocity = b.getPosition() - pos;
-					this.server_Hit(b, hi.hitpos, velocity, damage, type, true);  // server_Hit() is server-side only
+					f32 temp_damage = damage;
+					
+					if (rayb.getName() == "log")
+					{
+						if (!dontHitMoreLogs)
+						{
+							temp_damage /= 3;
+							dontHitMoreLogs = true; // set this here to prevent from hitting more logs on the same tick
+							int quantity = Maths::Ceil(float(temp_damage) * 20.0f);
+							int max_quantity = rayb.getHealth() / 0.024f; // initial log health / max mats
 
-					// end hitting if we hit something solid, don't if its flesh
+							quantity = Maths::Max(
+									Maths::Min(quantity, max_quantity),
+									0
+								);
+
+							if (isServer() && this.getPlayer() !is null)
+							{
+								u8 team = this.getPlayer().getTeamNum();
+
+								getRules().add_s32("teamwood" + team, quantity);
+								getRules().Sync("teamwood" + team, true);
+							}
+							/*CBlob@ wood = server_CreateBlobNoInit("mat_wood");
+							if (wood !is null)
+							{
+								int quantity = Maths::Ceil(float(temp_damage) * 20.0f);
+								int max_quantity = rayb.getHealth() / 0.024f; // initial log health / max mats
+								
+								quantity = Maths::Max(
+									Maths::Min(quantity, max_quantity),
+									0
+								);
+
+								wood.Tag('custom quantity');
+								wood.Init();
+								wood.setPosition(rayInfos[j].hitpos);
+								wood.server_SetQuantity(quantity);
+							}*/
+						}
+						else 
+						{
+							// print("passed a log on " + getGameTime());
+							continue; // don't hit the log
+						}
+					}
+					
+					knight_add_actor_limit(this, rayb);
+
+					
+					Vec2f velocity = rayb.getPosition() - pos;
+					velocity.Normalize();
+					velocity *= 12; // knockback force is same regardless of distance
+
+					if (rayb.getTeamNum() != this.getTeamNum() || rayb.hasTag("dead player")) {
+						this.server_Hit(rayb, rayInfos[j].hitpos, velocity, temp_damage, type, true);
+					}
+
 					if (large)
 					{
-						dontHitMore = true;
+						break; // don't raycast past the door after we do damage to it
 					}
 				}
 			}
@@ -933,12 +1000,22 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 				{
 					bool ground = map.isTileGround(hi.tile);
 					bool dirt_stone = map.isTileStone(hi.tile);
+					bool dirt_thick_stone = map.isTileThickStone(hi.tile);
 					bool gold = map.isTileGold(hi.tile);
 					bool wood = map.isTileWood(hi.tile);
-					if (ground || wood || dirt_stone || gold)
+					bool castle = map.isTileCastle(hi.tile);
+
+					if (ground || wood || dirt_stone || gold || castle)
 					{
 						Vec2f tpos = map.getTileWorldPosition(hi.tileOffset) + Vec2f(4, 4);
 						Vec2f offset = (tpos - blobPos);
+						Vec2f velocity = hi.hitpos - this.getPosition();
+						Vec2f hitpos = hi.hitpos;
+
+						CBitStream params;
+						params.write_Vec2f(velocity);
+						params.write_Vec2f(hitpos);
+
 						f32 tileangle = offset.Angle();
 						f32 dif = Maths::Abs(exact_aimangle - tileangle);
 						if (dif > 180)
@@ -976,7 +1053,61 @@ void DoAttack(CBlob@ this, f32 damage, f32 aimangle, f32 arcdegrees, u8 type, in
 							dontHitMoreMap = true;
 							if (canhit)
 							{
-								map.server_DestroyTile(hi.hitpos, 0.1f, this);
+								if (ground || wood || dirt_stone || gold || castle)
+								{
+									if (!wood)
+										map.server_DestroyTile(hi.hitpos, 0.1f, this);
+									else
+										map.server_DestroyTile(hi.hitpos, 2.0f, this);
+
+									if (gold)
+									{
+										// Note: 0.1f damage doesn't harvest anything I guess
+										// This puts it in inventory - include MaterialCommon
+										//Material::fromTile(this, hi.tile, 1.f);
+										int quantity = 4;
+
+										/*if (isServer() && this.getPlayer() !is null)
+										{
+											getRules().add_s32("personalgold_" + this.getPlayer().getUsername(), quantity);
+											getRules().Sync("personalgold_" + this.getPlayer().getUsername(), true);
+										}*/
+
+										CBlob@ ore = server_CreateBlobNoInit("mat_gold");
+										if (ore !is null)
+										{
+											ore.Tag('custom quantity');
+											ore.Init();
+											ore.setPosition(hi.hitpos);
+											ore.server_SetQuantity(4);
+										}
+									}
+									else if (dirt_stone)
+									{
+										int quantity = 4;
+										if(dirt_thick_stone)
+										{
+											quantity = 6;
+										}
+
+										if (isServer() && this.getPlayer() !is null)
+										{
+											u8 team = this.getPlayer().getTeamNum();
+
+											getRules().add_s32("teamstone" + team, quantity);
+											getRules().Sync("teamstone" + team, true);
+										}
+
+										/*CBlob@ ore = server_CreateBlobNoInit("mat_stone");
+										if (ore !is null)
+										{
+											ore.Tag('custom quantity');
+											ore.Init();
+											ore.setPosition(hi.hitpos);
+											ore.server_SetQuantity(quantity);
+										}*/
+									}
+								}
 							}
 						}
 					}
