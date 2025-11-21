@@ -647,9 +647,10 @@ shared class CTFCore : RulesCore
 
 	void onSetPlayer(CBlob@ blob, CPlayer@ player)
 	{
-		if (blob !is null && player !is null)
-		{
-			//GiveSpawnResources( blob, player );
+		if (blob !is null && player !is null) {
+			if (rules.get_string("internal_game_mode") == "tavern") {
+				GiveSpawnResources(blob, player);
+			}
 		}
 	}
 
@@ -971,6 +972,36 @@ shared class CTFCore : RulesCore
 		}
 	}
 
+	void GiveSpawnResources(CBlob@ blob, CPlayer@ player) {
+		if (blob.getName() == "builder") {
+			// first check if its in surroundings
+			CBlob@[] blobsInRadius;
+			CMap@ map = getMap();
+			bool found = false;
+			if (map.getBlobsInRadius(blob.getPosition(), 60.0f, @blobsInRadius)) {
+				for (uint i = 0; i < blobsInRadius.length; i++) {
+					CBlob @b = blobsInRadius[i];
+					if (b.getName() == "drill") {
+						found = true;
+						if (!found) {
+							blob.server_PutInInventory(b);
+						} else {
+							b.server_Die();
+						}
+					}
+				}
+			}
+
+			if (!found) {
+				CBlob@ mat = server_CreateBlob("drill");
+				if (mat !is null) {
+					if (!blob.server_PutInInventory(mat)) {
+						mat.setPosition(blob.getPosition());
+					}
+				}
+			}
+		}
+	}
 };
 
 //pass stuff to the core from each of the hooks
