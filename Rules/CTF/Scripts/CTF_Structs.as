@@ -159,7 +159,7 @@ shared class TAVERN_HUD
 		bt.write_s16(kills_limit);
 	}
 
-	void Unserialise_TDM(CBitStream@ bt)
+	void Unserialise(CBitStream@ bt)
 	{
 		team_num = bt.read_u8();
 		unit_pattern = bt.read_string();
