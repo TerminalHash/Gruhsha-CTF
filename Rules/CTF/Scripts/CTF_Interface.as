@@ -20,7 +20,7 @@ void onRestart( CRules@ this )
 	if (this.get_string("internal_game_mode") == "tavern") {
 		CBitStream stream;
 		stream.write_u16(0xDEAD);
-		this.set_CBitStream("ctf_serialised_team_hud", stream);
+		this.set_CBitStream("tdm_serialised_team_hud", stream);
 	} else {
     	UIData ui;
 
@@ -117,6 +117,9 @@ void onRender(CRules@ this)
 
 	CBitStream serialised_team_hud;
 	this.get_CBitStream("ctf_serialised_team_hud", serialised_team_hud);
+
+	CBitStream serialised_tavern_hud;
+	this.get_CBitStream("tavern_serialised_team_hud", serialised_tavern_hud);
 
 	if (this.get_string("internal_game_mode") != "tavern") {
 	if (serialised_team_hud.getBytesUsed() > 8)
@@ -241,18 +244,18 @@ void onRender(CRules@ this)
 	}*/
 	} else {
 		GUI::SetFont("menu");
-		if (serialised_team_hud.getBytesUsed() > 10)
+		if (serialised_tavern_hud.getBytesUsed() > 10)
 		{
-			serialised_team_hud.Reset();
+			serialised_tavern_hud.Reset();
 			u16 check;
 
-			if (serialised_team_hud.saferead_u16(check) && check == 0x5afe)
+			if (serialised_tavern_hud.saferead_u16(check) && check == 0x5afe)
 			{
 				const string gui_image_fname = "TDMGui.png";
 
-				while (!serialised_team_hud.isBufferEnd())
+				while (!serialised_tavern_hud.isBufferEnd())
 				{
-					CTF_HUD hud(serialised_team_hud);
+					TAVERN_HUD hud(serialised_tavern_hud);
 					Vec2f topLeft = Vec2f(8, 8 + 64 * hud.team_num);
 					GUI::DrawIcon(gui_image_fname, 0, Vec2f(128, 32), topLeft, 1.0f, hud.team_num);
 					int team_player_count = 0;
@@ -310,7 +313,7 @@ void onRender(CRules@ this)
 				}
 			}
 
-			serialised_team_hud.Reset();
+			serialised_tavern_hud.Reset();
 		}
 
 		string propname = "tdm spawn time " + p.getUsername();
