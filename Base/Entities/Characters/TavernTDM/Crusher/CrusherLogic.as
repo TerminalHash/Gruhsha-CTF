@@ -147,6 +147,7 @@ void onTick(CBlob@ this)
 	bool pressed_a1 = this.isKeyPressed(key_action1);
 	bool pressed_a2 = this.isKeyPressed(key_action2);
 	bool walking = (this.isKeyPressed(key_left) || this.isKeyPressed(key_right));
+	bool specialShieldState = isSpecialShieldState(knight.state);
 	bool myplayer = this.isMyPlayer();
 
 	//with the code about menus and myplayer you can slash-cancel;
@@ -172,7 +173,40 @@ void onTick(CBlob@ this)
 		moveVars.walkFactor *= 0.85f;
 	}
 
-	if ((pressed_a1 || swordState) && !moveVars.wallsliding)   //no attacking during a slide
+	if (!pressed_a1 && !swordState &&
+	         (pressed_a2 || (specialShieldState)) && !knocked)
+	{
+		// This sets speed for when rightclicking
+
+		// This is the boulder throwing script:
+		// =--------------------=
+		moveVars.jumpFactor *= 0.5f;
+		moveVars.walkFactor *= 0.4f;
+
+		CBlob@ projectile = server_CreateBlob("boulder",-1,this.getPosition()+Vec2f((this.isFacingLeft() ? -8 : 8),-4));
+		makeSmokeParticle(this.getPosition() + getRandomVelocity(90.0f, 3.0f, 360.0f));
+
+		setKnocked(this, 41);
+
+		Sound::Play("CatapultFire", this.getPosition());
+		Sound::Play("/ArgLong", this.getPosition());
+
+		if(projectile !is null)
+		{
+			Vec2f vel((this.isFacingLeft() ? -7.0f : 7.0f), -4.5f);
+			projectile.setVelocity(vel * 1.2);
+			projectile.server_SetTimeToDie(2.0f);
+			projectile.server_setTeamNum(this.getTeamNum());
+
+			CPlayer@ player = this.getPlayer();
+			if (player !is null)
+			{
+				projectile.SetDamageOwnerPlayer(player);
+			}
+		}
+		// =--------------------=
+	}
+	else if ((pressed_a1 || swordState) && !moveVars.wallsliding)   //no attacking during a slide
 	{
 		// Sound effects
 		if (getNet().isClient())
