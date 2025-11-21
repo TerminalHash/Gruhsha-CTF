@@ -339,7 +339,7 @@ void onRender(CRules@ this)
 		}
 
 		// main panel
-		GUI::DrawIcon("TDM_Panel.png", 0, Vec2f(73,55), Vec2f(0, 145));
+		GUI::DrawIcon("TDM_Timer.png", 0, Vec2f(45,21), Vec2f(10, 145));
 	}
 }
 

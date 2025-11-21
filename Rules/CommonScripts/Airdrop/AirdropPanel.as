@@ -8,6 +8,8 @@ void onRender(CRules@ this)
 
 	if (!this.isMatchRunning() || !this.exists("airdrop timer")) return;
 
+	if (this.get_string("internal_game_mode") == "tavern") return;
+
 	s32 airdrop = this.get_s32("airdrop timer");
 
 	if (airdrop > 0)
