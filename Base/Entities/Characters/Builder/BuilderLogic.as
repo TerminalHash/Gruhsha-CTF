@@ -112,7 +112,7 @@ void onTick(CBlob@ this)
 	/////////////////////////////////////////////////////////////////////////////////////////
 
 	// give drill for our builder on TDM
-	if (this !is null && getRules().get_string("internal_game_mode") == "tavern") {
+	/*if (this !is null && getRules().get_string("internal_game_mode") == "tavern") {
 		if (getGameTime() == 60  && getRules().get_string(this.getPlayer().getUsername() + "_with_drill") != "yes") {
 			CBlob@ startdrill = server_CreateBlob("drill");
 			if (startdrill !is null) {
@@ -121,7 +121,7 @@ void onTick(CBlob@ this)
 				getRules().set_string(this.getPlayer().getUsername() + "_with_drill", "yes");
 			}
 		}
-	}
+	}*/
 
 	const bool ismyplayer = this.isMyPlayer();
 
