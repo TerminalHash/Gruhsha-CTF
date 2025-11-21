@@ -174,7 +174,7 @@ void onTick(CBlob@ this)
 	}
 
 	if (!pressed_a1 && !swordState &&
-	         (pressed_a2 || (specialShieldState)) && !knocked)
+	         (pressed_a2 || (specialShieldState)) && !knocked && !this.hasTag("dead"))
 	{
 		// This sets speed for when rightclicking
 
