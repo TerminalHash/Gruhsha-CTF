@@ -17,7 +17,7 @@ const int coinsOnKillAddBuilder = 15;
 const int coinsOnDeathLosePercent = 20;
 
 const int coinsOnRestartAdd = 0;
-const bool keepCoinsOnRestart = false;
+bool keepCoinsOnRestart = false;
 
 const int coinsOnHitSiege = 2; //per heart of damage
 const int coinsOnKillSiege = 20;
