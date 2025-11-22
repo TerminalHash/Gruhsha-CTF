@@ -13,7 +13,13 @@ namespace GruhshaHitters {
 		fumo_keg = 57,
 
 		// animals
-		bison = 58
+		bison = 58,
+
+		// other
+		hammer = 59,
+		hammer_heavy = 60,
+		flail = 61,
+		knife = 62
 	};
 }
 

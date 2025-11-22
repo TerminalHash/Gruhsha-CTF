@@ -17,7 +17,7 @@ const int coinsOnKillAddBuilder = 15;
 const int coinsOnDeathLosePercent = 20;
 
 const int coinsOnRestartAdd = 0;
-const bool keepCoinsOnRestart = false;
+bool keepCoinsOnRestart = false;
 
 const int coinsOnHitSiege = 2; //per heart of damage
 const int coinsOnKillSiege = 20;
@@ -79,6 +79,14 @@ void GiveRestartCoinsIfNeeded(CPlayer@ player)
 void Reset(CRules@ this)
 {
 	if (!isServer()) return;
+
+	// use internal keep coins bool for tavern tdm
+	if (this.get_string("internal_game_mode") == "tavern")
+		keepCoinsOnRestart = true;
+	else
+		keepCoinsOnRestart = false;
+
+	//printf("keepCoinsOnRestart = " + keepCoinsOnRestart);
 
 	names.clear();
 

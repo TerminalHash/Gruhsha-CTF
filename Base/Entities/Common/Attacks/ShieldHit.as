@@ -16,6 +16,9 @@ bool canBlockThisType(u8 type) // this function needs to use a tag on the hitter
 	       type == Hitters::bite ||
 	       type == Hitters::stab ||
 	       type == Hitters::cata_stones ||
+	       type == GruhshaHitters::hammer || // block "jab" from crusher just for balance
+	       type == GruhshaHitters::flail ||
+	       type == GruhshaHitters::knife ||
 	       isCustomExplosionHitter(type) ||
 	       isExplosionHitter(type);
 }

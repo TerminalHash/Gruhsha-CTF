@@ -411,6 +411,10 @@ class PNGLoader
 
 			// Mod blobs
 			case map_colors::fridge:          autotile(offset); spawnBlob(map, "fridge",         offset + 2); break;
+			case map_colors::midshop:     	  autotile(offset); spawnBlob(map, "midshop",  offset); break;
+			// HACK: reuse trading post markers from TDM
+			case map_colors::midshop_tdm_0:   autotile(offset); spawnBlob(map, "midshop", offset, 0); break;
+			case map_colors::midshop_tdm_1:   autotile(offset); spawnBlob(map, "midshop", offset, 1); break;
 
 			default:
 				HandleCustomTile( map, offset, pixel );

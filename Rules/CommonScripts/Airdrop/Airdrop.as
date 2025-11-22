@@ -22,6 +22,9 @@ void onTick(CRules@ this) {
 	if (!isServer() || this.isWarmup() || !(this.gamemode_name == "CTF" || this.gamemode_name == "SmallCTF"))
 		return;
 
+	// disable airdrop for tavern tdm
+	if (this.get_string("internal_game_mode") == "tavern") return;
+
 	if (!this.exists("airdrop timer")) {
 		return;
 	} else if (this.get_s32("airdrop timer") <= 0) {

@@ -1,6 +1,6 @@
 # ![grusha](Base/Sprites/Common/grusha.png) Gruhsha-CTF ![grusha](Base/Sprites/Common/grusha.png)
 
-![Static Badge](https://img.shields.io/badge/version-v4.1.1-%23ad7fa8?style=plastic)
+![Static Badge](https://img.shields.io/badge/version-v4.2-%23ad7fa8?style=plastic)
 
 Русский Captains-мод, являющийся ребалансом ванильного CTF в сторону полу-соревновательного и полу-фанового геймплея, помимо этого содержащий достаточно весомые изменения в привычном геймплее King Arthur's Gold и фиксы некоторых багов ванильной игры.
 

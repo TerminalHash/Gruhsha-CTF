@@ -110,6 +110,15 @@ void onRender(CRules@ this)
 
 	s32 end_in = this.get_s32("end_in");
 
+	Vec2f timer_pos1 = Vec2f(10, 49);			// y coordinate
+	Vec2f timer_pos2 = Vec2f(227, 5);			// x coordinate
+
+	// change timer position for tavern tdm
+	if (this.get_string("internal_game_mode") == "tavern") {
+		timer_pos1 = Vec2f(10, 159);
+		timer_pos2 = Vec2f(120, 5);
+	}
+
 	if (end_in > 0) {
 		s32 timeToEnd = end_in;
 
@@ -118,11 +127,11 @@ void onRender(CRules@ this)
 		drawRulesFont(getTranslatedString("{MIN}:{SEC}")
 						.replace("{MIN}", "" + ((MinutesToEnd < 10) ? "0" + MinutesToEnd : "" + MinutesToEnd))
 						.replace("{SEC}", "" + ((secondsToEnd < 10) ? "0" + secondsToEnd : "" + secondsToEnd)),
-		              SColor(255, 255, 255, 255), Vec2f(10, 49), Vec2f(227, 5), true, false);
+		              SColor(255, 255, 255, 255), timer_pos1, timer_pos2, true, false);
 	}
 
 	// Notification
-	if (end_in > 600 && end_in < 610) {
+	if (end_in > 600 && end_in < 610 && this.get_string("internal_game_mode") != "tavern") {
 		Vec2f dim = Vec2f(342, 155);
 		Vec2f ul(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12);
 		Vec2f tl = ul + Vec2f(-10, -10);
@@ -143,7 +152,7 @@ void onRender(CRules@ this)
 	CControls@ controls = getControls();
 	Vec2f mousePos = controls.getMouseScreenPos();
 
-	if (this.hasTag("sudden death")) {
+	if (this.hasTag("sudden death") && this.get_string("internal_game_mode") != "tavern") {
 		GUI::DrawIcon("CTF_States.png", 2, Vec2f(32, 32), skull, 1.0f);
 
 		Vec2f dim = Vec2f(342, 295);
