@@ -174,7 +174,10 @@ void onTick(CBlob@ this)
 	}
 
 	if (!pressed_a1 && !swordState &&
-	         (pressed_a2 || (specialShieldState)) && !knocked && !this.hasTag("dead"))
+	    (pressed_a2 || (specialShieldState)) &&
+		!knocked &&
+		getGameTime() >= (this.get_s32("last_boulder_time") + 5 * getTicksASecond())
+	   )
 	{
 		// This sets speed for when rightclicking
 
@@ -204,6 +207,8 @@ void onTick(CBlob@ this)
 				projectile.SetDamageOwnerPlayer(player);
 			}
 		}
+
+		this.set_s32("last_boulder_time", getGameTime());
 		// =--------------------=
 	}
 	else if ((pressed_a1 || swordState) && !moveVars.wallsliding)   //no attacking during a slide
