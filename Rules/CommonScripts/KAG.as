@@ -62,6 +62,10 @@ void onRestart(CRules@ this)
 		//(it is on server, but not on client unfortunately)
 		need_sky_check = true;
 	}
+	
+	if (this.hasTag("reuse previous day time")) {
+		getMap().SetDayTime(this.get_f32("old day time"));
+	}
 }
 
 void onTick(CRules@ this)

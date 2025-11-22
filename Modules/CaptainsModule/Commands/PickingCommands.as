@@ -633,12 +633,13 @@ class BrokeResupplies : ChatCommand
 	{
 		CRules@ rules = getRules();
 
-		rules.Tag("fucked resupplies");
-
-		if (rules.hasTag("fucked resupplies"))
+		if (!rules.hasTag("fucked resupplies")) {
+			rules.Tag("fucked resupplies");
 			server_AddToChat("Infinity resupplies is on!", SColor(0xff474ac6));
-		else
+		} else {
+			rules.Untag("fucked resupplies");
 			server_AddToChat("Infinity resupplies is off!", SColor(0xff474ac6));
+		}
 	}
 }
 
@@ -686,6 +687,36 @@ class SetInternalGamemode : ChatCommand
 
 			server_AddToChat("Changed gamemode to TDM!", SColor(0xff474ac6));
 			//LoadNextMap();
+		}
+	}
+}
+
+class RememberTime : ChatCommand
+{
+	RememberTime()
+	{
+		super("reusetime", "Toggle for save day time of previous match for next matches");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		if (!rules.hasTag("reuse previous day time")) {
+			rules.Tag("reuse previous day time");
+			rules.set_f32("old day time", getMap().getDayTime());
+			server_AddToChat("Reusing previous day time", SColor(0xff474ac6));
+		} else {
+			rules.Untag("reuse previous day time");
+			server_AddToChat("Using default day time", SColor(0xff474ac6));
 		}
 	}
 }
