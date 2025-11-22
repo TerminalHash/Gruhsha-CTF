@@ -2,6 +2,8 @@
 
 #include "BindingsCommon.as"
 
+const bool isDrillShieldIndicatorEnabled = true;
+
 void onRender(CRules@ this)
 {
 	const uint update_latency = 15;
@@ -56,6 +58,30 @@ void onRender(CRules@ this)
 
 		if (myblob.hasTag("broken shield")) {
 			GUI::DrawIcon("Sprites/HUD/DebuffIcons.png", 1, Vec2f(17, 19), Vec2f(myblob.getInterpolatedScreenPos().x - 15, myblob.getInterpolatedScreenPos().y - bobr), 1.0f, me.getTeamNum());
+		}
+	}
+
+	if (isDrillShieldIndicatorEnabled) {
+		CBlob@[] boldarlist;
+
+		if (getBlobsByName("builder", boldarlist))
+		{
+			for (int i = 0; i < boldarlist.size(); ++i)
+			{
+				CBlob@ builder = boldarlist[i];
+
+				if (builder.hasTag("dead")) {
+					continue;
+				} else {
+					CBlob@ player = me.getBlob();
+					CBlob@ drill = builder.getCarriedBlob();
+
+					if (player !is null && builder !is null && drill !is null && !drill.hasTag("no shielding") && builder !is player) {
+						int bobr = 70;
+						GUI::DrawIcon("ShieldingBuff.png", 0, Vec2f(16, 18), Vec2f(builder.getInterpolatedScreenPos().x - 15, builder.getInterpolatedScreenPos().y - bobr), 1.0f, builder.getTeamNum());
+					}
+				}
+			}
 		}
 	}
 }
