@@ -76,7 +76,12 @@ void onRender(CRules@ this)
 					CBlob@ player = me.getBlob();
 					CBlob@ drill = builder.getCarriedBlob();
 
-					if (player !is null && builder !is null && drill !is null && !drill.hasTag("no shielding") && builder !is player) {
+					if (player !is null &&
+						builder !is null &&
+						drill !is null &&
+						!drill.hasTag("no shielding") &&
+						drill.getConfig() == "drill" &&
+						builder !is player) {
 						int bobr = 70;
 						GUI::DrawIcon("ShieldingBuff.png", 0, Vec2f(16, 18), Vec2f(builder.getInterpolatedScreenPos().x - 15, builder.getInterpolatedScreenPos().y - bobr), 1.0f, builder.getTeamNum());
 					}
