@@ -3,9 +3,10 @@
 
 #define SERVER_ONLY
 
-#include "CTF_Structs.as";
+#include "Gruhsha_Structs.as";
 #include "RulesCore.as";
 #include "RespawnSystem.as";
+#include "Gruhsha_Gamemodes.as";
 
 #include "CTF_PopulateSpawnList.as"
 
@@ -13,7 +14,10 @@
 // no scripting required!
 void Config(CTFCore@ this)
 {
+	CRules@ rules = getRules();
+
 	string configstr = "gruhsha_vars.cfg";
+	string gamemode = InternalGamemode(rules);
 
 	ConfigFile cfg = ConfigFile(configstr);
 	cfg.loadFile(configstr);
@@ -54,10 +58,12 @@ void Config(CTFCore@ this)
 	this.kills_to_win_per_player = cfg.read_s32("killsPerPlayer", 2);
 
 	// modifies if the fall damage velocity is higher or lower - TDM has lower velocity
-	if (getRules().get_string("internal_game_mode") == "tavern")
-		getRules().set_f32("fall vel modifier", cfg.read_f32("fall_dmg_nerf", 1.3f));
-	else
-		getRules().set_f32("fall vel modifier", cfg.read_f32("fall_dmg_nerf", 1.0f));
+	s32 FallDMGModifier = cfg.read_f32("fall_dmg_nerf", 1.3f);
+	if (gamemode == "tavern" || gamemode == "vinograd") {
+		rules.set_f32("fall vel modifier", FallDMGModifier);
+	} else {
+		rules.set_f32("fall vel modifier", 1.0f);
+	}
 }
 
 shared string base_name() { return "tent"; }
@@ -415,7 +421,7 @@ shared class CTFCore : RulesCore
 	{
 		//HUD
 		// lets save the CPU and do this only once in a while
-		if (rules.get_string("internal_game_mode") == "tavern") {
+		if (InternalGamemode(rules) == "tavern") {
 			if (getGameTime() % 16 == 0)
 			{
 				updateHUD();
@@ -430,7 +436,7 @@ shared class CTFCore : RulesCore
 		// Change player classes to knight explicity
 		if (ticksToStart <= 5 * 30 && rules.getCurrentState() != GAME)
 		{
-			if (rules.get_string("internal_game_mode") != "tavern") {
+			if (InternalGamemode(rules) != "tavern") {
 				for (int l = 0; l < getPlayersCount(); ++l) {
 					CPlayer @p = getPlayer(l);
 					if (p !is null) {
@@ -473,17 +479,14 @@ shared class CTFCore : RulesCore
 			ctf_spawns.force = true;
 
 			//set kills and cache #players in smaller team
-			if (rules.get_string("internal_game_mode") == "tavern") {
-				if (players_in_small_team == -1 || (getGameTime() % 30) == 4)
-				{
+			if (InternalGamemode(rules) == "tavern") {
+				if (players_in_small_team == -1 || (getGameTime() % 30) == 4) {
 					players_in_small_team = 100;
 
-					for (uint team_num = 0; team_num < teams.length; ++team_num)
-					{
+					for (uint team_num = 0; team_num < teams.length; ++team_num) {
 						CTFTeamInfo@ team = cast < CTFTeamInfo@ > (teams[team_num]);
 
-						if (team.players_count < players_in_small_team)
-						{
+						if (team.players_count < players_in_small_team) {
 							players_in_small_team = team.players_count;
 						}
 					}
@@ -648,7 +651,7 @@ shared class CTFCore : RulesCore
 	void onSetPlayer(CBlob@ blob, CPlayer@ player)
 	{
 		if (blob !is null && player !is null) {
-			if (rules.get_string("internal_game_mode") == "tavern") {
+			if (InternalGamemode(rules) == "tavern") {
 				GiveSpawnResources(blob, player);
 			}
 		}
@@ -671,7 +674,7 @@ shared class CTFCore : RulesCore
 		// destroy all previous spawns if present
 		CBlob@[] oldBases;
 
-		if (rules.get_string("internal_game_mode") != "tavern") {
+		if (InternalGamemode(rules) != "tavern") {
 			getBlobsByName(base_name(), @oldBases);
 		} else {
 			getBlobsByName(base_name_tavern(), @oldBases);
@@ -697,7 +700,7 @@ shared class CTFCore : RulesCore
 				respawnPos = Vec2f(auto_distance_from_edge_tents, map.getLandYAtX(auto_distance_from_edge_tents / map.tilesize) * map.tilesize - 16.0f);
 			}
 
-			if (rules.get_string("internal_game_mode") != "tavern") {
+			if (InternalGamemode(rules) != "tavern") {
 				respawnPos.y -= 8.0f;
 				SetupBase(server_CreateBlob(base_name(), 0, respawnPos));
 			} else {
@@ -711,7 +714,7 @@ shared class CTFCore : RulesCore
 				respawnPos = Vec2f(map.tilemapwidth * map.tilesize - auto_distance_from_edge_tents, map.getLandYAtX(map.tilemapwidth - (auto_distance_from_edge_tents / map.tilesize)) * map.tilesize - 16.0f);
 			}
 
-			if (rules.get_string("internal_game_mode") != "tavern") {
+			if (InternalGamemode(rules) != "tavern") {
 				respawnPos.y -= 8.0f;
 				SetupBase(server_CreateBlob(base_name(), 1, respawnPos));
 			} else {
@@ -727,7 +730,7 @@ shared class CTFCore : RulesCore
 			f32 auto_distance_from_edge = Maths::Min(map.tilemapwidth * 0.25f * 8.0f, 400.0f);
 
 			// set flags for CTF gamemode, but disable them, if we playing in TDM
-			if (rules.get_string("internal_game_mode") != "tavern") {
+			if (InternalGamemode(rules) != "tavern") {
 				//blue flags
 				if (getMap().getMarkers("blue spawn", flagPlaces))
 				{
@@ -787,7 +790,7 @@ shared class CTFCore : RulesCore
 		CTFTeamInfo@ winteam = null;
 		s8 team_wins_on_end = -1;
 
-		if (rules.get_string("internal_game_mode") != "tavern") {
+		if (InternalGamemode(rules) != "tavern") {
 			// get all the flags
 			CBlob@[] flags;			// Total flags
 			CBlob@[] flags_red;		// Red flags
@@ -887,7 +890,7 @@ shared class CTFCore : RulesCore
 		//Stalemate code courtesy of Pirate-Rob
 
 		// disable stalemate check for TDM mode
-		if (rules.get_string("internal_game_mode") == "tavern") return;
+		if (InternalGamemode(rules) == "tavern") return;
 
 		//cant stalemate outside of match time
 		if (!rules.isMatchRunning()) return;
@@ -1029,6 +1032,10 @@ void Reset(CRules@ this)
 
 	this.Sync("team_" + "0" + "_builder", true);
 	this.Sync("team_" + "1" + "_builder", true);
+
+	// set previous gamemode, if we changed it
+	if (this.exists("previous_game_mode"))
+		this.set_string("internal_game_mode", PreviousGamemode(this));
 }
 
 void onRestart(CRules@ this)
@@ -1042,6 +1049,10 @@ void onInit(CRules@ this)
 
 	const int restart_after = (!this.hasTag("tutorial") ? 30 : 5) * 30;
 	this.set_s32("restart_rules_after_game_time", restart_after);
+
+	// set internal gamemode as CTF by default
+	if (!this.exists("previous_game_mode"))
+		this.set_string("internal_game_mode", "gruhsha");
 }
 
 void onStateChange(CRules@ this, const u8 oldState)
@@ -1057,6 +1068,10 @@ void onStateChange(CRules@ this, const u8 oldState)
 			//printf("test");
 			list[i].SendCommand(list[i].getCommandID("reset menu"));
 		}
+	}
+
+	if (this.getCurrentState() == GAME_OVER) {
+		this.set_string("previous_game_mode", InternalGamemode(this));
 	}
 }
 

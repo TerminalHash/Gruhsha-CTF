@@ -1,4 +1,4 @@
-#include "CTF_Structs.as";
+#include "Gruhsha_Structs.as";
 #include "ActorHUDStartPos.as";
 //#include "CommandsHelpHUD.as";
 
@@ -340,6 +340,20 @@ void onRender(CRules@ this)
 
 		// main panel
 		GUI::DrawIcon("TDM_Timer.png", 0, Vec2f(45,21), Vec2f(10, 145));
+	}
+
+	// tracker for current internal gamemode
+	// for debug purposes only and only for RCON users
+	if (p !is null && p.isRCON()) {
+		GUI::SetFont("hud");
+		string current_gaemmode;
+		
+		if (this.get_string("internal_game_mode") == "gruhsha")
+			current_gaemmode = "CTF";
+		else
+			current_gaemmode = "TDM";
+		
+		GUI::DrawText("Current gamemode is " + current_gaemmode + " (internal name: " + this.get_string("internal_game_mode") + ")", Vec2f(320, 5), SColor(255, 255, 255, 255));
 	}
 }
 
