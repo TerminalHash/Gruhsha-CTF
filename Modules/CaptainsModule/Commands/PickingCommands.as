@@ -675,7 +675,10 @@ class SetInternalGamemode : ChatCommand
 			rules.set_string("internal_game_mode", "gruhsha");
 			rules.Sync("internal_game_mode", true);
 
+			rules.set_string("previous_game_mode", "gruhsha");
+			rules.Sync("previous_game_mode", true);
 			LoadMapCycle("mapcycle.cfg");
+
 			server_AddToChat("Changed gamemode to CTF!", SColor(0xff474ac6));
 			//LoadNextMap();
 		} 
@@ -683,6 +686,9 @@ class SetInternalGamemode : ChatCommand
 		if (MODE_TO_SET.toUpper() == "TDM" || MODE_TO_SET.toUpper() == "TAVERN" || MODE_TO_SET.toUpper() == "SLIVA") {
 			rules.set_string("internal_game_mode", "tavern");
 			rules.Sync("internal_game_mode", true);
+
+			rules.set_string("previous_game_mode", "tavern");
+			rules.Sync("previous_game_mode", true);
 			LoadMapCycle("mapcycle_tavern.cfg");
 
 			server_AddToChat("Changed gamemode to TDM!", SColor(0xff474ac6));
