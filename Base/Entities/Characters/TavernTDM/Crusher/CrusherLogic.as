@@ -143,6 +143,8 @@ void onTick(CBlob@ this)
 	const int direction = this.getAimDirection(vec);
 	const f32 side = (this.isFacingLeft() ? 1.0f : -1.0f);
 
+	const int boulder_cooldown = 2;
+
 	bool swordState = isSwordState(knight.state);
 	bool pressed_a1 = this.isKeyPressed(key_action1);
 	bool pressed_a2 = this.isKeyPressed(key_action2);
@@ -176,7 +178,7 @@ void onTick(CBlob@ this)
 	if (!pressed_a1 && !swordState &&
 	    (pressed_a2 || (specialShieldState)) &&
 		!knocked &&
-		getGameTime() >= (this.get_s32("last_boulder_time") + 5 * getTicksASecond())
+		getGameTime() >= (this.get_s32("last_boulder_time") + boulder_cooldown * getTicksASecond())
 	   )
 	{
 		// This sets speed for when rightclicking
