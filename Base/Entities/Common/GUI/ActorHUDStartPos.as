@@ -4,7 +4,7 @@
 
 bool shouldRenderResupplyIndicator(CBlob@ blob)
 {
-	return ((getRules().gamemode_name == "CTF" || getRules().gamemode_name == "SmallCTF") &&
+	return (/*(getRules().gamemode_name == "CTF" || getRules().gamemode_name == "SmallCTF") &&*/
 		(blob.getName() == "builder"));
 }
 
