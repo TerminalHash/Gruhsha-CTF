@@ -26,7 +26,7 @@ void DrawPersonalMats()
 		SColor gold_color = SColor(255, 254, 165, 61);
 		CTeam@ red = getRules().getTeam(1);
 		CTeam@ blue = getRules().getTeam(0);
-		Vec2f dim = Vec2f(252, 64);
+		Vec2f dim = Vec2f(332, 64);
 		Vec2f ul(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12);
 		ul += Vec2f(480, -28);
 
