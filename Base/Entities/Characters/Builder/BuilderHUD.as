@@ -11,7 +11,7 @@
 #include "pathway.as";
 
 const string iconsFilename = "Entities/Characters/Builder/BuilderIcons.png";
-const int slotsSize = 7;
+const int slotsSize = 6;
 
 void onInit(CSprite@ this)
 {
@@ -105,13 +105,14 @@ void onRender(CSprite@ this)
 	// draw coins
 
 	const int coins = player !is null ? player.getCoins() : 0;
-	DrawCoinsOnHUD(blob, coins, tl, slotsSize - 1);
+	DrawCoinsOnHUD(blob, coins, tl, slotsSize);
 
 	// draw resupply icon
 
 	if (shouldRenderResupplyIndicator(blob))
 	{
-		DrawResupplyOnHUD(blob, tl + Vec2f(8 + (slotsSize) * 40, -4));
+		int coinsosaloffset = 1;
+		DrawResupplyOnHUD(blob, tl + Vec2f(8 + (slotsSize + coinsosaloffset) * 40, -4));
 	}
 
 	// draw class icon

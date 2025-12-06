@@ -85,6 +85,8 @@ void onRender(CSprite@ this)
 
 	if (blob is null)
 		return;
+	
+	CPlayer@ player = blob.getPlayer();
 
 	Vec2f dim = Vec2f(402, 64);
 	Vec2f ul(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12);
@@ -94,17 +96,15 @@ void onRender(CSprite@ this)
 	u8 bar_width_in_slots = blob.get_u8("gui_HUD_slots_width");
 	f32 width = bar_width_in_slots * 40.0f;
 
-	// additional space for drawing resupply icon
+	// additional space for drawing resupply and coin icons
 	u32 offset = (shouldRenderResupplyIndicator(blob) ? 80 : 40);
 	u32 width_offset = (shouldRenderResupplyIndicator(blob) ? 1 * 40.0f : 0);
 
-	// HACK: fix panel width issues for builder
-	if (this.getBlob() !is null && this.getBlob().getConfig() == "builder") {
-		width = bar_width_in_slots * 42.0f;
-		offset = (shouldRenderResupplyIndicator(blob) ? 90 : 40);
-	}
+	const int coins = player !is null ? player.getCoins() : 0;
+	u32 coin_offset = blob.getConfig() == "builder" ? 40 : 0;
+	u32 coin_width_offset = blob.getConfig() == "builder" ? 1 * 40.0f : 0;
 
-	renderFrontStone(ul + Vec2f(dim.x + offset, 0), width + width_offset, 1.0f);
+	renderFrontStone(ul + Vec2f(dim.x + offset + coin_offset, 0), width + width_offset + coin_width_offset, 1.0f);
 	renderHPBar(blob, ul);
 
 	//GUI::DrawIcon("Entities/Common/GUI/BaseGUI.png", 0, Vec2f(128,32), topLeft);
