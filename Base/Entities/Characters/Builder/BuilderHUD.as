@@ -93,7 +93,7 @@ void onRender(CSprite@ this)
 	// draw inventory
 
 	Vec2f tl = getActorHUDStartPosition(blob, slotsSize);
-	DrawInventoryOnHUD(blob, tl);
+	DrawInventoryOnHUD(blob, tl - Vec2f(40, 0));
 
 	// draw mats ui
 	DrawPersonalMats();
@@ -105,7 +105,7 @@ void onRender(CSprite@ this)
 	// draw coins
 
 	const int coins = player !is null ? player.getCoins() : 0;
-	DrawCoinsOnHUD(blob, coins, tl, slotsSize - 2);
+	DrawCoinsOnHUD(blob, coins, tl, slotsSize - 1);
 
 	// draw resupply icon
 

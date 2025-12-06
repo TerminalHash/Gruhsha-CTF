@@ -98,6 +98,12 @@ void onRender(CSprite@ this)
 	u32 offset = (shouldRenderResupplyIndicator(blob) ? 80 : 40);
 	u32 width_offset = (shouldRenderResupplyIndicator(blob) ? 1 * 40.0f : 0);
 
+	// HACK: fix panel width issues for builder
+	if (this.getBlob() !is null && this.getBlob().getConfig() == "builder") {
+		width = bar_width_in_slots * 50.0f;
+		offset = (shouldRenderResupplyIndicator(blob) ? 90 : 40);
+	}
+
 	renderFrontStone(ul + Vec2f(dim.x + offset, 0), width + width_offset, 1.0f);
 	renderHPBar(blob, ul);
 
