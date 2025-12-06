@@ -100,7 +100,7 @@ void onRender(CSprite@ this)
 
 	// HACK: fix panel width issues for builder
 	if (this.getBlob() !is null && this.getBlob().getConfig() == "builder") {
-		width = bar_width_in_slots * 50.0f;
+		width = bar_width_in_slots * 42.0f;
 		offset = (shouldRenderResupplyIndicator(blob) ? 90 : 40);
 	}
 

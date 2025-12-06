@@ -11,7 +11,7 @@
 #include "pathway.as";
 
 const string iconsFilename = "Entities/Characters/Builder/BuilderIcons.png";
-const int slotsSize = 6;
+const int slotsSize = 7;
 
 void onInit(CSprite@ this)
 {
@@ -93,7 +93,7 @@ void onRender(CSprite@ this)
 	// draw inventory
 
 	Vec2f tl = getActorHUDStartPosition(blob, slotsSize);
-	DrawInventoryOnHUD(blob, tl - Vec2f(40, 0));
+	DrawInventoryOnHUD(blob, tl);
 
 	// draw mats ui
 	DrawPersonalMats();
