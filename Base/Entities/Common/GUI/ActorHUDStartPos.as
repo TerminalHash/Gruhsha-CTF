@@ -83,13 +83,13 @@ void DrawResupplyOnHUD(CBlob@ this, Vec2f tl)
 	Vec2f icon_pos = tl;
 	Vec2f icon_size = Vec2f(16, 16);
 
-	int text_height_pos = -72;
+	int text_height_pos = -150;
 
 	CBlob@ carried = this.getCarriedBlob();
 
 	if (carried !is null && carried.getName() == "drill")
 	{
-		text_height_pos = -96;
+		text_height_pos = -170;
 	}
 
 	bool hover = hoverOnResupplyIcon(icon_pos, icon_size);
