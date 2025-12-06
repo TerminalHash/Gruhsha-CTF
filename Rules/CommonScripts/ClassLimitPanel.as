@@ -1,6 +1,8 @@
 // ClassLimitPanel.as
 #define CLIENT_ONLY
 
+#include "Gruhsha_Gamemodes.as";
+
 // amount variables
 int P_Archers;
 int P_Builders;
@@ -15,7 +17,7 @@ void onRender(CRules@ this)
 		return;
 
     // remove class counter text
-    if (this.get_string("internal_game_mode") == "tavern") return;
+    if (InternalGamemode(this) == "tavern") return;
 
     GUI::SetFont("menu");
 

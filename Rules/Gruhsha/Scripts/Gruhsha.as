@@ -12,7 +12,7 @@
 
 //edit the variables in the config file below to change the basics
 // no scripting required!
-void Config(CTFCore@ this)
+void Config(GruhshaCore@ this)
 {
 	CRules@ rules = getRules();
 
@@ -24,7 +24,7 @@ void Config(CTFCore@ this)
 
 	s32 warmUpTimeSeconds = cfg.read_s32("warmup_time", 30);
 	//how long to wait for everyone to spawn in?
-	if (getRules().get_string("internal_game_mode") == "tavern") {
+	if (gamemode == "tavern") {
 		warmUpTimeSeconds = 3;
 	}
 
@@ -39,7 +39,7 @@ void Config(CTFCore@ this)
 	if (gameDurationMinutes <= 0)
 	{
 		this.gameDuration = 0;
-		getRules().set_bool("no timer", true);
+		rules.set_bool("no timer", true);
 	}
 	else
 	{
@@ -71,13 +71,13 @@ shared string base_name_tavern() { return "tdm_spawn"; }
 shared string flag_name() { return "ctf_flag"; }
 shared string flag_spawn_name() { return "flag_base"; }
 
-//CTF spawn system
+//Gruhsha spawn system
 
 const s32 spawnspam_limit_time = 10;
 
-shared class CTFSpawns : RespawnSystem
+shared class GruhshaSpawns : RespawnSystem
 {
-	CTFCore@ CTF_core;
+	GruhshaCore@ Gruhsha_core;
 
 	bool force;
 	s32 limit;
@@ -85,20 +85,20 @@ shared class CTFSpawns : RespawnSystem
 	void SetCore(RulesCore@ _core)
 	{
 		RespawnSystem::SetCore(_core);
-		@CTF_core = cast < CTFCore@ > (core);
+		@Gruhsha_core = cast < GruhshaCore@ > (core);
 
 		limit = spawnspam_limit_time;
 	}
 
 	void Update()
 	{
-		for (uint team_num = 0; team_num < CTF_core.teams.length; ++team_num)
+		for (uint team_num = 0; team_num < Gruhsha_core.teams.length; ++team_num)
 		{
-			CTFTeamInfo@ team = cast < CTFTeamInfo@ > (CTF_core.teams[team_num]);
+			GruhshaTeamInfo@ team = cast < GruhshaTeamInfo@ > (Gruhsha_core.teams[team_num]);
 
 			for (uint i = 0; i < team.spawns.length; i++)
 			{
-				CTFPlayerInfo@ info = cast < CTFPlayerInfo@ > (team.spawns[i]);
+				GruhshaPlayerInfo@ info = cast < GruhshaPlayerInfo@ > (team.spawns[i]);
 
 				UpdateSpawnTime(info, i);
 
@@ -107,7 +107,7 @@ shared class CTFSpawns : RespawnSystem
 		}
 	}
 
-	void UpdateSpawnTime(CTFPlayerInfo@ info, int i)
+	void UpdateSpawnTime(GruhshaPlayerInfo@ info, int i)
 	{
 		if (info !is null)
 		{
@@ -120,10 +120,10 @@ shared class CTFSpawns : RespawnSystem
 				spawn_property = u8(Maths::Min(250, ((info.can_spawn_time + getTicksASecond() - 5) / getTicksASecond())));
 			}
 
-			string propname = "ctf spawn time " + info.username;
+			string propname = "gruhsha spawn time " + info.username;
 
-			CTF_core.rules.set_u8(propname, spawn_property);
-			CTF_core.rules.SyncToPlayer(propname, getPlayerByUsername(info.username));
+			Gruhsha_core.rules.set_u8(propname, spawn_property);
+			Gruhsha_core.rules.SyncToPlayer(propname, getPlayerByUsername(info.username));
 		}
 
 	}
@@ -198,9 +198,9 @@ shared class CTFSpawns : RespawnSystem
 
 	bool canSpawnPlayer(PlayerInfo@ p_info)
 	{
-		CTFPlayerInfo@ info = cast < CTFPlayerInfo@ > (p_info);
+		GruhshaPlayerInfo@ info = cast < GruhshaPlayerInfo@ > (p_info);
 
-		if (info is null) { warn("CTF LOGIC: Couldn't get player info ( in bool canSpawnPlayer(PlayerInfo@ p_info) ) "); return false; }
+		if (info is null) { warn("Gruhsha LOGIC: Couldn't get player info ( in bool canSpawnPlayer(PlayerInfo@ p_info) ) "); return false; }
 
 		if (force) { return true; }
 
@@ -209,8 +209,10 @@ shared class CTFSpawns : RespawnSystem
 
 	Vec2f getSpawnLocation(PlayerInfo@ p_info)
 	{
-		CTFPlayerInfo@ c_info = cast < CTFPlayerInfo@ > (p_info);
-		if (getRules().get_string("internal_game_mode") != "tavern") {
+		CRules@ rules = getRules();
+
+		GruhshaPlayerInfo@ c_info = cast < GruhshaPlayerInfo@ > (p_info);
+		if (InternalGamemode(rules) != "tavern") {
 			return SpawnLocationGeneric(p_info);
 		} else {
 			return SpawnLocationTDM(p_info);
@@ -225,7 +227,7 @@ shared class CTFSpawns : RespawnSystem
 	//	gamemodes, where we dont overriding spawn locations!!!
 	//////////////////////////////////////////////////////////
 	Vec2f SpawnLocationGeneric(PlayerInfo@ p_info) {
-		CTFPlayerInfo@ c_info = cast < CTFPlayerInfo@ > (p_info);
+		GruhshaPlayerInfo@ c_info = cast < GruhshaPlayerInfo@ > (p_info);
 		if (c_info !is null)
 		{
 			CBlob@ pickSpawn = getBlobByNetworkID(c_info.spawn_point);
@@ -283,7 +285,7 @@ shared class CTFSpawns : RespawnSystem
 
 	CBlob@ getSpawnBlob(PlayerInfo@ p_info)
 	{
-		CTFPlayerInfo@ c_info = cast < CTFPlayerInfo@ > (p_info);
+		GruhshaPlayerInfo@ c_info = cast < GruhshaPlayerInfo@ > (p_info);
 		if (c_info !is null) {
 			CBlob@ pickSpawn = getBlobByNetworkID(c_info.spawn_point);
 			if (pickSpawn !is null &&
@@ -314,14 +316,14 @@ shared class CTFSpawns : RespawnSystem
 
 	void RemovePlayerFromSpawn(PlayerInfo@ p_info)
 	{
-		CTFPlayerInfo@ info = cast < CTFPlayerInfo@ > (p_info);
+		GruhshaPlayerInfo@ info = cast < GruhshaPlayerInfo@ > (p_info);
 
-		if (info is null) { warn("CTF LOGIC: Couldn't get player info ( in void RemovePlayerFromSpawn(PlayerInfo@ p_info) )"); return; }
+		if (info is null) { warn("Gruhsha LOGIC: Couldn't get player info ( in void RemovePlayerFromSpawn(PlayerInfo@ p_info) )"); return; }
 
-		string propname = "ctf spawn time " + info.username;
+		string propname = "gruhsha spawn time " + info.username;
 
-		for (uint i = 0; i < CTF_core.teams.length; i++) {
-			CTFTeamInfo@ team = cast < CTFTeamInfo@ > (CTF_core.teams[i]);
+		for (uint i = 0; i < Gruhsha_core.teams.length; i++) {
+			GruhshaTeamInfo@ team = cast < GruhshaTeamInfo@ > (Gruhsha_core.teams[i]);
 			int pos = team.spawns.find(info);
 
 			if (pos != -1) {
@@ -330,8 +332,8 @@ shared class CTFSpawns : RespawnSystem
 			}
 		}
 
-		CTF_core.rules.set_u8(propname, 255);   //not respawning
-		CTF_core.rules.SyncToPlayer(propname, getPlayerByUsername(info.username));
+		Gruhsha_core.rules.set_u8(propname, 255);   //not respawning
+		Gruhsha_core.rules.SyncToPlayer(propname, getPlayerByUsername(info.username));
 
 		//DONT set this zero - we can re-use it if we didn't actually spawn
 		//info.can_spawn_time = 0;
@@ -355,9 +357,9 @@ shared class CTFSpawns : RespawnSystem
 			}
 		}
 
-		CTFPlayerInfo@ info = cast < CTFPlayerInfo@ > (core.getInfoFromPlayer(player));
+		GruhshaPlayerInfo@ info = cast < GruhshaPlayerInfo@ > (core.getInfoFromPlayer(player));
 
-		if (info is null) { warn("CTF LOGIC: Couldn't get player info  ( in void AddPlayerToSpawn(CPlayer@ player) )"); return; }
+		if (info is null) { warn("Gruhsha LOGIC: Couldn't get player info  ( in void AddPlayerToSpawn(CPlayer@ player) )"); return; }
 
 		//clamp it so old bad values don't get propagated
 		s32 old_spawn_time = Maths::Max(0, Maths::Min(info.can_spawn_time, tickspawndelay));
@@ -366,24 +368,24 @@ shared class CTFSpawns : RespawnSystem
 		if (player.getTeamNum() == core.rules.getSpectatorTeamNum())
 			return;
 
-		if (info.team < CTF_core.teams.length) {
-			CTFTeamInfo@ team = cast < CTFTeamInfo@ > (CTF_core.teams[info.team]);
+		if (info.team < Gruhsha_core.teams.length) {
+			GruhshaTeamInfo@ team = cast < GruhshaTeamInfo@ > (Gruhsha_core.teams[info.team]);
 
 			info.can_spawn_time = ((old_spawn_time > 30) ? old_spawn_time : tickspawndelay);
 
 			info.spawn_point = player.getSpawnPoint();
 			team.spawns.push_back(info);
 		} else {
-			error("PLAYER TEAM NOT SET CORRECTLY! " + info.team + " / " + CTF_core.teams.length + " for player " + player.getUsername());
+			error("PLAYER TEAM NOT SET CORRECTLY! " + info.team + " / " + Gruhsha_core.teams.length + " for player " + player.getUsername());
 		}
 	}
 
 	bool isSpawning(CPlayer@ player)
 	{
-		CTFPlayerInfo@ info = cast < CTFPlayerInfo@ > (core.getInfoFromPlayer(player));
-		for (uint i = 0; i < CTF_core.teams.length; i++)
+		GruhshaPlayerInfo@ info = cast < GruhshaPlayerInfo@ > (core.getInfoFromPlayer(player));
+		for (uint i = 0; i < Gruhsha_core.teams.length; i++)
 		{
-			CTFTeamInfo@ team = cast < CTFTeamInfo@ > (CTF_core.teams[i]);
+			GruhshaTeamInfo@ team = cast < GruhshaTeamInfo@ > (Gruhsha_core.teams[i]);
 			int pos = team.spawns.find(info);
 
 			if (pos != -1)
@@ -396,7 +398,7 @@ shared class CTFSpawns : RespawnSystem
 
 };
 
-shared class CTFCore : RulesCore
+shared class GruhshaCore : RulesCore
 {
 	s32 warmUpTime;
 	s32 gameDuration;
@@ -413,11 +415,11 @@ shared class CTFCore : RulesCore
 	s32 players_in_small_team;
 	bool scramble_teams;
 
-	CTFSpawns@ ctf_spawns;
+	GruhshaSpawns@ gruhsha_spawns;
 
-	CTFCore() {}
+	GruhshaCore() {}
 
-	CTFCore(CRules@ _rules, RespawnSystem@ _respawns)
+	GruhshaCore(CRules@ _rules, RespawnSystem@ _respawns)
 	{
 		spawnTime = 0;
 		stalemateOutcomeTime = 6; //seconds
@@ -430,7 +432,7 @@ shared class CTFCore : RulesCore
 	{
 		RulesCore::Setup(_rules, _respawns);
 		gamestart = getGameTime();
-		@ctf_spawns = cast < CTFSpawns@ > (_respawns);
+		@gruhsha_spawns = cast < GruhshaSpawns@ > (_respawns);
 		_rules.set_string("music - base name", base_name());
 		server_CreateBlob("ctf_music");
 		// HACK: spawn special blob for sudden death sound
@@ -452,7 +454,7 @@ shared class CTFCore : RulesCore
 		if (rules.isGameOver()) { return; }
 
 		s32 ticksToStart = gamestart + warmUpTime - getGameTime();
-		ctf_spawns.force = false;
+		gruhsha_spawns.force = false;
 
 		// Change player classes to knight explicity
 		if (ticksToStart <= 5 * 30 && rules.getCurrentState() != GAME)
@@ -497,7 +499,7 @@ shared class CTFCore : RulesCore
 		{
 			rules.SetGlobalMessage("Match starts in {SEC}");
 			rules.AddGlobalMessageReplacement("SEC", "" + ((ticksToStart / 30) + 1));
-			ctf_spawns.force = true;
+			gruhsha_spawns.force = true;
 
 			//set kills and cache #players in smaller team
 			if (InternalGamemode(rules) == "tavern") {
@@ -505,7 +507,7 @@ shared class CTFCore : RulesCore
 					players_in_small_team = 100;
 
 					for (uint team_num = 0; team_num < teams.length; ++team_num) {
-						CTFTeamInfo@ team = cast < CTFTeamInfo@ > (teams[team_num]);
+						GruhshaTeamInfo@ team = cast < GruhshaTeamInfo@ > (teams[team_num]);
 
 						if (team.players_count < players_in_small_team) {
 							players_in_small_team = team.players_count;
@@ -522,7 +524,7 @@ shared class CTFCore : RulesCore
 			gamestart = getGameTime();
 			rules.set_u32("game_end_time", gamestart + gameDuration);
 			rules.SetGlobalMessage("Not enough players in each team for the game to start.\nPlease wait for someone to join...");
-			ctf_spawns.force = true;
+			gruhsha_spawns.force = true;
 		}
 		else if (rules.isMatchRunning())
 		{
@@ -555,7 +557,7 @@ shared class CTFCore : RulesCore
 		for (uint team_num = 0; team_num < teams.length; ++team_num)
 		{
 			TAVERN_HUD hud;
-			CTFTeamInfo@ team = cast < CTFTeamInfo@ > (teams[team_num]);
+			GruhshaTeamInfo@ team = cast < GruhshaTeamInfo@ > (teams[team_num]);
 			hud.team_num = team_num;
 			hud.kills = team.kills;
 			hud.kills_limit = -1;
@@ -571,7 +573,7 @@ shared class CTFCore : RulesCore
 
 			for (uint player_num = 0; player_num < players.length; ++player_num)
 			{
-				CTFPlayerInfo@ player = cast < CTFPlayerInfo@ > (players[player_num]);
+				GruhshaPlayerInfo@ player = cast < GruhshaPlayerInfo@ > (players[player_num]);
 
 				if (player.team == team_num)
 				{
@@ -606,7 +608,7 @@ shared class CTFCore : RulesCore
 			bool set_spawn_time = false;
 			if (team.spawns.length > 0 && !rules.isIntermission())
 			{
-				u32 st = cast < CTFPlayerInfo@ > (team.spawns[0]).can_spawn_time;
+				u32 st = cast < GruhshaPlayerInfo@ > (team.spawns[0]).can_spawn_time;
 				if (st < 200)
 				{
 					hud.spawn_time = (st / 30);
@@ -643,7 +645,7 @@ shared class CTFCore : RulesCore
 
 	void AddTeam(CTeam@ team)
 	{
-		CTFTeamInfo t(teams.length, team.getName());
+		GruhshaTeamInfo t(teams.length, team.getName());
 		teams.push_back(t);
 	}
 
@@ -657,7 +659,7 @@ shared class CTFCore : RulesCore
 		{
 			team = player.getTeamNum();
 		}
-		CTFPlayerInfo p(player.getUsername(), team, "knight");
+		GruhshaPlayerInfo p(player.getUsername(), team, "knight");
 		players.push_back(p);
 		ChangeTeamPlayerCount(p.team, 1);
 	}
@@ -684,7 +686,7 @@ shared class CTFCore : RulesCore
 		}
 	}
 
-	//setup the CTF bases
+	//setup the Gruhsha bases
 
 	void SetupBase(CBlob@ base)
 	{
@@ -723,7 +725,7 @@ shared class CTFCore : RulesCore
 
 			if (!getMap().getMarker("blue main spawn", respawnPos))
 			{
-				warn("CTF: Blue spawn added");
+				warn("Gruhsha: Blue spawn added");
 				respawnPos = Vec2f(auto_distance_from_edge_tents, map.getLandYAtX(auto_distance_from_edge_tents / map.tilesize) * map.tilesize - 16.0f);
 			}
 
@@ -737,7 +739,7 @@ shared class CTFCore : RulesCore
 
 			if (!getMap().getMarker("red main spawn", respawnPos))
 			{
-				warn("CTF: Red spawn added");
+				warn("Gruhsha: Red spawn added");
 				respawnPos = Vec2f(map.tilemapwidth * map.tilesize - auto_distance_from_edge_tents, map.getLandYAtX(map.tilemapwidth - (auto_distance_from_edge_tents / map.tilesize)) * map.tilesize - 16.0f);
 			}
 
@@ -756,7 +758,7 @@ shared class CTFCore : RulesCore
 
 			f32 auto_distance_from_edge = Maths::Min(map.tilemapwidth * 0.25f * 8.0f, 400.0f);
 
-			// set flags for CTF gamemode, but disable them, if we playing in TDM
+			// set flags for Gruhsha gamemode, but disable them, if we playing in TDM
 			if (InternalGamemode(rules) != "tavern") {
 				//blue flags
 				if (getMap().getMarkers("blue spawn", flagPlaces))
@@ -770,7 +772,7 @@ shared class CTFCore : RulesCore
 				}
 				else
 				{
-					warn("CTF: Blue flag added");
+					warn("Gruhsha: Blue flag added");
 					f32 x = auto_distance_from_edge;
 					respawnPos = Vec2f(x, (map.getLandYAtX(x / map.tilesize) - 2) * map.tilesize);
 					server_CreateBlob(flag_spawn_name(), 0, respawnPos);
@@ -788,7 +790,7 @@ shared class CTFCore : RulesCore
 				}
 				else
 				{
-					warn("CTF: Red flag added");
+					warn("Gruhsha: Red flag added");
 					f32 x = (map.tilemapwidth-1) * map.tilesize - auto_distance_from_edge;
 					respawnPos = Vec2f(x, (map.getLandYAtX(x / map.tilesize) - 2) * map.tilesize);
 					server_CreateBlob(flag_spawn_name(), 1, respawnPos);
@@ -797,7 +799,7 @@ shared class CTFCore : RulesCore
 		}
 		else
 		{
-			warn("CTF: map loading failure");
+			warn("Gruhsha: map loading failure");
 			for(int i = 0; i < 2; i++)
 			{
 				SetupBase(server_CreateBlob(base_name(), i, Vec2f(0,0)));
@@ -813,7 +815,7 @@ shared class CTFCore : RulesCore
 		if (!rules.isMatchRunning()) { return; }
 
 		int winteamIndex = -1;
-		CTFTeamInfo@ winteam = null;
+		GruhshaTeamInfo@ winteam = null;
 		s8 team_wins_on_end = -1;
 
 		// get all the flags
@@ -831,7 +833,7 @@ shared class CTFCore : RulesCore
 		}
 
 		for (uint team_num = 0; team_num < teams.length; ++team_num) {
-			CTFTeamInfo@ team = cast < CTFTeamInfo@ > (teams[team_num]);
+			GruhshaTeamInfo@ team = cast < GruhshaTeamInfo@ > (teams[team_num]);
 
 			bool win = true;
 
@@ -888,12 +890,12 @@ shared class CTFCore : RulesCore
 		if (!rules.isMatchRunning()) { return; }
 
 		int winteamIndex = -1;
-		CTFTeamInfo@ winteam = null;
+		GruhshaTeamInfo@ winteam = null;
 		s8 team_wins_on_end = -1;
 
 		int highkills = 0;
 		for (uint team_num = 0; team_num < teams.length; ++team_num) {
-			CTFTeamInfo@ team = cast < CTFTeamInfo@ > (teams[team_num]);
+			GruhshaTeamInfo@ team = cast < GruhshaTeamInfo@ > (teams[team_num]);
 
 			if (team.kills > highkills) {
 				highkills = team.kills;
@@ -1010,10 +1012,10 @@ shared class CTFCore : RulesCore
 	{
 		if (team >= 0 && team < int(teams.length))
 		{
-			CTFTeamInfo@ team_info = cast < CTFTeamInfo@ > (teams[team]);
+			GruhshaTeamInfo@ team_info = cast < GruhshaTeamInfo@ > (teams[team]);
 
 			// increase kills count in team info, while it TDM
-			if (rules.get_string("internal_game_mode") == "tavern")
+			if (InternalGamemode(rules) == "tavern")
 				team_info.kills++;
 		}
 	}
@@ -1060,8 +1062,8 @@ void Reset(CRules@ this)
     this.Sync("ctf_serialized_team_hud", true);
 
 	printf("Restarting rules script: " + getCurrentScriptName());
-	CTFSpawns spawns();
-	CTFCore core(this, spawns);
+	GruhshaSpawns spawns();
+	GruhshaCore core(this, spawns);
 	Config(core);
 	core.SetupBases();
 	this.set("core", @core);

@@ -81,7 +81,7 @@ void onBlobDie( CRules@ this, CBlob@ blob )
     if(!getNet().isServer())
         return;
 
-	if (this.get_string("internal_game_mode") != "tavern") {
+	if (InternalGamemode(this) != "tavern") {
     	if(blob.getName() == "ctf_flag")
     	{
         	UIData@ ui;
@@ -131,7 +131,7 @@ void onRender(CRules@ this)
 				const string gui_image_fname = "Rules/CTF/CTFGui.png";
 
 				while (!serialised_team_hud.isBufferEnd()) {
-					CTF_HUD hud(serialised_team_hud);
+					Gruhsha_HUD hud(serialised_team_hud);
 					Vec2f topLeft = Vec2f(8, 80 + 64 * hud.team_num);
 
 					int step = 0;
@@ -166,7 +166,7 @@ void onRender(CRules@ this)
 			serialised_team_hud.Reset();
 		}
 
-		string propname = "ctf spawn time " + p.getUsername();
+		string propname = "gruhsha spawn time " + p.getUsername();
 		if (p.getBlob() is null && this.exists(propname)) {
 			u8 spawn = this.get_u8(propname);
 
@@ -298,16 +298,20 @@ void onRender(CRules@ this)
 		GUI::SetFont("hud");
 		string current_gaemmode;
 		
-		if (this.get_string("internal_game_mode") == "gruhsha")
+		if (InternalGamemode(this) == "gruhsha")
 			current_gaemmode = "CTF";
 		else
 			current_gaemmode = "TDM";
 		
-		GUI::DrawText("Current gamemode is " + current_gaemmode + " (internal name: " + this.get_string("internal_game_mode") + ")", Vec2f(320, 5), SColor(255, 255, 255, 255));
+		GUI::DrawText("Current gamemode is " + current_gaemmode + " (internal name: " + InternalGamemode(this) + ")", Vec2f(320, 5), SColor(255, 255, 255, 255));
 	}
 }
 
 void onNewPlayerJoin( CRules@ this, CPlayer@ player )
 {
-	this.SyncToPlayer("ctf_serialised_team_hud", player);
+	if (InternalGamemode(this) != "tavern") {
+		this.SyncToPlayer("ctf_serialised_team_hud", player);
+	} else {
+		this.SyncToPlayer("tavern_serialised_team_hud", player);
+	}
 }

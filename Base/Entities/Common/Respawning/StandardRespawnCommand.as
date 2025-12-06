@@ -11,7 +11,7 @@
 
 #include "ClassSelectMenu.as"
 #include "KnockedCommon.as"
-
+#include "Gruhsha_Gamemodes.as";
 
 bool canChangeClass(CBlob@ this, CBlob@ blob)
 {
@@ -126,7 +126,7 @@ void onRespawnCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		// CLASS LIMIT CODE BLOCK
 
 		// Limit classes, if game started
-		if (rules.get_string("internal_game_mode") != "tavern") {
+		if (InternalGamemode(rules) != "tavern") {
 			if (classconfig == "archer") {
 				if (P_Archers >= archers_limit) {
 					return;

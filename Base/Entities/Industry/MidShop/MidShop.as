@@ -6,6 +6,7 @@
 #include "Costs.as"
 #include "CheckSpam.as"
 #include "TeamIconToken.as"
+#include "Gruhsha_Gamemodes.as";
 
 void onInit(CBlob@ this)
 {
@@ -32,8 +33,10 @@ void onInit(CBlob@ this)
 	AddIconToken("$mat_blockarrows$", "Materials.png", Vec2f(16, 16), 33);
 	AddIconToken("$quarters_pear$", "Pear_Quarters.png", Vec2f(24, 24), 0);
 
+	CRules@ rules = getRules();
+
 	int team_num = this.getTeamNum();
-	if (getRules().get_string("internal_game_mode") != "tavern") {
+	if (InternalGamemode(rules) != "tavern") {
 		{
 			ShopItem@ s = addShopItem(this, "Bomb", "$bomb$", "mat_bombs", Descriptions::bomb, true);
 			AddRequirement(s.requirements, "coin", "", "Coins", 15);

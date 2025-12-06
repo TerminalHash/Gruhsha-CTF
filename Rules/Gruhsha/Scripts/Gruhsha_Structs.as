@@ -64,7 +64,7 @@ shared class UIData
     
 };
 
-shared class CTFPlayerInfo : PlayerInfo
+shared class GruhshaPlayerInfo : PlayerInfo
 {
 	u32 can_spawn_time;
 
@@ -74,8 +74,8 @@ shared class CTFPlayerInfo : PlayerInfo
 
 	u32 items_collected;
 
-	CTFPlayerInfo() { Setup("", 0, ""); }
-	CTFPlayerInfo(string _name, u8 _team, string _default_config) { Setup(_name, _team, _default_config); }
+	GruhshaPlayerInfo() { Setup("", 0, ""); }
+	GruhshaPlayerInfo(string _name, u8 _team, string _default_config) { Setup(_name, _team, _default_config); }
 
 	void Setup(string _name, u8 _team, string _default_config)
 	{
@@ -90,14 +90,14 @@ shared class CTFPlayerInfo : PlayerInfo
 
 //teams
 
-shared class CTFTeamInfo : BaseTeamInfo
+shared class GruhshaTeamInfo : BaseTeamInfo
 {
 	PlayerInfo@[] spawns;
 	int kills;
 
-	CTFTeamInfo() { super(); }
+	GruhshaTeamInfo() { super(); }
 
-	CTFTeamInfo(u8 _index, string _name)
+	GruhshaTeamInfo(u8 _index, string _name)
 	{
 		super(_index, _name);
 	}
@@ -112,15 +112,15 @@ shared class CTFTeamInfo : BaseTeamInfo
 
 //how each team is serialised
 
-shared class CTF_HUD
+shared class Gruhsha_HUD
 {
 	//is this our team?
 	u8 team_num;
 	//easy serial
 	string flag_pattern;
 
-	CTF_HUD() { }
-	CTF_HUD(CBitStream@ bt) { Unserialise(bt); }
+	Gruhsha_HUD() { }
+	Gruhsha_HUD(CBitStream@ bt) { Unserialise(bt); }
 
 	void Serialise(CBitStream@ bt)
 	{
