@@ -100,11 +100,7 @@ void onRender(CSprite@ this)
 	u32 offset = (shouldRenderResupplyIndicator(blob) ? 80 : 40);
 	u32 width_offset = (shouldRenderResupplyIndicator(blob) ? 1 * 40.0f : 0);
 
-	const int coins = player !is null ? player.getCoins() : 0;
-	u32 coin_offset = blob.getConfig() == "builder" ? 40 : 0;
-	u32 coin_width_offset = blob.getConfig() == "builder" ? 1 * 40.0f : 0;
-
-	renderFrontStone(ul + Vec2f(dim.x + offset + coin_offset, 0), width + width_offset + coin_width_offset, 1.0f);
+	renderFrontStone(ul + Vec2f(dim.x + offset, 0), width + width_offset, 1.0f);
 	renderHPBar(blob, ul);
 
 	//GUI::DrawIcon("Entities/Common/GUI/BaseGUI.png", 0, Vec2f(128,32), topLeft);
