@@ -497,7 +497,7 @@ void BuildShopMenu(CBlob@ this, CBlob @caller, string description, Vec2f offset,
 			params.write_u8(i);
 			params.write_bool(true); //used hotkey?
 
-			if (this.getName() == "building") {
+			if (this.getName() == "building" || this.getConfig() == "midshop") {
 				menu.AddKeyCommand(numKeys[i], this.getCommandID("shop buy"), params);
 			}
 		}
