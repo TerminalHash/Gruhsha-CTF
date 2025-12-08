@@ -606,17 +606,15 @@ shared class GruhshaCore : RulesCore
 			hud.unit_pattern = temp;
 
 			bool set_spawn_time = false;
-			if (team.spawns.length > 0 && !rules.isIntermission())
-			{
+			if (team.spawns.length > 0 && !rules.isIntermission()) {
 				u32 st = cast < GruhshaPlayerInfo@ > (team.spawns[0]).can_spawn_time;
-				if (st < 200)
-				{
+				if (st < 200) {
 					hud.spawn_time = (st / 30);
 					set_spawn_time = true;
 				}
 			}
-			if (!set_spawn_time)
-			{
+
+			if (!set_spawn_time) {
 				hud.spawn_time = 255;
 			}
 
@@ -628,12 +626,9 @@ shared class GruhshaCore : RulesCore
 	}
 
 	//HELPERS
-	bool allTeamsHavePlayers()
-	{
-		for (uint i = 0; i < teams.length; i++)
-		{
-			if (teams[i].players_count < minimum_players_in_team)
-			{
+	bool allTeamsHavePlayers() {
+		for (uint i = 0; i < teams.length; i++) {
+			if (teams[i].players_count < minimum_players_in_team) {
 				return false;
 			}
 		}
@@ -643,42 +638,34 @@ shared class GruhshaCore : RulesCore
 
 	//team stuff
 
-	void AddTeam(CTeam@ team)
-	{
+	void AddTeam(CTeam@ team) {
 		GruhshaTeamInfo t(teams.length, team.getName());
 		teams.push_back(t);
 	}
 
-	void AddPlayer(CPlayer@ player, u8 team = 0, string default_config = "")
-	{
-		if (getRules().hasTag("singleplayer"))
-		{
+	void AddPlayer(CPlayer@ player, u8 team = 0, string default_config = "") {
+		if (getRules().hasTag("singleplayer")) {
 			team = 0;
-		}
-		else
-		{
+		} else {
 			team = player.getTeamNum();
 		}
+
 		GruhshaPlayerInfo p(player.getUsername(), team, "knight");
 		players.push_back(p);
 		ChangeTeamPlayerCount(p.team, 1);
 	}
 
-	void onPlayerDie(CPlayer@ victim, CPlayer@ killer, u8 customData)
-	{
+	void onPlayerDie(CPlayer@ victim, CPlayer@ killer, u8 customData) {
 		if (!rules.isMatchRunning()) { return; }
 
-		if (victim !is null)
-		{
-			if (killer !is null && killer.getTeamNum() != victim.getTeamNum())
-			{
+		if (victim !is null) {
+			if (killer !is null && killer.getTeamNum() != victim.getTeamNum()) {
 				addKill(killer.getTeamNum());
 			}
 		}
 	}
 
-	void onSetPlayer(CBlob@ blob, CPlayer@ player)
-	{
+	void onSetPlayer(CBlob@ blob, CPlayer@ player) {
 		if (blob !is null && player !is null) {
 			if (InternalGamemode(rules) == "tavern") {
 				GiveSpawnResources(blob, player);
@@ -688,18 +675,15 @@ shared class GruhshaCore : RulesCore
 
 	//setup the Gruhsha bases
 
-	void SetupBase(CBlob@ base)
-	{
-		if (base is null)
-		{
+	void SetupBase(CBlob@ base) {
+		if (base is null) {
 			return;
 		}
 
 		//nothing to do
 	}
 
-	void SetupBases()
-	{
+	void SetupBases() {
 		// destroy all previous spawns if present
 		CBlob@[] oldBases;
 
@@ -709,15 +693,13 @@ shared class GruhshaCore : RulesCore
 			getBlobsByName(base_name_tavern(), @oldBases);
 		}
 
-		for (uint i = 0; i < oldBases.length; i++)
-		{
+		for (uint i = 0; i < oldBases.length; i++) {
 			oldBases[i].server_Die();
 		}
 
 		CMap@ map = getMap();
 
-		if (map !is null && map.tilemapwidth != 0)
-		{
+		if (map !is null && map.tilemapwidth != 0) {
 			//spawn the spawns :D
 			Vec2f respawnPos;
 
@@ -761,17 +743,13 @@ shared class GruhshaCore : RulesCore
 			// set flags for Gruhsha gamemode, but disable them, if we playing in TDM
 			if (InternalGamemode(rules) != "tavern") {
 				//blue flags
-				if (getMap().getMarkers("blue spawn", flagPlaces))
-				{
-					for (uint i = 0; i < flagPlaces.length; i++)
-					{
+				if (getMap().getMarkers("blue spawn", flagPlaces)) {
+					for (uint i = 0; i < flagPlaces.length; i++) {
 						server_CreateBlob(flag_spawn_name(), 0, flagPlaces[i] + Vec2f(0, map.tilesize));
 					}
 
 					flagPlaces.clear();
-				}
-				else
-				{
+				} else {
 					warn("Gruhsha: Blue flag added");
 					f32 x = auto_distance_from_edge;
 					respawnPos = Vec2f(x, (map.getLandYAtX(x / map.tilesize) - 2) * map.tilesize);
@@ -779,29 +757,22 @@ shared class GruhshaCore : RulesCore
 				}
 
 				//red flags
-				if (getMap().getMarkers("red spawn", flagPlaces))
-				{
-					for (uint i = 0; i < flagPlaces.length; i++)
-					{
+				if (getMap().getMarkers("red spawn", flagPlaces)) {
+					for (uint i = 0; i < flagPlaces.length; i++) {
 						server_CreateBlob(flag_spawn_name(), 1, flagPlaces[i] + Vec2f(0, map.tilesize));
 					}
 
 					flagPlaces.clear();
-				}
-				else
-				{
+				} else {
 					warn("Gruhsha: Red flag added");
 					f32 x = (map.tilemapwidth-1) * map.tilesize - auto_distance_from_edge;
 					respawnPos = Vec2f(x, (map.getLandYAtX(x / map.tilesize) - 2) * map.tilesize);
 					server_CreateBlob(flag_spawn_name(), 1, respawnPos);
 				}
 			}
-		}
-		else
-		{
+		} else {
 			warn("Gruhsha: map loading failure");
-			for(int i = 0; i < 2; i++)
-			{
+			for(int i = 0; i < 2; i++) {
 				SetupBase(server_CreateBlob(base_name(), i, Vec2f(0,0)));
 				server_CreateBlob(flag_spawn_name(), i, Vec2f(0,0));
 			}
@@ -861,18 +832,14 @@ shared class GruhshaCore : RulesCore
 
 		rules.set_s8("team_wins_on_end", team_wins_on_end);
 
-		if (winteamIndex >= 0)
-		{
+		if (winteamIndex >= 0) {
 			// add winning team coins
-			if (rules.isMatchRunning())
-			{
+			if (rules.isMatchRunning()) {
 				CBlob@[] players;
 				getBlobsByTag("player", @players);
-				for (uint i = 0; i < players.length; i++)
-				{
+				for (uint i = 0; i < players.length; i++) {
 					CPlayer@ player = players[i].getPlayer();
-					if (player !is null && players[i].getTeamNum() == winteamIndex)
-					{
+					if (player !is null && players[i].getTeamNum() == winteamIndex) {
 						player.server_setCoins(player.getCoins() + 150);
 					}
 				}
@@ -885,8 +852,7 @@ shared class GruhshaCore : RulesCore
 		}
 	}
 
-	void CheckTeamWonTDM()
-	{
+	void CheckTeamWonTDM() {
 		if (!rules.isMatchRunning()) { return; }
 
 		int winteamIndex = -1;
@@ -933,8 +899,7 @@ shared class GruhshaCore : RulesCore
 		}
 	}
 
-	void CheckStalemate()
-	{
+	void CheckStalemate() {
 		//Stalemate code courtesy of Pirate-Rob
 
 		//cant stalemate outside of match time
@@ -949,37 +914,28 @@ shared class GruhshaCore : RulesCore
 
 		//figure out if there's currently a stalemate condition
 		bool stalemate = true;
-		for (uint i = 0; i < flags.length; i++)
-		{
+		for (uint i = 0; i < flags.length; i++) {
 			CBlob@ flag = flags[i];
 			CBlob@ holder = flag.getAttachments().getAttachmentPointByName("FLAG").getOccupied();
 			//If any flag is held by an ally (ie the flag base), no stalemate
-			if (holder !is null && holder.getTeamNum() == flag.getTeamNum())
-			{
+			if (holder !is null && holder.getTeamNum() == flag.getTeamNum()) {
 				stalemate = false;
 				break;
 			}
 		}
 
-		if(stalemate)
-		{
-			if(!rules.exists("stalemate_breaker"))
-			{
+		if (stalemate) {
+			if(!rules.exists("stalemate_breaker")) {
 				rules.set_s16("stalemate_breaker", stalemateTime);
-			}
-			else
-			{
+			} else {
 				rules.sub_s16("stalemate_breaker", 1);
 			}
 
 			int stalemate_seconds_remaining = Maths::Ceil(rules.get_s16("stalemate_breaker") / 30.0f);
-			if(stalemate_seconds_remaining > 0)
-			{
+			if(stalemate_seconds_remaining > 0) {
 				rules.SetGlobalMessage("Stalemate: both teams have no uncaptured flags.\nFlags returning in: {TIME}");
 				rules.AddGlobalMessageReplacement("TIME", ""+stalemate_seconds_remaining);
-			}
-			else
-			{
+			} else {
 				rules.set_s16("stalemate_breaker", -(stalemateOutcomeTime * 30));
 
 				//flags tagged serverside for return
@@ -989,17 +945,12 @@ shared class GruhshaCore : RulesCore
 					flag.Tag("stalemate_return");
 				}
 			}
-		}
-		else
-		{
+		} else {
 			int stalemate_timer = rules.get_s16("stalemate_breaker");
-			if(stalemate_timer > -10 && stalemate_timer != stalemateTime)
-			{
+			if(stalemate_timer > -10 && stalemate_timer != stalemateTime) {
 				rules.SetGlobalMessage("");
 				rules.set_s16("stalemate_breaker", stalemateTime);
-			}
-			else if(stalemate_timer <= -10)
-			{
+			} else if(stalemate_timer <= -10) {
 				rules.SetGlobalMessage("Stalemate resolved: Flags returned.");
 				rules.add_s16("stalemate_breaker", 1);
 			}
@@ -1008,10 +959,8 @@ shared class GruhshaCore : RulesCore
 		rules.Sync("stalemate_breaker", true);
 	}
 
-	void addKill(int team)
-	{
-		if (team >= 0 && team < int(teams.length))
-		{
+	void addKill(int team) {
+		if (team >= 0 && team < int(teams.length)) {
 			GruhshaTeamInfo@ team_info = cast < GruhshaTeamInfo@ > (teams[team]);
 
 			// increase kills count in team info, while it TDM
@@ -1054,8 +1003,7 @@ shared class GruhshaCore : RulesCore
 
 //pass stuff to the core from each of the hooks
 
-void Reset(CRules@ this)
-{
+void Reset(CRules@ this) {
 	CBitStream stream;
 	stream.write_u16(0xDEAD); //check bits rewritten when theres something useful
 	this.set_CBitStream("ctf_serialised_team_hud", stream);
@@ -1085,35 +1033,30 @@ void Reset(CRules@ this)
 	}
 }
 
-void onRestart(CRules@ this)
-{
+void onRestart(CRules@ this) {
 	Reset(this);
 }
 
-void onInit(CRules@ this)
-{
+void onInit(CRules@ this) {
 	Reset(this);
 
 	const int restart_after = (!this.hasTag("tutorial") ? 30 : 5) * 30;
 	this.set_s32("restart_rules_after_game_time", restart_after);
 
-	// set internal gamemode as CTF by default
+	// set default gamemode on game initilization
 	if (!this.exists("previous_game_mode")) {
-		this.set_string("internal_game_mode", "gruhsha");
+		this.set_string("internal_game_mode", default_gamemode);
 		this.Sync("internal_game_mode", true);
 	}
 }
 
-void onStateChange(CRules@ this, const u8 oldState)
-{
-	if (this.getCurrentState() == GAME)
-	{
+void onStateChange(CRules@ this, const u8 oldState) {
+	if (this.getCurrentState() == GAME) {
 		CBlob@[] list;
 
 		getBlobsByName("building", @list);
 
-		for (int i=0; i<list.length; ++i)
-		{
+		for (int i=0; i<list.length; ++i) {
 			//printf("test");
 			list[i].SendCommand(list[i].getCommandID("reset menu"));
 		}
@@ -1126,23 +1069,18 @@ void onStateChange(CRules@ this, const u8 oldState)
 }
 
 // had to add it here for tutorial cause something didnt work in the tutorial script
-void onBlobDie(CRules@ this, CBlob@ blob)
-{
-	if (this.hasTag("tutorial"))
-	{
+void onBlobDie(CRules@ this, CBlob@ blob) {
+	if (this.hasTag("tutorial")) {
 		const string name = blob.getName();
-		if ((name == "archer" || name == "knight" || name == "chicken") && !blob.hasTag("dropped coins"))
-		{
+		if ((name == "archer" || name == "knight" || name == "chicken") && !blob.hasTag("dropped coins")) {
 			server_DropCoins(blob.getPosition(), XORRandom(15) + 5);
 			blob.Tag("dropped coins");
 		}
 	}
 }
 
-void onBlobCreated(CRules@ this, CBlob@ blob)
-{
-	if (blob.getName() == "mat_gold")
-	{
+void onBlobCreated(CRules@ this, CBlob@ blob) {
+	if (blob.getName() == "mat_gold") {
 		blob.RemoveScript("DecayQuantity.as");
 	}
 }
