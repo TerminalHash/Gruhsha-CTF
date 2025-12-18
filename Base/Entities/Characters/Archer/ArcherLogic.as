@@ -1038,7 +1038,7 @@ CBlob@ getPickupArrow(CBlob@ this)
 		for (uint i = 0; i < blobsInRadius.length; i++)
 		{
 			CBlob @b = blobsInRadius[i];
-			if (b.getName() == "arrow")
+			if (b.getName() == "arrow" && b.getShape().isStatic())
 			{
 				return b;
 			}
@@ -1355,19 +1355,13 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 
 		if (arrow !is null/* || spriteArrow*/)
 		{
-			if (arrow !is null)
-			{
-				ArcherInfo@ archer;
-				if (!this.get("archerInfo", @archer))
-				{
-					return;
-				}
-				const u8 arrowType = archer.arrow_type;
-				if (arrowType == ArrowType::bomb)
-				{
-					arrow.setPosition(this.getPosition());
-					return;
-				}
+			ArcherInfo@ archer;
+			if (!this.get("archerInfo", @archer)) { return; }
+
+			const u8 arrowType = archer.arrow_type;
+			if (arrowType == ArrowType::bomb) {
+				arrow.setPosition(this.getPosition());
+				return;
 			}
 
 			CBlob@ mat_arrows = server_CreateBlobNoInit('mat_arrows');
