@@ -7,6 +7,7 @@
 //#include "/Entities/Common/GUI/ActorHUDStartPos.as";
 //#include "MaterialTeamIndicatorHUD.as";
 #include "MaterialIndicatorHUD.as";
+#include "Gruhsha_Gamemodes.as";
 #include "BuffTracker.as";
 #include "pathway.as";
 
@@ -90,6 +91,8 @@ void onRender(CSprite@ this)
 
 	CBlob@ carried = blob.getCarriedBlob();
 
+	CRules@ rules = getRules();
+
 	// draw inventory
 
 	Vec2f tl = getActorHUDStartPosition(blob, slotsSize);
@@ -143,7 +146,7 @@ void onRender(CSprite@ this)
 	
 	u8 blocks_quantity = 11;
 	
-	if (getRules().get_string("internal_game_mode") == "tavern") {
+	if (InternalGamemode(rules) == "tavern") {
 		blocks_quantity = 2;
 	}
 

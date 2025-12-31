@@ -6,6 +6,8 @@
 */
 #define SERVER_ONLY
 
+#include "Gruhsha_Gamemodes.as";
+
 const int airdrop_interval = getTicksASecond() * 60 * 6; // 6 minutes
 const int crates_to_spawn = 1;
 
@@ -23,7 +25,7 @@ void onTick(CRules@ this) {
 		return;
 
 	// disable airdrop for tavern tdm
-	if (this.get_string("internal_game_mode") == "tavern") return;
+	if (InternalGamemode(this) == "tavern") return;
 
 	if (!this.exists("airdrop timer")) {
 		return;

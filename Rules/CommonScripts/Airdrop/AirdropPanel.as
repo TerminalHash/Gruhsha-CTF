@@ -1,6 +1,8 @@
 // AirdropPanel.as
 #define CLIENT_ONLY
 
+#include "Gruhsha_Gamemodes.as";
+
 void onRender(CRules@ this)
 {
 	if (g_videorecording)
@@ -8,7 +10,7 @@ void onRender(CRules@ this)
 
 	if (!this.isMatchRunning() || !this.exists("airdrop timer")) return;
 
-	if (this.get_string("internal_game_mode") == "tavern") return;
+	if (InternalGamemode(this) == "tavern") return;
 
 	s32 airdrop = this.get_s32("airdrop timer");
 

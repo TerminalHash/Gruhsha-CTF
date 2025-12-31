@@ -1,7 +1,7 @@
 // Flag logic
 
 #include "CTF_FlagCommon.as"
-#include "CTF_Structs.as"
+#include "Gruhsha_Structs.as"
 
 const u16 fast_return_speedup = 3;
 

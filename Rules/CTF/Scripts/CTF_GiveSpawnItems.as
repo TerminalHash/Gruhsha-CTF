@@ -1,7 +1,7 @@
 // spawn resources
 
 #include "RulesCore.as";
-#include "CTF_Structs.as";
+#include "Gruhsha_Structs.as";
 #include "CTF_Common.as"; // resupply stuff
 
 // Limit stuff

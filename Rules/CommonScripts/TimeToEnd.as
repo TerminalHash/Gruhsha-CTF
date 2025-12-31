@@ -4,6 +4,7 @@
 
 #include "TranslationsSystem.as"
 #include "ActorHUDStartPos.as"
+#include "Gruhsha_Gamemodes.as";
 
 void onInit(CRules@ this)
 {
@@ -114,7 +115,7 @@ void onRender(CRules@ this)
 	Vec2f timer_pos2 = Vec2f(227, 5);			// x coordinate
 
 	// change timer position for tavern tdm
-	if (this.get_string("internal_game_mode") == "tavern") {
+	if (InternalGamemode(this) == "tavern") {
 		timer_pos1 = Vec2f(10, 159);
 		timer_pos2 = Vec2f(120, 5);
 	}
@@ -131,7 +132,7 @@ void onRender(CRules@ this)
 	}
 
 	// Notification
-	if (end_in > 600 && end_in < 610 && this.get_string("internal_game_mode") != "tavern") {
+	if (end_in > 600 && end_in < 610 && InternalGamemode(this) != "tavern") {
 		Vec2f dim = Vec2f(342, 155);
 		Vec2f ul(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12);
 		Vec2f tl = ul + Vec2f(-10, -10);
@@ -152,7 +153,7 @@ void onRender(CRules@ this)
 	CControls@ controls = getControls();
 	Vec2f mousePos = controls.getMouseScreenPos();
 
-	if (this.hasTag("sudden death") && this.get_string("internal_game_mode") != "tavern") {
+	if (this.hasTag("sudden death") && InternalGamemode(this) != "tavern") {
 		GUI::DrawIcon("CTF_States.png", 2, Vec2f(32, 32), skull, 1.0f);
 
 		Vec2f dim = Vec2f(342, 295);

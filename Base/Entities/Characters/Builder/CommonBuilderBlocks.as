@@ -32,6 +32,7 @@
 #include "Requirements.as"
 #include "Costs.as"
 #include "TeamIconToken.as"
+#include "Gruhsha_Gamemodes.as";
 
 const string blocks_property = "blocks";
 const string inventory_offset = "inventory offset";
@@ -55,7 +56,7 @@ void addCommonBuilderBlocks(BuildBlock[][]@ blocks, int team_num = 0, const stri
 
 	BuildBlock[] page_0;
 	blocks.push_back(page_0);
-	if (rules.get_string("internal_game_mode") != "tavern") {
+	if (InternalGamemode(rules) != "tavern") {
 		{
 			BuildBlock b(CMap::tile_castle, "stone_block", "$stone_block$", "Stone Block\nBasic building block");
 			AddRequirement(b.reqs, "blob", "mat_stone", "Stone", BuilderCosts::stone_block);

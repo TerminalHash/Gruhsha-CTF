@@ -4,6 +4,7 @@
 #include "AssistCommon.as"
 #include "Hitters.as"
 #include "GruhshaHitters.as"
+#include "Gruhsha_Gamemodes.as";
 
 const int coinsOnDamageAdd = 6;
 const int coinsOnAssistAdd = 9;
@@ -81,7 +82,7 @@ void Reset(CRules@ this)
 	if (!isServer()) return;
 
 	// use internal keep coins bool for tavern tdm
-	if (this.get_string("internal_game_mode") == "tavern")
+	if (InternalGamemode(this) == "tavern")
 		keepCoinsOnRestart = true;
 	else
 		keepCoinsOnRestart = false;
