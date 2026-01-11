@@ -140,7 +140,12 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid, Vec2f normal, Vec2f point
 			f32 force_value = Maths::Max(6, velocity_old.Length()*force_modifier);
 			//printf("max vellen " + force_value);
 
-			blob.setVelocity(Vec2f(force_value,0).RotateBy(angle-90));
+			// use vanilla setVelocity formula when it's tdm
+			if (getRules().get_string("internal_game_mode") == "tavern") {
+				blob.setVelocity(velocity);
+			} else {
+				blob.setVelocity(Vec2f(force_value,0).RotateBy(angle-90));
+			}
 
 			/*if (isServer()) {
 				if (force_value >= 19) {
