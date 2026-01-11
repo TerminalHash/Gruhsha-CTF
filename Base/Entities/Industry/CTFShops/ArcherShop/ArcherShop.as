@@ -104,6 +104,8 @@ void onInit(CBlob@ this)
 	{
 		ShopItem@ s = addShopItem(this, "Portable Campfire", "$portablecampfire$", "portablecampfire", "Installation kit for a quick campfire placing", true);
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::campfire_coins);
+		AddRequirement(s.requirements, "no more", "fireplace", "Campfire", 1);
+		AddRequirement(s.requirements, "no more", "portablecampfire", "Portable Campfire", 1);
 	}
 }
 
