@@ -104,6 +104,15 @@ f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitt
 		}
 	}
 
+	// Blow up the keg immediately if it is hit by an fire or bomb arrow in TDM
+	if (getRules().get_string("internal_game_mode") == "tavern") {
+		if ((customData == Hitters::arrow && hitterBlob.get_u8("arrow type") == 2) || customData == Hitters::bomb_arrow) {
+			this.SetDamageOwnerPlayer(hitterBlob.getDamageOwnerPlayer());
+			server_Activate(this);
+			this.server_Die();
+		}
+	}
+
 	switch (customData)
 	{
 		case Hitters::sword:
