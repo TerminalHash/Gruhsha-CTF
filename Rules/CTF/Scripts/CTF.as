@@ -143,10 +143,11 @@ shared class CTFSpawns : RespawnSystem
 				p_info.team = 0;
 			}
 
-			// spawn as builder in warmup
-			if (getRules().isWarmup())
-			{
-				p_info.blob_name = "builder";
+			// spawn as builder in warmup when it's ctf
+			if (getRules().get_string("internal_game_mode") != "tavern") {
+				if (getRules().isWarmup()) {
+					p_info.blob_name = "builder";
+				}
 			}
 
 			CBlob@ spawnBlob = getSpawnBlob(p_info);
