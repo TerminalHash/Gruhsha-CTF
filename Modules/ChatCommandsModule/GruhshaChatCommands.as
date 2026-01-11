@@ -1,4 +1,9 @@
 #include "ChatCommandManager.as"
+#include "ClassCommands.as"
+#include "MatchCommands.as"
+#include "GruhshaCommands.as"
+#include "GruhshaMiscCommands.as"
+// main captains module script
 #include "PickingCommands.as"
 
 //command register order is not important
@@ -25,4 +30,7 @@ void RegisterGruhshaChatCommands(ChatCommandManager@ manager)
 	manager.RegisterCommand(SetInternalGamemode());
 	manager.RegisterCommand(RememberTime());
 	manager.RegisterCommand(ToggleTimeCycle());
+	manager.RegisterCommand(AddMatchTime());
+	manager.RegisterCommand(AddMatchTimeMinutes());
+	manager.RegisterCommand(ToggleSuddenDeath());
 }

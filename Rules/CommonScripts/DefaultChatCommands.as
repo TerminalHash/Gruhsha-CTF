@@ -3,7 +3,6 @@
 #include "BlobCommands.as"
 #include "GameStateCommands.as"
 #include "MaterialCommands.as"
-#include "MatchCommands.as"
 #include "MiscCommands.as"
 #include "PlayerCommands.as"
 #include "UtilityCommands.as"
@@ -56,7 +55,4 @@ void RegisterDefaultChatCommands(ChatCommandManager@ manager)
 	manager.RegisterCommand(TimeCommand());
 	manager.RegisterCommand(GiveCirnu());
 	manager.RegisterCommand(GiveNoko());
-	manager.RegisterCommand(AddMatchTime());
-	manager.RegisterCommand(AddMatchTimeMinutes());
-	manager.RegisterCommand(ToggleSuddenDeath());
 }
