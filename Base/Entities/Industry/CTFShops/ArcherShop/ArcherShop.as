@@ -25,7 +25,7 @@ void onInit(CBlob@ this)
 
 	// SHOP
 	this.set_Vec2f("shop offset", Vec2f_zero);
-	this.set_Vec2f("shop menu size", Vec2f(7, 1));
+	this.set_Vec2f("shop menu size", Vec2f(8, 1));
 	this.set_string("shop description", "Buy");
 	this.set_u8("shop icon", 25);
 
@@ -100,6 +100,10 @@ void onInit(CBlob@ this)
 		ShopItem@ s = addShopItem(this, "Mounted Bow", mountedbow_icon, "mounted_bow", Descriptions::mountedbowdesc, false, true);
 		s.crate_icon = 3;
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::mountedbow);
+	}
+	{
+		ShopItem@ s = addShopItem(this, "Portable Campfire", "$portablecampfire$", "portablecampfire", "Installation kit for a quick campfire placing", true);
+		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::campfire_coins);
 	}
 }
 
