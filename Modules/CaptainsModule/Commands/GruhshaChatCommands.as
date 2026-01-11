@@ -24,4 +24,5 @@ void RegisterGruhshaChatCommands(ChatCommandManager@ manager)
 	manager.RegisterCommand(BrokeResupplies());
 	manager.RegisterCommand(SetInternalGamemode());
 	manager.RegisterCommand(RememberTime());
+	manager.RegisterCommand(ToggleTimeCycle());
 }

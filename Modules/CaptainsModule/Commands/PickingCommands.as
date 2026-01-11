@@ -720,3 +720,32 @@ class RememberTime : ChatCommand
 		}
 	}
 }
+
+class ToggleTimeCycle : ChatCommand
+{
+	ToggleTimeCycle()
+	{
+		super("timespeed", "Set timecycle speed");
+		SetUsage("<time in mimutes>");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void Execute(string[] args, CPlayer@ player)
+	{
+		CRules@ rules = getRules();
+
+		if (args.size() < 1) return;
+
+		if (isServer()) {
+			int time = parseInt(args[0]);
+			rules.daycycle_speed = time;
+		}
+	}
+}
