@@ -33,4 +33,6 @@ void RegisterGruhshaChatCommands(ChatCommandManager@ manager)
 	manager.RegisterCommand(AddMatchTime());
 	manager.RegisterCommand(AddMatchTimeMinutes());
 	manager.RegisterCommand(ToggleSuddenDeath());
+	manager.RegisterCommand(GiveCirnu());
+	manager.RegisterCommand(GiveNoko());
 }
