@@ -1,4 +1,5 @@
 // GruhshaMiscCommands.as
+#include "ChatCommand.as"
 
 class PreventVoicelineSpamming : ChatCommand
 {

@@ -1,4 +1,5 @@
 // ClassCommands.as
+#include "ChatCommand.as"
 
 class SetBuilderLimitCommand : ChatCommand
 {

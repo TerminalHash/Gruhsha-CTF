@@ -1,4 +1,5 @@
 // GruhshaCommands.as
+#include "ChatCommand.as"
 
 class SetInternalGamemode : ChatCommand
 {
