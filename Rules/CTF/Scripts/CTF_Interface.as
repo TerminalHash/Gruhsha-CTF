@@ -122,126 +122,89 @@ void onRender(CRules@ this)
 	this.get_CBitStream("tavern_serialised_team_hud", serialised_tavern_hud);
 
 	if (this.get_string("internal_game_mode") != "tavern") {
-	if (serialised_team_hud.getBytesUsed() > 8)
-	{
-		serialised_team_hud.Reset();
-		u16 check;
-
-		if (serialised_team_hud.saferead_u16(check) && check == 0x5afe)
+		if (serialised_team_hud.getBytesUsed() > 8)
 		{
-			const string gui_image_fname = "Rules/CTF/CTFGui.png";
+			serialised_team_hud.Reset();
+			u16 check;
 
-			while (!serialised_team_hud.isBufferEnd())
+			if (serialised_team_hud.saferead_u16(check) && check == 0x5afe)
 			{
-				CTF_HUD hud(serialised_team_hud);
-				Vec2f topLeft = Vec2f(8, 80 + 64 * hud.team_num);
+				const string gui_image_fname = "Rules/CTF/CTFGui.png";
 
-				int step = 0;
-				Vec2f startFlags = Vec2f(0, 8);
-
-				string pattern = hud.flag_pattern;
-				string flag_char = "";
-				int size = int(pattern.size());
-
-				GUI::DrawRectangle(topLeft + Vec2f(4, 4), topLeft + Vec2f(size * 32 + 26, 60));
-
-				while (step < size)
+				while (!serialised_team_hud.isBufferEnd())
 				{
-					flag_char = pattern.substr(step, 1);
+					CTF_HUD hud(serialised_team_hud);
+					Vec2f topLeft = Vec2f(8, 80 + 64 * hud.team_num);
 
-					int frame = 0;
-					//c captured
-					if (flag_char == "c")
-					{
-						frame = 2;
-					}
-					//m missing
-					else if (flag_char == "m")
-					{
-						frame = getGameTime() % 20 > 10 ? 1 : 2;
-					}
-					//f fine
-					else if (flag_char == "f")
-					{
-						frame = 0;
-					}
+					int step = 0;
+					Vec2f startFlags = Vec2f(0, 8);
 
-					GUI::DrawIcon(gui_image_fname, frame , Vec2f(16, 24), topLeft + startFlags + Vec2f(14 + step * 32, 0) , 1.0f, hud.team_num);
+					string pattern = hud.flag_pattern;
+					string flag_char = "";
+					int size = int(pattern.size());
 
-					step++;
+					GUI::DrawRectangle(topLeft + Vec2f(4, 4), topLeft + Vec2f(size * 32 + 26, 60));
+
+					while (step < size)
+					{
+						flag_char = pattern.substr(step, 1);
+
+						int frame = 0;
+						//c captured
+						if (flag_char == "c")
+						{
+							frame = 2;
+						}
+						//m missing
+						else if (flag_char == "m")
+						{
+							frame = getGameTime() % 20 > 10 ? 1 : 2;
+						}
+						//f fine
+						else if (flag_char == "f")
+						{
+							frame = 0;
+						}
+
+						GUI::DrawIcon(gui_image_fname, frame , Vec2f(16, 24), topLeft + startFlags + Vec2f(14 + step * 32, 0) , 1.0f, hud.team_num);
+
+						step++;
+					}
 				}
+			}
+
+			serialised_team_hud.Reset();
+		}
+
+		string propname = "ctf spawn time " + p.getUsername();
+		if (p.getBlob() is null && this.exists(propname))
+		{
+			u8 spawn = this.get_u8(propname);
+
+			if (this.isMatchRunning() && spawn != 255)
+			{
+				string spawn_message = getTranslatedString("Respawning in: {SEC}").replace("{SEC}", ((spawn > 250) ? getTranslatedString("approximatively never") : ("" + spawn)));
+
+				GUI::SetFont("hud");
+				GUI::DrawText(spawn_message , Vec2f(getScreenWidth() / 2 - 70, getScreenHeight() / 3 + Maths::Sin(getGameTime() / 3.0f) * 5.0f), SColor(255, 255, 255, 55));
 			}
 		}
 
-		serialised_team_hud.Reset();
-	}
+		// main panel
+		//GUI::DrawIcon("CTF_Panel.png", 0, Vec2f(76,122), Vec2f(0, 145));
+		GUI::DrawIcon("CTF_NewInterface.png", 0, Vec2f(155,36), Vec2f(5, 5));
 
-	string propname = "ctf spawn time " + p.getUsername();
-	if (p.getBlob() is null && this.exists(propname))
-	{
-		u8 spawn = this.get_u8(propname);
+		Vec2f state_icon_pos = Vec2f(5, 4);
 
-		if (this.isMatchRunning() && spawn != 255)
-		{
-			string spawn_message = getTranslatedString("Respawning in: {SEC}").replace("{SEC}", ((spawn > 250) ? getTranslatedString("approximatively never") : ("" + spawn)));
-
-			GUI::SetFont("hud");
-			GUI::DrawText(spawn_message , Vec2f(getScreenWidth() / 2 - 70, getScreenHeight() / 3 + Maths::Sin(getGameTime() / 3.0f) * 5.0f), SColor(255, 255, 255, 55));
+		// state icons for HUD
+		if (!this.hasTag("sudden death")) {
+			if (this.get_bool("is_warmup"))
+				GUI::DrawIcon("CTF_States.png", 0, Vec2f(32, 32), state_icon_pos, 1.0f);
+			else if (this.isMatchRunning() || this.getCurrentState() == GAME)
+				GUI::DrawIcon("CTF_States.png", 1, Vec2f(32, 32), state_icon_pos, 1.0f);
+			else if (this.getCurrentState() == GAME_OVER)
+				GUI::DrawIcon("CTF_States.png", 3, Vec2f(32, 32), state_icon_pos, 1.0f);
 		}
-	}
-
-	// main panel
-	//GUI::DrawIcon("CTF_Panel.png", 0, Vec2f(76,122), Vec2f(0, 145));
-	GUI::DrawIcon("CTF_NewInterface.png", 0, Vec2f(155,36), Vec2f(5, 5));
-
-	Vec2f state_icon_pos = Vec2f(5, 4);
-
-	// state icons for HUD
-	if (!this.hasTag("sudden death")) {
-		if (this.get_bool("is_warmup"))
-			GUI::DrawIcon("CTF_States.png", 0, Vec2f(32, 32), state_icon_pos, 1.0f);
-		else if (this.isMatchRunning() || this.getCurrentState() == GAME)
-			GUI::DrawIcon("CTF_States.png", 1, Vec2f(32, 32), state_icon_pos, 1.0f);
-		else if (this.getCurrentState() == GAME_OVER)
-			GUI::DrawIcon("CTF_States.png", 3, Vec2f(32, 32), state_icon_pos, 1.0f);
-	}
-	
-	// materials
-	/*u8 team = p.getTeamNum();
-	
-	if (p.getTeamNum() == team) {
-		GUI::SetFont("hud");
-		string msg1 = this.get_s32("teamwood" + team);
-		string msg2 = this.get_s32("teamstone" + team);
-		
-		Vec2f wood_text = Vec2f(23, 341); // for >= 1000
-		if (this.get_s32("teamwood" + team) >= 10000) {
-			wood_text = Vec2f(19, 341);
-		} else if (this.get_s32("teamwood" + team) >= 100 && this.get_s32("teamwood" + team) < 1000) {
-			wood_text = Vec2f(26, 341);
-		} else if (this.get_s32("teamwood" + team) >= 10 && this.get_s32("teamwood" + team) < 1000) {
-			wood_text = Vec2f(30, 341);
-		} else if (this.get_s32("teamwood" + team) >= 0 && this.get_s32("teamwood" + team) < 1000) {
-			wood_text = Vec2f(32, 341);
-		}
-		
-		Vec2f stone_text = Vec2f(96, 341); // for >= 1000
-		if (this.get_s32("teamstone" + team) >= 10000) {
-			stone_text = Vec2f(93, 341);
-		} else if (this.get_s32("teamstone" + team) >= 100 && this.get_s32("teamstone" + team) < 1000) {
-			stone_text = Vec2f(100, 341);
-		} else if (this.get_s32("teamstone" + team) >= 10 && this.get_s32("teamstone" + team) < 1000) {
-			stone_text = Vec2f(104, 341);
-		} else if (this.get_s32("teamstone" + team) >= 0 && this.get_s32("teamstone" + team) < 1000) {
-			stone_text = Vec2f(108, 341);
-		}
-
-		//wood
-		GUI::DrawText(msg1, wood_text, color_white);
-
-		//stone
-		GUI::DrawText(msg2, stone_text, color_white);
-	}*/
 	} else {
 		GUI::SetFont("menu");
 		if (serialised_tavern_hud.getBytesUsed() > 10)
@@ -340,6 +303,21 @@ void onRender(CRules@ this)
 
 		// main panel
 		GUI::DrawIcon("TDM_Timer.png", 0, Vec2f(45,21), Vec2f(10, 145));
+	}
+
+	// debug string about internal gamemode
+	if (p !is null && p.getUsername() == "TerminalHash" /* p.isRCON() */) {
+		GUI::SetFont("hud");
+		string current_gaemmode;
+
+		if (this.get_string("internal_game_mode") == "smolctf")
+			current_gaemmode = "SmallCTF";
+		else if (this.get_string("internal_game_mode") == "tavern")
+			current_gaemmode = "TDM";
+		else
+			current_gaemmode = "CTF";
+
+		GUI::DrawText("Current gamemode is " + current_gaemmode + " (internal name: " + this.get_string("internal_game_mode") + ")", Vec2f(320, 5), SColor(255, 255, 255, 255));
 	}
 }
 

@@ -5,8 +5,7 @@
 #include "TranslationsSystem.as"
 #include "ActorHUDStartPos.as"
 
-void onInit(CRules@ this)
-{
+void onInit(CRules@ this) {
 	//this.addCommandID("sudden death sound");
 
 	if (!this.exists("no timer"))
@@ -19,12 +18,8 @@ void onInit(CRules@ this)
 	//this.set_bool("kurwa", false);
 }
 
-void onTick(CRules@ this)
-{
-	if (!getNet().isServer() || !this.isMatchRunning() || this.get_bool("no timer"))
-	{
-		return;
-	}
+void onTick(CRules@ this) {
+	if (!getNet().isServer() || !this.isMatchRunning() || this.get_bool("no timer")) { return; }
 
 	u32 gameEndTime = this.get_u32("game_end_time");
 
@@ -39,7 +34,7 @@ void onTick(CRules@ this)
 	// Special tag for buffs on 10 min
 	//if (end_in == 1200) {  // 20 min
 	// (end_in == 300) {     // 5 min
-	if (end_in == 600) {
+	if (end_in == 600 || (end_in == 300 && this.get_string("internal_game_mode") == "smolctf")) {
 		if(!isServer()) return;
 
 		this.Tag("sudden death");
@@ -67,8 +62,7 @@ void onTick(CRules@ this)
 		//printf("[INFO] Sudded Death Mode activated!");
 	}
 
-	if (getGameTime() > gameEndTime)
-	{
+	if (getGameTime() > gameEndTime) {
 		bool hasWinner = false;
 		s8 teamWonNumber = -1;
 
@@ -76,14 +70,12 @@ void onTick(CRules@ this)
 			teamWonNumber = this.get_s8("team_wins_on_end");
 		}
 
-		if (teamWonNumber >= 0)
-		{
+		if (teamWonNumber >= 0) {
 			//ends the game and sets the winning team
 			this.SetTeamWon(teamWonNumber);
 			CTeam@ teamWon = this.getTeam(teamWonNumber);
 
-			if (teamWon !is null)
-			{
+			if (teamWon !is null) {
 				hasWinner = true;
 				this.SetGlobalMessage("Time is up!\n{WINNING_TEAM} wins the game!");
 				this.AddGlobalMessageReplacement("WINNING_TEAM", teamWon.getName());
@@ -91,8 +83,7 @@ void onTick(CRules@ this)
 			}
 		}
 
-		if (!hasWinner)
-		{
+		if (!hasWinner) {
 			this.SetGlobalMessage("Time is up!\nIt's a tie!");
 		}
 
@@ -101,8 +92,7 @@ void onTick(CRules@ this)
 	}
 }
 
-void onRender(CRules@ this)
-{
+void onRender(CRules@ this) {
 	if (g_videorecording)
 		return;
 
@@ -131,7 +121,8 @@ void onRender(CRules@ this)
 	}
 
 	// Notification
-	if (end_in > 600 && end_in < 610 && this.get_string("internal_game_mode") != "tavern") {
+	if ((end_in > 600 && end_in < 610 && this.get_string("internal_game_mode") != "tavern") ||
+		(end_in > 300 && end_in < 310 && this.get_string("internal_game_mode") != "tavern")) {
 		Vec2f dim = Vec2f(342, 155);
 		Vec2f ul(getHUDX() - dim.x / 2.0f, getHUDY() - dim.y + 12);
 		Vec2f tl = ul + Vec2f(-10, -10);

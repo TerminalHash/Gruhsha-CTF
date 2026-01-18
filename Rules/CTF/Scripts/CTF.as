@@ -1,5 +1,8 @@
-
 //CTF gamemode logic script
+/*
+	Internal gamemodes:
+	gruhsha (CTF), tavern (TavernTDM), smolctf (SmallCTF)
+*/
 
 #define SERVER_ONLY
 
@@ -22,6 +25,8 @@ void Config(CTFCore@ this)
 	//how long to wait for everyone to spawn in?
 	if (getRules().get_string("internal_game_mode") == "tavern") {
 		warmUpTimeSeconds = 3;
+	} else if (getRules().get_string("internal_game_mode") == "smolctf") {
+		warmUpTimeSeconds = 100;
 	}
 
 	this.warmUpTime = (getTicksASecond() * warmUpTimeSeconds);
@@ -32,6 +37,13 @@ void Config(CTFCore@ this)
 	//how long for the game to play out?
 	//s32 gameDurationMinutes = 60; // 1 hour
 	s32 gameDurationMinutes = 38; // 35 minutes + 3 minutes of warmup
+
+	// for tavern tdm and smolctf use a small timer
+	// 15 minutes + 3 minutes of warmup
+	if (getRules().get_string("internal_game_mode") == "tavern" || getRules().get_string("internal_game_mode") == "smolctf") {
+		gameDurationMinutes = 18;
+	}
+
 	if (gameDurationMinutes <= 0)
 	{
 		this.gameDuration = 0;
@@ -319,7 +331,12 @@ shared class CTFSpawns : RespawnSystem
 		// formula - 60 * n + 180
 		if (getRules().hasTag("offi match")) {
 			if (getGameTime() >= 780 * getTicksASecond() && getGameTime() <= 1380 * getTicksASecond()) {			// 10 min
-				tickspawndelay = s32(getTicksASecond() * 7);
+				// as hack, for last five minutes set 12 secs of respawn time
+				// for "smolctf" gamemode
+				if (getRules().get_string("internal_game_mode") == "smolctf")
+					tickspawndelay = s32(getTicksASecond() * 12);
+				else
+					tickspawndelay = s32(getTicksASecond() * 7);
 			} else if (getGameTime() >= 1380 * getTicksASecond() && getGameTime() <= 1680 * getTicksASecond()) {	// 20 min
 				tickspawndelay = s32(getTicksASecond() * 10);
 			} else if (getGameTime() >= 1680 * getTicksASecond() && getGameTime() <= 1980 * getTicksASecond()) {	// 25 min
@@ -1030,6 +1047,12 @@ void Reset(CRules@ this)
 
 	this.Sync("team_" + "0" + "_builder", true);
 	this.Sync("team_" + "1" + "_builder", true);
+
+	// set previous gamemode, if we changed it
+	if (this.exists("previous_game_mode")) {
+		this.set_string("internal_game_mode", this.get_string("internal_game_mode"));
+		this.Sync("internal_game_mode", true);
+	}
 }
 
 void onRestart(CRules@ this)
@@ -1043,6 +1066,12 @@ void onInit(CRules@ this)
 
 	const int restart_after = (!this.hasTag("tutorial") ? 30 : 5) * 30;
 	this.set_s32("restart_rules_after_game_time", restart_after);
+
+	// set default gamemode on game initilization
+	if (!this.exists("previous_game_mode")) {
+		this.set_string("internal_game_mode", "gruhsha");
+		this.Sync("internal_game_mode", true);
+	}
 }
 
 void onStateChange(CRules@ this, const u8 oldState)
@@ -1058,6 +1087,11 @@ void onStateChange(CRules@ this, const u8 oldState)
 			//printf("test");
 			list[i].SendCommand(list[i].getCommandID("reset menu"));
 		}
+	}
+
+	if (this.getCurrentState() == GAME_OVER) {
+		this.set_string("previous_game_mode", this.get_string("internal_game_mode"));
+		this.Sync("previous_game_mode", true);
 	}
 }
 

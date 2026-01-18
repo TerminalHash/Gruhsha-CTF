@@ -35,7 +35,6 @@ class SetInternalGamemode : ChatCommand
 
 			LoadMapCycle("mapcycle.cfg");
 			server_AddToChat("Changed gamemode to CTF!", SColor(0xff474ac6));
-			//LoadNextMap();
 		} 
 
 		if (MODE_TO_SET.toUpper() == "TDM" || MODE_TO_SET.toUpper() == "TAVERN" || MODE_TO_SET.toUpper() == "SLIVA") {
@@ -44,7 +43,14 @@ class SetInternalGamemode : ChatCommand
 			LoadMapCycle("mapcycle_tavern.cfg");
 
 			server_AddToChat("Changed gamemode to TDM!", SColor(0xff474ac6));
-			//LoadNextMap();
+		}
+
+		if (MODE_TO_SET.toUpper() == "SMALLCTF" || MODE_TO_SET.toUpper() == "SMOLCTF") {
+			rules.set_string("internal_game_mode", "smolctf");
+			rules.Sync("internal_game_mode", true);
+
+			LoadMapCycle("mapcycle.cfg");
+			server_AddToChat("Changed gamemode to SmallCTF!", SColor(0xff474ac6));
 		}
 	}
 }
