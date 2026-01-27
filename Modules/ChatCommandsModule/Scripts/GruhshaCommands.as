@@ -45,12 +45,12 @@ class SetInternalGamemode : ChatCommand
 			server_AddToChat("Changed gamemode to TDM!", SColor(0xff474ac6));
 		}
 
-		if (MODE_TO_SET.toUpper() == "SMALLCTF" || MODE_TO_SET.toUpper() == "SMOLCTF") {
+		if (MODE_TO_SET.toUpper() == "QUICKCTF" || MODE_TO_SET.toUpper() == "SMOLCTF") {
 			rules.set_string("internal_game_mode", "smolctf");
 			rules.Sync("internal_game_mode", true);
 
 			LoadMapCycle("mapcycle.cfg");
-			server_AddToChat("Changed gamemode to SmallCTF!", SColor(0xff474ac6));
+			server_AddToChat("Changed gamemode to QuickCTF!", SColor(0xff474ac6));
 		}
 	}
 }

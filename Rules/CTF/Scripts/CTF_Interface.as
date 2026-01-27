@@ -311,7 +311,7 @@ void onRender(CRules@ this)
 		string current_gaemmode;
 
 		if (this.get_string("internal_game_mode") == "smolctf")
-			current_gaemmode = "SmallCTF";
+			current_gaemmode = "QuickCTF";
 		else if (this.get_string("internal_game_mode") == "tavern")
 			current_gaemmode = "TDM";
 		else

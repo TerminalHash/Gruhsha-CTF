@@ -1,7 +1,7 @@
 //CTF gamemode logic script
 /*
 	Internal gamemodes:
-	gruhsha (CTF), tavern (TavernTDM), smolctf (SmallCTF)
+	gruhsha (CTF), tavern (TavernTDM), smolctf (QuickCTF)
 */
 
 #define SERVER_ONLY
