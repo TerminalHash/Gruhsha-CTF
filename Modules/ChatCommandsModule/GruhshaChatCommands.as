@@ -35,4 +35,5 @@ void RegisterGruhshaChatCommands(ChatCommandManager@ manager)
 	manager.RegisterCommand(ToggleSuddenDeath());
 	manager.RegisterCommand(GiveCirnu());
 	manager.RegisterCommand(GiveNoko());
+	manager.RegisterCommand(SpawnLootChest());
 }

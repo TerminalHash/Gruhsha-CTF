@@ -274,3 +274,57 @@ class GiveNoko : BlobCommand
 		CBlob@ newBlob = server_CreateBlob("noko", team, pos + Vec2f(0, -5));
 	}
 }
+
+class SpawnLootChest : BlobCommand
+{
+	SpawnLootChest()
+	{
+		super("lootchest", "Spawn loot chest");
+		AddAlias("lc");
+		SetUsage("<chest type>");
+	}
+
+	bool canPlayerExecute(CPlayer@ player)
+	{
+		return (
+			ChatCommand::canPlayerExecute(player) &&
+			!ChatCommands::getManager().whitelistedClasses.empty()
+		);
+	}
+
+	void SpawnBlobAt(Vec2f pos, string[] args, CPlayer@ player)
+	{
+		if (args.size() == 0) {
+			server_AddToChat("Write loot chest type before spawn", ConsoleColour::ERROR, player);
+			return;
+		}
+
+		u8 team = player.getBlob().getTeamNum();
+
+		string MODE_TO_SET = args[0];
+
+		if (MODE_TO_SET.toUpper() == "BRONZE") {
+			CBlob@ newBlob = server_CreateBlob("lootchest", team, pos + Vec2f(0, -5));
+			if (newBlob !is null) {
+				newBlob.set_u8("chest_type", 1);
+				newBlob.set_string("lootchest owner", player.getUsername());
+			}
+		} 
+
+		if (MODE_TO_SET.toUpper() == "SILVER") {
+			CBlob@ newBlob = server_CreateBlob("lootchest", team, pos + Vec2f(0, -5));
+			if (newBlob !is null) {
+				newBlob.set_u8("chest_type", 2);
+				newBlob.set_string("lootchest owner", player.getUsername());
+			}
+		}
+
+		if (MODE_TO_SET.toUpper() == "GOLDEN") {
+			CBlob@ newBlob = server_CreateBlob("lootchest", team, pos + Vec2f(0, -5));
+			if (newBlob !is null) {
+				newBlob.set_u8("chest_type", 3);
+				newBlob.set_string("lootchest owner", player.getUsername());
+			}
+		}
+	}
+}
