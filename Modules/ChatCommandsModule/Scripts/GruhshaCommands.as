@@ -7,7 +7,7 @@ class SetInternalGamemode : ChatCommand
 	{
 		super("gm", "Change internal Gruhsha's gamemode");
 		AddAlias("gamemode");
-		SetUsage("<gm name> (CTF or TDM)");
+		SetUsage("<gm name> (CTF, TDM, QuickCTF)");
 	}
 
 	bool canPlayerExecute(CPlayer@ player)
