@@ -118,6 +118,9 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params) {
 			addLoot(this, INDEX_BUILDER, 1, 0);
 		} else if (NAME == "knight") {
 			addLoot(this, INDEX_KNIGHT, 1, 0);
+		// spawn generic loot for tavern classes
+		/*} else {
+			addLoot(this, INDEX_GENERIC, 1, 0);*/
 		}
 
 		server_CreateLoot(this, this.getPosition(), caller.getTeamNum());
