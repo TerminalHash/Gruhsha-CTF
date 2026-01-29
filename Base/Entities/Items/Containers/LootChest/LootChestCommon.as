@@ -3,7 +3,6 @@
 	TODO:
 	- make chest type-related loot tables between classes
 	- make generic loot table for tavern classes
-	- write a chest randomizer based on killstreaks
 */
 
 const string LOOT = "loot_table";
