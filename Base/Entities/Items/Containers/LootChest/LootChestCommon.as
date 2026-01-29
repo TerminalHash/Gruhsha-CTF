@@ -95,6 +95,14 @@ const u8[]          INDEX_KNIGHT =
 	KEG
 };
 
+const u8[]          INDEX_GENERIC =
+{
+	MAT_BOMBS,
+	MAT_WATERBOMBS,
+	MINE,
+	FOOD
+};
+
 // pre-set 'GAMEMODE' arrays
 // ━━━━━━━━━━━━━━━━━
 const u8[]          INDEX_CTF =
