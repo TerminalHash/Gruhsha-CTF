@@ -179,5 +179,8 @@ bool doesCollideWithBlob(CBlob@ this, CBlob@ blob) {
 }
 
 bool canBePickedUp(CBlob@ this, CBlob@ byBlob) {
+	// other players cant steal chest from his owner
+	if (this.get_string("lootchest owner") != byBlob.getPlayer().getUsername()) return false;
+
 	return true;
 }
