@@ -2,7 +2,9 @@
 // random item on victim's death
 #define SERVER_ONLY
 
-const int TIMER_BEFORE_NEXT_ITEM = 30 * getTicksASecond();
+const int TIMER_BEFORE_BRONZE = 25 * getTicksASecond();
+const int TIMER_BEFORE_SILVER = 50 * getTicksASecond();
+const int TIMER_BEFORE_GOLDEN = 75 * getTicksASecond();
 
 void dropChest(CBlob@ this) {
 	if (!this.hasTag("dropped lootchest")) { // double check
@@ -16,12 +18,6 @@ void dropChest(CBlob@ this) {
 		uint16 kill_count = killer.get_u8("killstreak");
 		if (kill_count < 1) return;
 
-		// if player already got item - dont spam with them
-		if (killer.getBlob() !is null && killer.getBlob().exists("got chest")) {
-			if (getGameTime() < killer.getBlob().get_u16("got chest") + TIMER_BEFORE_NEXT_ITEM)
-				return;
-		}
-
 		int drop_random = XORRandom(256) / 64;
 
 		this.Tag("dropped lootchest");
@@ -32,7 +28,12 @@ void dropChest(CBlob@ this) {
 
 		if (killer.getBlob() !is null) {
 			// BRONZE CHEST
-			if (drop_random <= 1.5) {
+			if (kill_count >= 2 && kill_count < 3) {
+				if (killer.getBlob() !is null && killer.getBlob().exists("got bronze chest")) {
+					if (getGameTime() < killer.getBlob().get_u16("got bronze chest") + TIMER_BEFORE_BRONZE)
+						return;
+				}
+
 				CBlob@ lootchest = server_CreateBlob("lootchest", -1, this.getPosition());
 
 				if (lootchest !is null) {
@@ -47,11 +48,16 @@ void dropChest(CBlob@ this) {
 						lootchest.setPosition(killerblob.getPosition());
 					}
 
-					killer.getBlob().set_u16("got chest", getGameTime());
+					killer.getBlob().set_u16("got bronze chest", getGameTime());
 					//printf("Ice Bomb is dropped for " + killer.getUsername() + "!");
 				}
 			// SILVER CHEST
-			} else if (drop_random > 1.5 && drop_random <= 2.5) {
+			} else if (kill_count >= 4 && kill_count < 6) {
+				if (killer.getBlob() !is null && killer.getBlob().exists("got silver chest")) {
+					if (getGameTime() < killer.getBlob().get_u16("got silver chest") + TIMER_BEFORE_SILVER)
+						return;
+				}
+	
 				CBlob@ lootchest = server_CreateBlob("lootchest", -1, this.getPosition());
 
 				if (lootchest !is null) {
@@ -66,11 +72,16 @@ void dropChest(CBlob@ this) {
 						lootchest.setPosition(killerblob.getPosition());
 					}
 
-					killer.getBlob().set_u16("got chest", getGameTime());
+					killer.getBlob().set_u16("got silver chest", getGameTime());
 					//printf("Ice Bomb is dropped for " + killer.getUsername() + "!");
 				}
 			// GOLDEN CHEST
-			} else if (drop_random > 2.5 && drop_random <= 3) {
+			} else if (kill_count >= 6) {
+				if (killer.getBlob() !is null && killer.getBlob().exists("got golden chest")) {
+					if (getGameTime() < killer.getBlob().get_u16("got golden chest") + TIMER_BEFORE_GOLDEN)
+						return;
+				}
+
 				CBlob@ lootchest = server_CreateBlob("lootchest", -1, this.getPosition());
 
 				if (lootchest !is null) {
@@ -85,7 +96,7 @@ void dropChest(CBlob@ this) {
 						lootchest.setPosition(killerblob.getPosition());
 					}
 
-					killer.getBlob().set_u16("got chest", getGameTime());
+					killer.getBlob().set_u16("got golden chest", getGameTime());
 					//printf("Ice Bomb is dropped for " + killer.getUsername() + "!");
 				}
 			}
