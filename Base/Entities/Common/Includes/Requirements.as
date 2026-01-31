@@ -185,7 +185,7 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 					if (blobName == "mat_stone") needed = "teamstone";
 
 					// dynamic requirements for building
-					if (player1.getBlob().getPosition().x >= left && player1.getBlob().getPosition().x <= right)
+					/*if (player1.getBlob().getPosition().x >= left && player1.getBlob().getPosition().x <= right)
 					{
 						if (getRules().hasTag("sudden death")) {
 							if (getRules().get_s32(needed + team) < quantity * 1.4) {
@@ -200,13 +200,13 @@ bool hasRequirements(CInventory@ inv1, CInventory@ inv2, CBitStream &inout bs, C
 						}
 					}
 					else
-					{
+					{*/
 						if (getRules().get_s32(needed + team) < quantity)
 						{
 							AddRequirement(missingBs, req, blobName, friendlyName, quantity);
 							has = false;
 						}
-					}
+					//}
 				}
 			}
 			else
