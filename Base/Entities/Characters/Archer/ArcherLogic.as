@@ -669,6 +669,7 @@ void ManageBow(CBlob@ this, ArcherInfo@ archer, RunnerMoveVars@ moveVars)
 						else if (backstabTarget.getConfig() == "flail") damaga = 8.0f;
 
 						this.server_Hit(backstabTarget, backstabTarget.getPosition(), Vec2f_zero, damaga,  Hitters::stab);
+						this.getSprite().PlaySound("backstab.ogg", 2.0);
 					}
 				} else if(archer.stab_delay >= STAB_TIME) {
 					charge_state = ArcherParams::not_aiming;
