@@ -83,7 +83,7 @@ void onTick(CBlob@ this)
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
     if (cmd == this.getCommandID("play convert sound") && isClient()) {
-        this.getSprite().PlaySound("/mat_converted.ogg");
+        this.getSprite().PlaySound("/mat_converted.ogg", 4.0);
     }
 }
 
