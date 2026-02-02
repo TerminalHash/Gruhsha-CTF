@@ -123,6 +123,8 @@ void onPlayerDie(CRules@ this, CPlayer@ victim, CPlayer@ killer, u8 customData)
 
 				case Hitters::bomb_arrow:		hitter_string = "bombarrow"; break;
 
+				case Hitters::stab:         	hitter_string = "stab"; break;
+
 				case Hitters::bomb:
 				case Hitters::explosion:     	hitter_string = "bomb"; break;
 

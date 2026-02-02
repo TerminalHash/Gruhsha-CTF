@@ -172,6 +172,8 @@ class KillFeed
 
 				case Hitters::bomb_arrow:		hitterIcon = "$killfeed_bombarrow$"; break;
 
+				case Hitters::stab:				hitterIcon = "$killfeed_stab$"; break;
+
 				case Hitters::bomb:
 				case Hitters::explosion:     	hitterIcon = "$killfeed_bomb$"; break;
 
@@ -300,6 +302,7 @@ void onInit(CRules@ this)
 
 	AddIconToken("$killfeed_arrow$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 16);
 	AddIconToken("$killfeed_bombarrow$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 21);
+	AddIconToken("$killfeed_stab$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 33);
 	AddIconToken("$killfeed_ballista$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 17);
 
 	AddIconToken("$killfeed_drill$", "GUI/KillfeedIcons.png", Vec2f(32, 16), 19);
