@@ -13,6 +13,8 @@
 #include "StandardControlsCommon.as";
 #include "BindingsCommon.as"
 
+const int BACKSTAB_RADIUS = 9.0f;
+
 const int FLETCH_COOLDOWN = 45;
 const int PICKUP_COOLDOWN = 15;
 const int fletch_num_arrows = 1;
@@ -116,21 +118,18 @@ void ManageGrapple(CBlob@ this, ArcherInfo@ archer)
 		&& !archer.grappling
 		&& this.isOnGround()
 		&& !this.isKeyPressed(key_action1)
-		&& !this.wasKeyPressed(key_action1))
-	{
+		&& !this.wasKeyPressed(key_action1)) {
 		Vec2f aimpos = this.getAimPos();
+
 		CBlob@[] blobs;
-		if(getMap().getBlobsInRadius(aimpos, 8.0f, blobs))
-		{
-			for (int i = 0; i < blobs.size(); i++)
-			{
+		if (getMap().getBlobsInRadius(aimpos, 8.0f, blobs)) {
+			for (int i = 0; i < blobs.size(); i++) {
 				CBlob@ target = blobs[i];
 				string name = target.getName();
 
 				if (target !is null
 					&& (target.hasTag("tree") || name == "log" || name == "mat_wood")
-					&& Vec2f(target.getPosition() - pos).Length() <= 24.0f)
-				{
+					&& Vec2f(target.getPosition() - pos).Length() <= 24.0f) {
 					this.set_u16("stabHitID",  target.getNetworkID());
 					charge_state = ArcherParams::stabbing;
 					archer.charge_time = 0;
@@ -140,7 +139,32 @@ void ManageGrapple(CBlob@ this, ArcherInfo@ archer)
 					break;
 				}
 			}
+		}
 
+		// backstab knocked players
+		CBlob@[] overlapping;
+		if (getMap().getBlobsInRadius(this.getPosition(), BACKSTAB_RADIUS, overlapping)) {
+			for (int i = 0; i < overlapping.length; ++i) {
+				// dont count our player
+				if (overlapping[i].isMyPlayer()) continue;
+				// dont count our teammates
+				if (overlapping[i].getTeamNum() == this.getTeamNum()) continue;
+
+				CBlob@ player_target = overlapping[i];
+				string name = player_target.getConfig();
+
+				if (player_target !is null
+						&& (name == "knight" || name == "archer" || name == "builder" ||
+						name == "crusher" || name == "rogue" || name == "flail") && isKnocked(player_target)) {
+						this.set_u16("backstabHitID",  player_target.getNetworkID());
+						charge_state = ArcherParams::stabbing;
+						archer.charge_time = 0;
+						archer.stab_delay = 0;
+						sprite.SetEmitSoundPaused(true);
+						archer.charge_state = charge_state;
+					break;
+				}
+			}
 		}
 	}
 
@@ -618,36 +642,35 @@ void ManageBow(CBlob@ this, ArcherInfo@ archer, RunnerMoveVars@ moveVars)
 			else if(charge_state == ArcherParams::stabbing)
 			{
 				archer.stab_delay++;
-				if (archer.stab_delay == STAB_DELAY)
-				{
+				if (archer.stab_delay == STAB_DELAY) {
 					// hit tree and get an arrow
 					CBlob@ stabTarget = getBlobByNetworkID(this.get_u16("stabHitID"));
-					if (stabTarget !is null)
-					{
-						if (stabTarget.getName() == "mat_wood")
-						{
+					if (stabTarget !is null) {
+						if (stabTarget.getName() == "mat_wood") {
 							u16 quantity = stabTarget.getQuantity();
-							if (quantity > 4)
-							{
+							if (quantity > 4) {
 								stabTarget.server_SetQuantity(quantity-4);
-							}
-							else
-							{
+							} else {
 								stabTarget.server_Die();
-
 							}
+
 							fletchArrow(this);
-						}
-						else
-						{
+						} else {
 							this.server_Hit(stabTarget, stabTarget.getPosition(), Vec2f_zero, 0.25f,  Hitters::stab);
-
 						}
-
 					}
-				}
-				else if(archer.stab_delay >= STAB_TIME)
-				{
+
+					// backstab knocked player
+					CBlob@ backstabTarget = getBlobByNetworkID(this.get_u16("backstabHitID"));
+					if (backstabTarget !is null && isKnocked(backstabTarget) && !backstabTarget.hasTag("dead")) {
+						// HACK: dont gib the players in one backstab
+						int damaga = 6.0f;
+						if (backstabTarget.getConfig() == "builder" || backstabTarget.getConfig() == "rogue") damaga = 3.0f;
+						else if (backstabTarget.getConfig() == "flail") damaga = 8.0f;
+
+						this.server_Hit(backstabTarget, backstabTarget.getPosition(), Vec2f_zero, damaga,  Hitters::stab);
+					}
+				} else if(archer.stab_delay >= STAB_TIME) {
 					charge_state = ArcherParams::not_aiming;
 				}
 			}
@@ -1856,9 +1879,16 @@ void onAddToInventory(CBlob@ this, CBlob@ blob)
 
 void onHitBlob(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitBlob, u8 customData)
 {
-	if (customData == Hitters::stab)
-	{
-		fletchArrow(this);
+	CBlob@ stabTarget = getBlobByNetworkID(this.get_u16("stabHitID"));
+	if (stabTarget is null) return;
+
+	//printf("onhitblob " + hitBlob.getName());
+
+	// dont fletch arrows from players and their corpses xd
+	if (customData == Hitters::stab) {
+		if (stabTarget !is null) {
+			fletchArrow(this);
+		}
 	}
 }
 
