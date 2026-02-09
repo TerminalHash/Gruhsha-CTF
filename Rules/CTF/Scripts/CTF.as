@@ -1064,8 +1064,8 @@ void onInit(CRules@ this)
 {
 	Reset(this);
 
-	const int restart_after = (!this.hasTag("tutorial") ? 30 : 5) * 30;
-	this.set_s32("restart_rules_after_game_time", restart_after);
+	//const int restart_after = (!this.hasTag("tutorial") ? 30 : 5) * 30;
+	//this.set_s32("restart_rules_after_game_time", restart_after);
 
 	// set default gamemode on game initilization
 	if (!this.exists("previous_game_mode")) {

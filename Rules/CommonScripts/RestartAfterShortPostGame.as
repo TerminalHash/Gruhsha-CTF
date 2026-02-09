@@ -3,18 +3,29 @@
 #define SERVER_ONLY
 
 const int cooldown = 600;
+const int tdm_cooldown = 150;
 
 void onRestart(CRules@ this)
 {
-	this.set_s32("restart_rules_after_game", getGameTime() + cooldown);
+	if (this.get_string("internal_game_mode") == "tavern") {
+		this.set_s32("restart_rules_after_game", getGameTime() + tdm_cooldown);
+		if (this.exists("restart_rules_after_game_time")) {
+			this.set_s32("restart_rules_after_game_time", tdm_cooldown);
+		}
+	} else {
+		this.set_s32("restart_rules_after_game", getGameTime() + cooldown);
+		if (this.exists("restart_rules_after_game_time")) {
+			this.set_s32("restart_rules_after_game_time", cooldown);
+		}
+	}
 }
 
 void onInit(CRules@ this)
 {
-	if (!this.exists("restart_rules_after_game_time"))
-	{
+	if (!this.exists("restart_rules_after_game_time")) {
 		this.set_s32("restart_rules_after_game_time", cooldown);
 	}
+
 	onRestart(this);
 }
 
