@@ -9,8 +9,8 @@ void onInit(CBlob@ this) {
 	this.addCommandID("change to teamobject");
 	this.addCommandID("change to teamobject client");
 
-	AddIconToken("$team_object$", "InteractionIcons.png", Vec2f(32, 32), 20);
-	AddIconToken("$test_object$", "UnlockIcon.png", Vec2f(16, 16), 0);
+	AddIconToken("$team_object$", "TestObjectButtons.png", Vec2f(16, 16), 0);
+	AddIconToken("$test_object$", "TestObjectButtons.png", Vec2f(16, 16), 1);
 }
 
 void GetButtonsFor(CBlob@ this, CBlob@ caller)
