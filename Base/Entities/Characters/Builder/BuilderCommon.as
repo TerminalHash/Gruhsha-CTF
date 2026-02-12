@@ -7,40 +7,6 @@
 
 const f32 allow_overlap = 2.0f;
 
-namespace BombType
-{
-	enum type
-	{
-		bomb = 0,
-		water,
-		sticky,
-		ice,
-		//booster,
-		count
-	};
-}
-
-const string[] bombNames = { "Bomb",
-                             "Water Bomb",
-                             "Sticky Bomb",
-							 "Ice Bomb"
-							 //"Booster"
-                           };
-
-const string[] bombIcons = { "$Bomb$",
-                             "$WaterBomb$",
-                             "$StickyBomb$",
-							 "$IceBomb$"
-							 //"$Booster$"
-                           };
-
-const string[] bombTypeNames = { "mat_bombs",
-                                 "mat_waterbombs",
-                                 "mat_stickybombs",
-								 "mat_icebombs"
-								 //"mat_boosters"
-                               };
-
 shared class HitData
 {
 	u16 blobID;
@@ -240,11 +206,6 @@ void ClearCarriedBlock(CBlob@ this)
 		carried.Untag("temp blob");
 		carried.server_Die();
 	}
-}
-
-bool hasBombs(CBlob@ this, u8 bombType)
-{
-    return bombType < BombType::count && this.getBlobCount(bombTypeNames[bombType]) > 0;
 }
 
 const f32 SHIELD_BLOCK_ANGLE = 175.0f;

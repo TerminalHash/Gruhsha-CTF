@@ -3,6 +3,7 @@
 #include "Hitters.as";
 #include "BuilderCommon.as";
 #include "ActivationThrowCommon.as"
+#include "BombThrowingCommon.as";
 #include "RunnerCommon.as";
 #include "Help.as";
 #include "Requirements.as"

@@ -2,6 +2,7 @@
 
 #include "ActivationThrowCommon.as"
 #include "KnightCommon.as";
+#include "BombThrowingCommon.as";
 #include "RunnerCommon.as";
 #include "Hitters.as";
 #include "ShieldCommon.as";

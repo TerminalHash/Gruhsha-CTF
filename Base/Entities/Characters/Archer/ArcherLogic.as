@@ -2,6 +2,7 @@
 
 #include "ArcherCommon.as"
 #include "ActivationThrowCommon.as"
+#include "BombThrowingCommon.as";
 #include "KnockedCommon.as"
 #include "Hitters.as"
 #include "Requirements.as"
