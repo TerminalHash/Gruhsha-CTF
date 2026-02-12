@@ -104,6 +104,10 @@ void onInit(CBlob@ this)
 			AddRequirement(s.requirements, "coin", "", "Coins", 45);
 		}
 		{
+			ShopItem@ s = addShopItem(this, "Jarate", "$jarate$", "mat_jarate", "Coated enemies take mini-crits", true);
+			AddRequirement(s.requirements, "coin", "", "Coins", 55);
+		}
+		{
 			ShopItem@ s = addShopItem(this, "Keg", getTeamIcon("keg", "Keg.png", team_num, Vec2f(16, 16), 0), "keg", Descriptions::keg, false);
 			AddRequirement(s.requirements, "coin", "", "Coins", 160);
 		}
@@ -141,10 +145,6 @@ void onInit(CBlob@ this)
 		{
 			ShopItem@ s = addShopItem(this, "Bomb Arrows", "$mat_bombarrows$", "mat_bombarrows", Descriptions::bombarrows, true);
 			AddRequirement(s.requirements, "coin", "", "Coins", 50);
-		}
-		{
-			ShopItem@ s = addShopItem(this, "Sponge", "$sponge$", "sponge", Descriptions::sponge, false);
-			AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::sponge);
 		}
 		{
 			ShopItem@ s = addShopItem(this, "Boulder", "$boulder$", "boulder", Descriptions::boulder, false);
