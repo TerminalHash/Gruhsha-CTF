@@ -90,7 +90,7 @@ string[][] button_texts =
 		Names::goldenminenmb,
 		Names::icebombnmb,
 		Names::slideminenmb,
-		//Names::boosternmb,
+		"Jarate",
 		Names::fumokegnmb,
 		"Hazelnut"
 		//Names::hazelnutnmb
@@ -219,7 +219,7 @@ string[][] button_file_names =
 		"k_icebomb",
 		"k_goldmine",
 		"k_slidemine",
-		//"k_booster",
+		"k_jarate",
 		"k_fumokeg",
 		"k_hazelnut"
 	},

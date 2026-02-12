@@ -114,20 +114,17 @@ void onTick(CBlob@ this)
 					wanna_buy = true;
 					item_id	= 9;
 				}
-				///////////////////////////
-				// reserved for future
-				/*if (b_KeyJustPressed("k_booster")) {
-					wanna_buy = true;
-					item_id	= 10;
-				}*/
-				///////////////////////////
-				if (b_KeyJustPressed("k_fumokeg")) {
+				if (b_KeyJustPressed("k_jarate")) {
 					wanna_buy = true;
 					item_id	= 10;
 				}
-				if (b_KeyJustPressed("k_hazelnut")) {
+				if (b_KeyJustPressed("k_fumokeg")) {
 					wanna_buy = true;
 					item_id	= 11;
+				}
+				if (b_KeyJustPressed("k_hazelnut")) {
+					wanna_buy = true;
+					item_id	= 12;
 				}
 
 				if (wanna_buy) {
@@ -488,7 +485,7 @@ void onRender(CSprite@ this)
 		"k_icebomb",
 		"k_goldmine",
 		"k_slidemine",
-		//"k_booster",
+		"k_jarate",
 		"k_fumokeg",
 		"k_hazelnut"
 		};

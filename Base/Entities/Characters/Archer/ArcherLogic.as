@@ -777,7 +777,7 @@ void ManageBow(CBlob@ this, ArcherInfo@ archer, RunnerMoveVars@ moveVars)
 						const string itemname = item.getName();
 						if (!holding && bombTypeNames[bombType] == itemname)
 						{
-							if (bombType >= 4)
+							if (bombType >= 5)
 							{
 								this.server_Pickup(item);
 								client_SendThrowOrActivateCommand(this);
@@ -1688,7 +1688,7 @@ void onCreateInventoryMenu(CBlob@ this, CBlob@ forBlob, CGridMenu @gridmenu)
 	AddIconToken("$WaterBomb$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 2, this.getTeamNum());
 	AddIconToken("$StickyBomb$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 5, this.getTeamNum());
 	AddIconToken("$IceBomb$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 6, this.getTeamNum());
-	AddIconToken("$Jarater$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 8, this.getTeamNum());
+	AddIconToken("$Jarate$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 8, this.getTeamNum());
 	
 	if (arrowTypeNames.length == 0)
 	{
