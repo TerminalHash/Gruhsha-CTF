@@ -9,8 +9,8 @@ void onInit(CBlob@ this) {
 	this.addCommandID("change to teamobject");
 	this.addCommandID("change to teamobject client");
 
-	AddIconToken("$team_object$", "TestObjectButtons.png", Vec2f(16, 16), 0);
-	AddIconToken("$test_object$", "TestObjectButtons.png", Vec2f(16, 16), 1);
+	AddIconToken("$team_object$", "TestObjectButtons.png", Vec2f(16, 16), 1);
+	AddIconToken("$test_object$", "TestObjectButtons.png", Vec2f(16, 16), 0);
 }
 
 void GetButtonsFor(CBlob@ this, CBlob@ caller)
@@ -25,10 +25,10 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 
 	if (this.hasTag("TEAM OBJECT")) {
 		CButton@ button = caller.CreateGenericButton(
-			"$team_object$",										// icon token
+			"$test_object$",									// icon token
 			Vec2f_zero,											// button offset
 			this,												// button attachment
-			this.getCommandID("change to default"),						// command id
+			this.getCommandID("change to default"),				// command id
 			"Use default look");// description
 
 		button.radius = 12.0f;
@@ -38,10 +38,10 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller)
 	// second button is lock removing button
 	if (!this.hasTag("TEAM OBJECT")) {
 		CButton@ button = caller.CreateGenericButton(
-			"$test_object$",										// icon token
+			"$team_object$",									// icon token
 			Vec2f_zero,											// button offset
 			this,												// button attachment
-			this.getCommandID("change to teamobject"),				// command id
+			this.getCommandID("change to teamobject"),			// command id
 			"Use team look");// description
 
 		button.radius = 12.0f;
