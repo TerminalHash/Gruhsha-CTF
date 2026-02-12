@@ -144,6 +144,13 @@ void Explode(CBlob@ this, f32 radius, f32 damage)
 		return;
 	}
 
+	if (this.getConfig() == "jarate")
+	{
+		int tilesr = (r / map.tilesize) * 0.5f;
+		Splash(this, tilesr, tilesr, 0.0f, false);
+		return;
+	}
+
 	//
 
 	makeLargeExplosionParticle(pos);
@@ -494,6 +501,13 @@ void onHitBlob(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@
 	if (this.getName() == "icebomb") {
 		if (hitBlob !is null && hitBlob.hasTag("player")) {
 			hitBlob.Tag("icy");
+			//hitBlob.Sync("icy", true);
+		}
+	}
+
+	if (this.getName() == "jarate") {
+		if (hitBlob !is null && hitBlob.hasTag("player")) {
+			hitBlob.Tag("peed");
 			//hitBlob.Sync("icy", true);
 		}
 	}

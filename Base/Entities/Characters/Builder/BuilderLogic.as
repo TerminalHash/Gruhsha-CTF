@@ -418,7 +418,7 @@ void onCreateInventoryMenu(CBlob@ this, CBlob@ forBlob, CGridMenu @gridmenu)
 	AddIconToken("$WaterBomb$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 2, this.getTeamNum());
 	AddIconToken("$StickyBomb$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 5, this.getTeamNum());
 	AddIconToken("$IceBomb$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 6, this.getTeamNum());
-	//AddIconToken("$Booster$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 8, this.getTeamNum());
+	AddIconToken("$Jarater$", "Entities/Characters/Knight/KnightIcons.png", Vec2f(16, 32), 8, this.getTeamNum());
 
 	if (bombTypeNames.length == 0)
 	{
@@ -1182,10 +1182,9 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 						blob.Tag("splash ray cast");
 					}
 				}
-				// reserved slot for future
-				/*else if (bombType == 4)
+				else if (bombType == 4)
 				{
-					CBlob @blob = server_CreateBlob("booster", this.getTeamNum(), this.getPosition());
+					CBlob @blob = server_CreateBlob("jarate", this.getTeamNum(), this.getPosition());
 					if (blob !is null)
 					{
 						TakeItem(this, bombTypeName);
@@ -1197,7 +1196,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 						blob.set_string("custom_explosion_sound", "/GlassBreak2");
 						blob.set_u8("custom_hitter", Hitters::water);
 					}
-				}*/
+				}
 			}
 		}
 		SetFirstAvailableBomb(this);

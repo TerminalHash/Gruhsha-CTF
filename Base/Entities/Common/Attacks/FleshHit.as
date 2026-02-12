@@ -1,4 +1,5 @@
 // Flesh hit
+#include "JarateHitCommon.as"
 
 f32 getGibHealth(CBlob@ this)
 {
@@ -12,6 +13,13 @@ f32 getGibHealth(CBlob@ this)
 
 f32 onHit(CBlob@ this, Vec2f worldPoint, Vec2f velocity, f32 damage, CBlob@ hitterBlob, u8 customData)
 {
+	// return doubled damage if our player covered in pee
+	if (DoublingDamageHitters(customData)) {
+		if (this !is null && hitterBlob !is null && this.hasTag("player") && this.hasTag("peed")) {
+            damage *= 2.0f;
+		}
+	}
+
 	this.Damage(damage, hitterBlob);
 	// Gib if health below gibHealth
 	f32 gibHealth = getGibHealth(this);
