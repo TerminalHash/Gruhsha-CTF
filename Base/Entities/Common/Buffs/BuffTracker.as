@@ -30,14 +30,20 @@ void DrawBuffs() {
         // icy time stuff
         s32 icyTime = p.getBlob().get_s32("icy time");
         s32 secondsToIcyEnd = icyTime / 30 % 60;
+        
+        // peed time stuff
+        s32 peedTime = p.getBlob().get_s32("peed time");
+        s32 secondsToPeedEnd = peedTime / 30 % 60;
 
         // broken shield time stuff
         s32 brokenShieldTime = p.getBlob().get_s32("broken shield timer");
         s32 secondsToBrokenShielsEnd = brokenShieldTime / 30 % 60;
-        
+
+        // dash stuff
         s32 dashCooldownTime = p.getBlob().get_u32("dash cooldown time");
         s32 secondsToDashCooldownEnd = dashCooldownTime / 30 % 60;
 
+        // spike shield stuff
         s32 spikeShieldTime = p.getBlob().get_f32("spike shield time");
         s32 secondsToSpikeShieldEnd = spikeShieldTime / 30 % 60;
 
@@ -45,6 +51,16 @@ void DrawBuffs() {
 		    GUI::DrawIcon("DebuffOnHUD.png", 0, Vec2f(33, 19),  ul + kurwa);
             drawRulesFont(getTranslatedString("{SEC}")
 		    	.replace("{SEC}", "" + ((secondsToIcyEnd < 10) ? "0" + secondsToIcyEnd : "" + secondsToIcyEnd)),
+		         SColor(255, 255, 255, 255), ul + kurwa2, ul, true, false);
+
+            kurwa += Vec2f(80, 0);
+            kurwa2 += Vec2f(160, 0);
+        }
+
+        if (p.getBlob().hasTag("peed")) {
+		    GUI::DrawIcon("DebuffOnHUD.png", 5, Vec2f(33, 19),  ul + kurwa);
+            drawRulesFont(getTranslatedString("{SEC}")
+		    	.replace("{SEC}", "" + ((secondsToPeedEnd < 10) ? "0" + secondsToPeedEnd : "" + secondsToPeedEnd)),
 		         SColor(255, 255, 255, 255), ul + kurwa2, ul, true, false);
 
             kurwa += Vec2f(80, 0);
