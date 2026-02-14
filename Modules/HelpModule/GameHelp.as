@@ -56,8 +56,8 @@ void onRender(CRules@ this) {
 	const Vec2f mousePos = controls.getMouseScreenPos();
 
 	makeExitButton(this, Vec2f(center.x + imageSize.x - 20, center.y - imageSize.y + 20), controls, mousePos);
-	makePageChangeButton(Vec2f(center.x + 22, center.y + imageSize.y + 30), controls, mousePos, true);
-	makePageChangeButton(Vec2f(center.x - 22, center.y + imageSize.y + 30), controls, mousePos, false);
+	makePageChangeButton(Vec2f(center.x + 370, center.y - imageSize.y + 250), controls, mousePos, true);
+	makePageChangeButton(Vec2f(center.x - 380, center.y - imageSize.y + 250), controls, mousePos, false);
 
 	//page num
 	drawTextWithFont((page + 1) + "/" + pages, center + imageSize - Vec2f(30, 25), "menu");
