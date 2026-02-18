@@ -15,6 +15,7 @@
 	quarters		50				0
 	tunnel			50				100
 	vehicleshop		150				0
+	quarry			0				150
 */
 
 
@@ -26,6 +27,7 @@ void onDie(CBlob@ this) {
 	int wood_drop_amount_vehicle = 150;        //	150 + 150 / 2
 	int stone_drop_amount = 25;                //	50 / 2
 	int stone_drop_amount_tunnel = 50;         //	100 / 2
+	int stone_drop_amount_quarry = 75;         //	150 / 2
 
 	/*if (this.getConfig() == "building") {
 		CBlob@ wood = server_CreateBlobNoInit('mat_wood');
@@ -89,6 +91,18 @@ void onDie(CBlob@ this) {
 			stone.Init();
 
 			stone.server_SetQuantity(stone_drop_amount_tunnel);
+			stone.setPosition(this.getPosition());
+		}
+	}
+
+	if (this.getConfig() == "quarry") {
+		CBlob@ stone = server_CreateBlobNoInit('mat_stone');
+
+		if (stone !is null) {
+			stone.Tag('custom quantity');
+			stone.Init();
+
+			stone.server_SetQuantity(stone_drop_amount_quarry);
 			stone.setPosition(this.getPosition());
 		}
 	}
