@@ -80,6 +80,8 @@ void onInit(CBlob@ this)
 
 	//commands
 	this.addCommandID("add fuel");
+	this.addCommandID("automation");
+	this.addCommandID("disautomation");
 	string current_output = "current_quarry_output_" + this.getTeamNum();
 	CRules@ rules = getRules();
 
@@ -114,6 +116,31 @@ void onTick(CBlob@ this)
 			}
 
 			this.Sync(working_prop, true);
+		}
+
+		if (this.hasTag("automatic refueling")) {
+			// refuel it every 50 seconds
+			if (getGameTime() % (30 * 50) == 0) {
+				//amount we'd _like_ to insert
+				int requestedAmount = Maths::Min(250, max_fuel - this.get_s16(fuel_prop));
+				//(possible with laggy commands from 2 players, faster to early out here if we can)
+				if (requestedAmount <= 0) return;
+
+				//how much fuel does the caller have including what's potentially in his hand?
+				int callerQuantity = getRules().get_s32("teamwood" + this.getTeamNum());
+
+				//amount we _can_ insert
+				int ammountToStore = Maths::Min(requestedAmount, callerQuantity);
+				//can we even insert anything?
+				if (ammountToStore > 0)
+				{
+					getRules().sub_s32("teamwood" + this.getTeamNum(), ammountToStore);
+					//caller.TakeBlob(fuel, ammountToStore);
+					this.set_s16(fuel_prop, this.get_s16(fuel_prop) + ammountToStore);
+
+					updateWoodLayer(this.getSprite());
+				}
+			}
 		}
 	}
 
@@ -153,6 +180,12 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller) {
 			//button.SetEnabled(caller.hasBlob(fuel, 1));
 		}
 	}
+
+	if (!this.hasTag("automatic refueling")) {
+		CButton@ autobutton = caller.CreateGenericButton("$mat_wood$", Vec2f(4.0f, 0.0f), this, this.getCommandID("automation"), "Automatic Refueling", params);
+	} else {
+		CButton@ autobutton = caller.CreateGenericButton("$mat_wood$", Vec2f(4.0f, 0.0f), this, this.getCommandID("disautomation"), "Manual Refueling", params);
+	}
 }
 
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
@@ -182,6 +215,22 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 
 			updateWoodLayer(this.getSprite());
 		}
+	}
+
+	if (cmd == this.getCommandID("automation") && isServer())
+	{
+		CBlob@ caller = getBlobByNetworkID(params.read_u16());
+		if (caller is null) return;
+
+		this.Tag("automatic refueling");
+	}
+
+	if (cmd == this.getCommandID("disautomation") && isServer())
+	{
+		CBlob@ caller = getBlobByNetworkID(params.read_u16());
+		if (caller is null) return;
+
+		this.Untag("automatic refueling");
 	}
 }
 
