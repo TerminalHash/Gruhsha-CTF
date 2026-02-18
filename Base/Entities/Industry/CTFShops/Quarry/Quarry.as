@@ -92,7 +92,7 @@ void onInit(CBlob@ this)
 void onTick(CBlob@ this)
 {
 	//only do "real" update logic on server
-	if (getNet().isServer())
+	if (isServer())
 	{
 		int blobCount = this.get_s16(fuel_prop);
 		if ((blobCount >= min_input))
@@ -102,7 +102,8 @@ void onTick(CBlob@ this)
 			//only convert every conversion_frequency seconds
 			if (getGameTime() % (conversion_frequency * getTicksASecond()) == this.get_u8(unique_prop))
 			{
-				spawnOre(this);
+				//spawnOre(this);
+				produceOre(this);
 
 				if (blobCount - input < min_input)
 				{
@@ -156,7 +157,7 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller) {
 
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
-	if (cmd == this.getCommandID("add fuel"))
+	if (cmd == this.getCommandID("add fuel") && isServer())
 	{
 		CBlob@ caller = getBlobByNetworkID(params.read_u16());
 		if (caller is null) return;
@@ -184,6 +185,33 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 	}
 }
 
+// put ore into virtual pool
+void produceOre(CBlob@ this)
+{
+	int blobCount = this.get_s16(fuel_prop);
+	int actual_input = Maths::Min(input, blobCount);
+
+	int r = XORRandom(rare_chance);
+	int output = getRules().get_s32("current_quarry_output_" + this.getTeamNum());
+
+	int amountToSpawn = Maths::Floor(output * actual_input / input);
+	//round to 5
+	int remainder = amountToSpawn % 5;
+	amountToSpawn += (remainder < 3 ? -remainder : (5 - remainder));
+
+	getRules().add_s32("teamstone" + this.getTeamNum(), amountToSpawn);
+
+	this.set_s16(fuel_prop, blobCount - actual_input); //burn wood
+	const string current_output = "current_quarry_output_" + this.getTeamNum();
+
+	// reduce output if it's higher than minimal output
+	if (getRules().hasScript("ResetQuarry.as"))
+	{
+		getRules().set_s32(current_output, Maths::Max(getRules().get_s32(current_output) - output_decrease, min_output));
+	}
+}
+
+// spawn real blob
 void spawnOre(CBlob@ this)
 {
 	int blobCount = this.get_s16(fuel_prop);
