@@ -139,6 +139,7 @@ void onTick(CBlob@ this)
 					getRules().Sync("teamwood" + this.getTeamNum(), true);
 					//caller.TakeBlob(fuel, ammountToStore);
 					this.set_s16(fuel_prop, this.get_s16(fuel_prop) + ammountToStore);
+					this.Sync(fuel_prop, true);
 
 					this.SendCommand(this.getCommandID("add fuel client"));
 				}
@@ -160,7 +161,7 @@ void onTick(CBlob@ this)
 	}
 
 	//update sprite based on modified or synced properties
-	updateWoodLayer(this.getSprite());
+	this.SendCommand(this.getCommandID("add fuel client"));
 	if (getGameTime() % (getTicksASecond()/2) == 0) animateBelt(this, this.get_bool(working_prop));
 }
 
@@ -215,6 +216,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 			getRules().Sync("teamwood" + caller.getTeamNum(), true);
 			//caller.TakeBlob(fuel, ammountToStore);
 			this.set_s16(fuel_prop, this.get_s16(fuel_prop) + ammountToStore);
+			this.Sync(fuel_prop, true);
 
 			this.SendCommand(this.getCommandID("add fuel client"));
 		}
@@ -228,6 +230,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		if (caller is null) return;
 
 		this.Tag("automatic refueling");
+		this.Sync("automatic refueling", true);
 	}
 
 	if (cmd == this.getCommandID("disautomation") && isServer())
@@ -236,6 +239,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		if (caller is null) return;
 
 		this.Untag("automatic refueling");
+		this.Sync("automatic refueling", true);
 	}
 }
 
@@ -257,6 +261,7 @@ void produceOre(CBlob@ this)
 	getRules().Sync("teamstone" + this.getTeamNum(), true);
 
 	this.set_s16(fuel_prop, blobCount - actual_input); //burn wood
+	this.Sync(fuel_prop, true);
 	const string current_output = "current_quarry_output_" + this.getTeamNum();
 
 	// reduce output if it's higher than minimal output
@@ -293,6 +298,7 @@ void spawnOre(CBlob@ this)
 	_ore.server_SetQuantity(!rare ? amountToSpawn : rare_output);
 
 	this.set_s16(fuel_prop, blobCount - actual_input); //burn wood
+	this.Sync(fuel_prop, true);
 	const string current_output = "current_quarry_output_" + this.getTeamNum();
 	
 	// reduce output if it's higher than minimal output
