@@ -80,6 +80,7 @@ void onInit(CBlob@ this)
 
 	//commands
 	this.addCommandID("add fuel");
+	this.addCommandID("add fuel client");
 	this.addCommandID("automation");
 	this.addCommandID("disautomation");
 	string current_output = "current_quarry_output_" + this.getTeamNum();
@@ -135,10 +136,11 @@ void onTick(CBlob@ this)
 				if (ammountToStore > 0)
 				{
 					getRules().sub_s32("teamwood" + this.getTeamNum(), ammountToStore);
+					getRules().Sync("teamwood" + this.getTeamNum(), true);
 					//caller.TakeBlob(fuel, ammountToStore);
 					this.set_s16(fuel_prop, this.get_s16(fuel_prop) + ammountToStore);
 
-					updateWoodLayer(this.getSprite());
+					this.SendCommand(this.getCommandID("add fuel client"));
 				}
 			}
 		}
@@ -210,11 +212,14 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 		if (ammountToStore > 0)
 		{
 			getRules().sub_s32("teamwood" + caller.getTeamNum(), ammountToStore);
+			getRules().Sync("teamwood" + caller.getTeamNum(), true);
 			//caller.TakeBlob(fuel, ammountToStore);
 			this.set_s16(fuel_prop, this.get_s16(fuel_prop) + ammountToStore);
 
-			updateWoodLayer(this.getSprite());
+			this.SendCommand(this.getCommandID("add fuel client"));
 		}
+	} else if (cmd == this.getCommandID("add fuel client") && isClient()) {
+		updateWoodLayer(this.getSprite());
 	}
 
 	if (cmd == this.getCommandID("automation") && isServer())
@@ -249,6 +254,7 @@ void produceOre(CBlob@ this)
 	amountToSpawn += (remainder < 3 ? -remainder : (5 - remainder));
 
 	getRules().add_s32("teamstone" + this.getTeamNum(), amountToSpawn);
+	getRules().Sync("teamstone" + this.getTeamNum(), true);
 
 	this.set_s16(fuel_prop, blobCount - actual_input); //burn wood
 	const string current_output = "current_quarry_output_" + this.getTeamNum();
