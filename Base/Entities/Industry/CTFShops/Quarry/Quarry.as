@@ -78,6 +78,9 @@ void onInit(CBlob@ this)
 	this.set_bool(working_prop, false);
 	this.set_u8(unique_prop, XORRandom(getTicksASecond() * conversion_frequency));
 
+	AddIconToken("$quarry_manual_refuel$", "QuarryButtons.png", Vec2f(16, 16), 1);
+	AddIconToken("$quarry_auto_refuel$", "QuarryButtons.png", Vec2f(16, 16), 0);
+
 	//commands
 	this.addCommandID("add fuel");
 	this.addCommandID("add fuel client");
@@ -120,8 +123,8 @@ void onTick(CBlob@ this)
 		}
 
 		if (this.hasTag("automatic refueling")) {
-			// refuel it every 50 seconds
-			if (getGameTime() % (30 * 50) == 0) {
+			// refuel it every 30 seconds
+			if (getGameTime() % (30 * 30) == 0) {
 				//amount we'd _like_ to insert
 				int requestedAmount = Maths::Min(250, max_fuel - this.get_s16(fuel_prop));
 				//(possible with laggy commands from 2 players, faster to early out here if we can)
@@ -185,9 +188,9 @@ void GetButtonsFor(CBlob@ this, CBlob@ caller) {
 	}
 
 	if (!this.hasTag("automatic refueling")) {
-		CButton@ autobutton = caller.CreateGenericButton("$mat_wood$", Vec2f(4.0f, 0.0f), this, this.getCommandID("automation"), "Automatic Refueling", params);
+		CButton@ autobutton = caller.CreateGenericButton("$quarry_auto_refuel$", Vec2f(4.0f, 0.0f), this, this.getCommandID("automation"), "Automatic Refueling", params);
 	} else {
-		CButton@ autobutton = caller.CreateGenericButton("$mat_wood$", Vec2f(4.0f, 0.0f), this, this.getCommandID("disautomation"), "Manual Refueling", params);
+		CButton@ autobutton = caller.CreateGenericButton("$quarry_manual_refuel$", Vec2f(4.0f, 0.0f), this, this.getCommandID("disautomation"), "Manual Refueling", params);
 	}
 }
 
