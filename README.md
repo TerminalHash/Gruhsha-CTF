@@ -1,3 +1,6 @@
+# Репозиторий перемещён, новый адрес: https://codeberg.org/TerminalHash/Gruhsha-CTF
+
+
 # ![grusha](Base/Sprites/Common/grusha.png) Gruhsha-CTF ![grusha](Base/Sprites/Common/grusha.png)
 
 ![Static Badge](https://img.shields.io/badge/version-v4.2-%23ad7fa8?style=plastic)
